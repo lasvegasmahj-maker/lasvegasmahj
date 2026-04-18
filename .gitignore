@@ -1,0 +1,18 @@
+# Sensitive business documents — do NOT push to GitHub
+*.pdf
+*.pages
+*.pptx
+*.zip
+W9*
+*Invoice*
+*Contract*
+*contract*
+
+# Media assets (large files)
+*.png
+*.jpg
+*.jpeg
+*.avif
+
+# Extracted archives
+mahjcard/
