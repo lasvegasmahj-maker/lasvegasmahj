@@ -1,3 +1,5 @@
+@AGENTS.md
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -8,69 +10,39 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Static single-page website for **Las Vegas Mahjong** (lasvegasmahj.com) — a mahjong instruction and community business run by Shauna, a certified Oh My Mahjong (OMM) instructor based in Las Vegas. No backend, no build step, no package manager: the site is a single self-contained HTML file served directly.
+Next.js 16 website for **Las Vegas Mahjong** (lasvegasmahj.com) — a mahjong instruction and community business run by Shauna, a certified Oh My Mahjong (OMM) instructor based in Las Vegas.
 
-## Business Context
+## Sister Business
 
-### Sister business
-Find My Mahj Game (findmymahjgame.com) is a mahjong player directory/platform being built alongside this business. Separate project at `~/Projects/findmymahjgame`.
-
-### Domains
-- lasvegasmahj.com — primary business site (hosted on GoDaddy)
-- findmymahjgame.com — sister business (separate repo)
-
-### Services offered
-- Mahjong lessons (beginner to advanced)
-- Open play events
-- Leagues and tournaments
-- Corporate and private events
-- Located across Las Vegas, Summerlin, and Henderson
-
-### Distribution
-- Instagram: @lasvegasmahjong
-- Mailchimp newsletter integration
-- ManyChat auto-DM campaigns
+Find My Mahj Game (findmymahjgame.com) is a mahjong player directory/platform. Separate project at `~/Projects/findmymahjgame`.
 
 ## Commands
 
-There is no build, test, or lint pipeline. To preview:
-
 ```bash
-open index.html                         # open in default browser
-python3 -m http.server 8000             # serve locally
+pnpm dev          # Start dev server at localhost:3000
+pnpm build        # Production build
+pnpm lint         # Run ESLint
 ```
 
 ## Architecture
 
-**The entire site is a single self-contained `index.html` file.** All styles live in an inline `<style>` block and behavior in inline `<script>` blocks — there are no external CSS, JS, or template files.
+See `architecture.md` for full details. Key points:
+- Next.js 16 + Tailwind CSS 4 + shadcn/ui + Supabase
+- No hard-coded data — everything dynamic comes from Supabase
+- Vercel auto-deploys from GitHub on push to main
+- Secrets in `.env.local` (never commit)
 
-### Page sections (in order)
-- **Nav** — fixed top nav with logo, section links, and "Contact" CTA
-- **Hero** (`#home`) — main headline with CTA buttons
-- **Our Why** (`#about`) — "More Than a Game" value props (brain health, friendship, fun, community)
-- **Meet Your Teacher** — Shauna's bio with photo
-- **Events** (`#events`) — upcoming events list
-- **Classes** (`#classes`) — lesson offerings (beginner, intermediate, open play, private, corporate)
-- **Inquiry Modal** — booking form overlay
-- **Community/Testimonials** (`#community`) — player testimonials
-- **Shop** (`#shop`) — affiliate product links (Oh My Mahjong, Bespoke Mahjong, etc.)
-- **Newsletter** — Mailchimp signup form
-- **Footer** — links, social, copyright
-- **Contact Modal** — contact form overlay
+## Design System
 
-### Design system (inline)
-- CSS custom properties: `--navy:#1a1b6e`, `--navy-dark:#11124a`, `--pink:#e91e8c`, `--green:#39e639`, `--gold:#ffd700`
-- Fonts loaded from Google Fonts: Bebas Neue (logo), Montserrat (headings), DM Sans (body)
-- Dark navy theme with pink and green accent colors
-
-### SEO
-- Full Open Graph and Twitter Card meta tags
-- Local Business Schema.org JSON-LD markup
-- Canonical URL set to https://lasvegasmahj.com
+- Dark navy theme: `--navy: #1a1b6e`, `--navy-dark: #11124a`
+- Pink accent: `--pink: #e91e8c`
+- Green accent: `--green: #39e639`
+- Gold accent: `--gold: #ffd700`
+- Fonts: Bebas Neue (logo), Montserrat (headings), DM Sans (body)
 
 ## Conventions
 
-- Keep the site as a single self-contained HTML file — do not introduce a bundler, shared stylesheet, or templating layer without discussing first.
-- Maintain the `--navy/--pink/--green/--gold` palette and font pairing.
-- Images are embedded as base64 data URIs inline in the HTML.
-- The site uses smooth scroll anchors for navigation (#home, #about, #events, etc.).
+- Keep the dark premium Vegas aesthetic
+- All database column names use snake_case
+- Images stored in Supabase Storage or as base64 inline
+- Mailchimp handles newsletter — separate from Supabase

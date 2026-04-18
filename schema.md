@@ -1,151 +1,143 @@
 # Schema — Las Vegas Mahjong
 
-## Data Model
+## Database: Supabase (PostgreSQL)
 
-Las Vegas Mahjong is a content-driven site. The schema is simpler than Find My Mahj Game — it's primarily about displaying events, classes, testimonials, and shop items that Shauna manages as an admin.
+Las Vegas Mahjong is a content-driven site. The schema manages events, classes, testimonials, and shop items that Shauna controls as an admin.
 
-```
-EVENTS (what's coming up)
-CLASSES (what you can learn)
-TESTIMONIALS (what players say)
-SHOP ITEMS (what to buy)
-INQUIRIES (what visitors ask)
-```
-
-## Collections
+## Tables
 
 ### `events`
 Upcoming mahjong events — open play, tournaments, socials, corporate events.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string (auto) | Firestore document ID |
-| `title` | string | Event name |
-| `type` | string | `"open_play"`, `"tournament"`, `"social"`, `"corporate"`, `"private"` |
-| `description` | string | Event details |
-| `location` | string | Venue name |
-| `address` | string | Full address |
-| `area` | string | `"summerlin"`, `"henderson"`, `"las_vegas"`, `"other"` |
-| `date` | timestamp | Event date/time |
-| `endDate` | timestamp | End time |
-| `price` | number | Cost (0 for free) |
-| `capacity` | number | Max attendees (null for unlimited) |
-| `registrationUrl` | string | Signup link (Partiful, Eventbrite, etc.) |
-| `imageUrl` | string | Event flyer image |
-| `isRecurring` | boolean | Repeating event |
-| `recurrenceRule` | string | e.g., `"weekly_tuesday"`, `"monthly_first_saturday"` |
-| `status` | string | `"upcoming"`, `"full"`, `"cancelled"`, `"past"` |
-| `sortOrder` | number | Display order on the page |
-| `createdAt` | timestamp | Created date |
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | uuid (PK) | Auto-generated |
+| `title` | text | Event name |
+| `type` | text | `open_play`, `tournament`, `social`, `corporate`, `private` |
+| `description` | text | Event details |
+| `location` | text | Venue name |
+| `address` | text | Full address |
+| `area` | text | `summerlin`, `henderson`, `las_vegas`, `other` |
+| `date` | timestamptz | Event date/time |
+| `end_date` | timestamptz | End time |
+| `price` | numeric | Cost (0 for free) |
+| `capacity` | integer | Max attendees (null for unlimited) |
+| `registration_url` | text | Signup link (Partiful, Eventbrite, etc.) |
+| `image_url` | text | Event flyer image |
+| `is_recurring` | boolean | Repeating event |
+| `recurrence_rule` | text | e.g., `weekly_tuesday`, `monthly_first_saturday` |
+| `status` | text | `upcoming`, `full`, `cancelled`, `past` |
+| `sort_order` | integer | Display order on the page |
+| `created_at` | timestamptz | Auto-set on insert |
 
 ### `classes`
 Mahjong lesson offerings.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string (auto) | Firestore document ID |
-| `title` | string | Class name (e.g., "Beginner Lesson") |
-| `level` | string | `"beginner"`, `"intermediate"`, `"advanced"`, `"all"` |
-| `type` | string | `"group"`, `"private"`, `"corporate"`, `"open_play"` |
-| `description` | string | What you'll learn |
-| `duration` | string | e.g., `"2 hours"`, `"3 hours"` |
-| `price` | number | Cost per person |
-| `priceNote` | string | e.g., `"per person"`, `"per group"` |
-| `maxStudents` | number | Max class size |
-| `includes` | array[string] | What's included (e.g., `["instruction", "practice tiles", "snacks"]`) |
-| `imageUrl` | string | Class photo |
-| `sortOrder` | number | Display order |
-| `isActive` | boolean | Currently offered |
-| `createdAt` | timestamp | Created date |
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | uuid (PK) | Auto-generated |
+| `title` | text | Class name (e.g., "Beginner Lesson") |
+| `level` | text | `beginner`, `intermediate`, `advanced`, `all` |
+| `type` | text | `group`, `private`, `corporate`, `open_play` |
+| `description` | text | What you'll learn |
+| `duration` | text | e.g., `2 hours`, `3 hours` |
+| `price` | numeric | Cost per person |
+| `price_note` | text | e.g., `per person`, `per group` |
+| `max_students` | integer | Max class size |
+| `includes` | text[] | What's included (e.g., `{instruction, practice tiles, snacks}`) |
+| `image_url` | text | Class photo |
+| `sort_order` | integer | Display order |
+| `is_active` | boolean | Currently offered |
+| `created_at` | timestamptz | Auto-set on insert |
 
 ### `testimonials`
 Player reviews and testimonials.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string (auto) | Firestore document ID |
-| `name` | string | Player name |
-| `quote` | string | Testimonial text |
-| `location` | string | e.g., `"Summerlin, NV"` |
-| `imageUrl` | string | Player photo (optional) |
-| `rating` | number | 1-5 stars (optional) |
-| `sortOrder` | number | Display order |
-| `isActive` | boolean | Show on site |
-| `createdAt` | timestamp | Created date |
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | uuid (PK) | Auto-generated |
+| `name` | text | Player name |
+| `quote` | text | Testimonial text |
+| `location` | text | e.g., `Summerlin, NV` |
+| `image_url` | text | Player photo (optional) |
+| `rating` | integer | 1-5 stars (optional) |
+| `sort_order` | integer | Display order |
+| `is_active` | boolean | Show on site |
+| `created_at` | timestamptz | Auto-set on insert |
 
 ### `shop_items`
 Affiliate product links displayed in the Shop section.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string (auto) | Firestore document ID |
-| `brand` | string | Brand name (e.g., "Oh My Mahjong", "Bespoke Mahjong") |
-| `title` | string | Product/brand display title |
-| `description` | string | Short product description |
-| `url` | string | Affiliate link |
-| `imageUrl` | string | Product/brand image |
-| `discountCode` | string | Promo code (optional, e.g., `"LASVEGAS10"`) |
-| `sortOrder` | number | Display order |
-| `isActive` | boolean | Currently showing |
-| `createdAt` | timestamp | Created date |
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | uuid (PK) | Auto-generated |
+| `brand` | text | Brand name (e.g., "Oh My Mahjong") |
+| `title` | text | Product/brand display title |
+| `description` | text | Short product description |
+| `url` | text | Affiliate link |
+| `image_url` | text | Product/brand image |
+| `discount_code` | text | Promo code (optional) |
+| `sort_order` | integer | Display order |
+| `is_active` | boolean | Currently showing |
+| `created_at` | timestamptz | Auto-set on insert |
 
 ### `instructor`
-Shauna's profile info (typically a single document).
+Shauna's profile info (single row).
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string | `"shauna"` (single doc) |
-| `name` | string | Full name |
-| `title` | string | e.g., `"Certified OMM Instructor"` |
-| `bio` | string | Bio text |
-| `photoUrl` | string | Headshot photo |
-| `instagram` | string | Instagram handle |
-| `email` | string | Contact email |
-| `certifications` | array[string] | e.g., `["Oh My Mahjong Certified"]` |
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | uuid (PK) | Single row |
+| `name` | text | Full name |
+| `title` | text | e.g., `Certified OMM Instructor` |
+| `bio` | text | Bio text |
+| `photo_url` | text | Headshot photo |
+| `instagram` | text | Instagram handle |
+| `email` | text | Contact email |
+| `certifications` | text[] | e.g., `{Oh My Mahjong Certified}` |
 
 ### `site_config`
-Global site settings.
+Global site settings (single row).
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string | `"main"` (single doc) |
-| `heroTitle` | string | Main headline text |
-| `heroSubtitle` | string | Subtitle text |
-| `heroCta` | string | CTA button text |
-| `announcementBar` | string | Top banner message (optional) |
-| `isAnnouncementActive` | boolean | Show the banner |
-| `socialLinks` | map | `{ instagram, facebook, tiktok }` |
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | uuid (PK) | Single row |
+| `hero_title` | text | Main headline text |
+| `hero_subtitle` | text | Subtitle text |
+| `hero_cta` | text | CTA button text |
+| `announcement_bar` | text | Top banner message (optional) |
+| `is_announcement_active` | boolean | Show the banner |
+| `social_links` | jsonb | `{ instagram, facebook, tiktok }` |
 
 ### `inquiries`
 Contact and booking form submissions.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string (auto) | Firestore document ID |
-| `name` | string | Submitter name |
-| `email` | string | Submitter email |
-| `phone` | string | Phone number (optional) |
-| `type` | string | `"contact"`, `"booking"`, `"corporate"`, `"private_event"` |
-| `message` | string | Message body |
-| `eventInterest` | string | Which class/event they're asking about |
-| `groupSize` | number | Number of people (for bookings) |
-| `preferredDate` | string | Preferred date (for bookings) |
-| `status` | string | `"new"`, `"read"`, `"replied"`, `"booked"` |
-| `createdAt` | timestamp | Submission date |
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | uuid (PK) | Auto-generated |
+| `name` | text | Submitter name |
+| `email` | text | Submitter email |
+| `phone` | text | Phone number (optional) |
+| `type` | text | `contact`, `booking`, `corporate`, `private_event` |
+| `message` | text | Message body |
+| `event_interest` | text | Which class/event they're asking about |
+| `group_size` | integer | Number of people (for bookings) |
+| `preferred_date` | text | Preferred date (for bookings) |
+| `status` | text | `new`, `read`, `replied`, `booked` |
+| `created_at` | timestamptz | Auto-set on insert |
 
 ### `admins`
-Admin user registry (used by security rules).
+Admin user registry (used by RLS policies).
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string | Firebase Auth UID |
-| `role` | string | `"admin"` |
-| `email` | string | Admin email |
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | uuid (PK) | Supabase Auth user ID |
+| `role` | text | `admin` |
+| `email` | text | Admin email |
 
 ## Relationships
 
 ```
-instructor (single doc)
+instructor (single row)
   └── teaches classes, hosts events
 
 events ← displayed on Events section
@@ -156,3 +148,7 @@ inquiries ← submitted by visitors via forms
 site_config ← controls hero and global settings
 admins ← manages everything
 ```
+
+## Naming Convention
+
+All column names use **snake_case** (PostgreSQL standard), not camelCase.

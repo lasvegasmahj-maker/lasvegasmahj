@@ -1,8 +1,8 @@
 # Security — Las Vegas Mahjong
 
-## Firebase Security Rules (Firestore)
+## Supabase Row Level Security (RLS)
 
-All data access is controlled through Firestore Security Rules.
+All data access is controlled through PostgreSQL Row Level Security policies. No client can read or write data without passing these rules.
 
 ### Rule Principles
 
@@ -11,85 +11,73 @@ All data access is controlled through Firestore Security Rules.
 3. **Open contact form** — anyone can submit an inquiry, but only admins can read them
 4. **No client-side deletes** — deletions require admin access
 
-### Firestore Rules
+### RLS Policies
 
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
+```sql
+-- EVENTS: public read, admin write
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can view events" ON events FOR SELECT USING (true);
+CREATE POLICY "Admins can manage events" ON events FOR ALL USING (is_admin());
 
-    // --- EVENTS ---
-    match /events/{eventId} {
-      // Anyone can view events
-      allow read: if true;
-      // Only admins can create/edit/delete events
-      allow write: if isAdmin();
-    }
+-- CLASSES: public read, admin write
+ALTER TABLE classes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can view classes" ON classes FOR SELECT USING (true);
+CREATE POLICY "Admins can manage classes" ON classes FOR ALL USING (is_admin());
 
-    // --- CLASSES ---
-    match /classes/{classId} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
+-- TESTIMONIALS: public read, admin write
+ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can view testimonials" ON testimonials FOR SELECT USING (true);
+CREATE POLICY "Admins can manage testimonials" ON testimonials FOR ALL USING (is_admin());
 
-    // --- TESTIMONIALS ---
-    match /testimonials/{testimonialId} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
+-- SHOP ITEMS: public read, admin write
+ALTER TABLE shop_items ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can view shop items" ON shop_items FOR SELECT USING (true);
+CREATE POLICY "Admins can manage shop items" ON shop_items FOR ALL USING (is_admin());
 
-    // --- SHOP ITEMS ---
-    match /shop_items/{itemId} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
+-- INSTRUCTOR: public read, admin write
+ALTER TABLE instructor ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can view instructor" ON instructor FOR SELECT USING (true);
+CREATE POLICY "Admins can manage instructor" ON instructor FOR ALL USING (is_admin());
 
-    // --- INSTRUCTOR ---
-    match /instructor/{docId} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
+-- SITE CONFIG: public read, admin write
+ALTER TABLE site_config ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can view config" ON site_config FOR SELECT USING (true);
+CREATE POLICY "Admins can manage config" ON site_config FOR ALL USING (is_admin());
 
-    // --- SITE CONFIG ---
-    match /site_config/{configId} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
+-- INQUIRIES: anyone can insert, only admins can read
+ALTER TABLE inquiries ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can submit inquiry" ON inquiries FOR INSERT WITH CHECK (true);
+CREATE POLICY "Admins can view inquiries" ON inquiries FOR SELECT USING (is_admin());
+CREATE POLICY "Admins can manage inquiries" ON inquiries FOR ALL USING (is_admin());
 
-    // --- INQUIRIES (contact/booking forms) ---
-    match /inquiries/{inquiryId} {
-      // Anyone can submit a form
-      allow create: if true;
-      // Only admins can read/manage submissions
-      allow read, update, delete: if isAdmin();
-    }
-
-    // --- ADMINS ---
-    match /admins/{adminId} {
-      // Only admins can read the admin list
-      allow read: if isAdmin();
-      // No client-side writes to admin list
-      allow write: if false;
-    }
-
-    // --- ADMIN HELPER ---
-    function isAdmin() {
-      return request.auth != null &&
-        get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin';
-    }
-  }
-}
+-- ADMIN HELPER FUNCTION
+CREATE OR REPLACE FUNCTION is_admin()
+RETURNS boolean AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM admins WHERE id = auth.uid()
+  );
+$$ LANGUAGE sql SECURITY DEFINER;
 ```
 
 ### Authentication
 
-- **Firebase Authentication** for admin access only
+- **Supabase Auth** handles sign-in (email/password for admins)
 - Visitors do not need to sign in to view the site
-- Admin login is used to manage events, classes, testimonials, and shop items
+- Admin users are stored in an `admins` table
+
+### Next.js Security Headers
+
+Configured in `next.config.ts`:
+- **Content Security Policy (CSP)** — controls what scripts/styles can load
+- **HSTS** — forces HTTPS
+- **X-Frame-Options** — blocks iframes (prevents clickjacking)
+- **X-Content-Type-Options** — blocks MIME sniffing
+- **X-Powered-By** — disabled (hides Next.js)
 
 ### Sensitive Data
 
-- **Never commit** W9s, contracts, invoices, or financial docs to GitHub
-- Keep Firebase config keys in the client (safe — security rules protect data)
-- Store third-party API keys in Firebase environment config, not in code
-- Mailchimp API key stays server-side or in environment config
+- **Never commit** `.env.local` — contains Supabase keys
+- **Never commit** W9s, contracts, invoices, or financial docs (blocked by `.gitignore`)
+- Supabase `anon` key is safe in client code — RLS policies protect the data
+- Service role key stays **server-side only** (API routes, never client components)
+- Mailchimp API key stays in environment variables

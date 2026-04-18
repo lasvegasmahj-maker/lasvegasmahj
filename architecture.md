@@ -2,77 +2,96 @@
 
 ## Core Principle
 
-**No hard-coded data.** Event schedules, class info, testimonials, and shop items all come from Firebase. The HTML page is the shell; Firebase is the brain.
+**No hard-coded data.** Event schedules, class info, testimonials, and shop items all come from Supabase. The Next.js pages are the shell; Supabase is the brain.
 
 ## Stack
 
-- **Frontend:** Static HTML/CSS/JavaScript (single-page site)
-- **Backend/Database:** Firebase (Firestore)
-- **Auth:** Firebase Authentication (for admin access)
-- **Hosting:** GoDaddy (domain)
-- **Storage:** Firebase Storage (images, photos)
+- **Framework:** Next.js 16 (React, TypeScript)
+- **Styling:** Tailwind CSS 4 + shadcn/ui components
+- **Database:** Supabase (PostgreSQL)
+- **Auth:** Supabase Auth (for admin access)
+- **Hosting:** Vercel (auto-deploys from GitHub)
+- **Domain:** GoDaddy (lasvegasmahj.com → points to Vercel)
+- **Storage:** Supabase Storage (images, photos)
 - **Email:** Mailchimp (newsletter signups)
+- **Icons:** lucide-react
 
 ## Data Flow
 
 ```
 User visits lasvegasmahj.com
-  → Browser loads index.html (nav, layout, sections, footer)
-  → JavaScript calls Firebase on page load
-  → Firestore returns events, classes, testimonials, shop items
-  → JS renders data into page sections dynamically
-  → Contact/inquiry forms write submissions to Firestore
+  → Vercel serves Next.js pages (server-side rendered)
+  → Pages query Supabase for events, classes, testimonials, shop items
+  → Dynamic content renders on the page
+  → Contact/inquiry forms write to Supabase
   → Newsletter form submits to Mailchimp
 ```
 
-## Page Architecture
-
-The site is a single `index.html` with multiple sections. Each section follows this pattern:
-
-1. **Static shell** — section heading, layout containers (HTML/CSS)
-2. **Firebase fetch** — Firestore query populates the section content
-3. **Dynamic rendering** — JS builds cards/lists from Firestore data
-
-### Sections and their data sources
-
-| Section | Firestore Collection | Purpose |
-|---------|---------------------|---------|
-| Hero (`#home`) | `site_config` | Hero text, CTA buttons |
-| Our Why (`#about`) | (static) | Value props — mostly static content |
-| Meet Your Teacher | `instructor` | Shauna's bio and photo |
-| Events (`#events`) | `events` | Upcoming events list |
-| Classes (`#classes`) | `classes` | Lesson offerings and pricing |
-| Testimonials (`#community`) | `testimonials` | Player testimonials |
-| Shop (`#shop`) | `shop_items` | Affiliate product links |
-| Newsletter | (Mailchimp) | Email signup |
-| Contact Modal | `inquiries` | Form submissions |
-| Inquiry Modal | `inquiries` | Booking form submissions |
-
-## Firebase Project Structure
+## Deployment Flow
 
 ```
-lasvegasmahj (Firebase project)
-├── Firestore Database
-│   ├── events              # Upcoming events with dates, locations, details
-│   ├── classes             # Lesson types, pricing, schedules
-│   ├── testimonials        # Player testimonials and reviews
-│   ├── shop_items          # Affiliate products (links, images, descriptions)
-│   ├── instructor          # Shauna's bio, photo, credentials
-│   ├── site_config         # Hero text, CTAs, global settings
-│   ├── inquiries           # Contact and booking form submissions
-│   └── admins              # Admin users
-├── Authentication
-│   └── Email/password (admin only)
-├── Storage
-│   └── Photos, event images
-└── Hosting (optional migration target)
+You tell Claude → Claude edits code → You say "commit and push"
+  → GitHub receives the push
+  → Vercel auto-deploys (30–90 seconds)
+  → Live at lasvegasmahj.com
 ```
+
+## Project Structure
+
+```
+lasvegasmahj/
+├── app/
+│   ├── layout.tsx              # Site metadata, head tags, fonts
+│   ├── page.tsx                # Homepage
+│   ├── about/page.tsx          # About page
+│   ├── events/page.tsx         # Events listing
+│   ├── classes/page.tsx        # Class offerings
+│   ├── contact/page.tsx        # Contact form
+│   ├── shop/page.tsx           # Affiliate shop
+│   ├── privacy/page.tsx        # Privacy policy
+│   └── terms/page.tsx          # Terms of use
+├── components/
+│   ├── layout/
+│   │   ├── header.tsx          # Site navigation
+│   │   └── footer.tsx          # Site footer
+│   └── home/
+│       ├── hero.tsx            # Hero section
+│       ├── why-section.tsx     # "Our Why" section
+│       ├── teacher.tsx         # Meet Your Teacher
+│       ├── events-preview.tsx  # Upcoming events
+│       ├── classes-preview.tsx # Class offerings
+│       ├── testimonials.tsx    # Player testimonials
+│       ├── shop-preview.tsx    # Shop section
+│       └── newsletter.tsx      # Newsletter signup
+├── lib/
+│   ├── supabase.ts             # Supabase client
+│   ├── constants.ts            # Site name, URL, socials
+│   └── logos.ts                # Logo mappings
+├── data/                       # JSON content (seed data)
+├── public/
+│   └── logos/                  # Local logo files (512px PNGs)
+├── next.config.ts              # Image domains, security headers
+├── tailwind.config.ts          # Tailwind configuration
+└── .env.local                  # Supabase keys (never commit)
+```
+
+## Supabase Tables
+
+| Table | Purpose |
+|-------|---------|
+| `events` | Upcoming events with dates, locations, details |
+| `classes` | Lesson types, pricing, schedules |
+| `testimonials` | Player testimonials and reviews |
+| `shop_items` | Affiliate products (links, images, descriptions) |
+| `instructor` | Shauna's bio, photo, credentials |
+| `site_config` | Hero text, CTAs, global settings |
+| `inquiries` | Contact and booking form submissions |
 
 ## Rules for Development
 
-1. **Never hard-code data** into HTML — events, classes, testimonials, and shop items belong in Firestore
-2. **Always query Firestore** for dynamic content on page load
-3. **Keep index.html as a shell** — HTML provides structure, Firebase provides content
-4. **Use Firebase SDK** directly in `<script>` tags (no build step)
-5. **Mailchimp stays separate** — newsletter signup posts directly to Mailchimp, not through Firebase
-6. **Fail gracefully** — show loading states, not broken sections, if Firebase is unreachable
+1. **Never hard-code data** — events, classes, testimonials, and shop items belong in Supabase
+2. **Always query Supabase** for dynamic content
+3. **Keep pages as shells** — Next.js provides structure, Supabase provides content
+4. **Mailchimp stays separate** — newsletter signup posts directly to Mailchimp
+5. **All secrets in .env.local** — never commit API keys to GitHub
+6. **Fail gracefully** — show loading states, not broken sections, if Supabase is unreachable

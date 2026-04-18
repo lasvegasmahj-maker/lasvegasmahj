@@ -19,18 +19,24 @@ Las Vegas Mahjong is run by Shauna, a certified Oh My Mahjong (OMM) instructor. 
 
 ## Tech Stack
 
-- Static HTML/CSS/JavaScript (single-page site)
-- Hosted on GoDaddy
-- Mailchimp for newsletter
-- No build step required
+- Next.js 16 (React, TypeScript)
+- Tailwind CSS 4 + shadcn/ui
+- Supabase (database + auth)
+- Vercel (hosting, auto-deploy from GitHub)
+- Mailchimp (newsletter)
 
-## Preview Locally
+## Development
 
 ```bash
-open index.html
-# or
-python3 -m http.server 8000
+pnpm install
+pnpm dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Deploy
+
+Pushes to `main` auto-deploy via Vercel.
 
 ## Connect
 
