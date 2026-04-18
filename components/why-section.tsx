@@ -2,11 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-interface InquiryModalProps {
-  onInquiryOpen: () => void;
-}
-
-export default function WhySection({ onInquiryOpen }: InquiryModalProps) {
+export default function WhySection() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -18,7 +14,7 @@ export default function WhySection({ onInquiryOpen }: InquiryModalProps) {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.12 }
     );
 
     const el = sectionRef.current;
@@ -31,57 +27,55 @@ export default function WhySection({ onInquiryOpen }: InquiryModalProps) {
   }, []);
 
   return (
-    <section id="about" className="why-section" ref={sectionRef}>
-      <div className="section">
+    <section className="why" id="about" ref={sectionRef}>
+      <div className="container">
         <div className="why-grid">
-          <div className="why-text">
-            <p className="section-label reveal">Our Why</p>
-            <h2 className="section-title reveal">More Than a Game</h2>
-            <p className="reveal">
-              Mahjong is an ancient game of strategy, skill, and a little bit of
-              luck. But here in Las Vegas, it&rsquo;s also about connection. We
-              believe everyone deserves a place to belong, laugh, and play.
+          <div className="why-text reveal">
+            <p className="section-label">Our Why</p>
+            <h2 className="section-title">
+              More Than a <span className="accent-green">Game</span>
+            </h2>
+            <p>
+              When I moved to Las Vegas almost 14 years ago, I was searching for
+              the same thing so many of us are &mdash;{" "}
+              <strong>community, connection, and real friendships</strong>. I
+              found all of that at the mahjong table.
             </p>
-            <p className="reveal">
-              Whether you&rsquo;re joining us for a weeknight lesson or a
-              weekend open play event, you&rsquo;ll find a warm, inclusive
-              community that welcomes all skill levels. No experience needed,
-              just bring your curiosity.
+            <p>
+              Mahjong is a game of friendship, fun, strategy, and a little luck
+              &mdash; brain-stimulating enough to keep you sharp, social enough
+              to make you stay. Whether you&rsquo;re a total beginner or a
+              seasoned player, there&rsquo;s a seat at the table for you.
             </p>
-            <button className="btn-primary reveal" onClick={onInquiryOpen}>
+            <a
+              href="#events"
+              className="btn-primary"
+              style={{ display: "inline-block", marginTop: "1.5rem" }}
+            >
               Find Your Table
-            </button>
+            </a>
           </div>
 
-          <div className="pillars-grid reveal">
-            <div className="pillar-card">
+          <div className="why-pillars reveal">
+            <div className="pillar">
               <div className="pillar-icon">&#129504;</div>
-              <div className="pillar-title">Brain Health</div>
-              <div className="pillar-desc">
-                Strategy and pattern recognition keep your mind sharp.
-              </div>
+              <h4>Brain Health</h4>
+              <p>Keep your mind sharp with every hand played.</p>
             </div>
-            <div className="pillar-card">
+            <div className="pillar">
               <div className="pillar-icon">&#128155;</div>
-              <div className="pillar-title">Friendship</div>
-              <div className="pillar-desc">
-                Real connections made over tiles and laughter.
-              </div>
+              <h4>Friendship</h4>
+              <p>Meet your new favorite people across the table.</p>
             </div>
-            <div className="pillar-card">
+            <div className="pillar">
               <div className="pillar-icon">&#126980;</div>
-              <div className="pillar-title">Pure Fun</div>
-              <div className="pillar-desc">
-                Every game is a new adventure. Win or lose, you&rsquo;ll have a
-                blast.
-              </div>
+              <h4>Pure Fun</h4>
+              <p>Every game is different. Every session a good time.</p>
             </div>
-            <div className="pillar-card">
+            <div className="pillar">
               <div className="pillar-icon">&#127959;&#65039;</div>
-              <div className="pillar-title">Vegas Community</div>
-              <div className="pillar-desc">
-                Connecting players across the Las Vegas valley.
-              </div>
+              <h4>Vegas Community</h4>
+              <p>Built for locals, transplants, visitors and newcomers alike.</p>
             </div>
           </div>
         </div>

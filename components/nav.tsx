@@ -12,7 +12,7 @@ export default function Nav({ onContactOpen }: NavProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 60);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -23,7 +23,7 @@ export default function Nav({ onContactOpen }: NavProps) {
   };
 
   return (
-    <nav className={`site-nav${scrolled ? " scrolled" : ""}`}>
+    <nav className={scrolled ? "scrolled" : ""}>
       <a href="#" className="nav-logo">
         Las Vegas Mahjong
       </a>
@@ -55,7 +55,7 @@ export default function Nav({ onContactOpen }: NavProps) {
           </a>
         </li>
         <li>
-          <a href="#testimonials" onClick={handleLinkClick}>
+          <a href="#community" onClick={handleLinkClick}>
             Testimonials
           </a>
         </li>
@@ -76,12 +76,10 @@ export default function Nav({ onContactOpen }: NavProps) {
             Contact
           </a>
         </li>
-        <li>
-          <a href="#events" className="nav-cta" onClick={handleLinkClick}>
-            Join an Event
-          </a>
-        </li>
       </ul>
+      <a href="#events" className="nav-cta" onClick={handleLinkClick}>
+        Join an Event
+      </a>
     </nav>
   );
 }

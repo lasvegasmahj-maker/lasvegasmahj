@@ -2,11 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-interface TeacherProps {
-  onInquiryOpen: () => void;
-}
-
-export default function Teacher({ onInquiryOpen }: TeacherProps) {
+export default function Teacher() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -18,7 +14,7 @@ export default function Teacher({ onInquiryOpen }: TeacherProps) {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.12 }
     );
 
     const el = sectionRef.current;
@@ -31,34 +27,48 @@ export default function Teacher({ onInquiryOpen }: TeacherProps) {
   }, []);
 
   return (
-    <section className="teacher-section" ref={sectionRef}>
-      <div className="section">
-        <div className="teacher-grid">
-          <div className="teacher-photo reveal">
-            {/* Placeholder for Shauna's photo */}
-            <span>Photo Coming Soon</span>
+    <section
+      className="tile-bg about-section"
+      ref={sectionRef}
+      style={{ padding: "6rem 2rem" }}
+    >
+      <div className="container">
+        <div className="about-grid">
+          <div className="reveal">
+            <div className="teacher-photo-wrapper">
+              <img
+                src="/shauna.jpg"
+                alt="Shauna, founder of Las Vegas Mahjong"
+                width={600}
+                height={800}
+              />
+            </div>
           </div>
-          <div className="teacher-info">
-            <p className="section-label reveal">Meet Your Teacher</p>
-            <h2 className="reveal">Hi, I&rsquo;m Shauna!</h2>
-            <p className="reveal">
-              I&rsquo;m a certified Oh My Mahjong instructor and the founder of
-              Las Vegas Mahjong. I fell in love with the game and knew I had to
-              share it with my community.
+          <div className="reveal">
+            <p className="section-label">Meet Your Teacher</p>
+            <h2 className="section-title">
+              Hi, I&rsquo;m <span className="accent-pink">Shauna!</span>
+            </h2>
+            <p>
+              A Chicago suburbs girl turned Las Vegas local, wife, mom to two
+              boys and three doodles, and proud Indiana Hoosier!
             </p>
-            <p className="reveal">
-              My teaching style is patient, fun, and beginner-friendly. I break
-              down the game into simple steps so you can start playing
-              confidently from day one. No judgment, no pressure — just tiles,
-              laughter, and maybe a glass of wine.
+            <p>
+              Almost 18 years ago, my grandma sat me down and taught me the game
+              she loved and played most days of the week. I was hooked and
+              started playing weekly with friends. She later gave me my very own
+              set, and I&rsquo;ve been playing ever since.
             </p>
-            <p className="reveal">
-              Whether you&rsquo;re a complete beginner or looking to sharpen
-              your strategy, I&rsquo;d love to welcome you to the table.
+            <p>
+              Over the years I started teaching friends, and in 2025 I turned
+              that passion into Las Vegas Mahjong. My goal is simple: to share
+              this beautiful, brain-stimulating, friendship-building game with as
+              many people across the Valley as possible. I&rsquo;d love to be
+              your teacher.
             </p>
-            <button className="btn-primary reveal" onClick={onInquiryOpen}>
+            <a href="#classes" className="btn-primary">
               Learn With Me
-            </button>
+            </a>
           </div>
         </div>
       </div>

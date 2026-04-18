@@ -24,25 +24,37 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Las Vegas Mahjong | Learn & Play Mahjong in Las Vegas",
+  title: "Las Vegas Mahjong | Lessons, Events & Open Play in Las Vegas",
   description:
-    "Join Las Vegas Mahjong for lessons, open play events, and a welcoming community. From Summerlin to Henderson, we bring people together one tile at a time.",
+    "Las Vegas Mahjong offers mahjong lessons, open play events, leagues, and tournaments across Las Vegas, Summerlin, and Henderson. Learn from an experienced teacher — beginners welcome!",
   keywords: [
-    "mahjong",
-    "las vegas",
-    "mahjong lessons",
-    "mahjong classes",
-    "learn mahjong",
-    "mahjong events",
-    "las vegas mahjong",
+    "mahjong Las Vegas",
+    "mahjong lessons Las Vegas",
+    "mahjong Summerlin",
+    "mahjong Henderson",
+    "learn mahjong Las Vegas",
+    "mahjong open play Las Vegas",
+    "mahjong events Las Vegas",
+    "Las Vegas Mahjong",
   ],
   openGraph: {
-    title: "Las Vegas Mahjong | Learn & Play Mahjong in Las Vegas",
+    title: "Las Vegas Mahjong | Lessons, Events & Open Play",
     description:
-      "Join Las Vegas Mahjong for lessons, open play events, and a welcoming community.",
+      "Join Las Vegas's most vibrant mahjong community. Lessons, open play, leagues & tournaments across Summerlin, Henderson, and the whole Las Vegas Valley.",
     type: "website",
     locale: "en_US",
     siteName: "Las Vegas Mahjong",
+    images: ["https://lasvegasmahj.com/shauna.jpg"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Las Vegas Mahjong | Lessons, Events & Open Play",
+    description:
+      "Join Las Vegas's most vibrant mahjong community. Lessons, open play, leagues & tournaments across the whole Las Vegas Valley.",
+    images: ["https://lasvegasmahj.com/shauna.jpg"],
+  },
+  other: {
+    "canonical": "https://lasvegasmahj.com",
   },
 };
 

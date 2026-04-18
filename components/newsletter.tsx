@@ -14,7 +14,7 @@ export default function Newsletter() {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.12 }
     );
 
     const el = sectionRef.current;
@@ -27,38 +27,47 @@ export default function Newsletter() {
   }, []);
 
   return (
-    <section className="newsletter-section" ref={sectionRef}>
-      <div className="section">
-        <p className="section-label reveal">Stay in the Loop</p>
-        <h2 className="section-title reveal">Never Miss a Game</h2>
+    <section className="newsletter" ref={sectionRef}>
+      <div className="container reveal">
+        <p className="section-label">Stay in the Loop</p>
+        <h2 className="section-title">
+          Never Miss a <span className="accent-green">Game</span>
+        </h2>
+        <p>
+          Get event announcements, open play reminders, and tips straight to your
+          inbox.
+        </p>
 
         <form
-          className="newsletter-form reveal"
           action="https://gmail.us15.list-manage.com/subscribe/post?u=85959bbed840b4e31ea78b3f3&id=6dacbc956d&f_id=0043a3e1f0"
           method="POST"
           target="_blank"
+          noValidate
         >
-          {/* Honeypot field for bot prevention */}
-          <div style={{ position: "absolute", left: "-5000px" }} aria-hidden="true">
+          <div className="newsletter-form">
             <input
-              type="text"
-              name="b_85959bbed840b4e31ea78b3f3_6dacbc956d"
-              tabIndex={-1}
-              defaultValue=""
+              type="email"
+              name="EMAIL"
+              placeholder="your@email.com"
+              required
+              aria-label="Email address"
             />
+            {/* Mailchimp honeypot */}
+            <div
+              aria-hidden="true"
+              style={{ position: "absolute", left: "-5000px" }}
+            >
+              <input
+                type="text"
+                name="b_85959bbed840b4e31ea78b3f3_6dacbc956d"
+                tabIndex={-1}
+                defaultValue=""
+              />
+            </div>
+            <button type="submit" className="btn-primary">
+              Subscribe
+            </button>
           </div>
-
-          <input
-            type="email"
-            name="EMAIL"
-            className="newsletter-input"
-            placeholder="Your email address"
-            required
-            aria-label="Email address"
-          />
-          <button type="submit" className="btn-primary">
-            Subscribe
-          </button>
         </form>
       </div>
     </section>

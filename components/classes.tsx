@@ -18,7 +18,7 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.12 }
     );
 
     const el = sectionRef.current;
@@ -31,59 +31,81 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
   }, []);
 
   return (
-    <section id="classes" className="classes-section" ref={sectionRef}>
-      <div className="section">
-        <p className="section-label reveal">Mahjong Lessons</p>
-        <h2 className="section-title reveal">Mahjong Lessons</h2>
+    <section className="classes tile-bg" id="classes" ref={sectionRef}>
+      <div className="container">
+        <div className="reveal">
+          <p className="section-label">Learn the Game</p>
+          <h2 className="section-title">
+            Mahjong <span className="accent-green">Lessons</span>
+          </h2>
+        </div>
 
-        <div className="classes-grid">
-          <div className="class-tiers">
-            <div className="class-card reveal">
-              <div className="class-card-label">MAHJ 101</div>
-              <h3>Absolute Beginners</h3>
-              <p>
-                Never played before? Perfect. This class covers everything from
-                setting up the tiles to understanding the card. You&rsquo;ll be
-                playing your first hand by the end of the session.
-              </p>
+        <div className="classes-layout">
+          <div className="class-tiers reveal">
+            <div className="tier">
+              <div className="tier-num">MAHJ101</div>
+              <div>
+                <h4>Absolute Beginners</h4>
+                <p>
+                  Never touched a tile? No problem. We start from scratch &mdash;
+                  sorting the tiles, understanding the card, and playing your
+                  first hand.
+                </p>
+              </div>
             </div>
-
-            <div className="class-card reveal">
-              <div className="class-card-label">MAHJ 102</div>
-              <h3>Beyond the Basics</h3>
-              <p>
-                You know the basics but want to level up your game. We&rsquo;ll
-                dive into strategy, defensive play, and reading the table like a
-                pro.
-              </p>
+            <div className="tier">
+              <div className="tier-num">MAHJ102</div>
+              <div>
+                <h4>Beyond the Basics</h4>
+                <p>
+                  We&rsquo;ll start with a quick recap of everything covered in
+                  MAHJ101, then jump straight into the tiles &mdash; more hands,
+                  more practice, and more confidence at the table.
+                </p>
+              </div>
             </div>
-
-            <div className="class-card reveal">
-              <div className="class-card-label">Teams &amp; Tiles</div>
-              <h3>Large Groups / Corporate / Charity</h3>
-              <p>
-                Looking for a unique team-building activity or charity event?
-                Mahjong is the perfect icebreaker. We&rsquo;ll bring the tiles,
-                the teaching, and the fun to your group.
-              </p>
+            <div className="tier">
+              <div className="tier-num">Teams &amp; Tiles</div>
+              <div>
+                <h4>Large Groups, Corporate &amp; Charity Events</h4>
+                <p>
+                  From bachelorette parties to corporate team building, charity
+                  events, and more &mdash; private events for groups large and
+                  small, fully customized and endlessly fun.
+                </p>
+              </div>
             </div>
           </div>
 
           <div className="classes-cta reveal">
-            <h3>Ready to Learn?</h3>
+            <h3>
+              Book a <span style={{ color: "var(--green)" }}>Lesson</span>
+            </h3>
+            <p>
+              Private or group lessons available at venues across Las Vegas, or
+              virtually via Zoom. All levels welcome &mdash; we meet you where
+              you are.
+            </p>
             <div className="price-row">
-              <span className="price-label">Small Group</span>
-              <span className="price-value">$50 / person</span>
+              <span>Small Group (3&ndash;8 people)</span>
+              <span className="price">$50 / person</span>
             </div>
             <div className="price-row">
-              <span className="price-label">Large Groups</span>
-              <span className="price-value">Pricing Varies</span>
+              <span>Large Groups, Corporate &amp; Charity Events</span>
+              <span className="price">Pricing Varies</span>
             </div>
-            <div style={{ marginTop: "2rem" }}>
-              <button className="btn-primary" onClick={onInquiryOpen}>
-                Book Now
-              </button>
-            </div>
+            <button
+              className="btn-primary"
+              style={{
+                display: "block",
+                textAlign: "center",
+                marginTop: "1.5rem",
+                width: "100%",
+              }}
+              onClick={onInquiryOpen}
+            >
+              Book Now
+            </button>
           </div>
         </div>
       </div>

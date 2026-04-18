@@ -22,14 +22,14 @@ export default function Home() {
     <>
       <Nav onContactOpen={() => setContactOpen(true)} />
       <Hero />
-      <WhySection onInquiryOpen={() => setInquiryOpen(true)} />
-      <Teacher onInquiryOpen={() => setInquiryOpen(true)} />
+      <WhySection />
+      <Teacher />
       <Events />
       <Classes onInquiryOpen={() => setInquiryOpen(true)} />
       <Testimonials />
       <Shop />
       <Newsletter />
-      <Footer />
+      <Footer onContactOpen={() => setContactOpen(true)} />
       <ContactModal
         isOpen={contactOpen}
         onClose={() => setContactOpen(false)}
