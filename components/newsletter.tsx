@@ -41,7 +41,6 @@ export default function Newsletter() {
         <form
           action="https://gmail.us15.list-manage.com/subscribe/post?u=85959bbed840b4e31ea78b3f3&id=6dacbc956d&f_id=0043a3e1f0"
           method="POST"
-          target="_blank"
           noValidate
         >
           <div className="newsletter-form">

@@ -1157,7 +1157,7 @@ footer {
   nav { padding: 0.7rem 1rem; }
   .footer-inner { grid-template-columns: 1fr; }
   .why-pillars { grid-template-columns: 1fr; }
-  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
   .hero-title .line1,
   .hero-title .line2 { font-size: clamp(2.5rem, 20vw, 4rem); }
   .section-title { font-size: clamp(1.6rem, 10vw, 2.5rem); }
@@ -1166,4 +1166,7 @@ footer {
   .tier-num { font-size: 0.9rem; }
   .testimonials-grid { grid-template-columns: 1fr !important; }
   .about-grid { grid-template-columns: 1fr !important; }
+  .form-row { grid-template-columns: 1fr; }
+  .modal-content { padding: 1.5rem; }
+  .btn-primary, .btn-outline { min-height: 44px; }
 }

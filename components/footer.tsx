@@ -21,6 +21,7 @@ export default function Footer({ onContactOpen }: FooterProps) {
               className="social-link"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Visit our Instagram"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -43,6 +44,7 @@ export default function Footer({ onContactOpen }: FooterProps) {
               target="_blank"
               rel="noopener noreferrer"
               className="social-link"
+              aria-label="Visit our Facebook"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
