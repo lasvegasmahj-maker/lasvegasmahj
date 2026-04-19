@@ -228,7 +228,8 @@ export default function Shop() {
                   alt={`${item.name} logo`}
                   style={{
                     width: "100%",
-                    height: "auto",
+                    height: "120px",
+                    objectFit: "contain",
                     display: "block",
                     marginBottom: "0.5rem",
                     borderRadius: "4px",
