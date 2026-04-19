@@ -92,7 +92,6 @@ export default function Events() {
   const sectionRef = useRef<HTMLElement>(null);
   const [upcoming, setUpcoming] = useState<Event[]>([]);
   const [past, setPast] = useState<Event[]>([]);
-  const [showPast, setShowPast] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -163,7 +162,7 @@ export default function Events() {
     }
 
     return () => observer.disconnect();
-  }, [upcoming, past, showPast]);
+  }, [upcoming, past]);
 
   return (
     <section className="events" id="events" ref={sectionRef}>
@@ -202,32 +201,18 @@ export default function Events() {
             )}
 
             {past.length > 0 && (
-              <div style={{ marginTop: "3rem" }}>
-                <button
-                  onClick={() => setShowPast(!showPast)}
-                  style={{
-                    background: "none",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    borderRadius: "8px",
-                    color: "rgba(255,255,255,0.5)",
-                    padding: "0.6rem 1.4rem",
-                    cursor: "pointer",
-                    fontSize: "0.9rem",
-                    fontFamily: "var(--font-nav)",
-                    letterSpacing: "0.08em",
-                    transition: "border-color 0.2s, color 0.2s",
-                  }}
-                >
-                  {showPast ? "Hide" : "Show"} Past Events ({past.length})
-                </button>
-
-                {showPast && (
-                  <div className="events-grid" style={{ marginTop: "1.5rem" }}>
-                    {past.map((event) => (
-                      <EventCard key={event.id} event={event} isPast={true} />
-                    ))}
-                  </div>
-                )}
+              <div style={{ marginTop: "4rem" }}>
+                <div className="reveal">
+                  <p className="section-label">Looking Back</p>
+                  <h2 className="section-title">
+                    Past <span className="accent-green">Events</span>
+                  </h2>
+                </div>
+                <div className="events-grid">
+                  {past.map((event) => (
+                    <EventCard key={event.id} event={event} isPast={true} />
+                  ))}
+                </div>
               </div>
             )}
           </>
