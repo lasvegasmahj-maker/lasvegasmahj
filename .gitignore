@@ -8,11 +8,18 @@ W9*
 *Contract*
 *contract*
 
-# Media assets (large files)
-*.png
-*.jpg
-*.jpeg
-*.avif
+# Media assets (large files in project root only)
+/*.png
+/*.jpg
+/*.jpeg
+/*.avif
+
+# Allow images inside public/ for the website
+!public/**/*.jpg
+!public/**/*.png
+!public/**/*.jpeg
+!public/**/*.avif
+!public/**/*.webp
 
 # Extracted archives
 mahjcard/
