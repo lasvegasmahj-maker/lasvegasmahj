@@ -12,7 +12,7 @@ const shopItems = [
     site: "ohmymahjong.com",
     desc: "Beautiful mahjong sets, accessories & gifts. My go-to for everything mahjong!",
     cta: "Shop Now \u00B7 10% Off \u2197",
-    logo: "/logos/ohmymahjong.jpg",
+    logo: "/logos/ohmymahjong.svg",
   },
   {
     name: "Bespoke Mahjong",
@@ -67,7 +67,7 @@ const shopItems = [
     site: "bambirdboutique.com",
     desc: "Cute mahjong-inspired apparel, accessories & lifestyle products for the tile obsessed.",
     cta: "Shop Now \u00B7 10% Off \u2197",
-    logo: "/logos/birdbam.jpg",
+    logo: "/logos/birdbam.svg",
   },
   {
     name: "Mahjong Co.",
@@ -78,7 +78,7 @@ const shopItems = [
     site: "mahjongco.com",
     desc: "Premium mahjong sets and accessories for serious players and stylish beginners alike.",
     cta: "Shop Now \u00B7 10% Off \u2197",
-    logo: "/logos/mahjongco.jpg",
+    logo: "/logos/mahjongco.svg",
   },
   {
     name: "Modern Tribe",

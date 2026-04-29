@@ -34,7 +34,7 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
     <section className="classes tile-bg" id="classes" ref={sectionRef}>
       <div className="container">
         <div className="reveal">
-          <p className="section-label">Learn the Game</p>
+          <p className="section-label">Learn Mahjong in Las Vegas</p>
           <h2 className="section-title">
             Mahjong <span className="accent-green">Lessons</span>
           </h2>
@@ -82,17 +82,21 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
               Book a <span style={{ color: "var(--green)" }}>Lesson</span>
             </h3>
             <p>
-              Private or group lessons available at venues across Las Vegas, or
-              virtually via Zoom. All levels welcome &mdash; we meet you where
-              you are.
+              Private or group mahjong lessons available at venues across Las
+              Vegas, Summerlin, and Henderson &mdash; or virtually via Zoom. All
+              levels welcome, from absolute beginners to experienced players.
             </p>
             <div className="price-row">
               <span>Small Group (3&ndash;8 people)</span>
               <span className="price">$50 / person</span>
             </div>
             <div className="price-row">
-              <span>Large Groups, Corporate &amp; Charity Events</span>
-              <span className="price">Pricing Varies</span>
+              <span>Private Lesson (1&ndash;2 people)</span>
+              <span className="price">$75 / person</span>
+            </div>
+            <div className="price-row">
+              <span>Large Groups &amp; Corporate Events</span>
+              <span className="price">Starting at $50 / person</span>
             </div>
             <button
               className="btn-primary"

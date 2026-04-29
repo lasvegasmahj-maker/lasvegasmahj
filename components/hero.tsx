@@ -10,9 +10,10 @@ export default function Hero() {
           <span className="line2">Mahjong</span>
         </h1>
         <p className="hero-sub">
-          Las Vegas is bigger than the Strip &mdash; and so is our community. From
-          Summerlin to Henderson, we&rsquo;re bringing players together across the
-          whole Valley for lessons, open plays, leagues, tournaments, and more.
+          Las Vegas is bigger than the Strip &mdash; and so is our mahjong community.
+          From Summerlin to Henderson, we&rsquo;re bringing players together across
+          the whole Valley for mahjong lessons, open play events, leagues,
+          tournaments, and more. No experience needed &mdash; beginners welcome!
         </p>
         <div className="hero-btns">
           <a href="#events" className="btn-primary">

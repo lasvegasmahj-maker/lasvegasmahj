@@ -898,6 +898,215 @@ footer {
   color: rgba(255,255,255,0.3);
 }
 
+/* ── FAQ ── */
+.faq {
+  background: var(--navy-dark);
+  border-top: 1px solid rgba(233,30,140,0.15);
+  padding: 6rem 2rem;
+}
+
+.faq-list {
+  max-width: 720px;
+  margin: 2rem auto 0;
+}
+
+.faq-item {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.faq-item:hover {
+  background: rgba(255,255,255,0.02);
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4rem 0;
+  gap: 1rem;
+}
+
+.faq-question h3 {
+  font-family: var(--font-nav);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--white);
+  margin: 0;
+}
+
+.faq-toggle {
+  font-size: 1.5rem;
+  color: var(--pink);
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+  line-height: 1;
+}
+
+.faq-answer {
+  padding: 0 0 1.4rem;
+}
+
+.faq-answer p {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── PRIVATE EVENTS ── */
+.private-events {
+  background: var(--navy);
+  border-top: 1px solid rgba(57,230,57,0.15);
+  padding: 6rem 2rem;
+}
+
+.private-events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
+
+.private-event-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 1.8rem;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.private-event-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(233,30,140,0.3);
+}
+
+.private-event-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.private-event-card h4 {
+  font-family: var(--font-nav);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+
+.private-event-card p {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── WHAT TO EXPECT ── */
+.what-to-expect {
+  background: var(--navy);
+  border-top: 1px solid rgba(57,230,57,0.15);
+  padding: 6rem 2rem;
+}
+
+.expect-steps {
+  max-width: 680px;
+  margin: 2rem auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.expect-step {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.expect-step:last-child {
+  border-bottom: none;
+}
+
+.expect-num {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: var(--pink);
+  opacity: 0.4;
+  flex-shrink: 0;
+  line-height: 1;
+  padding-top: 0.2rem;
+}
+
+.expect-step h4 {
+  font-family: var(--font-nav);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+}
+
+.expect-step p {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── INSTAGRAM / SOCIAL ── */
+.instagram-section {
+  background: var(--navy-dark);
+  border-top: 1px solid rgba(233,30,140,0.15);
+  padding: 6rem 2rem;
+}
+
+.instagram-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.instagram-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.instagram-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(233,30,140,0.4);
+}
+
+.instagram-icon {
+  color: var(--pink);
+  margin-bottom: 1rem;
+}
+
+.instagram-card h3 {
+  font-family: var(--font-nav);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+}
+
+.instagram-card p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+}
+
 /* ── TILE TEXTURE OVERLAY ── */
 .tile-bg {
   position: relative;
@@ -1111,6 +1320,15 @@ footer {
 
   /* Shop grid */
   .shop-grid { grid-template-columns: 1fr !important; }
+
+  /* Private events */
+  .private-events-grid { grid-template-columns: 1fr; }
+
+  /* Instagram */
+  .instagram-grid { grid-template-columns: 1fr; }
+
+  /* FAQ */
+  .faq-question h3 { font-size: 0.95rem; }
 
   /* Newsletter */
   .newsletter-form { flex-direction: column; }

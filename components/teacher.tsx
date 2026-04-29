@@ -45,7 +45,7 @@ export default function Teacher() {
             </div>
           </div>
           <div className="reveal">
-            <p className="section-label">Meet Your Teacher</p>
+            <p className="section-label">Meet Your Mahjong Teacher</p>
             <h2 className="section-title">
               Hi, I&rsquo;m <span className="accent-pink">Shauna!</span>
             </h2>
@@ -60,11 +60,12 @@ export default function Teacher() {
               set, and I&rsquo;ve been playing ever since.
             </p>
             <p>
-              Over the years I started teaching friends, and in 2025 I turned
-              that passion into Las Vegas Mahjong. My goal is simple: to share
-              this beautiful, brain-stimulating, friendship-building game with as
-              many people across the Valley as possible. I&rsquo;d love to be
-              your teacher.
+              Over the years I started teaching friends, and in 2025 I became
+              a certified Oh My Mahjong instructor and turned that passion into
+              Las Vegas Mahjong. My goal is simple: to share this beautiful,
+              brain-stimulating, friendship-building game with as many people
+              across the Las Vegas Valley as possible. I&rsquo;d love to be your
+              mahjong teacher.
             </p>
             <a href="#classes" className="btn-primary">
               Learn With Me
