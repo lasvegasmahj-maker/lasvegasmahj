@@ -23,7 +23,7 @@ const shopItems = [
     site: "bespokemahjong.com",
     desc: "Custom, personalized mahjong sets \u2014 the perfect gift for the player who has everything.",
     cta: "Shop Now \u00B7 10% Off \u2197",
-    logo: "/logos/bespoke.jpg",
+    logo: "/logos/bespoke.webp",
   },
   {
     name: "Mahjong Maven",
@@ -45,7 +45,7 @@ const shopItems = [
     site: "peacelovemahjong.com",
     desc: "Stylish mahjong gear for the modern player. Fun, fresh & totally giftable.",
     cta: "Shop Now \u00B7 10% Off \u2197",
-    logo: "/logos/peacelovemahjong.jpg",
+    logo: "/logos/peacelovemahjong.avif",
   },
   {
     name: "My Fair Mahjong",
@@ -56,7 +56,7 @@ const shopItems = [
     site: "myfairmahjong.com",
     desc: "Gorgeous mahjong sets and accessories with a beautiful, elegant aesthetic.",
     cta: "Shop Now \u00B7 10% Off \u2197",
-    logo: "/logos/myfairmahjong.jpg",
+    logo: "/logos/myfairmahjong.webp",
   },
   {
     name: "Bird Bam Boutique",
@@ -89,7 +89,7 @@ const shopItems = [
     site: "moderntribe.com",
     desc: "Modern Judaica and lifestyle gifts \u2014 including beautiful mahjong-themed gifts and accessories with a contemporary twist.",
     cta: "Shop Now \u2197",
-    logo: "/logos/moderntribe.jpg",
+    logo: "/logos/moderntribe.avif",
   },
 ];
 

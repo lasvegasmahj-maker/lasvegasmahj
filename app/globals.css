@@ -496,6 +496,8 @@ section {
   overflow: hidden;
   transition: transform 0.2s, border-color 0.2s;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 
 .event-card:hover {
@@ -542,6 +544,13 @@ section {
 
 .event-card-body {
   padding: 1rem 1.5rem 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card-body .btn-card {
+  margin-top: auto;
 }
 
 .event-card-body p {
@@ -731,6 +740,27 @@ section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.2rem;
+  align-items: stretch;
+}
+
+.shop-grid > .event-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.shop-grid > .event-card > .event-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.shop-grid > .event-card > .event-card-body > p {
+  flex: 1;
+}
+
+.shop-grid > .event-card > .event-card-body > .btn-card {
+  margin-top: auto;
 }
 
 .shop-card-header {
