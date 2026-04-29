@@ -109,6 +109,9 @@ export const metadata: Metadata = {
     },
   },
   category: "entertainment",
+  verification: {
+    google: "-NE1c8pIzgalnYk06tWpFLNGdN0tiezaECY2vyCo9BE",
+  },
 };
 
 /* ── STRUCTURED DATA ── */
