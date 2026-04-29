@@ -84,16 +84,19 @@ export default function Footer({ onContactOpen }: FooterProps) {
           <h5>Learn</h5>
           <ul>
             <li>
-              <a href="#classes">MAHJ101 &mdash; Beginners</a>
+              <a href="/mahjong-lessons-las-vegas">Mahjong Lessons Las Vegas</a>
             </li>
             <li>
-              <a href="#classes">MAHJ102 &mdash; Beyond the Basics</a>
+              <a href="/mahjong-open-play-las-vegas">Open Play Events</a>
             </li>
             <li>
-              <a href="#classes">Teams &amp; Tiles</a>
+              <a href="/mahjong-parties-las-vegas">Private Parties & Events</a>
             </li>
             <li>
-              <a href="#classes">Book a Lesson</a>
+              <a href="/learn-mahjong">How to Learn Mahjong</a>
+            </li>
+            <li>
+              <a href="/mahjong-sets-guide">Best Mahjong Sets</a>
             </li>
           </ul>
         </div>
@@ -102,10 +105,13 @@ export default function Footer({ onContactOpen }: FooterProps) {
           <h5>More</h5>
           <ul>
             <li>
-              <a href="#about">About Me</a>
+              <a href="/#about">About Shauna</a>
             </li>
             <li>
-              <a href="#shop">Affiliate Links</a>
+              <a href="/#shop">Favorite Finds</a>
+            </li>
+            <li>
+              <a href="/#faq">FAQ</a>
             </li>
             <li>
               <a

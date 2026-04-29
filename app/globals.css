@@ -544,13 +544,6 @@ section {
 
 .event-card-body {
   padding: 1rem 1.5rem 1.5rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.event-card-body .btn-card {
-  margin-top: auto;
 }
 
 .event-card-body p {
