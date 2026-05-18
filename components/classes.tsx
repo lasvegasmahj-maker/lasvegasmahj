@@ -88,15 +88,15 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
             </p>
             <div className="price-row">
               <span>Small Group (3&ndash;8 people)</span>
-              <span className="price">$50 / person</span>
+              <span className="price">$50 / person <span style={{ fontSize: "0.75rem", opacity: 0.7 }}>(min $200)</span></span>
             </div>
             <div className="price-row">
               <span>Private Lesson (1&ndash;2 people)</span>
-              <span className="price">$75 / person</span>
+              <span className="price">Reach out for pricing</span>
             </div>
             <div className="price-row">
               <span>Large Groups &amp; Corporate Events</span>
-              <span className="price">Starting at $50 / person</span>
+              <span className="price">Reach out for pricing</span>
             </div>
             <button
               className="btn-primary"
