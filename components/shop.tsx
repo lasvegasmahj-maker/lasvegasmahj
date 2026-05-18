@@ -91,6 +91,17 @@ const shopItems = [
     cta: "Shop Now \u2197",
     logo: "/logos/moderntribe.avif",
   },
+  {
+    name: "Mini Mahjer",
+    color: "#7ec8a0",
+    borderColor: "rgba(126,200,160,0.3)",
+    borderBottomColor: "rgba(126,200,160,0.1)",
+    url: "https://minimahjer.com/?sca_ref=11310244.mc7Mmov3WzzM",
+    site: "minimahjer.com",
+    desc: "Mahjong made easy! Accessible sets and accessories designed for families, beginners, and the next generation of players.",
+    cta: "Shop Now \u00B7 10% Off \u2197",
+    logo: "/logos/minimahjer.png",
+  },
 ];
 
 const amazonLinks = [
