@@ -27,11 +27,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://lasvegasmahj.com"),
   title: {
     default:
-      "Las Vegas Mahjong | #1 Mahjong Lessons, Events & Open Play in Las Vegas, NV",
+      "Las Vegas Mahjong | Lessons, Events & Open Play",
     template: "%s | Las Vegas Mahjong",
   },
   description:
-    "Las Vegas Mahjong is the Valley's premier mahjong community. Certified Oh My Mahjong instructor offering beginner lessons (MAHJ101 & MAHJ102), open play events, private parties, corporate team building, leagues, and tournaments across Las Vegas, Summerlin, Henderson, and the entire Las Vegas Valley. No experience needed — beginners welcome!",
+    "Certified mahjong lessons, open play events, and private parties across Las Vegas, Summerlin, and Henderson. Las Vegas's only certified Oh My Mahjong instructor. No experience needed.",
   keywords: [
     "mahjong Las Vegas",
     "mahjong lessons Las Vegas",
@@ -125,20 +125,21 @@ const localBusinessSchema = {
   description:
     "Las Vegas's premier mahjong instruction and community. Certified Oh My Mahjong instructor offering beginner lessons, open play events, private parties, corporate team building, leagues, and tournaments across the Las Vegas Valley.",
   url: "https://lasvegasmahj.com",
-  telephone: "",
   email: "lasvegasmahj@gmail.com",
   image: [
     "https://lasvegasmahj.com/hero-bg.jpg",
     "https://lasvegasmahj.com/shauna.jpg",
   ],
-  priceRange: "$45-$75",
+  priceRange: "$50+",
   currenciesAccepted: "USD",
   paymentAccepted: "Cash, Credit Card, Venmo",
+  foundingDate: "2024",
+  knowsAbout: "American Mahjong, NMJL, mahjong instruction",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Las Vegas",
     addressRegion: "NV",
-    postalCode: "89100",
+    postalCode: "89101",
     addressCountry: "US",
   },
   geo: {
@@ -164,6 +165,36 @@ const localBusinessSchema = {
     "https://www.instagram.com/lasvegasmahjong",
     "https://www.facebook.com/profile.php?id=61581027728474",
     "https://www.tiktok.com/@lasvegasmahjong",
+  ],
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "5",
+    reviewCount: "3",
+    bestRating: "5",
+    worstRating: "1",
+  },
+  review: [
+    {
+      "@type": "Review",
+      author: { "@type": "Person", name: "Tamar" },
+      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      reviewBody:
+        "I was on the verge of giving up on learning to play Mahjong. Then Shauna taught me. I 'got it' straight away, after having tried for months!! If it wasn't for Shauna, I wouldn't be playing Mahjong today and LOVING it!!",
+    },
+    {
+      "@type": "Review",
+      author: { "@type": "Person", name: "Sabrina" },
+      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      reviewBody:
+        "I had such a great time learning Mahjong with Shauna! She's an amazing teacher -- super patient, clear in her explanations, and she makes the whole experience really fun. Highly recommend!",
+    },
+    {
+      "@type": "Review",
+      author: { "@type": "Person", name: "Molly" },
+      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      reviewBody:
+        "If you need a mahjong lesson (or 5) @lasvegasmahjong is your woman. Amazing teacher.",
+    },
   ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
@@ -203,10 +234,8 @@ const localBusinessSchema = {
           "@type": "Service",
           name: "Private Mahjong Lessons",
           description:
-            "One-on-one or small group private mahjong instruction at your preferred location.",
+            "One-on-one or small group private mahjong instruction at your preferred location. Contact for pricing.",
         },
-        price: "75.00",
-        priceCurrency: "USD",
       },
       {
         "@type": "Offer",
@@ -344,10 +373,49 @@ const faqSchema = {
       name: "How much do mahjong lessons cost in Las Vegas?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Small group lessons (3-8 people) are $50 per person. Private lessons (1-2 people) are $75 per person. Large groups and corporate events start at $50 per person with custom pricing based on group size and needs.",
+        text: "Small group lessons (3-8 people) are $50 per person. Private lessons (1-2 people) -- contact for pricing. Large groups and corporate events start at $50 per person with custom pricing based on group size and needs.",
       },
     },
   ],
+};
+
+const cafeLolaEventSchema = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: "Cafe Lola Open Play Mahjong Party",
+  description:
+    "Join Las Vegas Mahjong for an open play mahjong party at Cafe Lola! All skill levels welcome -- come play, meet fellow mahjong lovers, and enjoy a fun evening in Las Vegas. Hosted by certified Oh My Mahjong instructor Shauna.",
+  startDate: "2026-05-31T18:00:00-07:00",
+  endDate: "2026-05-31T20:00:00-07:00",
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  location: {
+    "@type": "Place",
+    name: "Cafe Lola",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Las Vegas",
+      addressRegion: "NV",
+      addressCountry: "US",
+    },
+  },
+  organizer: {
+    "@type": "Organization",
+    name: "Las Vegas Mahjong",
+    url: "https://lasvegasmahj.com",
+    email: "lasvegasmahj@gmail.com",
+  },
+  image: [
+    "https://lasvegasmahj.com/hero-bg.jpg",
+    "https://lasvegasmahj.com/shauna.jpg",
+  ],
+  url: "https://lasvegasmahj.com",
+  offers: {
+    "@type": "Offer",
+    availability: "https://schema.org/InStock",
+    url: "https://ilovecafelola.com",
+    validFrom: "2026-05-01",
+  },
 };
 
 const websiteSchema = {
@@ -360,12 +428,9 @@ const websiteSchema = {
     "Las Vegas's premier mahjong community offering lessons, events, and open play across the Valley.",
   publisher: {
     "@type": "Organization",
+    "@id": "https://lasvegasmahj.com/#business",
     name: "Las Vegas Mahjong",
     url: "https://lasvegasmahj.com",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://lasvegasmahj.com/hero-bg.jpg",
-    },
   },
 };
 
@@ -380,7 +445,7 @@ export default function RootLayout({
       className={`${bebasNeue.variable} ${montserrat.variable} ${dmSans.variable}`}
     >
       <head>
-        <link rel="canonical" href="https://lasvegasmahj.com" />
+        <link rel="preload" as="image" href="/hero-bg.jpg" fetchPriority="high" />
         <meta name="geo.region" content="US-NV" />
         <meta name="geo.placename" content="Las Vegas" />
         <meta name="geo.position" content="36.1699;-115.1398" />
@@ -401,6 +466,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(cafeLolaEventSchema).replace(/</g, "\\u003c"),
           }}
         />
         <script

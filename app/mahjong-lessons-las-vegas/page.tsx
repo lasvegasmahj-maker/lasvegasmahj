@@ -3,9 +3,9 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Mahjong Lessons Las Vegas | Beginner to Advanced | Las Vegas Mahjong",
+  title: "Mahjong Lessons in Las Vegas | Certified Instructor",
   description:
-    "Certified mahjong lessons in Las Vegas, Summerlin, and Henderson. MAHJ101 for complete beginners, MAHJ102 for intermediate players. Small groups from $50/person. Certified Oh My Mahjong instructor. Book today!",
+    "Learn mahjong from Las Vegas's only certified Oh My Mahjong instructor. MAHJ101 for beginners, MAHJ102 for intermediate players. Small groups from $50/person. Book today.",
   keywords: [
     "mahjong lessons Las Vegas",
     "mahjong classes Las Vegas",
@@ -51,7 +51,7 @@ const jsonLd = {
 };
 
 const faqs = [
-  { q: "How much do mahjong lessons cost in Las Vegas?", a: "Small group lessons (3–8 people) are $50 per person. Private lessons (1–2 people) are $75 per person. Large groups and corporate events start at $50 per person." },
+  { q: "How much do mahjong lessons cost in Las Vegas?", a: "Small group lessons (3-8 people) are $50 per person. Private and one-on-one lessons are available -- contact us for pricing. Large groups and corporate events start at $50 per person." },
   { q: "Do I need experience to take mahjong lessons?", a: "No experience needed at all. MAHJ101 starts completely from scratch — we cover everything from sorting the tiles to playing your first hand." },
   { q: "Where are mahjong lessons held in Las Vegas?", a: "We host lessons at venues across Las Vegas, Summerlin, and Henderson. We also offer private lessons at your home or preferred location." },
   { q: "What is the difference between MAHJ101 and MAHJ102?", a: "MAHJ101 is for complete beginners — we start from zero. MAHJ102 builds on that foundation with more hands, strategy, and game time. We recommend taking 101 first." },
@@ -63,6 +63,7 @@ export default function MahjongLessonsLasVegas() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Mahjong Lessons Las Vegas", item: "https://lasvegasmahj.com/mahjong-lessons-las-vegas" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
       <main style={{ paddingTop: "80px" }}>
@@ -92,7 +93,7 @@ export default function MahjongLessonsLasVegas() {
               {[
                 { num: "MAHJ101", title: "Absolute Beginners", price: "$50/person", items: ["Sorting and identifying tiles", "Reading the NMJL card", "Understanding how a hand works", "Playing your first full game", "Tips for your first open play event"] },
                 { num: "MAHJ102", title: "Beyond the Basics", price: "$50/person", items: ["Quick MAHJ101 recap", "More complex hands and patterns", "Strategy and decision-making", "Speed and confidence at the table", "Preparing for open play and leagues"] },
-                { num: "Private", title: "1-on-1 Lessons", price: "$75/person", items: ["Fully customized to your pace", "Your home or preferred venue", "Any skill level welcome", "Great for busy schedules", "Zoom option available"] },
+                { num: "Private", title: "1-on-1 Lessons", price: "Contact for pricing", items: ["Fully customized to your pace", "Your home or preferred venue", "Any skill level welcome", "Great for busy schedules", "Zoom option available"] },
               ].map(tier => (
                 <div key={tier.num} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "2rem" }}>
                   <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.4rem", color: "var(--pink)", marginBottom: "0.3rem" }}>{tier.num}</div>
