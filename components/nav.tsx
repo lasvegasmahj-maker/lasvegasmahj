@@ -24,7 +24,7 @@ export default function Nav({ onContactOpen }: NavProps) {
 
   return (
     <nav className={scrolled ? "scrolled" : ""}>
-      <a href="#" className="nav-logo">
+      <a href="/" className="nav-logo">
         Las Vegas Mahjong
       </a>
 
@@ -40,28 +40,28 @@ export default function Nav({ onContactOpen }: NavProps) {
 
       <ul className={`nav-links${menuOpen ? " open" : ""}`}>
         <li>
-          <a href="#about" onClick={handleLinkClick}>
+          <a href="/about" onClick={handleLinkClick}>
             About
           </a>
         </li>
         <li>
-          <a href="#events" onClick={handleLinkClick}>
+          <a href="/#events" onClick={handleLinkClick}>
             Events
           </a>
         </li>
         <li>
-          <a href="#classes" onClick={handleLinkClick}>
-            Classes
+          <a href="/mahjong-lessons-las-vegas" onClick={handleLinkClick}>
+            Lessons
           </a>
         </li>
         <li>
-          <a href="#community" onClick={handleLinkClick}>
-            Testimonials
+          <a href="/mahjong-parties-las-vegas" onClick={handleLinkClick}>
+            Private Parties
           </a>
         </li>
         <li>
-          <a href="#shop" onClick={handleLinkClick}>
-            Shop
+          <a href="/mahjong-corporate-las-vegas" onClick={handleLinkClick}>
+            Corporate
           </a>
         </li>
         <li>
@@ -77,7 +77,7 @@ export default function Nav({ onContactOpen }: NavProps) {
           </a>
         </li>
       </ul>
-      <a href="#events" className="nav-cta" onClick={handleLinkClick}>
+      <a href="/#events" className="nav-cta" onClick={handleLinkClick}>
         Join an Event
       </a>
     </nav>

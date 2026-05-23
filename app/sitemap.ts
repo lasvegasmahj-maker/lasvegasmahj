@@ -69,6 +69,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.75,
     },
     {
+      url: "https://lasvegasmahj.com/blog",
+      lastModified: new Date("2026-05-23"),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
       url: "https://lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling",
       lastModified: new Date("2026-05-23"),
       changeFrequency: "monthly",
