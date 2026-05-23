@@ -3,9 +3,9 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Best Mahjong Sets 2026 | American Mahjong Set Guide & Reviews",
+  title: "Best Mahjong Sets 2026 | A Certified Instructor's Guide",
   description:
-    "Looking for the best American mahjong set? A certified instructor's honest guide to the top mahjong sets, accessories, and where to buy them — with exclusive discount codes. All budgets covered.",
+    "A certified instructor's honest guide to the best American mahjong sets. Honest picks, exclusive discount codes for every budget. Updated for 2026.",
   keywords: [
     "best mahjong set",
     "best American mahjong set",

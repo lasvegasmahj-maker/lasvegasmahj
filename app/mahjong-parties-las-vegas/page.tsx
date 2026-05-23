@@ -3,9 +3,9 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Mahjong Party Las Vegas | Bachelorette, Corporate & Private Events",
+  title: "Mahjong Parties Las Vegas | Private Events & Groups",
   description:
-    "Book a private mahjong party in Las Vegas — bachelorette parties, corporate team building, birthdays, charity events, and girls' nights. Fully hosted by a certified instructor. Groups of any size. Starting at $50/person.",
+    "Host a mahjong party in Las Vegas. Bachelorettes, corporate teams, birthdays, and girls' nights. Certified instructor included. All equipment provided. Get a custom quote.",
   keywords: [
     "mahjong party Las Vegas",
     "mahjong bachelorette party Las Vegas",
@@ -62,6 +62,7 @@ export default function MahjongPartiesLasVegas() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Mahjong Parties Las Vegas", item: "https://lasvegasmahj.com/mahjong-parties-las-vegas" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
       <main style={{ paddingTop: "80px" }}>

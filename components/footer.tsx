@@ -63,19 +63,19 @@ export default function Footer({ onContactOpen }: FooterProps) {
           <h5>Events</h5>
           <ul>
             <li>
-              <a href="#events">Open Play</a>
+              <a href="/#events">Open Play</a>
             </li>
             <li>
-              <a href="#events">Tournaments</a>
+              <a href="/#events">Tournaments</a>
             </li>
             <li>
-              <a href="#events">Special Events</a>
+              <a href="/#events">Special Events</a>
             </li>
             <li>
-              <a href="#events">Corporate</a>
+              <a href="/#events">Corporate</a>
             </li>
             <li>
-              <a href="#events">Charity</a>
+              <a href="/#events">Charity</a>
             </li>
           </ul>
         </div>

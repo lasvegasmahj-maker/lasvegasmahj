@@ -3,9 +3,9 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Mahjong Open Play Las Vegas | Events, Leagues & Community Games",
+  title: "Mahjong Open Play Las Vegas | All Levels Welcome",
   description:
-    "Join mahjong open play events across Las Vegas, Summerlin, and Henderson. Meet new players, practice your game, and be part of the Valley's most vibrant mahjong community. All skill levels welcome.",
+    "Play mahjong in Las Vegas with a welcoming community. Open play events across Summerlin and Henderson. All skill levels welcome. Find your next game.",
   keywords: [
     "mahjong open play Las Vegas",
     "mahjong events Las Vegas",
@@ -42,6 +42,7 @@ export default function MahjongOpenPlayLasVegas() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Mahjong Open Play Las Vegas", item: "https://lasvegasmahj.com/mahjong-open-play-las-vegas" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
       <main style={{ paddingTop: "80px" }}>
