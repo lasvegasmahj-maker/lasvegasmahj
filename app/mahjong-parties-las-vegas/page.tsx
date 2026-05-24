@@ -23,11 +23,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://lasvegasmahj.com/mahjong-parties-las-vegas" },
   openGraph: {
     title: "Mahjong Party Las Vegas | Bachelorette, Corporate & Private Events",
-    description: "Skip the same old party. Book a private mahjong experience in Las Vegas — bachelorette parties, corporate events, birthdays & more. Certified instructor, any size group, starting at $50/person.",
+    description: "Skip the same old party. Book a private mahjong experience in Las Vegas -- bachelorette parties, corporate events, birthdays and more. Certified instructor, any size group. Custom quote.",
     url: "https://lasvegasmahj.com/mahjong-parties-las-vegas",
     images: ["https://lasvegasmahj.com/hero-bg.jpg"],
   },
 };
+
+
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -36,7 +38,7 @@ const jsonLd = {
   description: "Fully hosted private mahjong parties and events in Las Vegas for bachelorette parties, corporate team building, birthdays, charity events, and more.",
   provider: { "@type": "LocalBusiness", name: "Las Vegas Mahjong", url: "https://lasvegasmahj.com" },
   areaServed: [{ "@type": "City", name: "Las Vegas" }, { "@type": "City", name: "Henderson" }, { "@type": "City", name: "Summerlin" }],
-  offers: { "@type": "Offer", price: "50.00", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", unitText: "person", description: "Starting price per person" } },
+  offers: { "@type": "Offer", description: "Custom pricing based on group size and event needs. Contact for a quote.", priceCurrency: "USD" },
 };
 
 const eventTypes = [
@@ -51,7 +53,7 @@ const eventTypes = [
 ];
 
 const faqs = [
-  { q: "How much does a private mahjong event cost in Las Vegas?", a: "Private events start at $50 per person. Pricing varies based on group size, duration, and location. Contact us for a custom quote — we work with all budgets." },
+  { q: "How much does a private mahjong event cost in Las Vegas?", a: "Every event is custom. Pricing depends on what you need -- group size, what we're bringing, and what we're doing. Reach out and we'll put together a quote that works for you." },
   { q: "How big can the group be?", a: "We can host groups of all sizes, from intimate gatherings of 4 to large corporate events of 50+. For very large events we bring additional support." },
   { q: "Do guests need to know how to play?", a: "Not at all. We teach everyone from scratch. Most groups are complete beginners — that's half the fun." },
   { q: "Where do you host private events?", a: "We can come to your home, a rented venue, a restaurant, a hotel suite, or your office. We bring all the equipment — tiles, racks, cards, everything." },
@@ -149,10 +151,10 @@ export default function MahjongPartiesLasVegas() {
         {/* PRICING */}
         <section style={{ padding: "5rem 2rem", background: "var(--navy)", textAlign: "center" }}>
           <div className="container" style={{ maxWidth: "580px" }}>
-            <p className="section-label">Investment</p>
-            <h2 className="section-title">Simple <span className="accent-green">Pricing</span></h2>
+            <p className="section-label">Pricing</p>
+            <h2 className="section-title">Custom <span className="accent-green">Quote</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.7, marginBottom: "2rem" }}>
-              Events start at <strong style={{ color: "var(--green)" }}>$50 per person</strong>. Final pricing depends on group size, duration, and location. We work with all budgets — reach out and we&rsquo;ll find something that works.
+              Every event is different. Pricing depends on your group size, what we&rsquo;re bringing, and what you need. Reach out and we&rsquo;ll put together something that works for you.
             </p>
             <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.9rem", marginBottom: "2rem" }}>All equipment included · We come to you · No experience needed</p>
             <a href="/#classes" className="btn-primary">Get a Quote</a>
