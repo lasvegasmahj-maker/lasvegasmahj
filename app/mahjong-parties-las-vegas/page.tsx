@@ -42,7 +42,7 @@ const jsonLd = {
 const eventTypes = [
   { icon: "🎉", title: "Bachelorette Parties", desc: "Tiles, drinks, and unforgettable fun — a unique Vegas experience your crew will talk about for years. Way more memorable than another club night." },
   { icon: "🏢", title: "Corporate Team Building", desc: "Break the ice and build real connections. Mahjong requires communication, strategy, and teamwork — perfect for any group size." },
-  { icon: "🎂", title: "Birthday Celebrations", desc: "Skip the same old dinner. Give the birthday person an afternoon or evening they'll genuinely remember." },
+  { icon: "🎂", title: "Birthday Celebrations", desc: "Special birthday mats, a personalized experience, and a celebration the birthday girl will actually remember. Skip the dinner reservation." },
   { icon: "❤️", title: "Charity & Fundraisers", desc: "Host a mahjong tournament or social to raise funds and bring your community together for a great cause." },
   { icon: "🥂", title: "Girls' Night Out", desc: "The ultimate girls' night — tiles, laughter, drinks, and zero screen time. We bring everything. You bring the crew." },
   { icon: "🎰", title: "Vegas Visitor Experiences", desc: "Visiting Las Vegas? Try something you can't do anywhere else. A hands-on mahjong experience you'll take home with you." },
@@ -97,6 +97,21 @@ export default function MahjongPartiesLasVegas() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* BIRTHDAY SPOTLIGHT */}
+        <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
+          <div className="container" style={{ maxWidth: "720px" }}>
+            <p className="section-label">Birthday Parties</p>
+            <h2 className="section-title">Make Her Feel Like the <span className="accent-pink">Queen of the Table</span></h2>
+            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
+              Birthday mahjong parties come with special birthday mats and a personalized experience designed to make the birthday girl feel celebrated from the first tile to the last. It&rsquo;s not just a game night -- it&rsquo;s a moment she&rsquo;ll actually remember.
+            </p>
+            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2rem" }}>
+              We come to your home, a restaurant private room, or any venue you choose. You handle the cake. We handle everything else.
+            </p>
+            <a href="/#classes" className="btn-primary">Book a Birthday Party</a>
           </div>
         </section>
 
