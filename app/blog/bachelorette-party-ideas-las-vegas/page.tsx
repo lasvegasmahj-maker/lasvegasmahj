@@ -63,7 +63,7 @@ const faqSchema = {
   "@type": "FAQPage",
   mainEntity: [
     { "@type": "Question", name: "What is the most unique bachelorette party activity in Las Vegas?", acceptedAnswer: { "@type": "Answer", text: "A private mahjong party is one of the most unique bachelorette activities in Las Vegas. You learn to play together, it's social and strategic, and it gives the group something to do besides drink and shop. A certified instructor brings all the tiles and teaches everyone from scratch." } },
-    { "@type": "Question", name: "How much does a bachelorette party mahjong experience cost in Las Vegas?", acceptedAnswer: { "@type": "Answer", text: "Private group mahjong parties start at $50 per person with a group minimum. Contact Las Vegas Mahjong for a custom quote for your group size." } },
+    { "@type": "Question", name: "How much does a bachelorette party mahjong experience cost in Las Vegas?", acceptedAnswer: { "@type": "Answer", text: "Pricing depends on your group size and what you're looking for. Contact Las Vegas Mahjong for a custom quote." } },
     { "@type": "Question", name: "Do you need to know how to play mahjong for a bachelorette party?", acceptedAnswer: { "@type": "Answer", text: "No. The instructor teaches everyone from scratch. Most groups are playing their first real hand within the first hour. No prior experience needed." } },
   ],
 };
@@ -213,7 +213,7 @@ export default function BachelorettePartyIdeasLasVegas() {
             <div style={{ marginTop: "2rem" }}>
               {[
                 { q: "What is the most unique bachelorette party activity in Las Vegas?", a: "A private mahjong party is one of the most unique options in the city. You learn together, it's social and strategic, and it gives the group something to actually do together rather than just be in the same place. A certified instructor brings all the tiles and teaches everyone from scratch. No prior experience needed." },
-                { q: "How much does a bachelorette mahjong party cost?", a: "Group mahjong parties start at $50 per person. Contact us for a custom quote based on your group size and what you're looking for." },
+                { q: "How much does a bachelorette mahjong party cost?", a: "Pricing depends on your group size and what you're looking for. Contact us for a custom quote." },
                 { q: "How far in advance should I book Las Vegas bachelorette activities?", a: "For popular activities like pool cabanas, helicopter tours, and dinner reservations, book 4-8 weeks out for summer weekends. For mahjong parties, we can often accommodate 1-2 weeks notice, but earlier is better." },
                 { q: "How many activities should we plan per day?", a: "Two structured activities per day is usually ideal. More than that and people get tired or rushed. Leave buffer time between things and don't over-schedule the first night." },
               ].map(faq => (
