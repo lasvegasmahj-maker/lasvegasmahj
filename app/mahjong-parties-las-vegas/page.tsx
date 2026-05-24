@@ -102,16 +102,25 @@ export default function MahjongPartiesLasVegas() {
 
         {/* BIRTHDAY SPOTLIGHT */}
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
-          <div className="container" style={{ maxWidth: "720px" }}>
-            <p className="section-label">Birthday Parties</p>
-            <h2 className="section-title">Make Her Feel Like the <span className="accent-pink">Queen of the Table</span></h2>
-            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
-              Birthday mahjong parties come with special birthday mats and a personalized experience designed to make the birthday girl feel celebrated from the first tile to the last. It&rsquo;s not just a game night -- it&rsquo;s a moment she&rsquo;ll actually remember.
-            </p>
-            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2rem" }}>
-              We come to your home, a restaurant private room, or any venue you choose. You handle the cake. We handle everything else.
-            </p>
-            <a href="/#classes" className="btn-primary">Book a Birthday Party</a>
+          <div className="container" style={{ maxWidth: "820px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
+            <div>
+              <p className="section-label">Birthday Parties</p>
+              <h2 className="section-title" style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)" }}>Make Her Feel Like the <span className="accent-pink">Queen of the Table</span></h2>
+              <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
+                Birthday mahjong parties come with special birthday mats and a personalized experience designed to make the birthday girl feel celebrated from the first tile to the last. It&rsquo;s not just a game night -- it&rsquo;s a moment she&rsquo;ll actually remember.
+              </p>
+              <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2rem" }}>
+                We come to your home, a restaurant private room, or any venue you choose. You handle the cake. We handle everything else.
+              </p>
+              <a href="/#classes" className="btn-primary">Book a Birthday Party</a>
+            </div>
+            <div>
+              <img
+                src="/birthday-mat.jpg"
+                alt="Happy Birthday mahjong mat with leopard print rack and NMJL cards"
+                style={{ width: "100%", borderRadius: "8px", display: "block" }}
+              />
+            </div>
           </div>
         </section>
 
