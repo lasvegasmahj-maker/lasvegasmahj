@@ -117,10 +117,6 @@ export default function LearnMahjong() {
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
               Each player starts with 13 tiles -- except East (the dealer), who starts with 14. You take turns drawing and discarding tiles, trying to build one of the hands on the NMJL card. When you complete a hand, you call &ldquo;Mahjong!&rdquo; and win the hand.
             </p>
-            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2.5rem" }}>
-              You can also &ldquo;call&rdquo; a tile that another player discards if it completes an exposed section of your hand (a Pung, Kong, or Quint). Jokers can be used as any tile, but other players can swap a real tile for your joker if they need it.
-            </p>
-
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>How to Get Started</h2>
             <div style={{ marginBottom: "2.5rem" }}>
               {[
