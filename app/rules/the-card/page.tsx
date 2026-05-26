@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://lasvegasmahj.com/rules/the-card" },
   openGraph: {
     title: "Reading the NMJL Mahjong Card | Las Vegas Mahjong",
-    description: "What do P, K, N mean on the card? What is 'any like number'? What is an open vs. closed hand? The card explained by a certified instructor.",
+    description: "How to read the NMJL mahjong card: set sizes, any like number, consecutive numbers, open vs. closed hands. Explained by a certified instructor.",
     url: "https://lasvegasmahj.com/rules/the-card",
     images: ["https://lasvegasmahj.com/hero-bg.jpg"],
   },
@@ -23,7 +23,7 @@ const QA = [
   },
   {
     q: "What do the numbers on the card mean?",
-    a: "The numbers tell you how many identical tiles are in that group: 2 = Pair, 3 = Pung, 4 = Kong, 5 = Quint, 6 = Sextet. N represents a specific number you choose and must use consistently across the hand. The card uses these to show you the exact structure of each winning hand.",
+    a: "The numbers on the card tell you how many identical tiles are in that group: 2 is a Pair, 3 is a Pung, 4 is a Kong, 5 is a Quint, 6 is a Sextet. When you see a number placeholder like 'any like number,' that means you pick the number yourself and use it consistently throughout that hand.",
   },
   {
     q: "What does 'any like number' mean on the card?",
