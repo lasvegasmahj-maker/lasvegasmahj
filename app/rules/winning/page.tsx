@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const QA = [
   {
     q: "How many tiles does each player start with?",
-    a: "Each player starts with 13 tiles -- except East (the dealer), who starts with 14. East is already holding a full hand and discards first to begin play.",
+    a: "Each player starts with 13 tiles (except East, the dealer, who starts with 14). East is already holding a full hand and discards first to begin play.",
   },
   {
     q: "What makes a valid mahjong?",
@@ -31,7 +31,7 @@ const QA = [
   },
   {
     q: "Can I win on my own draw?",
-    a: "Yes. Drawing the tile you need from the wall to complete your hand is called a 'self-drawn win.' Self-drawn wins still pay the standard amount, though some groups play that self-drawn pays double -- confirm your group's house rules.",
+    a: "Yes. Drawing the tile you need from the wall to complete your hand is called a 'self-drawn win.' Self-drawn wins still pay the standard amount, though some groups play that self-drawn pays double; confirm your group's house rules.",
   },
   {
     q: "What is a wall game and how does it pay?",
@@ -39,7 +39,7 @@ const QA = [
   },
   {
     q: "What is a false mahjong and what is the penalty?",
-    a: "A false mahjong is calling mahjong when your hand does not actually complete a valid hand on the card. The penalty is set by house rules but typically means the player pays each other player the value of a full win. Play continues without that player -- their hand is dead for the rest of the game.",
+    a: "A false mahjong is calling mahjong when your hand does not actually complete a valid hand on the card. The penalty is set by house rules but typically means the player pays each other player the value of a full win. Play continues without that player; their hand is dead for the rest of the game.",
   },
   {
     q: "Can I declare mahjong and then change my mind?",
@@ -47,7 +47,7 @@ const QA = [
   },
   {
     q: "What happens if a player passes on their winning tile during the charleston?",
-    a: "This happens! If you accidentally pass a tile you could have used to win, you can simply continue play. There is no penalty -- you just do not have that tile anymore.",
+    a: "This happens! If you accidentally pass a tile you could have used to win, you can simply continue play. There is no penalty; you just do not have that tile anymore.",
   },
 ];
 
@@ -77,7 +77,7 @@ export default function WinningPage() {
               🏆 <span className="accent-pink">Winning</span>
             </h1>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "560px", margin: "0 auto", lineHeight: 1.7 }}>
-              Valid mahjongg, wall games, false mahjong -- the rules around declaring a win.
+              Valid mahjongg, wall games, false mahjong: the rules around declaring a win.
             </p>
           </div>
         </section>

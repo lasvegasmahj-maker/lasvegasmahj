@@ -23,15 +23,15 @@ const QA = [
   },
   {
     q: "What counts as table talk?",
-    a: "Table talk is any verbal communication that gives information about your hand or strategy to other players -- or that influences how others play. Examples: announcing what you need, commenting on another player's discard choices, or reacting to tiles in a way that signals your hand. Table talk is generally prohibited in competitive play. In casual home games, groups set their own rules.",
+    a: "Table talk is any verbal communication that gives information about your hand or strategy to other players, or that influences how others play. Examples: announcing what you need, commenting on another player's discard choices, or reacting to tiles in a way that signals your hand. Table talk is generally prohibited in competitive play. In casual home games, groups set their own rules.",
   },
   {
     q: "How fast do I have to call a discarded tile?",
-    a: "You must call a tile before the next player draws from the wall. Once the next player has drawn, the window to call the previous discard is closed. There is no strict timer, but you should call promptly -- hesitating too long is considered poor etiquette.",
+    a: "You must call a tile before the next player draws from the wall. Once the next player has drawn, the window to call the previous discard is closed. There is no strict timer, but you should call promptly; hesitating too long is considered poor etiquette.",
   },
   {
     q: "Who resolves rules disputes during a game?",
-    a: "In a home game, all four players agree together -- majority rules or unanimity, depending on the group. In a league or club setting, a designated rule referee or club leader makes the call. If no resolution is possible mid-game, the safest option is to replay the hand.",
+    a: "In a home game, all four players agree together (majority rules or unanimity, depending on the group). In a league or club setting, a designated rule referee or club leader makes the call. If no resolution is possible mid-game, the safest option is to replay the hand.",
   },
   {
     q: "Can I ask to see another player's exposed tiles?",
@@ -39,7 +39,7 @@ const QA = [
   },
   {
     q: "What is the difference between a house rule and an NMJL rule?",
-    a: "NMJL rules are the official rules published by the National Mah Jongg League and apply to all standard American Mahjong play. House rules are variations or additions agreed upon by a specific group that are not part of the official rules. House rules are fine for casual play -- just make sure all players agree before the game starts. When in doubt about what is 'official,' the NMJL card and published guidelines are the authority.",
+    a: "NMJL rules are the official rules published by the National Mah Jongg League and apply to all standard American Mahjong play. House rules are variations or additions agreed upon by a specific group that are not part of the official rules. House rules are fine for casual play; just make sure all players agree before the game starts. When in doubt about what is 'official,' the NMJL card and published guidelines are the authority.",
   },
 ];
 

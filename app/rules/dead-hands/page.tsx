@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const QA = [
   {
     q: "What makes a hand dead?",
-    a: "A hand is declared dead when a player makes an illegal or impossible call, exposes tiles incorrectly, calls an out-of-turn tile, or exposes a set that cannot possibly complete a valid hand on the current card. False mahjong also results in a dead hand. House rules vary slightly -- your group should agree on the list of dead-hand triggers before play.",
+    a: "A hand is declared dead when a player makes an illegal or impossible call, exposes tiles incorrectly, calls an out-of-turn tile, or exposes a set that cannot possibly complete a valid hand on the current card. False mahjong also results in a dead hand. House rules vary slightly; your group should agree on the list of dead-hand triggers before play.",
   },
   {
     q: "Can a hand be saved before it is officially declared dead?",

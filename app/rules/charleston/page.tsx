@@ -31,11 +31,11 @@ const QA = [
   },
   {
     q: "What is a courtesy pass and is it optional?",
-    a: "After both charlestons are complete, players may offer a courtesy pass -- exchanging 1 to 3 tiles with the player across from you. Both players must agree on how many tiles to exchange, and both pass simultaneously. It is optional and either player can decline.",
+    a: "After both charlestons are complete, players may offer a courtesy pass (exchanging 1 to 3 tiles with the player across from you). Both players must agree on how many tiles to exchange, and both pass simultaneously. It is optional and either player can decline.",
   },
   {
     q: "Can I look at tiles before passing them?",
-    a: "Yes, except during a blind pass. In all other passes you see and choose which 3 tiles to pass. During a blind pass, you may pass tiles you just received without looking at them -- but you are not required to; you can look and still pass them.",
+    a: "Yes, except during a blind pass. In all other passes you see and choose which 3 tiles to pass. During a blind pass, you may pass tiles you just received without looking at them, but you are not required to; you can look and still pass them.",
   },
   {
     q: "What happens if someone passes fewer than 3 tiles?",
@@ -73,7 +73,7 @@ export default function CharlestonPage() {
               🔄 The <span className="accent-pink">Charleston</span>
             </h1>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "560px", margin: "0 auto", lineHeight: 1.7 }}>
-              Passes, blind passes, stopping early -- every charleston question answered.
+              Passes, blind passes, stopping early: every charleston question answered.
             </p>
           </div>
         </section>

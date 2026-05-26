@@ -19,15 +19,15 @@ export const metadata: Metadata = {
 const QA = [
   {
     q: "What is the difference between a pung and a kong?",
-    a: "A pung is a set of three identical tiles. A kong is a set of four. A quint is five, and a sextet is six -- both require jokers. The card shows which group size each hand requires using the numbers 3, 4, 5, and 6.",
+    a: "A pung is a set of three identical tiles. A kong is a set of four. A quint is five, and a sextet is six (both require jokers). The card shows which group size each hand requires using the numbers 3, 4, 5, and 6.",
   },
   {
     q: "Can I call any discard or only the most recent one?",
-    a: "You can only call the most recently discarded tile -- the one that was just discarded by the player whose turn just ended. You cannot call a tile that was discarded earlier in the game.",
+    a: "You can only call the most recently discarded tile, the one that was just discarded by the player whose turn just ended. You cannot call a tile that was discarded earlier in the game.",
   },
   {
     q: "What happens when two players call the same discarded tile?",
-    a: "The player calling for mahjong (to win) has priority over all other calls regardless of seating position. Among players calling for a pung, kong, or quint (not mahjong), the player who would receive the tile in the natural turn order takes priority -- specifically, the player closest to the discarder going counterclockwise.",
+    a: "The player calling for mahjong (to win) has priority over all other calls regardless of seating position. Among players calling for a pung, kong, or quint (not mahjong), the player who would receive the tile in the natural turn order takes priority (specifically, the player closest to the discarder going counterclockwise).",
   },
   {
     q: "Can I call a tile to complete mahjong even if it is not my turn?",
@@ -43,7 +43,7 @@ const QA = [
   },
   {
     q: "Do I have to expose tiles immediately when I call?",
-    a: "Yes. When you call a tile, you must immediately expose the full group (pung, kong, quint, or mahjong) to the table. You cannot call and then decide what to do -- the declaration and exposure happen together.",
+    a: "Yes. When you call a tile, you must immediately expose the full group (pung, kong, quint, or mahjong) to the table. You cannot call and then decide what to do; the declaration and exposure happen together.",
   },
 ];
 

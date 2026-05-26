@@ -39,7 +39,7 @@ const CATEGORIES = [
     slug: "charleston",
     title: "The Charleston",
     icon: "🔄",
-    desc: "How many passes, blind passes, courtesy passes -- and what happens when you pass wrong.",
+    desc: "How many passes, blind passes, courtesy passes, and what happens when you pass wrong.",
     count: 7,
     highlight: false,
   },
@@ -108,7 +108,7 @@ export default function RulesIndexPage() {
               American Mahjong <span className="accent-pink">Rules Guide</span>
             </h1>
             <p style={{ fontSize: "1.1rem", color: "rgba(255,255,255,0.7)", maxWidth: "600px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Real answers to the questions that come up mid-game. Written the way I&rsquo;d answer them at the table -- no ambiguity, no legalese.
+              Real answers to the questions that come up mid-game. Written the way I&rsquo;d answer them at the table: no ambiguity, no legalese.
             </p>
             <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)", maxWidth: "500px", margin: "0 auto" }}>
               Based on American Mahjong played with the NMJL card. Rules are updated annually when the new card releases.
@@ -158,7 +158,7 @@ export default function RulesIndexPage() {
               Learn It Right the <span className="accent-green">First Time</span>
             </h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "500px", margin: "0 auto 2rem", lineHeight: 1.7 }}>
-              Most rule confusion disappears after one lesson. Las Vegas players can book a beginner or intermediate session -- online answers only go so far.
+              Most rule confusion disappears after one lesson. Las Vegas players can book a beginner or intermediate session; online answers only go so far.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <Link href="/mahjong-lessons-las-vegas" className="btn-primary">Book a Lesson &rarr;</Link>

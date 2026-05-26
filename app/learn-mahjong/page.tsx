@@ -110,18 +110,18 @@ export default function LearnMahjong() {
               The NMJL card is updated every year and lists all the valid winning hands for that year. Learning to read the card — and choosing which hands to build toward — is the core skill of American Mahjong.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2.5rem" }}>
-              The card is organized into categories (Like Numbers, Quints, Consecutive Run, etc.) and uses numbers to describe the structure of each hand -- 2 for a Pair, 3 for a Pung, 4 for a Kong, 5 for a Quint, 6 for a Sextet. It looks intimidating at first -- but within one lesson, most students are reading it confidently.
+              The card is organized into categories (Like Numbers, Quints, Consecutive Run, etc.) and uses numbers to describe the structure of each hand: 2 for a Pair, 3 for a Pung, 4 for a Kong, 5 for a Quint, 6 for a Sextet. It looks intimidating at first, but within one lesson, most students are reading it confidently.
             </p>
 
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>How a Game Works</h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
-              Each player starts with 13 tiles -- except East (the dealer), who starts with 14. You take turns drawing and discarding tiles, trying to build one of the hands on the NMJL card. When you complete a hand, you call &ldquo;Mahjong!&rdquo; and win the hand.
+              Each player starts with 13 tiles (except East, the dealer, who starts with 14). You take turns drawing and discarding tiles, trying to build one of the hands on the NMJL card. When you complete a hand, you call &ldquo;Mahjong!&rdquo; and win the hand.
             </p>
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>How to Get Started</h2>
             <div style={{ marginBottom: "2.5rem" }}>
               {[
-                { num: "1", title: "Take a Lesson", desc: "The fastest way to learn -- full stop. Most students go from zero to playing a complete hand in a single 2-3 hour session. Trying to learn from videos or books takes weeks; a good instructor gets you there in one afternoon. If you're in Las Vegas, that's us." },
-                { num: "2", title: "Get a Set", desc: "You don't need your own set to learn -- instructors and groups provide them. But once you're hooked, you'll want your own. See our recommended sets below." },
+                { num: "1", title: "Take a Lesson", desc: "The fastest way to learn, full stop. Most students go from zero to playing a complete hand in a single 2-3 hour session. Trying to learn from videos or books takes weeks; a good instructor gets you there in one afternoon. If you're in Las Vegas, that's us." },
+                { num: "2", title: "Get a Set", desc: "You don't need your own set to learn; instructors and groups provide them. But once you're hooked, you'll want your own. See our recommended sets below." },
                 { num: "3", title: "Buy the NMJL Card", desc: "The card costs about $14/year and can be ordered from the National Mah Jongg League website. A new card releases every spring." },
                 { num: "4", title: "Join a Group or Open Play", desc: "Playing with others is how you actually get good. Find a local group, attend open play events, or join a league." },
               ].map(step => (
