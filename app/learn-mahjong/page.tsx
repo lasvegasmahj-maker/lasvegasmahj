@@ -120,7 +120,7 @@ export default function LearnMahjong() {
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>How to Get Started</h2>
             <div style={{ marginBottom: "2.5rem" }}>
               {[
-                { num: "1", title: "Take a Lesson", desc: "Taking lessons is the best and fastest way to learn. Most students go from zero to playing a complete hand in just 2-3 lessons. Trying to learn from videos or books takes weeks; a good instructor gets you there in one afternoon. If you're in Las Vegas, that's us." },
+                { num: "1", title: "Take a Lesson", desc: "Taking lessons is the best and fastest way to learn. Most students go from zero to playing without an instructor in 2-3 lessons. Trying to learn from videos or books takes weeks; a good instructor gets you there in one afternoon. If you're in Las Vegas, that's us." },
                 { num: "2", title: "Get a Set", desc: "You don't need your own set to learn; instructors and groups provide them. But once you're hooked, you'll want your own. See our recommended sets below." },
                 { num: "3", title: "Buy the NMJL Card", desc: "The card costs about $14/year and can be ordered from the National Mah Jongg League website. A new card releases every spring." },
                 { num: "4", title: "Join a Group or Open Play", desc: "Playing with others is how you actually get good. Find players and local groups near you at findmymahjgame.com, and check our website for open play events happening around Las Vegas." },
