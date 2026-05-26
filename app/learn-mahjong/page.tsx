@@ -45,7 +45,7 @@ const howToSchema = {
   name: "How to Learn American Mahjong",
   description: "Step-by-step guide to learning American Mahjong for complete beginners.",
   step: [
-    { "@type": "HowToStep", name: "Get a Mahjong Set", text: "You need a 166-piece American Mahjong set and a current NMJL card. Sets range from $50 to $300+." },
+    { "@type": "HowToStep", name: "Get a Mahjong Set", text: "You need a 152-piece American Mahjong set and a current NMJL card. Sets range from $50 to $300+." },
     { "@type": "HowToStep", name: "Learn the Tiles", text: "American Mahjong has three suits (Bams, Craks, Dots), plus winds, dragons, flowers, and jokers." },
     { "@type": "HowToStep", name: "Read the NMJL Card", text: "The card changes every year and contains the winning hands. Learning to read it is the foundation of the game." },
     { "@type": "HowToStep", name: "Play Your First Hand", text: "Start with a guided lesson or join a beginner-friendly open play session. Playing with others is the fastest way to learn." },
@@ -94,7 +94,7 @@ export default function LearnMahjong() {
             </p>
 
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>The Tiles</h2>
-            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>A standard American Mahjong set has 166 tiles, divided into several categories:</p>
+            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>A standard American Mahjong set has 152 tiles, divided into several categories:</p>
             <ul style={{ color: "rgba(255,255,255,0.7)", lineHeight: 2, paddingLeft: "1.5rem", marginBottom: "2.5rem" }}>
               <li><strong style={{ color: "var(--white)" }}>Bams (Bamboo)</strong> — numbered 1–9, shown with bamboo stalks</li>
               <li><strong style={{ color: "var(--white)" }}>Craks (Characters)</strong> — numbered 1–9, shown with Chinese characters</li>

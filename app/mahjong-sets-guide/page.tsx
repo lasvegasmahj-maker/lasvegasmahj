@@ -204,7 +204,7 @@ export default function MahjongSetsGuide() {
             <h2 className="section-title">What to Look <span className="accent-pink">For</span></h2>
             <div style={{ marginTop: "2rem" }}>
               {[
-                { q: "Do I need 152 or 166 tiles?", a: "American Mahjong requires 166 tiles (the extra tiles include the Jokers and Flowers). Make sure any set you buy is specifically for American Mahjong." },
+                { q: "How many tiles does an American Mahjong set have?", a: "American Mahjong sets have 152 tiles. Make sure any set you buy is specifically for American Mahjong, not Chinese or other versions." },
                 { q: "What's the difference between $50 and $300 sets?", a: "Mostly materials and aesthetics. Budget sets use plastic tiles with printed designs. Premium sets use heavier tiles with embossed or inlaid designs that feel great in hand. Both play identically." },
                 { q: "Do I need a case?", a: "Yes — a case keeps your tiles organized and protected. Most sets come with one. Look for a case with dividers and a soft interior." },
                 { q: "Do I need to buy the NMJL card separately?", a: "Yes, always. The NMJL card is sold separately at nmjl.org for about $14. It changes every year and must be purchased fresh each March." },
