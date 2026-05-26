@@ -100,8 +100,8 @@ export default function LearnMahjong() {
               <li><strong style={{ color: "var(--white)" }}>Craks (Characters)</strong> — numbered 1–9, shown with Chinese characters</li>
               <li><strong style={{ color: "var(--white)" }}>Dots</strong> — numbered 1–9, shown with circles</li>
               <li><strong style={{ color: "var(--white)" }}>Winds</strong> — North, South, East, West</li>
-              <li><strong style={{ color: "var(--white)" }}>Dragons</strong> — Red (Chun), Green (Fa), White (Soap)</li>
-              <li><strong style={{ color: "var(--white)" }}>Flowers</strong> — numbered 1–4, used in special hands</li>
+              <li><strong style={{ color: "var(--white)" }}>Dragons</strong> — Red (Crak), Green (Bam), White (Soap)</li>
+              <li><strong style={{ color: "var(--white)" }}>Flowers</strong> — a flower is a flower is a flower; all are interchangeable</li>
               <li><strong style={{ color: "var(--white)" }}>Jokers</strong> — wild tiles, unique to American Mahjong</li>
             </ul>
 

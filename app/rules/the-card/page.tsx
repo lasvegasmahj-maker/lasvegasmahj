@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const QA = [
   {
     q: "When does the new NMJL card come out each year?",
-    a: "The National Mah Jongg League releases a new card each spring, typically in March or April. The new card is the only valid card for that year's play -- the previous year's card is retired. You can order the new card at the NMJL website (nationalmahjonggleague.org) for a small annual fee.",
+    a: "The National Mah Jongg League releases a new card every spring. The new card is the only valid card for that year's play -- the previous year's card is retired. You can order the new card at the NMJL website (nationalmahjonggleague.org) for a small annual fee.",
   },
   {
     q: "What do the symbols P, K, and N mean on the card?",
