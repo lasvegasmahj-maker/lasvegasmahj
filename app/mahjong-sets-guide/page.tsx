@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://lasvegasmahj.com/mahjong-sets-guide" },
   openGraph: {
     title: "Best Mahjong Sets 2026 | A Certified Instructor's Guide",
-    description: "A certified instructor's honest guide to the best American mahjong sets and accessories — with exclusive discount codes. All budgets covered.",
+    description: "A certified instructor's honest guide to the best American mahjong sets and accessories, with exclusive discount codes. All budgets covered.",
     url: "https://lasvegasmahj.com/mahjong-sets-guide",
     images: ["https://lasvegasmahj.com/hero-bg.jpg"],
   },
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "Best American Mahjong Sets 2026 — A Certified Instructor's Guide",
+  headline: "Best American Mahjong Sets 2026: A Certified Instructor's Guide",
   description: "An honest guide to the best American mahjong sets and accessories, written by a certified Oh My Mahjong instructor.",
   author: { "@type": "Person", name: "Shauna", jobTitle: "Certified Oh My Mahjong Instructor" },
   publisher: { "@type": "Organization", name: "Las Vegas Mahjong", url: "https://lasvegasmahj.com" },
@@ -63,7 +63,7 @@ const sets = [
     badgeColor: "#ff8282",
     price: "$$$",
     best: "Best personalized/custom sets",
-    desc: "If you want something truly unique — a custom set with your name, monogram, or a special design — Bespoke Mahjong is unmatched. They do incredible work and the sets make unforgettable gifts for players who have everything.",
+    desc: "If you want something truly unique, like a custom set with your name, monogram, or a special design, Bespoke Mahjong is unmatched. They do incredible work and the sets make unforgettable gifts for players who have everything.",
     pros: ["Fully customizable sets", "Premium quality", "Unique gift option", "Beautiful packaging"],
     code: "LASVEGASMAHJ",
     discount: "10% off",
@@ -89,7 +89,7 @@ const sets = [
     badgeColor: "var(--gold)",
     price: "$$",
     best: "Best for modern, fashionable players",
-    desc: "Peace Love Mahjong nails the modern aesthetic. Their sets and accessories feel fresh and current — great for the player who wants their mahjong gear to match their personal style. Very giftable.",
+    desc: "Peace Love Mahjong nails the modern aesthetic. Their sets and accessories feel fresh and current, great for the player who wants their mahjong gear to match their personal style. Very giftable.",
     pros: ["Trendy, modern designs", "Great accessories line", "Fun gifting option", "Consistently fresh styles"],
     code: "LASVEGASMAHJ",
     discount: "10% off",
@@ -115,7 +115,7 @@ const sets = [
     badgeColor: "#64dcff",
     price: "$–$$",
     best: "Best mahjong-themed apparel & lifestyle",
-    desc: "Not a set, but a must-visit for mahjong-themed apparel, accessories, and lifestyle products. Great for the player who wants to wear their obsession proudly — or for fun gifts that aren't tiles.",
+    desc: "Not a set, but a must-visit for mahjong-themed apparel, accessories, and lifestyle products. Great for the player who wants to wear their obsession proudly, or for fun gifts that aren't tiles.",
     pros: ["Unique mahjong apparel", "Fun lifestyle products", "Great gift items", "Affordable"],
     code: "LASVEGASMAHJ",
     discount: "10% off",
@@ -137,10 +137,10 @@ export default function MahjongSetsGuide() {
               Best Mahjong Sets <span className="accent-pink">2026</span>
             </h1>
             <p style={{ fontSize: "1.1rem", color: "rgba(255,255,255,0.7)", maxWidth: "600px", margin: "0 auto 1.5rem", lineHeight: 1.75 }}>
-              An honest guide from a certified instructor who has used them all. No fluff — just the sets I actually recommend to my students, with exclusive discount codes.
+              An honest guide from a certified instructor who has used them all. No fluff, just the sets I actually recommend to my students, with exclusive discount codes.
             </p>
             <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.3)" }}>
-              Some links are affiliate links — I earn a small commission at no extra cost to you.
+              Some links are affiliate links. I earn a small commission at no extra cost to you.
             </p>
           </div>
         </section>
@@ -189,7 +189,7 @@ export default function MahjongSetsGuide() {
                   </ul>
                   <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
                     <a href={set.url} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ fontSize: "0.8rem", padding: "0.7rem 1.5rem" }}>Shop {set.name} ↗</a>
-                    <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Code: <strong style={{ color: "var(--green)" }}>{set.code}</strong> — {set.discount}</span>
+                    <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Code: <strong style={{ color: "var(--green)" }}>{set.code}</strong> · {set.discount}</span>
                   </div>
                 </div>
               ))}
@@ -206,7 +206,7 @@ export default function MahjongSetsGuide() {
               {[
                 { q: "How many tiles does an American Mahjong set have?", a: "American Mahjong sets have 152 tiles. Make sure any set you buy is specifically for American Mahjong, not Chinese or other versions." },
                 { q: "What's the difference between $50 and $300 sets?", a: "Mostly materials and aesthetics. Budget sets use plastic tiles with printed designs. Premium sets use heavier tiles with embossed or inlaid designs that feel great in hand. Both play identically." },
-                { q: "Do I need a case?", a: "Yes — a case keeps your tiles organized and protected. Most sets come with one. Look for a case with dividers and a soft interior." },
+                { q: "Do I need a case?", a: "Yes. A case keeps your tiles organized and protected. Most sets come with one. Look for a case with dividers and a soft interior." },
                 { q: "Do I need to buy the NMJL card separately?", a: "Yes, always. The NMJL card is sold separately at nmjl.org for about $14. It changes every year and must be purchased fresh each March." },
               ].map(item => (
                 <div key={item.q} style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "1.5rem 0" }}>
@@ -223,7 +223,7 @@ export default function MahjongSetsGuide() {
           <div className="container">
             <h2 className="section-title">Ready to <span className="accent-green">Play?</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "480px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
-              Got your set — now learn to use it! Book a beginner lesson in Las Vegas and you&rsquo;ll be playing your first hand within the hour.
+              Got your set? Now learn to use it! Book a beginner lesson in Las Vegas and you&rsquo;ll be playing your first hand within the hour.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/mahjong-lessons-las-vegas" className="btn-primary">Book a Lesson in Las Vegas</a>

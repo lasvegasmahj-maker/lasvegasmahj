@@ -47,7 +47,7 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
               <div>
                 <h4>Absolute Beginners</h4>
                 <p>
-                  Never touched a tile? No problem. We start from scratch &mdash;
+                  Never touched a tile? No problem. We start from scratch:
                   sorting the tiles, understanding the card, and playing your
                   first hand.
                 </p>
@@ -59,7 +59,7 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
                 <h4>Beyond the Basics</h4>
                 <p>
                   We&rsquo;ll start with a quick recap of everything covered in
-                  MAHJ101, then jump straight into the tiles &mdash; more hands,
+                  MAHJ101, then jump straight into the tiles: more hands,
                   more practice, and more confidence at the table.
                 </p>
               </div>
@@ -70,7 +70,7 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
                 <h4>Large Groups, Corporate &amp; Charity Events</h4>
                 <p>
                   From bachelorette parties to corporate team building, charity
-                  events, and more &mdash; private events for groups large and
+                  events, and more; private events for groups large and
                   small, fully customized and endlessly fun.
                 </p>
               </div>
@@ -83,7 +83,7 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
             </h3>
             <p>
               Private or group mahjong lessons available at venues across Las
-              Vegas, Summerlin, and Henderson &mdash; or virtually via Zoom. All
+              Vegas, Summerlin, and Henderson, or virtually via Zoom. All
               levels welcome, from absolute beginners to experienced players.
             </p>
             <div className="price-row">

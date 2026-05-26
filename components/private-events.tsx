@@ -10,7 +10,7 @@ const eventTypes = [
   {
     icon: "\uD83C\uDF89",
     title: "Bachelorette Parties",
-    desc: "Tiles, wine, and unforgettable fun \u2014 a unique experience your crew will talk about forever.",
+    desc: "Tiles, wine, and unforgettable fun: a unique experience your crew will talk about forever.",
   },
   {
     icon: "\uD83C\uDFE2",
@@ -35,7 +35,7 @@ const eventTypes = [
   {
     icon: "\uD83C\uDFB0",
     title: "Vegas Visitor Experiences",
-    desc: "Visiting Las Vegas? Try something off the Strip \u2014 a hands-on mahjong experience you won\u2019t find anywhere else.",
+    desc: "Visiting Las Vegas? Try something off the Strip: a hands-on mahjong experience you won\u2019t find anywhere else.",
   },
 ];
 

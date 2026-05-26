@@ -42,7 +42,7 @@ export default function Instagram() {
             lineHeight: 1.7,
           }}
         >
-          See what we&rsquo;re up to &mdash; event recaps, behind-the-scenes,
+          See what we&rsquo;re up to: event recaps, behind-the-scenes,
           tips, and tile talk. Come hang out!
         </p>
 

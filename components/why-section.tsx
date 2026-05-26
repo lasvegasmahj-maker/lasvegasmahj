@@ -37,13 +37,13 @@ export default function WhySection() {
             </h2>
             <p>
               When I moved to Las Vegas almost 14 years ago, I was searching for
-              the same thing so many of us are &mdash;{" "}
+              the same thing so many of us are:{" "}
               <strong>community, connection, and real friendships</strong>. I
               found all of that at the mahjong table.
             </p>
             <p>
-              Mahjong is a game of friendship, fun, strategy, and a little luck
-              &mdash; brain-stimulating enough to keep you sharp, social enough
+              Mahjong is a game of friendship, fun, strategy, and a little luck,
+              brain-stimulating enough to keep you sharp, social enough
               to make you stay. Whether you&rsquo;re a total beginner or a
               seasoned player, there&rsquo;s a seat at the table for you.
             </p>

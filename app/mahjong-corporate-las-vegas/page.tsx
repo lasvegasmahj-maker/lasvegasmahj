@@ -73,7 +73,7 @@ export default function MahjongCorporateLasVegas() {
               Corporate Mahjong in <span className="accent-green">Las Vegas</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "640px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Your team has done happy hours and escape rooms. Give them something that actually builds real connections, a strategic, social, genuinely memorable mahjong experience.
+              Your team has done happy hours and escape rooms. Give them something that actually builds real connections: a strategic, social, genuinely memorable mahjong experience.
             </p>
             <a href="/#classes" className="btn-primary">Request a Quote</a>
           </div>
@@ -139,7 +139,7 @@ export default function MahjongCorporateLasVegas() {
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
           <div className="container" style={{ maxWidth: "720px" }}>
             <p className="section-label">Questions?</p>
-            <h2 className="section-title">FAQ — <span className="accent-pink">Corporate Events</span></h2>
+            <h2 className="section-title">FAQ: <span className="accent-pink">Corporate Events</span></h2>
             <div style={{ marginTop: "2rem" }}>
               {faqs.map(faq => (
                 <div key={faq.q} style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "1.5rem 0" }}>

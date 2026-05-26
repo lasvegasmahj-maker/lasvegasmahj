@@ -120,7 +120,7 @@ export default function MahjongLessonsSummerlin() {
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container" style={{ maxWidth: "720px" }}>
             <p className="section-label">Questions?</p>
-            <h2 className="section-title">FAQ — <span className="accent-green">Summerlin</span></h2>
+            <h2 className="section-title">FAQ: <span className="accent-green">Summerlin</span></h2>
             <div style={{ marginTop: "2rem" }}>
               {faqs.map(faq => (
                 <div key={faq.q} style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "1.5rem 0" }}>

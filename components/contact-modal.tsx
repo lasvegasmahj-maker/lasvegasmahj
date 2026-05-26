@@ -59,7 +59,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               &#126980;
             </div>
             <h4>Message Sent!</h4>
-            <p>Thanks for reaching out &mdash; I&rsquo;ll be in touch soon!</p>
+            <p>Thanks for reaching out. I&rsquo;ll be in touch soon!</p>
           </div>
         ) : (
           <>
@@ -68,7 +68,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               Say <span style={{ color: "var(--green)" }}>Hello!</span>
             </h3>
             <p className="modal-desc">
-              Have a question? I&rsquo;d love to hear from you &mdash;
+              Have a question? I&rsquo;d love to hear from you.
               I&rsquo;ll get back to you within 24 hours!
             </p>
             <form onSubmit={handleSubmit}>

@@ -42,22 +42,22 @@ const jsonLd = {
 };
 
 const eventTypes = [
-  { icon: "🎉", title: "Bachelorette Parties", desc: "Tiles, drinks, and unforgettable fun — a unique Vegas experience your crew will talk about for years. Way more memorable than another club night." },
-  { icon: "🏢", title: "Corporate Team Building", desc: "Break the ice and build real connections. Mahjong requires communication, strategy, and teamwork — perfect for any group size." },
+  { icon: "🎉", title: "Bachelorette Parties", desc: "Tiles, drinks, and unforgettable fun: a unique Vegas experience your crew will talk about for years. Way more memorable than another club night." },
+  { icon: "🏢", title: "Corporate Team Building", desc: "Break the ice and build real connections. Mahjong requires communication, strategy, and teamwork, perfect for any group size." },
   { icon: "🎂", title: "Birthday Celebrations", desc: "Special birthday mats, a personalized experience, and a celebration the birthday girl will actually remember. Skip the dinner reservation." },
   { icon: "❤️", title: "Charity & Fundraisers", desc: "Host a mahjong tournament or social to raise funds and bring your community together for a great cause." },
-  { icon: "🥂", title: "Girls' Night Out", desc: "The ultimate girls' night — tiles, laughter, drinks, and zero screen time. We bring everything. You bring the crew." },
+  { icon: "🥂", title: "Girls' Night Out", desc: "The ultimate girls' night: tiles, laughter, drinks, and zero screen time. We bring everything. You bring the crew." },
   { icon: "🎰", title: "Vegas Visitor Experiences", desc: "Visiting Las Vegas? Try something you can't do anywhere else. A hands-on mahjong experience you'll take home with you." },
   { icon: "💒", title: "Bridal Showers", desc: "An elegant, interactive activity for the bride-to-be and her closest friends. Something different, something memorable." },
-  { icon: "🏫", title: "School & Community Groups", desc: "Community organizations, neighborhood associations, book clubs — we bring mahjong to you wherever you are." },
+  { icon: "🏫", title: "School & Community Groups", desc: "Community organizations, neighborhood associations, book clubs: we bring mahjong to you wherever you are." },
 ];
 
 const faqs = [
   { q: "How much does a private mahjong event cost in Las Vegas?", a: "Every event is custom. Pricing depends on what you need -- group size, what we're bringing, and what we're doing. Reach out and we'll put together a quote that works for you." },
   { q: "How big can the group be?", a: "We can host groups of all sizes, from intimate gatherings of 4 to large corporate events of 50+. For very large events we bring additional support." },
-  { q: "Do guests need to know how to play?", a: "Not at all. We teach everyone from scratch. Most groups are complete beginners — that's half the fun." },
-  { q: "Where do you host private events?", a: "We can come to your home, a rented venue, a restaurant, a hotel suite, or your office. We bring all the equipment — tiles, racks, cards, everything." },
-  { q: "How far in advance should I book?", a: "We recommend booking at least 2 weeks in advance, especially for weekends. Popular dates fill up fast — reach out early and we'll make it work." },
+  { q: "Do guests need to know how to play?", a: "Not at all. We teach everyone from scratch. Most groups are complete beginners, and that's half the fun." },
+  { q: "Where do you host private events?", a: "We can come to your home, a rented venue, a restaurant, a hotel suite, or your office. We bring all the equipment: tiles, racks, cards, everything." },
+  { q: "How far in advance should I book?", a: "We recommend booking at least 2 weeks in advance, especially for weekends. Popular dates fill up fast, so reach out early and we'll make it work." },
 ];
 
 export default function MahjongPartiesLasVegas() {
@@ -76,7 +76,7 @@ export default function MahjongPartiesLasVegas() {
               Mahjong <span className="accent-pink">Parties</span> in Las Vegas
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Skip the same old party idea. We bring the tiles, the teaching, and the energy — you bring the crew. Every event is fully hosted and customized for your group.
+              Skip the same old party idea. We bring the tiles, the teaching, and the energy; you bring the crew. Every event is fully hosted and customized for your group.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/#classes" className="btn-primary">Plan Your Event</a>
@@ -132,10 +132,10 @@ export default function MahjongPartiesLasVegas() {
             <p className="section-label">The Process</p>
             <h2 className="section-title">How It <span className="accent-pink">Works</span></h2>
             {[
-              { num: "01", title: "Reach Out", desc: "Tell us about your event — date, group size, location, and what kind of experience you're looking for. We'll get back to you within 24 hours." },
-              { num: "02", title: "We Plan Together", desc: "We customize everything to your group — timing, format, venue recommendations, and any special touches you want." },
-              { num: "03", title: "We Show Up", desc: "We arrive with all the equipment — tiles, racks, cards, everything. You don't need to provide a thing." },
-              { num: "04", title: "Everyone Plays", desc: "We teach your group from scratch in a fun, low-pressure way. Everyone leaves knowing how to play — and wanting to play again." },
+              { num: "01", title: "Reach Out", desc: "Tell us about your event: date, group size, location, and what kind of experience you're looking for. We'll get back to you within 24 hours." },
+              { num: "02", title: "We Plan Together", desc: "We customize everything to your group: timing, format, venue recommendations, and any special touches you want." },
+              { num: "03", title: "We Show Up", desc: "We arrive with all the equipment: tiles, racks, cards, everything. You don't need to provide a thing." },
+              { num: "04", title: "Everyone Plays", desc: "We teach your group from scratch in a fun, low-pressure way. Everyone leaves knowing how to play, and wanting to play again." },
             ].map(step => (
               <div key={step.num} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                 <div style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", opacity: 0.4, flexShrink: 0, lineHeight: 1 }}>{step.num}</div>
@@ -169,7 +169,7 @@ export default function MahjongPartiesLasVegas() {
               <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, fontStyle: "italic", marginBottom: "1rem" }}>
                 &ldquo;We worked with Shauna for a mahjong-oriented corporate event in early 2026. Shauna was easy to work with and her team was engaging with all of our guests. We got some of the best guest feedback we&rsquo;ve ever received from this event, and we hope to work with Shauna again on a future mahjong social!&rdquo;
               </p>
-              <cite style={{ fontFamily: "var(--font-nav)", fontSize: "0.9rem", color: "var(--pink)", fontStyle: "normal", fontWeight: 700 }}>— Kristi, Northmarq</cite>
+              <cite style={{ fontFamily: "var(--font-nav)", fontSize: "0.9rem", color: "var(--pink)", fontStyle: "normal", fontWeight: 700 }}>Kristi, Northmarq</cite>
             </blockquote>
           </div>
         </section>
@@ -178,7 +178,7 @@ export default function MahjongPartiesLasVegas() {
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container" style={{ maxWidth: "720px" }}>
             <p className="section-label">Questions?</p>
-            <h2 className="section-title">FAQ — <span className="accent-pink">Private Events</span></h2>
+            <h2 className="section-title">FAQ: <span className="accent-pink">Private Events</span></h2>
             <div style={{ marginTop: "2rem" }}>
               {faqs.map(faq => (
                 <div key={faq.q} style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "1.5rem 0" }}>
@@ -195,7 +195,7 @@ export default function MahjongPartiesLasVegas() {
           <div className="container">
             <h2 className="section-title">Let&rsquo;s Plan <span className="accent-pink">Your Event</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "480px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
-              Tell us what you&rsquo;re planning and we&rsquo;ll make it happen. Reach out today — popular dates fill up fast.
+              Tell us what you&rsquo;re planning and we&rsquo;ll make it happen. Reach out today. Popular dates fill up fast.
             </p>
             <a href="/#classes" className="btn-primary">Book Your Event</a>
           </div>

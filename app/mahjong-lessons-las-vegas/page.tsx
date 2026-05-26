@@ -52,10 +52,10 @@ const jsonLd = {
 
 const faqs = [
   { q: "How much do mahjong lessons cost in Las Vegas?", a: "Small group lessons (3-8 people) are $50 per person with a $200 minimum. Private lessons and events are custom -- contact us for pricing." },
-  { q: "Do I need experience to take mahjong lessons?", a: "No experience needed at all. MAHJ101 starts completely from scratch — we cover everything from sorting the tiles to playing your first hand." },
+  { q: "Do I need experience to take mahjong lessons?", a: "No experience needed at all. MAHJ101 starts completely from scratch: we cover everything from sorting the tiles to playing your first hand." },
   { q: "Where are mahjong lessons held in Las Vegas?", a: "We host lessons at venues across Las Vegas, Summerlin, and Henderson. We also offer private lessons at your home or preferred location." },
-  { q: "What is the difference between MAHJ101 and MAHJ102?", a: "MAHJ101 is for complete beginners — we start from zero. MAHJ102 builds on that foundation with more hands, strategy, and game time. We recommend taking 101 first." },
-  { q: "What version of mahjong do you teach?", a: "We teach American Mahjong using the National Mah Jongg League (NMJL) card — the most popular version played across the US." },
+  { q: "What is the difference between MAHJ101 and MAHJ102?", a: "MAHJ101 is for complete beginners; we start from zero. MAHJ102 builds on that foundation with more hands, strategy, and game time. We recommend taking 101 first." },
+  { q: "What version of mahjong do you teach?", a: "We teach American Mahjong using the National Mah Jongg League (NMJL) card, the most popular version played across the US." },
 ];
 
 export default function MahjongLessonsLasVegas() {
@@ -118,10 +118,10 @@ export default function MahjongLessonsLasVegas() {
             <p className="section-label">Your Instructor</p>
             <h2 className="section-title">Certified. <span className="accent-pink">Patient. Fun.</span></h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
-              Hi — I&rsquo;m Shauna, a <strong>certified Oh My Mahjong instructor</strong> and the founder of Las Vegas Mahjong. I&rsquo;ve been playing American Mahjong for nearly 18 years, teaching friends and family long before I turned it into a business.
+              Hi, I&rsquo;m Shauna, a <strong>certified Oh My Mahjong instructor</strong> and the founder of Las Vegas Mahjong. I&rsquo;ve been playing American Mahjong for nearly 18 years, teaching friends and family long before I turned it into a business.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
-              My teaching style is patient, clear, and beginner-obsessed. I break the game into simple, logical steps so you&rsquo;re not overwhelmed — and you&rsquo;re playing your first hand within the first hour, every time.
+              My teaching style is patient, clear, and beginner-obsessed. I break the game into simple, logical steps so you&rsquo;re not overwhelmed, and you&rsquo;re playing your first hand within the first hour, every time.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "2rem" }}>
               I offer lessons across <strong>Las Vegas, Summerlin, Henderson</strong>, and the entire Las Vegas Valley. I can also come to your home or host virtually via Zoom.
@@ -138,12 +138,12 @@ export default function MahjongLessonsLasVegas() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
               {[
                 { name: "Tamar", text: "I was on the verge of giving up on learning to play Mahjong. Then Shauna taught me. I 'got it' straight away, after having tried for months!! If it wasn't for Shauna, I wouldn't be playing Mahjong today and LOVING it!!" },
-                { name: "Sabrina", text: "I had such a great time learning Mahjong with Shauna! She's an amazing teacher — super patient, clear in her explanations, and she makes the whole experience really fun. Highly recommend!" },
+                { name: "Sabrina", text: "I had such a great time learning Mahjong with Shauna! She's an amazing teacher, super patient, clear in her explanations, and she makes the whole experience really fun. Highly recommend!" },
                 { name: "Molly", text: "If you need a mahjong lesson (or 5) @lasvegasmahjong is your woman. Amazing teacher." },
               ].map(t => (
                 <div key={t.name} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
                   <p style={{ color: "rgba(255,255,255,0.75)", lineHeight: 1.75, fontStyle: "italic", marginBottom: "1rem" }}>&ldquo;{t.text}&rdquo;</p>
-                  <div style={{ fontFamily: "var(--font-nav)", fontSize: "0.85rem", color: "var(--pink)", fontWeight: 700 }}>— {t.name}</div>
+                  <div style={{ fontFamily: "var(--font-nav)", fontSize: "0.85rem", color: "var(--pink)", fontWeight: 700 }}>{t.name}</div>
                 </div>
               ))}
             </div>
@@ -154,7 +154,7 @@ export default function MahjongLessonsLasVegas() {
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
           <div className="container" style={{ maxWidth: "720px" }}>
             <p className="section-label">Questions?</p>
-            <h2 className="section-title">FAQ — <span className="accent-pink">Lessons</span></h2>
+            <h2 className="section-title">FAQ: <span className="accent-pink">Lessons</span></h2>
             <div style={{ marginTop: "2rem" }}>
               {faqs.map(faq => (
                 <div key={faq.q} style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "1.5rem 0" }}>
@@ -171,7 +171,7 @@ export default function MahjongLessonsLasVegas() {
           <div className="container">
             <h2 className="section-title">Ready to <span className="accent-pink">Play?</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "500px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
-              Join hundreds of Las Vegas players who learned to love mahjong at the table. Book your spot today — no experience needed.
+              Join hundreds of Las Vegas players who learned to love mahjong at the table. Book your spot today. No experience needed.
             </p>
             <a href="/#classes" className="btn-primary" style={{ marginRight: "1rem" }}>Book a Lesson</a>
             <a href="/" className="btn-outline">Back to Homepage</a>

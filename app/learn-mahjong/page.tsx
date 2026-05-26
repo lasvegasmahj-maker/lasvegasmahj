@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://lasvegasmahj.com/learn-mahjong" },
   openGraph: {
     title: "How to Learn American Mahjong | Complete Beginner's Guide",
-    description: "Everything you need to start playing American Mahjong — the tiles, the card, your first hand, and where to find lessons near you. Written by a certified instructor.",
+    description: "Everything you need to start playing American Mahjong: the tiles, the card, your first hand, and where to find lessons near you. Written by a certified instructor.",
     url: "https://lasvegasmahj.com/learn-mahjong",
     images: ["https://lasvegasmahj.com/hero-bg.jpg"],
   },
@@ -33,7 +33,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: "How to Learn American Mahjong: A Complete Beginner's Guide",
-  description: "The complete beginner's guide to learning American Mahjong — tiles, the NMJL card, how to play, and how to find lessons near you.",
+  description: "The complete beginner's guide to learning American Mahjong: tiles, the NMJL card, how to play, and how to find lessons near you.",
   author: { "@type": "Person", name: "Shauna", jobTitle: "Certified Oh My Mahjong Instructor" },
   publisher: { "@type": "Organization", name: "Las Vegas Mahjong", url: "https://lasvegasmahj.com" },
   mainEntityOfPage: "https://lasvegasmahj.com/learn-mahjong",
@@ -55,8 +55,8 @@ const howToSchema = {
 
 const affiliates = [
   { name: "Oh My Mahjong", url: "https://ohmymahjong.com?sca_ref=9661578.Ks3olHSQzr", desc: "My favorite source for mahjong sets, accessories, and gifts. Huge selection, beautiful quality.", discount: "10% off with code LASVEGASMAHJ" },
-  { name: "Bespoke Mahjong", url: "https://www.bespokemahjong.com?sca_ref=10595326.4agm2llL78", desc: "Custom, personalized mahjong sets — perfect if you want something truly unique.", discount: "10% off with code LASVEGASMAHJ" },
-  { name: "Mahjong Maven", url: "https://mahjonggmaven.com/?ref=Lasvegasmahj", desc: "Everything a new player needs — sets, bags, tile holders, and accessories.", discount: "10% off with code LASVEGASMAHJ" },
+  { name: "Bespoke Mahjong", url: "https://www.bespokemahjong.com?sca_ref=10595326.4agm2llL78", desc: "Custom, personalized mahjong sets, perfect if you want something truly unique.", discount: "10% off with code LASVEGASMAHJ" },
+  { name: "Mahjong Maven", url: "https://mahjonggmaven.com/?ref=Lasvegasmahj", desc: "Everything a new player needs: sets, bags, tile holders, and accessories.", discount: "10% off with code LASVEGASMAHJ" },
   { name: "My Fair Mahjong", url: "https://myfairmahjong.com/LASVEGASMAHJ", desc: "Gorgeous sets and accessories with a beautiful, elegant aesthetic.", discount: "Discount with code LASVEGASMAHJ" },
 ];
 
@@ -76,7 +76,7 @@ export default function LearnMahjong() {
               How to Learn <span className="accent-green">American Mahjong</span>
             </h1>
             <p style={{ fontSize: "1.1rem", color: "rgba(255,255,255,0.7)", maxWidth: "600px", margin: "0 auto", lineHeight: 1.75 }}>
-              A complete beginner&rsquo;s guide — from &ldquo;what even is mahjong?&rdquo; to playing your first winning hand.
+              A complete beginner&rsquo;s guide: from &ldquo;what even is mahjong?&rdquo; to playing your first winning hand.
             </p>
           </div>
         </section>
@@ -87,27 +87,27 @@ export default function LearnMahjong() {
 
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>What Is American Mahjong?</h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
-              American Mahjong is a tile-based game played by four players, each building a hand of 14 tiles toward a winning combination. It&rsquo;s a game of strategy, memory, and a little luck — and it&rsquo;s one of the fastest-growing social games in the United States.
+              American Mahjong is a tile-based game played by four players, each building a hand of 14 tiles toward a winning combination. It&rsquo;s a game of strategy, memory, and a little luck, and it&rsquo;s one of the fastest-growing social games in the United States.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2.5rem" }}>
-              Unlike the Chinese or Hong Kong versions you might have seen, American Mahjong is played using the <strong>National Mah Jongg League (NMJL) card</strong> — a card that changes every year and contains all the winning hands for that year&rsquo;s play. This is the version taught and played at most mahjong groups, clubs, and events across the US.
+              Unlike the Chinese or Hong Kong versions you might have seen, American Mahjong is played using the <strong>National Mah Jongg League (NMJL) card</strong>, a card that changes every year and contains all the winning hands for that year&rsquo;s play. This is the version taught and played at most mahjong groups, clubs, and events across the US.
             </p>
 
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>The Tiles</h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>A standard American Mahjong set has 152 tiles, divided into several categories:</p>
             <ul style={{ color: "rgba(255,255,255,0.7)", lineHeight: 2, paddingLeft: "1.5rem", marginBottom: "2.5rem" }}>
-              <li><strong style={{ color: "var(--white)" }}>Bams (Bamboo)</strong> — numbered 1–9, shown with bamboo stalks</li>
-              <li><strong style={{ color: "var(--white)" }}>Craks (Characters)</strong> — numbered 1–9, shown with Chinese characters</li>
-              <li><strong style={{ color: "var(--white)" }}>Dots</strong> — numbered 1–9, shown with circles</li>
-              <li><strong style={{ color: "var(--white)" }}>Winds</strong> — North, South, East, West</li>
-              <li><strong style={{ color: "var(--white)" }}>Dragons</strong> — Red (Crak), Green (Bam), White (Soap)</li>
-              <li><strong style={{ color: "var(--white)" }}>Flowers</strong> — a flower is a flower is a flower; all are interchangeable</li>
-              <li><strong style={{ color: "var(--white)" }}>Jokers</strong> — wild tiles, unique to American Mahjong</li>
+              <li><strong style={{ color: "var(--white)" }}>Bams (Bamboo):</strong> numbered 1–9, shown with bamboo stalks</li>
+              <li><strong style={{ color: "var(--white)" }}>Craks (Characters):</strong> numbered 1–9, shown with Chinese characters</li>
+              <li><strong style={{ color: "var(--white)" }}>Dots:</strong> numbered 1–9, shown with circles</li>
+              <li><strong style={{ color: "var(--white)" }}>Winds:</strong> North, South, East, West</li>
+              <li><strong style={{ color: "var(--white)" }}>Dragons:</strong> Red (Crak), Green (Bam), White (Soap)</li>
+              <li><strong style={{ color: "var(--white)" }}>Flowers:</strong> a flower is a flower is a flower; all are interchangeable</li>
+              <li><strong style={{ color: "var(--white)" }}>Jokers:</strong> wild tiles, unique to American Mahjong</li>
             </ul>
 
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>The NMJL Card</h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
-              The NMJL card is updated every year and lists all the valid winning hands for that year. Learning to read the card — and choosing which hands to build toward — is the core skill of American Mahjong.
+              The NMJL card is updated every year and lists all the valid winning hands for that year. Learning to read the card, and choosing which hands to build toward, is the core skill of American Mahjong.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2.5rem" }}>
               The card is organized into categories (Like Numbers, Quints, Consecutive Run, etc.) and uses numbers to describe the structure of each hand: 2 for a Pair, 3 for a Pung, 4 for a Kong, 5 for a Quint, 6 for a Sextet. It looks intimidating at first, but within one lesson, most students are reading it confidently.

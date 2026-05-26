@@ -13,7 +13,7 @@ const testimonials = [
   },
   {
     name: "Sabrina",
-    text: "I had such a great time learning Mahjong with Shauna! She\u2019s an amazing teacher \u2014 super patient, clear in her explanations, and she makes the whole experience really fun. Mahjong can feel a bit overwhelming at first, but Shauna breaks everything down in a way that\u2019s easy to understand and keeps the energy light and enjoyable. Highly recommend learning from her if you get the chance!",
+    text: "I had such a great time learning Mahjong with Shauna! She\u2019s an amazing teacher, super patient, clear in her explanations, and she makes the whole experience really fun. Mahjong can feel a bit overwhelming at first, but Shauna breaks everything down in a way that\u2019s easy to understand and keeps the energy light and enjoyable. Highly recommend learning from her if you get the chance!",
   },
   {
     name: "Tamar",
@@ -64,7 +64,7 @@ export default function Testimonials() {
             {testimonials.map((t) => (
               <div className="testimonial" key={t.name}>
                 <p>&ldquo;{t.text}&rdquo;</p>
-                <div className="testimonial-author">&mdash; {t.name}</div>
+                <div className="testimonial-author">{t.name}</div>
               </div>
             ))}
           </div>

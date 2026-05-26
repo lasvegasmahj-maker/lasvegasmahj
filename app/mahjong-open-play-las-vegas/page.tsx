@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://lasvegasmahj.com/mahjong-open-play-las-vegas" },
   openGraph: {
     title: "Mahjong Open Play Las Vegas | Events & Community Games",
-    description: "Join mahjong open play events across Las Vegas, Summerlin, and Henderson. All skill levels welcome — come solo, bring a friend, or meet new players.",
+    description: "Join mahjong open play events across Las Vegas, Summerlin, and Henderson. All skill levels welcome. Come solo, bring a friend, or meet new players.",
     url: "https://lasvegasmahj.com/mahjong-open-play-las-vegas",
     images: ["https://lasvegasmahj.com/hero-bg.jpg"],
   },
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "SportsOrganization",
-  name: "Las Vegas Mahjong — Open Play Events",
+  name: "Las Vegas Mahjong: Open Play Events",
   description: "Mahjong open play events, leagues, and community games across Las Vegas, Summerlin, and Henderson.",
   url: "https://lasvegasmahj.com/mahjong-open-play-las-vegas",
   location: { "@type": "Place", address: { "@type": "PostalAddress", addressLocality: "Las Vegas", addressRegion: "NV" } },
@@ -54,7 +54,7 @@ export default function MahjongOpenPlayLasVegas() {
               Mahjong <span className="accent-green">Open Play</span> in Las Vegas
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Show up, sit down, and play. Our open play events bring Las Vegas mahjong players together at great venues across the Valley. All skill levels welcome — come solo or bring a friend.
+              Show up, sit down, and play. Our open play events bring Las Vegas mahjong players together at great venues across the Valley. All skill levels welcome. Come solo or bring a friend.
             </p>
             <a href="/#events" className="btn-primary">See Upcoming Events</a>
           </div>
@@ -66,13 +66,13 @@ export default function MahjongOpenPlayLasVegas() {
             <p className="section-label">What to Expect</p>
             <h2 className="section-title">What Is <span className="accent-pink">Open Play?</span></h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
-              Open play is a casual, social mahjong session where players of all skill levels gather to play. No strict tournament rules — just good games, good people, and a welcoming environment.
+              Open play is a casual, social mahjong session where players of all skill levels gather to play. No strict tournament rules, just good games, good people, and a welcoming environment.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
               Our events are hosted at restaurants, community venues, and local spots across Las Vegas. Tickets typically include a drink, and we always keep the energy light, fun, and beginner-friendly.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8 }}>
-              Already know how to play? Come and meet the local mahjong community. Just learning? Come anyway — open play is the best way to practice and get better fast.
+              Already know how to play? Come and meet the local mahjong community. Just learning? Come anyway. Open play is the best way to practice and get better fast.
             </p>
           </div>
         </section>
@@ -84,7 +84,7 @@ export default function MahjongOpenPlayLasVegas() {
             <h2 className="section-title">More Than a <span className="accent-green">Game</span></h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
               {[
-                { icon: "🧠", title: "Stay Sharp", desc: "American Mahjong is a genuinely brain-stimulating game. Strategy, memory, pattern recognition — every session works your mind." },
+                { icon: "🧠", title: "Stay Sharp", desc: "American Mahjong is a genuinely brain-stimulating game. Strategy, memory, pattern recognition: every session works your mind." },
                 { icon: "👯", title: "Meet People", desc: "Las Vegas is a city of transplants and newcomers. Open play is one of the best ways to make real, lasting friendships in the Valley." },
                 { icon: "🍷", title: "Great Venues", desc: "We host at restaurants, wine bars, and community spaces with great food and drinks. It's an outing, not just a game." },
                 { icon: "📈", title: "Get Better Fast", desc: "Nothing improves your game faster than playing with different people. Come once, leave a better player." },

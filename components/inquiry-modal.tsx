@@ -60,7 +60,7 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
             </div>
             <h4>You&rsquo;re on my radar!</h4>
             <p>
-              Thanks for reaching out &mdash; I&rsquo;ll be in touch within 24
+              Thanks for reaching out. I&rsquo;ll be in touch within 24
               hours. Get ready to play!
             </p>
           </div>
@@ -114,13 +114,13 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
                     Select an option...
                   </option>
                   <option value="mahj101">
-                    MAHJ101 &mdash; Absolute Beginners
+                    MAHJ101: Absolute Beginners
                   </option>
                   <option value="mahj102">
-                    MAHJ102 &mdash; Beyond the Basics
+                    MAHJ102: Beyond the Basics
                   </option>
                   <option value="group">
-                    Teams &amp; Tiles &mdash; Large Group / Corporate
+                    Teams &amp; Tiles: Large Group / Corporate
                   </option>
                   <option value="private">Private 1-on-1 Lesson</option>
                   <option value="other">Something Else</option>

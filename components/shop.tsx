@@ -21,7 +21,7 @@ const shopItems = [
     borderBottomColor: "rgba(255,130,130,0.1)",
     url: "https://www.bespokemahjong.com?sca_ref=10595326.4agm2llL78",
     site: "bespokemahjong.com",
-    desc: "Custom, personalized mahjong sets \u2014 the perfect gift for the player who has everything.",
+    desc: "Custom, personalized mahjong sets: the perfect gift for the player who has everything.",
     cta: "Shop Now \u00B7 10% Off \u2197",
     logo: "/logos/bespoke.webp",
   },
@@ -32,7 +32,7 @@ const shopItems = [
     borderBottomColor: "rgba(57,230,57,0.1)",
     url: "https://mahjonggmaven.com/?ref=Lasvegasmahj",
     site: "mahjonggmaven.com",
-    desc: "Everything a mahjong lover needs \u2014 sets, bags, accessories & more.",
+    desc: "Everything a mahjong lover needs: sets, bags, accessories & more.",
     cta: "Shop Now \u00B7 10% Off \u2197",
     logo: "/logos/maven.jpg",
   },
@@ -87,7 +87,7 @@ const shopItems = [
     borderBottomColor: "rgba(255,165,0,0.1)",
     url: "https://moderntribe.com?aff=255",
     site: "moderntribe.com",
-    desc: "Modern Judaica and lifestyle gifts \u2014 including beautiful mahjong-themed gifts and accessories with a contemporary twist.",
+    desc: "Modern Judaica and lifestyle gifts, including beautiful mahjong-themed gifts and accessories with a contemporary twist.",
     cta: "Shop Now \u2197",
     logo: "/logos/moderntribe.avif",
   },
@@ -181,7 +181,7 @@ export default function Shop() {
               marginBottom: "1rem",
             }}
           >
-            Some links are affiliate links &mdash; I may earn a small commission
+            Some links are affiliate links. I may earn a small commission
             at no extra cost to you. As an Amazon Associate I earn from
             qualifying purchases.
           </p>

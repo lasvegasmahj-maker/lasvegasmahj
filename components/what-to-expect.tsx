@@ -6,12 +6,12 @@ const steps = [
   {
     num: "01",
     title: "Arrive & Settle In",
-    desc: "Grab a seat, meet your fellow players, and relax. We handle all the setup \u2014 tiles, racks, cards, everything.",
+    desc: "Grab a seat, meet your fellow players, and relax. We handle all the setup: tiles, racks, cards, everything.",
   },
   {
     num: "02",
     title: "Learn the Basics",
-    desc: "We walk you through the tiles, the card, and how a hand works. No rush, no pressure \u2014 just clear, fun instruction.",
+    desc: "We walk you through the tiles, the card, and how a hand works. No rush, no pressure, just clear, fun instruction.",
   },
   {
     num: "03",

@@ -195,7 +195,7 @@ export default function Events() {
                     lineHeight: 1.7,
                   }}
                 >
-                  No upcoming events right now &mdash; check back soon!
+                  No upcoming events right now. Check back soon!
                 </p>
               </div>
             )}
