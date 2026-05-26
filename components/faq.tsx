@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 const faqs = [
   {
     q: "Do I need to know how to play before coming?",
-    a: "Not at all! Most of our students are complete beginners. MAHJ101 starts from scratch \u2014 we\u2019ll teach you everything from sorting the tiles to playing your first hand. No experience needed.",
+    a: "Not at all! Most of our students are complete beginners. MAHJ101 starts from scratch; we\u2019ll teach you everything from sorting the tiles to playing your first hand. No experience needed.",
   },
   {
     q: "What version of mahjong do you teach?",
@@ -13,7 +13,7 @@ const faqs = [
   },
   {
     q: "What do I need to bring?",
-    a: "Just yourself! We provide the tiles, racks, and everything else you need. If you have your own NMJL card, feel free to bring it \u2014 otherwise we\u2019ll have extras.",
+    a: "Just yourself! We provide the tiles, racks, and everything else you need. If you have your own NMJL card, feel free to bring it; otherwise we\u2019ll have extras.",
   },
   {
     q: "Can I come alone, or do I need a group?",
@@ -21,15 +21,15 @@ const faqs = [
   },
   {
     q: "How long does it take to learn?",
-    a: "Most people feel comfortable playing after just one 2\u20133 hour lesson. You won\u2019t be an expert overnight, but you\u2019ll know enough to sit down and play \u2014 and that\u2019s when the real fun starts.",
+    a: "Most people feel comfortable playing after just one 2\u20133 hour lesson. You won\u2019t be an expert overnight, but you\u2019ll know enough to sit down and play , and that\u2019s when the real fun starts.",
   },
   {
     q: "Where do you hold classes and events?",
-    a: "We host at restaurants, community spaces, and private venues across the Las Vegas Valley \u2014 from Summerlin to Henderson. We also offer private lessons at your home or preferred location.",
+    a: "We host at restaurants, community spaces, and private venues across the Las Vegas Valley, from Summerlin to Henderson. We also offer private lessons at your home or preferred location.",
   },
   {
     q: "What\u2019s the difference between MAHJ101 and MAHJ102?",
-    a: "MAHJ101 is for absolute beginners \u2014 we cover the basics from the ground up. MAHJ102 picks up where 101 left off with more hands, strategy, and table time. We recommend taking 101 first.",
+    a: "MAHJ101 is for absolute beginners; we cover the basics from the ground up. MAHJ102 picks up where 101 left off with more hands, strategy, and table time. We recommend taking 101 first.",
   },
   {
     q: "Can you host a private event for my group?",
