@@ -22,8 +22,8 @@ const QA = [
     a: "The National Mah Jongg League releases a new card every spring. The new card is the only valid card for that year's play -- the previous year's card is retired. You can order the new card at the NMJL website (nationalmahjonggleague.org) for a small annual fee.",
   },
   {
-    q: "What do the symbols P, K, and N mean on the card?",
-    a: "P stands for Pair (2 identical tiles). K stands for Kong (4 identical tiles). N represents a specific number you choose (must be consistent within the hand). Some cards also use Q for Quint (5 identical tiles, requiring jokers). The symbols tell you the exact structure of each hand.",
+    q: "What do the numbers on the card mean?",
+    a: "The numbers tell you how many identical tiles are in that group: 2 = Pair, 3 = Pung, 4 = Kong, 5 = Quint, 6 = Sextet. N represents a specific number you choose and must use consistently across the hand. The card uses these to show you the exact structure of each winning hand.",
   },
   {
     q: "What does 'any like number' mean on the card?",

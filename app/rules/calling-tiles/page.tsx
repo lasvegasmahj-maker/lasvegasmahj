@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const QA = [
   {
     q: "What is the difference between a pung and a kong?",
-    a: "A pung is a set of three identical tiles. A kong is a set of four identical tiles. Both can include jokers. A quint is a set of five -- only possible with jokers substituting. The card shows which type each hand requires using P (pung), K (kong), and Q (quint) symbols.",
+    a: "A pung is a set of three identical tiles. A kong is a set of four. A quint is five, and a sextet is six -- both require jokers. The card shows which group size each hand requires using the numbers 3, 4, 5, and 6.",
   },
   {
     q: "Can I call any discard or only the most recent one?",
