@@ -18,6 +18,10 @@ export const metadata: Metadata = {
 
 const QA = [
   {
+    q: "How many tiles does each player start with?",
+    a: "Each player starts with 13 tiles -- except East (the dealer), who starts with 14. East is already holding a full hand and discards first to begin play.",
+  },
+  {
     q: "What makes a valid mahjong?",
     a: "A valid mahjong is a complete hand of 14 tiles that exactly matches one of the hands on the current year's NMJL card. Every tile must be in the right position, every suit must be correct, and exposed sets must match what you declared. If any element is off, it is not a valid mahjong.",
   },

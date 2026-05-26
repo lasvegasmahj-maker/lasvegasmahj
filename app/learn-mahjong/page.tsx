@@ -115,7 +115,7 @@ export default function LearnMahjong() {
 
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>How a Game Works</h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
-              Each player starts with 13 tiles. You take turns drawing and discarding tiles, trying to build one of the hands on the NMJL card. When you complete a hand, you call &ldquo;Mahjong!&rdquo; and win the hand.
+              Each player starts with 13 tiles -- except East (the dealer), who starts with 14. You take turns drawing and discarding tiles, trying to build one of the hands on the NMJL card. When you complete a hand, you call &ldquo;Mahjong!&rdquo; and win the hand.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2.5rem" }}>
               You can also &ldquo;call&rdquo; a tile that another player discards if it completes an exposed section of your hand (a Pung, Kong, or Quint). Jokers can be used as any tile, but other players can swap a real tile for your joker if they need it.
@@ -124,9 +124,9 @@ export default function LearnMahjong() {
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>How to Get Started</h2>
             <div style={{ marginBottom: "2.5rem" }}>
               {[
-                { num: "1", title: "Take a Lesson", desc: "The fastest way to learn. One 2–3 hour lesson with a certified instructor gets most people playing confidently. If you're in Las Vegas, that's us." },
-                { num: "2", title: "Get a Set", desc: "You don't need your own set to learn — instructors and groups provide them. But once you're hooked, you'll want your own. See our recommended sets below." },
-                { num: "3", title: "Buy the NMJL Card", desc: "The card costs about $14/year and can be ordered from the National Mah Jongg League website. New card releases every March." },
+                { num: "1", title: "Take a Lesson", desc: "The fastest way to learn -- full stop. Most students go from zero to playing a complete hand in a single 2-3 hour session. Trying to learn from videos or books takes weeks; a good instructor gets you there in one afternoon. If you're in Las Vegas, that's us." },
+                { num: "2", title: "Get a Set", desc: "You don't need your own set to learn -- instructors and groups provide them. But once you're hooked, you'll want your own. See our recommended sets below." },
+                { num: "3", title: "Buy the NMJL Card", desc: "The card costs about $14/year and can be ordered from the National Mah Jongg League website. A new card releases every spring." },
                 { num: "4", title: "Join a Group or Open Play", desc: "Playing with others is how you actually get good. Find a local group, attend open play events, or join a league." },
               ].map(step => (
                 <div key={step.num} style={{ display: "flex", gap: "1.2rem", padding: "1.2rem 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
