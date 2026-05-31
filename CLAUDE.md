@@ -4,6 +4,46 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Hard Rules (read first, these override everything below)
+
+Non-negotiable. When any other instruction conflicts with this section, this section wins.
+
+### Writing style
+- No em dashes or en dashes anywhere. Use commas, periods, semicolons, parentheses. Numeric ranges use an ASCII hyphen (5-7 days).
+- Active voice, plain language, no jargon.
+- No emojis unless explicitly asked.
+- No code comments unless the WHY is non-obvious. Never comment WHAT the code does.
+
+### Mahjong facts (Shauna is a certified instructor; never ship an error)
+- An American Mahjong set has 152 tiles.
+- The three suits are Bams, Craks, Dots.
+- Dragons: Red = Crak, Green = Bam, White = Soap.
+- Flowers are all interchangeable. They are not numbered. A flower is a flower is a flower.
+- Jokers are wild tiles, unique to American Mahjong.
+- The NMJL card releases every spring. Never say "March" or name a specific month.
+- Each player starts with 13 tiles, except East (the dealer), who starts with 14.
+- Set sizes are written as numbers: 2 = Pair, 3 = Pung, 4 = Kong, 5 = Quint, 6 = Sextet. Never use letter codes (no P, K, N).
+- Open hands can call discards to build exposed sets. Closed hands must be built from your own draws, with no calling.
+
+### Pricing
+- Group lessons: $50 per person, with a $200 minimum. Show this on lesson pages only.
+- Private lessons, parties, and corporate events: say "contact for pricing." Never show a dollar amount for these.
+
+### Data honesty
+- Never present seed or sample data as real.
+- Every factual claim must trace to a source. If you cannot source it, do not publish it.
+
+### No dead or hallucinated links
+- Before shipping any external link, fetch it and confirm it loads (expect 200). This includes all 6 affiliate links and the LASVEGASMAHJ discount codes.
+- The 6 affiliate partners are Oh My Mahjong, Bespoke Mahjong, Mahjong Maven, My Fair Mahjong, Peace Love Mahjong, Bird Bam Boutique. If any link breaks or a code changes, flag it, do not silently drop it.
+- Never invent a URL, citation, statistic, or testimonial.
+
+### Verify before publish
+- All outbound content (pages, emails, JSON-LD schema) is cross-checked against its source before going live.
+
+### Pre-push safety gate
+- This repo pushes straight to main and Vercel auto-deploys, so there is no review between push and live. Before every `git push`, run the gate: `npx tsc --noEmit` clean, then the Technical and Brand reviewer workflows (.claude/workflows/), and only push if both pass. About 90 seconds after deploy, smoke-check the key routes for 200s. See the "Pre-push gate" section below.
+
 ## IMPORTANT: Session Startup
 
 **Before you do anything, read `architecture.md`, `security.md`, and `schema.md`.** These three files define how the app is built, how data is secured, and how the database is structured. Every decision you make should align with these docs.
@@ -47,6 +87,37 @@ See `architecture.md` for full details. Key points:
 - All database column names use snake_case
 - Images stored in Supabase Storage or as base64 inline
 - Mailchimp handles newsletter -- separate from Supabase
+
+## Mahjong Fact Accuracy (Shauna is certified; never ship an error)
+
+American Mahjong facts that MUST be correct in every page, blog post, email, and JSON-LD block:
+
+- The American set has 152 tiles.
+- The three suits are Bams (Bamboo), Craks (Characters), and Dots (Circles).
+- Dragons: Red = Crak, Green = Bam, White = Soap. The white dragon (Soap) associates with the Dot suit.
+- Flowers are all interchangeable. They are not numbered; any flower fills any flower requirement.
+- Jokers are wild.
+- The NMJL card releases every spring. Never write a specific month such as "March."
+- Each player starts with 13 tiles; East (the dealer) starts with 14.
+- Refer to tile groups by size and full name: 2 = Pair, 3 = Pung, 4 = Kong, 5 = Quint, 6 = Sextet. Never use single-letter codes (P, K, N) in player-facing copy.
+- Get open versus closed hands right. Do not describe one as the other.
+- When unsure of any rule, verify against a primary source before publishing. Do not guess.
+
+## Pricing
+
+- Group lessons: $50 per person, $200 minimum. Show this only on lesson pages.
+- Private lessons, parties, and corporate events: "contact for pricing." Never show a dollar amount for these.
+
+## No Hallucinated or Dead Links
+
+- Fetch every external URL before shipping and confirm it returns 200. This includes all affiliate links.
+- Confirm the LASVEGASMAHJ affiliate code is intact wherever it appears. A broken code costs money.
+- Verify before publish: cross-check every page, blog post, email, and schema block against its source.
+
+## Data Honesty
+
+- Never present sample or placeholder content as real customer data, real reviews, or real bookings.
+- Every factual claim must trace to a source. If you cannot source it, do not publish it.
 
 ---
 

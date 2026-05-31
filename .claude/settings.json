@@ -1,9 +1,26 @@
 {
   "permissions": {
+    "defaultMode": "bypassPermissions",
     "allow": [
       "Bash(source ~/.claude/tokens.env)",
       "Bash(nslookup *)",
-      "Bash(dig *)"
+      "Bash(dig *)",
+      "Bash(npx tsc --noEmit*)",
+      "Bash(npx vercel whoami*)",
+      "Bash(npx vercel ls*)",
+      "Bash(npx vercel env ls*)",
+      "Bash(npx vercel --version*)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push)",
+      "Bash(git push *)",
+      "Bash(git checkout *)",
+      "Bash(git branch *)",
+      "Bash(git pull *)",
+      "Bash(gh pr create *)",
+      "Bash(gh pr merge *)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm build)"
     ]
   }
 }
