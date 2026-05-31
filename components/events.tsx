@@ -24,6 +24,12 @@ const tagClasses: Record<string, string> = {
   special: "tag-special",
 };
 
+// Reversible hide controls. Set SHOW_PAST_EVENTS to true to list past events
+// again; remove a title from HIDDEN_EVENT_TITLES to re-list that event. Supabase
+// rows are never deleted.
+const SHOW_PAST_EVENTS = false;
+const HIDDEN_EVENT_TITLES = ["Mahjong Open Play Party at Cafe Lola in Henderson!"];
+
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr + "T00:00:00");
   return date.toLocaleDateString("en-US", {
@@ -116,7 +122,11 @@ export default function Events() {
       const upcomingEvents: Event[] = [];
       const pastEvents: Event[] = [];
 
-      (data || []).forEach((event: Event) => {
+      const visible = (data || []).filter(
+        (event: Event) => !HIDDEN_EVENT_TITLES.includes(event.title)
+      );
+
+      visible.forEach((event: Event) => {
         const eventDate = new Date(event.event_date + "T00:00:00");
         if (eventDate > cutoff) {
           upcomingEvents.push(event);
@@ -200,7 +210,7 @@ export default function Events() {
               </div>
             )}
 
-            {past.length > 0 && (
+            {SHOW_PAST_EVENTS && past.length > 0 && (
               <div style={{ marginTop: "4rem" }}>
                 <div className="reveal">
                   <p className="section-label">Looking Back</p>

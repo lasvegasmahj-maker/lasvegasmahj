@@ -35,13 +35,17 @@ const EVENT = {
   relatedEventSlugs: [],
 };
 
-export const metadata: Metadata = buildEventMetadata({
-  name: EVENT.name,
-  description: EVENT.description,
-  canonicalUrl: EVENT.canonicalUrl,
-  startDate: EVENT.startDate,
-  imageUrl: EVENT.imageUrl,
-});
+export const metadata: Metadata = {
+  ...buildEventMetadata({
+    name: EVENT.name,
+    description: EVENT.description,
+    canonicalUrl: EVENT.canonicalUrl,
+    startDate: EVENT.startDate,
+    imageUrl: EVENT.imageUrl,
+  }),
+  // Hidden until the next live event: keep the page but out of search.
+  robots: { index: false, follow: false },
+};
 
 export default function CafeLolaOpenPlayMay2026() {
   return <EventPage {...EVENT} />;

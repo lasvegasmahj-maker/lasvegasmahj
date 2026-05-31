@@ -62,12 +62,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.75,
     },
-    {
-      url: "https://lasvegasmahj.com/events/cafe-lola-open-play-may-2026",
-      lastModified: new Date("2026-05-23"),
-      changeFrequency: "weekly",
-      priority: 0.75,
-    },
+    // Hidden until the next live event:
+    // {
+    //   url: "https://lasvegasmahj.com/events/cafe-lola-open-play-may-2026",
+    //   lastModified: new Date("2026-05-23"),
+    //   changeFrequency: "weekly",
+    //   priority: 0.75,
+    // },
     {
       url: "https://lasvegasmahj.com/blog",
       lastModified: new Date("2026-05-23"),
