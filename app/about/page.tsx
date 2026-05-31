@@ -56,7 +56,7 @@ export default function About() {
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container" style={{ maxWidth: "800px" }}>
-            <p className="section-label">Certified Oh My Mahjong Instructor · 18 Years Experience</p>
+            <p className="section-label">Certified Oh My Mahjong Instructor · Over 100 Students Taught</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
               Meet <span className="accent-pink">Shauna</span>
             </h1>
