@@ -82,7 +82,7 @@ export default function Footer({ onContactOpen }: FooterProps) {
             <li><a href="/mahjong-open-play-las-vegas">Open Play Events</a></li>
             <li><a href="/mahjong-parties-las-vegas">Private Parties</a></li>
             <li><a href="/mahjong-corporate-las-vegas">Corporate Events</a></li>
-            <li><a href="/events/cafe-lola-open-play-may-2026">Cafe Lola May 31</a></li>
+            {/* Hidden until the next live event: <li><a href="/events/cafe-lola-open-play-may-2026">Cafe Lola May 31</a></li> */}
           </ul>
         </div>
 

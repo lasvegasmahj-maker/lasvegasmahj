@@ -379,6 +379,7 @@ const faqSchema = {
   ],
 };
 
+/* Hidden until the next live event:
 const cafeLolaEventSchema = {
   "@context": "https://schema.org",
   "@type": "Event",
@@ -417,6 +418,7 @@ const cafeLolaEventSchema = {
     validFrom: "2026-05-01",
   },
 };
+*/
 
 const websiteSchema = {
   "@context": "https://schema.org",
@@ -468,12 +470,14 @@ export default function RootLayout({
             __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c"),
           }}
         />
+        {/* Hidden until the next live event:
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(cafeLolaEventSchema).replace(/</g, "\\u003c"),
           }}
         />
+        */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
