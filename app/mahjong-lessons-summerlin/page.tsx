@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Lessons in Summerlin, Las Vegas | Certified Instructor",
   description:
-    "Certified mahjong lessons in Summerlin, NV. Small groups from $50/person. Las Vegas's only Oh My Mahjong certified instructor comes to you. Beginners welcome.",
+    "Certified mahjong lessons in Summerlin, NV. Small groups from $50/person. A certified Oh My Mahjong instructor comes to you. Beginners welcome.",
   keywords: [
     "mahjong lessons Summerlin",
     "mahjong classes Summerlin NV",
@@ -71,7 +71,7 @@ export default function MahjongLessonsSummerlin() {
               Mahjong Lessons in <span className="accent-pink">Summerlin</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Las Vegas&rsquo;s only certified Oh My Mahjong instructor teaches group and private lessons throughout Summerlin. We come to you, we bring everything, and beginners are our specialty.
+              A certified Oh My Mahjong instructor with 18 years of experience teaches group and private lessons throughout Summerlin. We come to you, we bring everything, and beginners are our specialty.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/#classes" className="btn-primary">Book a Lesson</a>

@@ -3,13 +3,13 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "About Shauna | Las Vegas's Only Certified Mahjong Instructor",
+  title: "About Shauna | Certified Las Vegas Mahjong Instructor",
   description:
-    "Meet Shauna, Las Vegas's only certified Oh My Mahjong instructor with 18 years of playing experience. Learn about her teaching style, her story, and why she started Las Vegas Mahjong.",
+    "Meet Shauna, a certified Oh My Mahjong instructor with 18 years of playing experience. Learn about her teaching style, her story, and why she started Las Vegas Mahjong.",
   alternates: { canonical: "https://lasvegasmahj.com/about" },
   openGraph: {
     title: "About Shauna | Las Vegas Mahjong",
-    description: "Las Vegas's only certified Oh My Mahjong instructor. 18 years of experience, a passion for teaching, and a community built one tile at a time.",
+    description: "A certified Oh My Mahjong instructor with 18 years of experience, a passion for teaching, and a community built one tile at a time.",
     url: "https://lasvegasmahj.com/about",
     images: ["https://lasvegasmahj.com/shauna.jpg"],
   },
@@ -20,7 +20,7 @@ const jsonLd = {
   "@type": "Person",
   name: "Shauna",
   jobTitle: "Certified Mahjong Instructor",
-  description: "Las Vegas's only certified Oh My Mahjong instructor with 18 years of American Mahjong playing experience.",
+  description: "A certified Oh My Mahjong instructor with 18 years of American Mahjong playing experience.",
   url: "https://lasvegasmahj.com/about",
   image: "https://lasvegasmahj.com/shauna.jpg",
   sameAs: [
@@ -56,7 +56,7 @@ export default function About() {
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container" style={{ maxWidth: "800px" }}>
-            <p className="section-label">Las Vegas's Only Certified Oh My Mahjong Instructor</p>
+            <p className="section-label">Certified Oh My Mahjong Instructor · 18 Years Experience</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
               Meet <span className="accent-pink">Shauna</span>
             </h1>

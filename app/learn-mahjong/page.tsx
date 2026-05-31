@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "How to Learn American Mahjong | Beginner's Complete Guide",
   description:
-    "New to mahjong? This beginner's guide covers the tiles, NMJL card, and how to play your first hand. Written by Las Vegas's only certified Oh My Mahjong instructor.",
+    "New to mahjong? This beginner's guide covers the tiles, NMJL card, and how to play your first hand. Written by a certified Oh My Mahjong instructor with 18 years of experience.",
   keywords: [
     "how to learn mahjong",
     "learn American mahjong",
