@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Lessons in Henderson, NV | Certified Instructor",
   description:
-    "Certified mahjong lessons in Henderson, Nevada. Small groups from $50/person. Las Vegas's only certified Oh My Mahjong instructor serves Green Valley, Anthem, and all of Henderson. Beginners welcome.",
+    "Certified mahjong lessons in Henderson, Nevada. Small groups from $50/person. A certified Oh My Mahjong instructor serves Green Valley, Anthem, and all of Henderson. Beginners welcome.",
   keywords: [
     "mahjong lessons Henderson NV",
     "mahjong classes Henderson Nevada",
@@ -71,7 +71,7 @@ export default function MahjongLessonsHenderson() {
               Mahjong Lessons in <span className="accent-pink">Henderson</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Las Vegas&rsquo;s only certified Oh My Mahjong instructor serves all of Henderson, including Green Valley, Anthem, and Seven Hills. We come to you with everything you need. No experience required.
+              A certified Oh My Mahjong instructor with 18 years of experience serves all of Henderson, including Green Valley, Anthem, and Seven Hills. We come to you with everything you need. No experience required.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/#classes" className="btn-primary">Book a Lesson</a>

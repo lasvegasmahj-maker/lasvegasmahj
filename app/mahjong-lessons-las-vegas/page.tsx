@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Lessons in Las Vegas | Certified Instructor",
   description:
-    "Learn mahjong from Las Vegas's only certified Oh My Mahjong instructor. MAHJ101 for beginners, MAHJ102 for intermediate players. Small groups from $50/person. Book today.",
+    "Learn mahjong from a certified Oh My Mahjong instructor with 18 years of experience. MAHJ101 for beginners, MAHJ102 for intermediate players. Small groups from $50/person. Book today.",
   keywords: [
     "mahjong lessons Las Vegas",
     "mahjong classes Las Vegas",

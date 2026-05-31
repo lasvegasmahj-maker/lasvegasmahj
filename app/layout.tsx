@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: "%s | Las Vegas Mahjong",
   },
   description:
-    "Certified mahjong lessons, open play events, and private parties across Las Vegas, Summerlin, and Henderson. Las Vegas's only certified Oh My Mahjong instructor. No experience needed.",
+    "Certified mahjong lessons, open play events, and private parties across Las Vegas, Summerlin, and Henderson. A certified Oh My Mahjong instructor with 18 years of experience. No experience needed.",
   keywords: [
     "mahjong Las Vegas",
     "mahjong lessons Las Vegas",
