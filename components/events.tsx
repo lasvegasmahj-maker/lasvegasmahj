@@ -174,6 +174,14 @@ export default function Events() {
     return () => observer.disconnect();
   }, [upcoming, past]);
 
+  // Nothing to show: hide the whole section rather than an empty placeholder.
+  // It reappears automatically once there is an upcoming event again.
+  const hasContent =
+    upcoming.length > 0 || (SHOW_PAST_EVENTS && past.length > 0);
+  if (!loading && !hasContent) {
+    return null;
+  }
+
   return (
     <section className="events" id="events" ref={sectionRef}>
       <div className="container">
