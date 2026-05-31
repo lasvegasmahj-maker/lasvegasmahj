@@ -16,10 +16,7 @@ export default function Hero() {
           tournaments, and more. No experience needed. Beginners welcome!
         </p>
         <div className="hero-btns">
-          <a href="#events" className="btn-primary">
-            See Upcoming Events
-          </a>
-          <a href="#classes" className="btn-outline">
+          <a href="#classes" className="btn-primary">
             Learn to Play
           </a>
         </div>
