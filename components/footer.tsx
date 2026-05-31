@@ -116,6 +116,35 @@ export default function Footer({ onContactOpen }: FooterProps) {
             </li>
           </ul>
         </div>
+
+        <div className="footer-col">
+          <h5>Stay in the Loop</h5>
+          <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.5)", marginBottom: "0.75rem", lineHeight: 1.6 }}>
+            Event announcements and open play reminders, straight to your inbox.
+          </p>
+          <form
+            action="https://gmail.us15.list-manage.com/subscribe/post?u=85959bbed840b4e31ea78b3f3&id=6dacbc956d&f_id=0043a3e1f0"
+            method="POST"
+            target="_blank"
+            noValidate
+            style={{ display: "flex", flexDirection: "column", gap: "0.5rem", maxWidth: "260px" }}
+          >
+            <input
+              type="email"
+              name="EMAIL"
+              placeholder="your@email.com"
+              required
+              aria-label="Email address"
+              style={{ padding: "0.6rem 0.75rem", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.05)", color: "#fff", fontSize: "0.9rem" }}
+            />
+            <div aria-hidden="true" style={{ position: "absolute", left: "-5000px" }}>
+              <input type="text" name="b_85959bbed840b4e31ea78b3f3_6dacbc956d" tabIndex={-1} defaultValue="" />
+            </div>
+            <button type="submit" className="btn-primary" style={{ padding: "0.6rem", fontSize: "0.9rem" }}>
+              Subscribe
+            </button>
+          </form>
+        </div>
       </div>
 
       <div className="footer-seo" style={{ padding: "1.5rem 2rem 0", maxWidth: "900px", margin: "0 auto" }}>
