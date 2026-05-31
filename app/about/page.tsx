@@ -130,7 +130,7 @@ export default function About() {
               My approach is simple: no overwhelming rule dumps, no assuming you&rsquo;ve done any research beforehand, and no making anyone feel silly for asking the same question twice. Mahjong is a game. Games are supposed to be fun. My job is to make sure it feels that way from the first tile.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85 }}>
-              Most students are playing their first real hand within the first hour. That&rsquo;s the goal, every time.
+              Most students are playing their first game in the first lesson. That&rsquo;s the goal, every time.
             </p>
           </div>
         </section>
