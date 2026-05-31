@@ -104,7 +104,7 @@ export default function PrivateEvents({ onInquiryOpen }: PrivateEventsProps) {
               marginBottom: "1.5rem",
             }}
           >
-            Events start at <strong style={{ color: "var(--green)" }}>$50/person</strong> &middot; Groups of any size &middot; Venues across the Valley or your location
+            Groups of any size &middot; Venues across the Valley or your location
           </p>
           <button
             className="btn-primary"
