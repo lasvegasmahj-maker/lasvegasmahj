@@ -85,7 +85,7 @@ export default function About() {
                 I first learned American Mahjong nearly 18 years ago, and I haven&rsquo;t stopped playing since. What started as a game with friends turned into a lifelong obsession with tiles, strategy, and the community that forms around every table.
               </p>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
-                For years I taught friends and family the game informally. I loved watching the moment it clicked for someone new, that switch from confusion to confidence that happens somewhere in the first hour of a good lesson. Eventually I made it official: I became a <strong style={{ color: "var(--white)" }}>certified Oh My Mahjong instructor</strong>, and Las Vegas Mahjong was born.
+                For years I taught friends and family the game informally. I loved watching the moment it clicked for someone new, that switch from confusion to confidence that happens somewhere in the first hour of a good lesson. Eventually I made it official: I became a certified Oh My Mahjong instructor, and <strong style={{ color: "var(--white)" }}>Las Vegas Mahjong was born</strong>.
               </p>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85 }}>
                 My goal is to make this game as accessible as possible. Mahjong has a reputation for being complicated, and I&rsquo;ve spent years proving that wrong, one beginner at a time.
