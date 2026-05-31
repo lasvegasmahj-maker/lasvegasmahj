@@ -105,6 +105,7 @@ export default function About() {
                 { icon: "🀄", title: "18 Years Playing", desc: "Nearly two decades at the mahjong table means I've seen every type of hand, every learning style, and every common mistake. I know exactly where beginners get stuck and how to get them unstuck." },
                 { icon: "🌟", title: "Beginner-Focused", desc: "Most of my students have never touched a mahjong tile before. I've designed my teaching approach specifically for people who feel intimidated by the game, and the results speak for themselves." },
                 { icon: "📍", title: "Across the Valley", desc: "I teach across all of Las Vegas: Summerlin, Henderson, North Las Vegas, and the greater Valley. I come to you, which means you get a lesson at your home, your venue, or wherever works best." },
+                { icon: "👥", title: "Over 100 Taught", desc: "I've taught over 100 people to play across the Las Vegas Valley, from one-on-one beginners and group classes to bachelorette parties and corporate team-building events." },
               ].map(item => (
                 <div key={item.title} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
                   <div style={{ fontSize: "1.8rem", marginBottom: "0.6rem" }}>{item.icon}</div>
