@@ -366,7 +366,7 @@ const faqSchema = {
       name: "How much do mahjong lessons cost in Las Vegas?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Small group lessons (3-8 people) are $50 per person with a $200 minimum. Private lessons and events are custom -- contact for pricing.",
+        text: "A package of 3 lessons is $150 per person, or single lessons are $75 each. Private lessons and events are custom -- contact for pricing.",
       },
     },
   ],

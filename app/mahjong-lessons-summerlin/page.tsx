@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Lessons in Summerlin, NV | Certified Instructor",
   description:
-    "Certified mahjong lessons in Summerlin, NV. Small groups from $50/person. A certified Oh My Mahjong instructor comes to you. Beginners welcome.",
+    "Certified mahjong lessons in Summerlin, NV. $75 per lesson or $150 for a package of 3. A certified Oh My Mahjong instructor comes to you. Beginners welcome.",
   keywords: [
     "mahjong lessons Summerlin",
     "mahjong classes Summerlin NV",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://lasvegasmahj.com/mahjong-lessons-summerlin" },
   openGraph: {
     title: "Mahjong Lessons in Summerlin | Las Vegas Mahjong",
-    description: "Certified mahjong instructor serving Summerlin, NV. Small group lessons from $50/person. We come to you. All skill levels welcome.",
+    description: "Certified mahjong instructor serving Summerlin, NV. $75 per lesson or $150 for a package of 3. We come to you. All skill levels welcome.",
     url: "https://lasvegasmahj.com/mahjong-lessons-summerlin",
     images: ["https://lasvegasmahj.com/shauna.jpg"],
   },
@@ -50,7 +50,7 @@ const breadcrumb = {
 
 const faqs = [
   { q: "Do you teach mahjong in Summerlin?", a: "Yes. We teach mahjong lessons throughout Summerlin, including your home, clubhouse, or any venue you choose. We bring all the equipment." },
-  { q: "How much do mahjong lessons cost in Summerlin?", a: "Small group lessons (3-8 people) are $50 per person with a $200 minimum. Private and corporate lessons are available, contact us for pricing." },
+  { q: "How much do mahjong lessons cost in Summerlin?", a: "A package of 3 lessons is $150 per person, or single lessons are $75 each. Private and corporate lessons are available, contact us for pricing." },
   { q: "Do I need any experience to take a Summerlin mahjong lesson?", a: "None at all. We start from zero and have you playing your first real hand within the first session." },
   { q: "What version of mahjong do you teach?", a: "We teach American Mahjong using the National Mah Jongg League (NMJL) card, the most popular version across the US." },
 ];
@@ -102,9 +102,9 @@ export default function MahjongLessonsSummerlin() {
             <h2 className="section-title">Simple, Clear <span className="accent-pink">Pricing</span></h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.2rem", marginTop: "2.5rem" }}>
               {[
-                { type: "Small Group", detail: "3-8 people", price: "$50/person", note: "$200 minimum" },
-                { type: "Private Lesson", detail: "1-2 people", price: "Contact for pricing", note: "Fully customized" },
-                { type: "Large Group / HOA", detail: "9+ people", price: "Contact for pricing", note: "Custom quote" },
+                { type: "3-Lesson Package", detail: "Best value", price: "$150", note: "per person" },
+                { type: "Single Lesson", detail: "Drop in", price: "$75", note: "per person" },
+                { type: "Private & Groups", detail: "Any size", price: "Contact for pricing", note: "Custom quote" },
               ].map(tier => (
                 <div key={tier.type} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "2rem" }}>
                   <h3 style={{ fontFamily: "var(--font-nav)", fontWeight: 700, fontSize: "1rem", marginBottom: "0.3rem" }}>{tier.type}</h3>
