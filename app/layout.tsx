@@ -440,7 +440,6 @@ export default function RootLayout({
       className={`${bebasNeue.variable} ${montserrat.variable} ${dmSans.variable}`}
     >
       <head>
-        <link rel="preload" as="image" href="/hero-bg.jpg" fetchPriority="high" />
         <meta name="geo.region" content="US-NV" />
         <meta name="geo.placename" content="Las Vegas" />
         <meta name="geo.position" content="36.1699;-115.1398" />

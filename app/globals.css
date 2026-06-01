@@ -168,19 +168,11 @@ nav.scrolled {
   overflow: hidden;
 }
 
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  background-image: url('/hero-bg.jpg');
-  background-size: cover;
-  background-position: center;
-}
-
-.hero-bg::after {
-  content: '';
+.hero-overlay {
   position: absolute;
   inset: 0;
   background: rgba(17, 18, 74, 0.78);
+  z-index: 1;
 }
 
 .hero-content {
