@@ -92,8 +92,8 @@ export default function MahjongLessonsLasVegas() {
             <h2 className="section-title">What You&rsquo;ll <span className="accent-green">Learn</span></h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem", marginTop: "2.5rem" }}>
               {[
-                { num: "MAHJ101", title: "Absolute Beginners", price: "$75/lesson, or $150 for all 3 ($50 each)", items: ["Sorting and identifying tiles", "Reading the NMJL card", "Understanding how a hand works", "Playing your first full game", "Tips for your first open play event"] },
-                { num: "MAHJ102", title: "Beyond the Basics", price: "$75/lesson, or $150 for all 3 ($50 each)", items: ["Quick MAHJ101 recap", "More complex hands and patterns", "Strategy and decision-making", "Speed and confidence at the table", "Preparing for open play and leagues"] },
+                { num: "MAHJ101", title: "Absolute Beginners", price: "$75/lesson or book 3 lessons for $150", items: ["Sorting and identifying tiles", "Reading the NMJL card", "Understanding how a hand works", "Playing your first full game", "Tips for your first open play event"] },
+                { num: "MAHJ102", title: "Beyond the Basics", price: "$75/lesson or book 3 lessons for $150", items: ["Quick MAHJ101 recap", "More complex hands and patterns", "Strategy and decision-making", "Speed and confidence at the table", "Preparing for open play and leagues"] },
                 { num: "Private", title: "1-on-1 Lessons", price: "Contact for pricing", items: ["Fully customized to your pace", "Your home or preferred venue", "Any skill level welcome", "Great for busy schedules", "Zoom option available"] },
               ].map(tier => (
                 <div key={tier.num} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "2rem" }}>
