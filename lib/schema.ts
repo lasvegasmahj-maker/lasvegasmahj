@@ -20,6 +20,7 @@ export interface EventSchemaInput {
   priceCurrency?: string; // defaults to "USD"
   imageUrl?: string;
   eventUrl?: string;    // canonical page for this event on lasvegasmahj.com
+  eventStatus?: string; // full schema.org URL, defaults to EventScheduled
 }
 
 /* ── EVENT SCHEMA GENERATOR ── */
@@ -43,7 +44,7 @@ export function buildEventSchema(event: EventSchemaInput) {
     description: event.description,
     startDate: event.startDate,
     endDate: event.endDate,
-    eventStatus: "https://schema.org/EventScheduled",
+    eventStatus: event.eventStatus ?? "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: {
       "@type": "Place",

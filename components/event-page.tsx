@@ -57,6 +57,8 @@ export interface EventPageProps {
   testimonials?: { quote: string; name: string }[];
   /** Related upcoming event slugs to link to */
   relatedEventSlugs?: { slug: string; name: string; date: string }[];
+  /** Override the schema.org eventStatus URL (defaults to EventScheduled) */
+  eventStatus?: string;
 }
 
 /* ── HELPERS ── */
@@ -117,6 +119,7 @@ export default function EventPage(props: EventPageProps) {
     recapBody = [],
     testimonials = [],
     relatedEventSlugs = [],
+    eventStatus,
   } = props;
 
   const past = isPastEvent(startDate);
@@ -139,6 +142,7 @@ export default function EventPage(props: EventPageProps) {
     price: priceAmount,
     imageUrl: imageUrl ?? "https://lasvegasmahj.com/hero-bg.jpg",
     eventUrl: canonicalUrl,
+    eventStatus,
   });
 
   const breadcrumbLd = {

@@ -3,9 +3,9 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Corporate Mahjong Team Building Las Vegas | Las Vegas Mahjong",
+  title: "Corporate Mahjong Team Building Las Vegas",
   description:
-    "Unique corporate team building in Las Vegas built around mahjong. Strategy, communication, real connection. Custom events for any size group. Contact for a quote.",
+    "Unique corporate team building in Las Vegas built around mahjong. Strategy, communication, real connection. Custom events for any size group. Quote available.",
   keywords: [
     "corporate team building Las Vegas mahjong",
     "mahjong corporate event Las Vegas",

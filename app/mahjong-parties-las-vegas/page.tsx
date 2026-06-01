@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Parties Las Vegas | Private Events & Groups",
   description:
-    "Host a mahjong party in Las Vegas. Bachelorettes, corporate teams, birthdays, and girls' nights. Certified instructor included. All equipment provided. Get a custom quote.",
+    "Host a mahjong party in Las Vegas. Bachelorettes, corporate teams, birthdays, and girls nights. Certified instructor, all equipment provided. Get a quote.",
   keywords: [
     "mahjong party Las Vegas",
     "mahjong bachelorette party Las Vegas",

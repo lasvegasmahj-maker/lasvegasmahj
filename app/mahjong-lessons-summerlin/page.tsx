@@ -3,7 +3,7 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Mahjong Lessons in Summerlin, Las Vegas | Certified Instructor",
+  title: "Mahjong Lessons in Summerlin, NV | Certified Instructor",
   description:
     "Certified mahjong lessons in Summerlin, NV. Small groups from $50/person. A certified Oh My Mahjong instructor comes to you. Beginners welcome.",
   keywords: [
