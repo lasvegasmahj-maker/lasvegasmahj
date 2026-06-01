@@ -1,7 +1,17 @@
+import Image from "next/image";
+
 export default function Hero() {
   return (
     <section className="hero" id="home">
-      <div className="hero-bg" />
+      <Image
+        src="/hero-bg.jpg"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        style={{ objectFit: "cover", zIndex: 0 }}
+      />
+      <div className="hero-overlay" />
 
       <div className="hero-content">
         <p className="hero-eyebrow">Las Vegas &middot; Community &middot; Play</p>
