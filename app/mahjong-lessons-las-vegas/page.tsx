@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Lessons in Las Vegas | Certified Instructor",
   description:
-    "Learn mahjong from a certified Oh My Mahjong instructor with 18 years of experience. MAHJ101 for beginners, MAHJ102 for intermediate players. Small groups from $50/person. Book today.",
+    "Learn mahjong from a certified Oh My Mahjong instructor. MAHJ101 for beginners, MAHJ102 for intermediate players. Small groups from $50/person.",
   keywords: [
     "mahjong lessons Las Vegas",
     "mahjong classes Las Vegas",
@@ -44,7 +44,7 @@ const jsonLd = {
   },
   offers: [
     { "@type": "Offer", name: "Small Group Lesson", price: "50.00", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", unitText: "person" } },
-    { "@type": "Offer", name: "Private Lesson", price: "75.00", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", unitText: "person" } },
+    { "@type": "Offer", name: "Private Lesson", description: "Contact for pricing" },
   ],
   courseMode: "In-Person",
   audience: { "@type": "Audience", audienceType: "Beginners and intermediate mahjong players in Las Vegas" },

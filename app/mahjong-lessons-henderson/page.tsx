@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Lessons in Henderson, NV | Certified Instructor",
   description:
-    "Certified mahjong lessons in Henderson, Nevada. Small groups from $50/person. A certified Oh My Mahjong instructor serves Green Valley, Anthem, and all of Henderson. Beginners welcome.",
+    "Certified mahjong lessons in Henderson, NV. Small groups from $50/person. Oh My Mahjong certified instructor serves Green Valley, Anthem, and all of Henderson.",
   keywords: [
     "mahjong lessons Henderson NV",
     "mahjong classes Henderson Nevada",

@@ -245,13 +245,6 @@ const localBusinessSchema = {
           description:
             "Custom mahjong experiences for bachelorette parties, corporate team building, birthdays, charity events, and more.",
         },
-        priceSpecification: {
-          "@type": "UnitPriceSpecification",
-          price: "50.00",
-          priceCurrency: "USD",
-          unitText: "person",
-          description: "Starting price",
-        },
       },
     ],
   },

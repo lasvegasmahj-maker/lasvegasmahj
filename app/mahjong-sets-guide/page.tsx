@@ -207,7 +207,7 @@ export default function MahjongSetsGuide() {
                 { q: "How many tiles does an American Mahjong set have?", a: "American Mahjong sets have 152 tiles. Make sure any set you buy is specifically for American Mahjong, not Chinese or other versions." },
                 { q: "What's the difference between $50 and $300 sets?", a: "Mostly materials and aesthetics. Budget sets use plastic tiles with printed designs. Premium sets use heavier tiles with embossed or inlaid designs that feel great in hand. Both play identically." },
                 { q: "Do I need a case?", a: "Yes. A case keeps your tiles organized and protected. Most sets come with one. Look for a case with dividers and a soft interior." },
-                { q: "Do I need to buy the NMJL card separately?", a: "Yes, always. The NMJL card is sold separately at nmjl.org for about $14. It changes every year and must be purchased fresh each March." },
+                { q: "Do I need to buy the NMJL card separately?", a: "Yes, always. The NMJL card is sold separately at nmjl.org for about $14. It changes every year and must be purchased fresh each spring." },
               ].map(item => (
                 <div key={item.q} style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "1.5rem 0" }}>
                   <h3 style={{ fontFamily: "var(--font-nav)", fontWeight: 700, fontSize: "1rem", color: "var(--white)", marginBottom: "0.5rem" }}>{item.q}</h3>

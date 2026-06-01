@@ -62,6 +62,60 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.75,
     },
+    {
+      url: "https://lasvegasmahj.com/rules",
+      lastModified: new Date("2026-05-23"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: "https://lasvegasmahj.com/rules/calling-tiles",
+      lastModified: new Date("2026-05-23"),
+      changeFrequency: "monthly",
+      priority: 0.65,
+    },
+    {
+      url: "https://lasvegasmahj.com/rules/charleston",
+      lastModified: new Date("2026-05-23"),
+      changeFrequency: "monthly",
+      priority: 0.65,
+    },
+    {
+      url: "https://lasvegasmahj.com/rules/dead-hands",
+      lastModified: new Date("2026-05-23"),
+      changeFrequency: "monthly",
+      priority: 0.65,
+    },
+    {
+      url: "https://lasvegasmahj.com/rules/etiquette",
+      lastModified: new Date("2026-05-23"),
+      changeFrequency: "monthly",
+      priority: 0.65,
+    },
+    {
+      url: "https://lasvegasmahj.com/rules/jokers",
+      lastModified: new Date("2026-05-23"),
+      changeFrequency: "monthly",
+      priority: 0.65,
+    },
+    {
+      url: "https://lasvegasmahj.com/rules/scoring",
+      lastModified: new Date("2026-05-23"),
+      changeFrequency: "monthly",
+      priority: 0.65,
+    },
+    {
+      url: "https://lasvegasmahj.com/rules/the-card",
+      lastModified: new Date("2026-05-23"),
+      changeFrequency: "monthly",
+      priority: 0.65,
+    },
+    {
+      url: "https://lasvegasmahj.com/rules/winning",
+      lastModified: new Date("2026-05-23"),
+      changeFrequency: "monthly",
+      priority: 0.65,
+    },
     // Hidden until the next live event:
     // {
     //   url: "https://lasvegasmahj.com/events/cafe-lola-open-play-may-2026",
