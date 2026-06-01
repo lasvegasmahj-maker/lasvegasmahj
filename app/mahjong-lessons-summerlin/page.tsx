@@ -102,8 +102,8 @@ export default function MahjongLessonsSummerlin() {
             <h2 className="section-title">Simple, Clear <span className="accent-pink">Pricing</span></h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.2rem", marginTop: "2.5rem" }}>
               {[
-                { type: "3-Lesson Package", detail: "Best value", price: "$150", note: "per person" },
-                { type: "Single Lesson", detail: "Drop in", price: "$75", note: "per person" },
+                { type: "3-Lesson Package", detail: "4-8 people", price: "$150", note: "per person" },
+                { type: "Single Lesson", detail: "4-8 people", price: "$75", note: "per person" },
                 { type: "Private & Groups", detail: "Any size", price: "Contact for pricing", note: "Custom quote" },
               ].map(tier => (
                 <div key={tier.type} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "2rem" }}>
