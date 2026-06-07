@@ -35,7 +35,10 @@ const jsonLd = {
     "@id": "https://lasvegasmahj.com/#business",
   },
   areaServed: { "@type": "Place", name: "Summerlin, Las Vegas, NV" },
-  offers: { "@type": "Offer", price: "50.00", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", unitText: "person" } },
+  offers: [
+    { "@type": "Offer", name: "Single Lesson (per person)", price: "75.00", priceCurrency: "USD" },
+    { "@type": "Offer", name: "3-Lesson Package (per person)", price: "150.00", priceCurrency: "USD" },
+  ],
 };
 
 const breadcrumb = {

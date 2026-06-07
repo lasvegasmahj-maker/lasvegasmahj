@@ -130,7 +130,7 @@ const localBusinessSchema = {
     "https://lasvegasmahj.com/hero-bg.jpg",
     "https://lasvegasmahj.com/shauna.jpg",
   ],
-  priceRange: "$50+",
+  priceRange: "$75+",
   currenciesAccepted: "USD",
   paymentAccepted: "Cash, Credit Card, Venmo",
   foundingDate: "2024",
@@ -169,7 +169,7 @@ const localBusinessSchema = {
   aggregateRating: {
     "@type": "AggregateRating",
     ratingValue: "5",
-    reviewCount: "3",
+    reviewCount: "5",
     bestRating: "5",
     worstRating: "1",
   },
@@ -195,6 +195,20 @@ const localBusinessSchema = {
       reviewBody:
         "If you need a mahjong lesson (or 5) @lasvegasmahjong is your woman. Amazing teacher.",
     },
+    {
+      "@type": "Review",
+      author: { "@type": "Person", name: "Carole" },
+      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      reviewBody:
+        "A big thank you for putting together such a fun, social evening of Mahjong at Lifetime Summerlin: new faces, beautiful table pads, fancy sets, and prizes!",
+    },
+    {
+      "@type": "Review",
+      author: { "@type": "Person", name: "Kristi, Northmarq" },
+      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      reviewBody:
+        "We worked with Shauna for a mahjong-oriented corporate event in early 2026. Her team was engaging with all of our guests, and we got some of the best guest feedback we've ever received. We hope to work with Shauna again!",
+    },
   ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
@@ -208,11 +222,11 @@ const localBusinessSchema = {
           description:
             "Complete beginner mahjong lessons starting from scratch. Learn tile sorting, card reading, and play your first hand.",
         },
-        price: "50.00",
+        price: "75.00",
         priceCurrency: "USD",
         priceSpecification: {
           "@type": "UnitPriceSpecification",
-          price: "50.00",
+          price: "75.00",
           priceCurrency: "USD",
           unitText: "person",
         },
@@ -225,7 +239,7 @@ const localBusinessSchema = {
           description:
             "Intermediate mahjong lessons building on MAHJ101. More hands, more practice, more confidence at the table.",
         },
-        price: "50.00",
+        price: "75.00",
         priceCurrency: "USD",
       },
       {
@@ -264,7 +278,7 @@ const courseSchema = [
     },
     offers: {
       "@type": "Offer",
-      price: "50.00",
+      price: "75.00",
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
       category: "In-Person",
@@ -292,7 +306,7 @@ const courseSchema = [
     },
     offers: {
       "@type": "Offer",
-      price: "50.00",
+      price: "75.00",
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
       category: "In-Person",

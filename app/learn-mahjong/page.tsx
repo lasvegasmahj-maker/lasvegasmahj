@@ -58,6 +58,8 @@ const affiliates = [
   { name: "Bespoke Mahjong", url: "https://www.bespokemahjong.com?sca_ref=10595326.4agm2llL78", desc: "Custom, personalized mahjong sets, perfect if you want something truly unique.", discount: "10% off with code LASVEGASMAHJ" },
   { name: "Mahjong Maven", url: "https://mahjonggmaven.com/?ref=Lasvegasmahj", desc: "Everything a new player needs: sets, bags, tile holders, and accessories.", discount: "10% off with code LASVEGASMAHJ" },
   { name: "My Fair Mahjong", url: "https://myfairmahjong.com/LASVEGASMAHJ", desc: "Gorgeous sets and accessories with a beautiful, elegant aesthetic.", discount: "Discount with code LASVEGASMAHJ" },
+  { name: "Peace Love Mahjong", url: "https://peacelovemahjong.com/?ref=LASVEGASMAHJ", desc: "Modern, fashionable sets and accessories for players who want their gear to match their style.", discount: "10% off with code LASVEGASMAHJ" },
+  { name: "Bird Bam Boutique", url: "https://www.bambirdboutique.com/lasvegasmahj", desc: "Mahjong-themed apparel, accessories, and lifestyle products. Fun gifts beyond tiles.", discount: "10% off with code LASVEGASMAHJ" },
 ];
 
 export default function LearnMahjong() {

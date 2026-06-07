@@ -65,6 +65,7 @@ export default function MahjongPartiesLasVegas() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Mahjong Parties Las Vegas", item: "https://lasvegasmahj.com/mahjong-parties-las-vegas" }] }).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
       <main style={{ paddingTop: "80px" }}>
