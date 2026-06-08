@@ -139,6 +139,9 @@ export default function MahjongCorporateLasVegas() {
                 </div>
               ))}
             </div>
+            <p style={{ marginTop: "2rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.8, fontSize: "0.95rem" }}>
+              Explore our Las Vegas group experiences: <a href="/corporate-team-building-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate team building</a>, <a href="/conference-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>conference activities</a>, and <a href="/convention-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>convention activities</a>.
+            </p>
           </div>
         </section>
 
