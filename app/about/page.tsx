@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "About Shauna | Certified Las Vegas Mahjong Instructor",
+  title: "About Shauna | Certified Mahjong Instructor",
   description:
-    "Meet Shauna, a certified Oh My Mahjong instructor with 18 years of playing experience. Learn about her teaching style, her story, and why she started Las Vegas Mahjong.",
-  alternates: { canonical: "https://lasvegasmahj.com/about" },
+    "Meet Shauna, a certified Oh My Mahjong instructor with 18 years of playing experience. Her teaching style, her story, and why she started Las Vegas Mahjong.",
+  alternates: { canonical: "https://www.lasvegasmahj.com/about" },
   openGraph: {
+    ...ogBase,
     title: "About Shauna | Las Vegas Mahjong",
     description: "A certified Oh My Mahjong instructor with 18 years of experience, a passion for teaching, and a community built one tile at a time.",
-    url: "https://lasvegasmahj.com/about",
-    images: ["https://lasvegasmahj.com/shauna.jpg"],
+    url: "https://www.lasvegasmahj.com/about",
+    images: ["https://www.lasvegasmahj.com/shauna.jpg"],
   },
 };
 
@@ -21,16 +24,17 @@ const jsonLd = {
   name: "Shauna",
   jobTitle: "Certified Mahjong Instructor",
   description: "A certified Oh My Mahjong instructor with 18 years of American Mahjong playing experience.",
-  url: "https://lasvegasmahj.com/about",
-  image: "https://lasvegasmahj.com/shauna.jpg",
+  url: "https://www.lasvegasmahj.com/about",
+  image: "https://www.lasvegasmahj.com/shauna.jpg",
   sameAs: [
     "https://www.instagram.com/lasvegasmahjong",
     "https://www.tiktok.com/@lasvegasmahjong",
   ],
   worksFor: {
     "@type": "LocalBusiness",
+    "@id": "https://www.lasvegasmahj.com/#business",
     name: "Las Vegas Mahjong",
-    url: "https://lasvegasmahj.com",
+    url: "https://www.lasvegasmahj.com",
   },
   knowsAbout: "American Mahjong, NMJL card, mahjong instruction, mahjong events",
   areaServed: "Las Vegas, NV",
@@ -40,8 +44,8 @@ const breadcrumb = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" },
-    { "@type": "ListItem", position: 2, name: "About Shauna", item: "https://lasvegasmahj.com/about" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" },
+    { "@type": "ListItem", position: 2, name: "About Shauna", item: "https://www.lasvegasmahj.com/about" },
   ],
 };
 
@@ -70,10 +74,13 @@ export default function About() {
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container" style={{ maxWidth: "760px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "start" }}>
             <div>
-              <img
+              <Image
                 src="/shauna.jpg"
                 alt="Shauna, founder of Las Vegas Mahjong and certified mahjong instructor"
-                style={{ width: "100%", borderRadius: "8px", display: "block" }}
+                width={1774}
+                height={2000}
+                sizes="(max-width: 760px) 100vw, 380px"
+                style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
               />
             </div>
             <div>
@@ -104,7 +111,7 @@ export default function About() {
                 { icon: "🏅", title: "Certified Instructor", desc: "I hold a certification from Oh My Mahjong, one of the leading American Mahjong companies." },
                 { icon: "🀄", title: "18 Years Playing", desc: "Nearly two decades at the mahjong table means I've seen every type of hand, every learning style, and every common mistake. I know exactly where players get stuck at any level and how to get them moving again." },
                 { icon: "🌟", title: "Beginner to Advanced", desc: "I start complete beginners from zero, then build real strategy through MAHJ102 and MAHJ103 until you know all the rules and can play confidently on your own." },
-                { icon: "📍", title: "Across the Valley", desc: "I teach across all of Las Vegas: Summerlin, Henderson, North Las Vegas, and the greater Valley. I come to you, which means you get a lesson at your home, your venue, or wherever works best." },
+                { icon: "📍", title: "Across the Valley", desc: "I teach across all of Las Vegas: Summerlin, Henderson, Green Valley, Anthem, and the greater Valley. I come to you, which means you get a lesson at your home, your venue, or wherever works best." },
                 { icon: "👥", title: "Over 100 Taught", desc: "I've taught over 100 people to play across the Las Vegas Valley, from one-on-one beginners and group classes to birthday parties and corporate team-building events." },
                 { icon: "🎉", title: "Open Play & Events", desc: "Once you can play on your own, my open plays and events are where you keep the game going: meet new people, have fun, and play for prizes. Come to one, or hire me to host an event for your group." },
               ].map(item => (

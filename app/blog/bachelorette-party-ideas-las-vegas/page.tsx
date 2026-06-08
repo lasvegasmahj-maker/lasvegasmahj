@@ -5,7 +5,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Bachelorette Party Ideas Las Vegas 2026 | Beyond the Basics",
   description:
-    "The best bachelorette party ideas in Las Vegas for 2026. Mahjong parties, pool days, private dinners, and experiences that actually bond the group. No cheesy sashes required.",
+    "The best bachelorette party ideas in Las Vegas for 2026. Mahjong parties, pool days, private dinners, and experiences that actually bond the group.",
   keywords: [
     "bachelorette party ideas Las Vegas",
     "Las Vegas bachelorette party",
@@ -16,12 +16,14 @@ export const metadata: Metadata = {
     "Las Vegas girls trip ideas",
     "Las Vegas bach party",
   ],
-  alternates: { canonical: "https://lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas" },
+  alternates: { canonical: "https://www.lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas" },
   openGraph: {
     title: "Bachelorette Party Ideas Las Vegas 2026 | Beyond the Basics",
     description: "The best bachelorette party ideas in Las Vegas. Mahjong parties, pool days, private dinners, and experiences that actually bond the group.",
-    url: "https://lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas",
-    images: ["https://lasvegasmahj.com/hero-bg.jpg"],
+    url: "https://www.lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas",
+    siteName: "Las Vegas Mahjong",
+    locale: "en_US",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
     type: "article",
   },
 };
@@ -31,30 +33,30 @@ const articleSchema = {
   "@type": "Article",
   headline: "Bachelorette Party Ideas Las Vegas 2026: Beyond the Basics",
   description: "The best bachelorette party ideas in Las Vegas for 2026, from mahjong parties to pool days and private dinners.",
-  image: "https://lasvegasmahj.com/hero-bg.jpg",
+  image: "https://www.lasvegasmahj.com/hero-bg.jpg",
   datePublished: "2026-05-01",
   dateModified: "2026-05-23",
   author: {
     "@type": "Person",
     name: "Shauna",
-    url: "https://lasvegasmahj.com/about",
+    url: "https://www.lasvegasmahj.com/about",
   },
   publisher: {
     "@type": "LocalBusiness",
     name: "Las Vegas Mahjong",
-    url: "https://lasvegasmahj.com",
-    "@id": "https://lasvegasmahj.com/#business",
+    url: "https://www.lasvegasmahj.com",
+    "@id": "https://www.lasvegasmahj.com/#business",
   },
-  mainEntityOfPage: "https://lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas",
+  mainEntityOfPage: "https://www.lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas",
 };
 
 const breadcrumb = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" },
-    { "@type": "ListItem", position: 2, name: "Blog", item: "https://lasvegasmahj.com/blog" },
-    { "@type": "ListItem", position: 3, name: "Bachelorette Party Ideas Las Vegas", item: "https://lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" },
+    { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.lasvegasmahj.com/blog" },
+    { "@type": "ListItem", position: 3, name: "Bachelorette Party Ideas Las Vegas", item: "https://www.lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas" },
   ],
 };
 

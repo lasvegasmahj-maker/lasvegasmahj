@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
+import { ogBase } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Reading the NMJL Mahjong Card | Las Vegas Mahjong",
+  title: { absolute: "Reading the NMJL Mahjong Card | Las Vegas Mahjong" },
   description:
     "How to read the NMJL mahjong card: what the symbols mean, when the new card releases, consecutive numbers, any like number, open vs. closed hands, and more.",
-  alternates: { canonical: "https://lasvegasmahj.com/rules/the-card" },
+  alternates: { canonical: "https://www.lasvegasmahj.com/rules/the-card" },
   openGraph: {
+    ...ogBase,
     title: "Reading the NMJL Mahjong Card | Las Vegas Mahjong",
     description: "How to read the NMJL mahjong card: set sizes, any like number, consecutive numbers, open vs. closed hands. Explained by a certified instructor.",
-    url: "https://lasvegasmahj.com/rules/the-card",
-    images: ["https://lasvegasmahj.com/hero-bg.jpg"],
+    url: "https://www.lasvegasmahj.com/rules/the-card",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
 
@@ -57,6 +59,7 @@ export default function TheCardPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "American Mahjong Rules", item: "https://www.lasvegasmahj.com/rules" }, { "@type": "ListItem", position: 3, name: "Reading the Card", item: "https://www.lasvegasmahj.com/rules/the-card" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
       <main style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>

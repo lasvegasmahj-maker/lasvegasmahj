@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
+import { ogBase } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "The Charleston Rules in American Mahjong | Las Vegas Mahjong",
+  title: { absolute: "The Charleston Rules in American Mahjong | Las Vegas Mahjong" },
   description:
     "How the charleston works in American Mahjong: passes, blind passes, courtesy passes, stopping early, and what to do when tiles are passed incorrectly.",
-  alternates: { canonical: "https://lasvegasmahj.com/rules/charleston" },
+  alternates: { canonical: "https://www.lasvegasmahj.com/rules/charleston" },
   openGraph: {
+    ...ogBase,
     title: "The Charleston Rules in American Mahjong | Las Vegas Mahjong",
     description: "How many passes? Can I stop early? What is a blind pass? All your charleston questions answered by a certified instructor.",
-    url: "https://lasvegasmahj.com/rules/charleston",
-    images: ["https://lasvegasmahj.com/hero-bg.jpg"],
+    url: "https://www.lasvegasmahj.com/rules/charleston",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
 
@@ -61,6 +63,7 @@ export default function CharlestonPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "American Mahjong Rules", item: "https://www.lasvegasmahj.com/rules" }, { "@type": "ListItem", position: 3, name: "The Charleston", item: "https://www.lasvegasmahj.com/rules/charleston" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
       <main style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>

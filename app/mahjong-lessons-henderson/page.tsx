@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Mahjong Lessons in Henderson, NV | Certified Instructor",
+  title: "Mahjong Lessons in Henderson, NV",
   description:
     "Certified mahjong lessons in Henderson, NV. $75 each or $150 for 3. Oh My Mahjong certified instructor serves Green Valley, Anthem, and all of Henderson.",
   keywords: [
@@ -14,12 +15,13 @@ export const metadata: Metadata = {
     "mahjong Henderson Nevada",
     "mahjong near me Henderson",
   ],
-  alternates: { canonical: "https://lasvegasmahj.com/mahjong-lessons-henderson" },
+  alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-lessons-henderson" },
   openGraph: {
+    ...ogBase,
     title: "Mahjong Lessons in Henderson, NV | Las Vegas Mahjong",
     description: "Certified mahjong instructor serving Henderson, Nevada. $75 per lesson or $150 for a package of 3. We come to you. Green Valley, Anthem, and all of Henderson.",
-    url: "https://lasvegasmahj.com/mahjong-lessons-henderson",
-    images: ["https://lasvegasmahj.com/shauna.jpg"],
+    url: "https://www.lasvegasmahj.com/mahjong-lessons-henderson",
+    images: ["https://www.lasvegasmahj.com/shauna.jpg"],
   },
 };
 
@@ -31,8 +33,8 @@ const jsonLd = {
   provider: {
     "@type": "LocalBusiness",
     name: "Las Vegas Mahjong",
-    url: "https://lasvegasmahj.com",
-    "@id": "https://lasvegasmahj.com/#business",
+    url: "https://www.lasvegasmahj.com",
+    "@id": "https://www.lasvegasmahj.com/#business",
   },
   areaServed: { "@type": "City", name: "Henderson", containedInPlace: { "@type": "State", name: "Nevada" } },
   offers: [
@@ -45,9 +47,9 @@ const breadcrumb = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" },
-    { "@type": "ListItem", position: 2, name: "Mahjong Lessons Las Vegas", item: "https://lasvegasmahj.com/mahjong-lessons-las-vegas" },
-    { "@type": "ListItem", position: 3, name: "Henderson", item: "https://lasvegasmahj.com/mahjong-lessons-henderson" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" },
+    { "@type": "ListItem", position: 2, name: "Mahjong Lessons Las Vegas", item: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas" },
+    { "@type": "ListItem", position: 3, name: "Henderson", item: "https://www.lasvegasmahj.com/mahjong-lessons-henderson" },
   ],
 };
 

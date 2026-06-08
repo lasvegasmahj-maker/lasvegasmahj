@@ -16,12 +16,14 @@ export const metadata: Metadata = {
     "team building Las Vegas",
     "fun things Las Vegas",
   ],
-  alternates: { canonical: "https://lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling" },
+  alternates: { canonical: "https://www.lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling" },
   openGraph: {
     title: "Things to Do in Las Vegas Besides Gambling | 2026",
     description: "Las Vegas has way more than casinos. Mahjong parties, hiking, live music, and 20+ activities that have nothing to do with slot machines.",
-    url: "https://lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling",
-    images: ["https://lasvegasmahj.com/hero-bg.jpg"],
+    url: "https://www.lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling",
+    siteName: "Las Vegas Mahjong",
+    locale: "en_US",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
     type: "article",
   },
 };
@@ -31,30 +33,30 @@ const articleSchema = {
   "@type": "Article",
   headline: "Things to Do in Las Vegas Besides Gambling: 20+ Ideas for 2026",
   description: "Las Vegas has way more than casinos. From mahjong parties to live music, hiking, and local food, here are the best non-gambling activities in Las Vegas.",
-  image: "https://lasvegasmahj.com/hero-bg.jpg",
+  image: "https://www.lasvegasmahj.com/hero-bg.jpg",
   datePublished: "2026-05-01",
   dateModified: "2026-05-23",
   author: {
     "@type": "Person",
     name: "Shauna",
-    url: "https://lasvegasmahj.com/about",
+    url: "https://www.lasvegasmahj.com/about",
   },
   publisher: {
     "@type": "LocalBusiness",
     name: "Las Vegas Mahjong",
-    url: "https://lasvegasmahj.com",
-    "@id": "https://lasvegasmahj.com/#business",
+    url: "https://www.lasvegasmahj.com",
+    "@id": "https://www.lasvegasmahj.com/#business",
   },
-  mainEntityOfPage: "https://lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling",
+  mainEntityOfPage: "https://www.lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling",
 };
 
 const breadcrumb = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" },
-    { "@type": "ListItem", position: 2, name: "Blog", item: "https://lasvegasmahj.com/blog" },
-    { "@type": "ListItem", position: 3, name: "Things to Do Besides Gambling", item: "https://lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" },
+    { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.lasvegasmahj.com/blog" },
+    { "@type": "ListItem", position: 3, name: "Things to Do Besides Gambling", item: "https://www.lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling" },
   ],
 };
 

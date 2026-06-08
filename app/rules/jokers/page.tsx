@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
+import { ogBase } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Joker Rules in American Mahjong | Las Vegas Mahjong",
+  title: { absolute: "Joker Rules in American Mahjong | Las Vegas Mahjong" },
   description:
-    "Everything you need to know about jokers in American Mahjong: what they substitute for, when they can be swapped, calling a joker, and joker-free hands. Answered by a certified instructor.",
-  alternates: { canonical: "https://lasvegasmahj.com/rules/jokers" },
+    "Everything you need to know about jokers in American Mahjong: what they substitute for, when they can be swapped, calling a joker, and joker-free hands.",
+  alternates: { canonical: "https://www.lasvegasmahj.com/rules/jokers" },
   openGraph: {
+    ...ogBase,
     title: "Joker Rules in American Mahjong | Las Vegas Mahjong",
     description: "Can jokers be used in pairs? Can you swap a joker? What is joker-free? All your joker questions answered.",
-    url: "https://lasvegasmahj.com/rules/jokers",
-    images: ["https://lasvegasmahj.com/hero-bg.jpg"],
+    url: "https://www.lasvegasmahj.com/rules/jokers",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
 
@@ -65,6 +67,7 @@ export default function JokersPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "American Mahjong Rules", item: "https://www.lasvegasmahj.com/rules" }, { "@type": "ListItem", position: 3, name: "Jokers", item: "https://www.lasvegasmahj.com/rules/jokers" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
       <main style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>

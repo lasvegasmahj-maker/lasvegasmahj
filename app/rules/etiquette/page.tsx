@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
+import { ogBase } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Mahjong Table Etiquette and Disputes | Las Vegas Mahjong",
+  title: { absolute: "Mahjong Table Etiquette and Disputes | Las Vegas Mahjong" },
   description:
     "Mahjong table rules and etiquette: table talk, taking back discards, resolving disputes, and the difference between house rules and NMJL rules.",
-  alternates: { canonical: "https://lasvegasmahj.com/rules/etiquette" },
+  alternates: { canonical: "https://www.lasvegasmahj.com/rules/etiquette" },
   openGraph: {
+    ...ogBase,
     title: "Mahjong Table Etiquette and Disputes | Las Vegas Mahjong",
     description: "Can I take back a discard? What counts as table talk? How are disputes resolved? Etiquette rules for American Mahjong.",
-    url: "https://lasvegasmahj.com/rules/etiquette",
-    images: ["https://lasvegasmahj.com/hero-bg.jpg"],
+    url: "https://www.lasvegasmahj.com/rules/etiquette",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
 
@@ -57,6 +59,7 @@ export default function EtiquettePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "American Mahjong Rules", item: "https://www.lasvegasmahj.com/rules" }, { "@type": "ListItem", position: 3, name: "Etiquette and Disputes", item: "https://www.lasvegasmahj.com/rules/etiquette" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
       <main style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>

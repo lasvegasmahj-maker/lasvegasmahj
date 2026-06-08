@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Best Mahjong Sets 2026 | A Certified Instructor's Guide",
+  title: "Best Mahjong Sets 2026 | Buying Guide",
   description:
     "A certified instructor's honest guide to the best American mahjong sets. Honest picks, exclusive discount codes for every budget. Updated for 2026.",
   keywords: [
@@ -22,12 +23,13 @@ export const metadata: Metadata = {
     "mahjong set discount",
     "NMJL mahjong set",
   ],
-  alternates: { canonical: "https://lasvegasmahj.com/mahjong-sets-guide" },
+  alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-sets-guide" },
   openGraph: {
+    ...ogBase,
     title: "Best Mahjong Sets 2026 | A Certified Instructor's Guide",
     description: "A certified instructor's honest guide to the best American mahjong sets and accessories, with exclusive discount codes. All budgets covered.",
-    url: "https://lasvegasmahj.com/mahjong-sets-guide",
-    images: ["https://lasvegasmahj.com/hero-bg.jpg"],
+    url: "https://www.lasvegasmahj.com/mahjong-sets-guide",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
 
@@ -37,8 +39,8 @@ const jsonLd = {
   headline: "Best American Mahjong Sets 2026: A Certified Instructor's Guide",
   description: "An honest guide to the best American mahjong sets and accessories, written by a certified Oh My Mahjong instructor.",
   author: { "@type": "Person", name: "Shauna", jobTitle: "Certified Oh My Mahjong Instructor" },
-  publisher: { "@type": "Organization", name: "Las Vegas Mahjong", url: "https://lasvegasmahj.com" },
-  mainEntityOfPage: "https://lasvegasmahj.com/mahjong-sets-guide",
+  publisher: { "@type": "Organization", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
+  mainEntityOfPage: "https://www.lasvegasmahj.com/mahjong-sets-guide",
 };
 
 const sets = [
@@ -126,6 +128,7 @@ export default function MahjongSetsGuide() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Best Mahjong Sets", item: "https://www.lasvegasmahj.com/mahjong-sets-guide" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
       <main style={{ paddingTop: "80px" }}>
@@ -159,7 +162,7 @@ export default function MahjongSetsGuide() {
               ].map(item => (
                 <div key={item.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.75rem 1rem", background: "rgba(255,255,255,0.03)", borderRadius: "6px" }}>
                   <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem" }}>{item.label}</span>
-                  <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: "var(--green)", fontFamily: "var(--font-nav)", fontWeight: 700, fontSize: "0.9rem" }}>{item.pick} ↗</a>
+                  <a href={item.url} target="_blank" rel="sponsored noopener noreferrer" style={{ color: "var(--green)", fontFamily: "var(--font-nav)", fontWeight: 700, fontSize: "0.9rem" }}>{item.pick} ↗</a>
                 </div>
               ))}
             </div>
@@ -188,7 +191,7 @@ export default function MahjongSetsGuide() {
                     ))}
                   </ul>
                   <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
-                    <a href={set.url} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ fontSize: "0.8rem", padding: "0.7rem 1.5rem" }}>Shop {set.name} ↗</a>
+                    <a href={set.url} target="_blank" rel="sponsored noopener noreferrer" className="btn-primary" style={{ fontSize: "0.8rem", padding: "0.7rem 1.5rem" }}>Shop {set.name} ↗</a>
                     <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Code: <strong style={{ color: "var(--green)" }}>{set.code}</strong> · {set.discount}</span>
                   </div>
                 </div>

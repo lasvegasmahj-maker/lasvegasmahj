@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
+import { ogBase } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "American Mahjong Rules Guide | Las Vegas Mahjong",
+  title: { absolute: "American Mahjong Rules Guide | Las Vegas Mahjong" },
   description:
-    "Complete American Mahjong rules guide by a certified instructor. Jokers, the charleston, calling tiles, scoring, dead hands, and more. Answered the way you'd ask at the table.",
-  alternates: { canonical: "https://lasvegasmahj.com/rules" },
+    "Complete American Mahjong rules guide by a certified instructor: jokers, the charleston, calling tiles, scoring, dead hands, and more, answered plainly.",
+  alternates: { canonical: "https://www.lasvegasmahj.com/rules" },
   openGraph: {
+    ...ogBase,
     title: "American Mahjong Rules Guide | Las Vegas Mahjong",
     description: "Every common American Mahjong rules question, answered by a certified Oh My Mahjong instructor. Jokers, charleston, scoring, dead hands, and more.",
-    url: "https://lasvegasmahj.com/rules",
-    images: ["https://lasvegasmahj.com/hero-bg.jpg"],
+    url: "https://www.lasvegasmahj.com/rules",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
 
@@ -21,9 +23,9 @@ const schema = {
   "@type": "CollectionPage",
   name: "American Mahjong Rules Guide",
   description: "Complete American Mahjong rules guide by certified instructor Shauna of Las Vegas Mahjong.",
-  url: "https://lasvegasmahj.com/rules",
+  url: "https://www.lasvegasmahj.com/rules",
   author: { "@type": "Person", name: "Shauna", jobTitle: "Certified Oh My Mahjong Instructor" },
-  publisher: { "@type": "Organization", name: "Las Vegas Mahjong", url: "https://lasvegasmahj.com" },
+  publisher: { "@type": "Organization", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
 };
 
 const CATEGORIES = [
@@ -93,10 +95,33 @@ const CATEGORIES = [
   },
 ];
 
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" },
+    { "@type": "ListItem", position: 2, name: "American Mahjong Rules", item: "https://www.lasvegasmahj.com/rules" },
+  ],
+};
+
+const collectionSchema = {
+  ...schema,
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: CATEGORIES.map((c, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: c.title,
+      url: `https://www.lasvegasmahj.com/rules/${c.slug}`,
+    })),
+  },
+};
+
 export default function RulesIndexPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
       <main style={{ paddingTop: "80px" }}>

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Mahjong Lessons in Summerlin, NV | Certified Instructor",
+  title: "Mahjong Lessons in Summerlin, NV",
   description:
     "Certified mahjong lessons in Summerlin, NV. $75 per lesson or $150 for a package of 3. A certified Oh My Mahjong instructor comes to you. Beginners welcome.",
   keywords: [
@@ -14,12 +15,13 @@ export const metadata: Metadata = {
     "mahjong Summerlin Nevada",
     "mahjong lessons near me Summerlin",
   ],
-  alternates: { canonical: "https://lasvegasmahj.com/mahjong-lessons-summerlin" },
+  alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-lessons-summerlin" },
   openGraph: {
+    ...ogBase,
     title: "Mahjong Lessons in Summerlin | Las Vegas Mahjong",
     description: "Certified mahjong instructor serving Summerlin, NV. $75 per lesson or $150 for a package of 3. We come to you. All skill levels welcome.",
-    url: "https://lasvegasmahj.com/mahjong-lessons-summerlin",
-    images: ["https://lasvegasmahj.com/shauna.jpg"],
+    url: "https://www.lasvegasmahj.com/mahjong-lessons-summerlin",
+    images: ["https://www.lasvegasmahj.com/shauna.jpg"],
   },
 };
 
@@ -31,8 +33,8 @@ const jsonLd = {
   provider: {
     "@type": "LocalBusiness",
     name: "Las Vegas Mahjong",
-    url: "https://lasvegasmahj.com",
-    "@id": "https://lasvegasmahj.com/#business",
+    url: "https://www.lasvegasmahj.com",
+    "@id": "https://www.lasvegasmahj.com/#business",
   },
   areaServed: { "@type": "Place", name: "Summerlin, Las Vegas, NV" },
   offers: [
@@ -45,9 +47,9 @@ const breadcrumb = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" },
-    { "@type": "ListItem", position: 2, name: "Mahjong Lessons Las Vegas", item: "https://lasvegasmahj.com/mahjong-lessons-las-vegas" },
-    { "@type": "ListItem", position: 3, name: "Summerlin", item: "https://lasvegasmahj.com/mahjong-lessons-summerlin" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" },
+    { "@type": "ListItem", position: 2, name: "Mahjong Lessons Las Vegas", item: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas" },
+    { "@type": "ListItem", position: 3, name: "Summerlin", item: "https://www.lasvegasmahj.com/mahjong-lessons-summerlin" },
   ],
 };
 
