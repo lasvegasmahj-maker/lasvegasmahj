@@ -34,7 +34,7 @@ const EVENT = {
   ],
   testimonials: [],
   relatedEventSlugs: [],
-  eventStatus: "https://schema.org/EventScheduled",
+  eventStatus: "https://schema.org/EventPast",
 };
 
 export const metadata: Metadata = {

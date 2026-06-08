@@ -44,6 +44,7 @@ export default function Teacher() {
                 height={2000}
                 sizes="(max-width: 768px) 100vw, 600px"
                 style={{ width: "100%", height: "auto", display: "block" }}
+                priority
               />
             </div>
           </div>
