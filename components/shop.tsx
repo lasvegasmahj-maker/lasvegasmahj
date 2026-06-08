@@ -237,6 +237,10 @@ export default function Shop() {
                 <img
                   src={item.logo}
                   alt={`${item.name} logo`}
+                  width={300}
+                  height={120}
+                  loading="lazy"
+                  decoding="async"
                   style={{
                     width: "100%",
                     height: "120px",
@@ -256,7 +260,7 @@ export default function Shop() {
                 <a
                   href={item.url}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="sponsored noopener noreferrer"
                   className="btn-card"
                   style={{
                     borderColor: item.color,
@@ -313,7 +317,7 @@ export default function Shop() {
                   <a
                     href={link.url}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="sponsored noopener noreferrer"
                     className="btn-card"
                     style={{
                       borderColor: "#ff9900",

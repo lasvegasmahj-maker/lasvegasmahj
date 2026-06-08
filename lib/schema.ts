@@ -60,13 +60,13 @@ export function buildEventSchema(event: EventSchemaInput) {
     organizer: {
       "@type": "Organization",
       name: "Las Vegas Mahjong",
-      url: "https://lasvegasmahj.com",
+      url: "https://www.lasvegasmahj.com",
       email: "lasvegasmahj@gmail.com",
     },
     image: event.imageUrl
       ? [event.imageUrl]
-      : ["https://lasvegasmahj.com/hero-bg.jpg"],
-    url: event.eventUrl ?? "https://lasvegasmahj.com",
+      : ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    url: event.eventUrl ?? "https://www.lasvegasmahj.com",
     offers,
   };
 }
@@ -87,7 +87,7 @@ export function buildBreadcrumbSchema(items: BreadcrumbItem[]) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://lasvegasmahj.com",
+        item: "https://www.lasvegasmahj.com",
       },
       ...items.map((item, index) => ({
         "@type": "ListItem",

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 export default function Teacher() {
@@ -36,11 +37,13 @@ export default function Teacher() {
         <div className="about-grid">
           <div className="reveal">
             <div className="teacher-photo-wrapper">
-              <img
+              <Image
                 src="/shauna.jpg"
                 alt="Shauna, founder of Las Vegas Mahjong"
-                width={600}
-                height={800}
+                width={1774}
+                height={2000}
+                sizes="(max-width: 768px) 100vw, 600px"
+                style={{ width: "100%", height: "auto", display: "block" }}
               />
             </div>
           </div>

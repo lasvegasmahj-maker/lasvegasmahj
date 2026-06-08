@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Corporate Mahjong Team Building Las Vegas",
   description:
-    "Unique corporate team building in Las Vegas built around mahjong. Strategy, communication, real connection. Custom events for any size group. Quote available.",
+    "Unique corporate team building in Las Vegas built around mahjong. Team events, conferences, conventions, incentive trips, and retreats, any size. Get a quote.",
   keywords: [
     "corporate team building Las Vegas mahjong",
     "mahjong corporate event Las Vegas",
@@ -14,13 +15,29 @@ export const metadata: Metadata = {
     "mahjong charity event Las Vegas",
     "team building activity Las Vegas",
     "corporate mahjong experience",
+    "corporate team building Las Vegas",
+    "team building activities Las Vegas",
+    "unique team building activities Las Vegas",
+    "corporate event entertainment Las Vegas",
+    "conference activities Las Vegas",
+    "convention activities Las Vegas",
+    "incentive trip activities Las Vegas",
+    "corporate retreat activities Las Vegas",
+    "group activities Las Vegas",
   ],
-  alternates: { canonical: "https://lasvegasmahj.com/mahjong-corporate-las-vegas" },
+  alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas" },
   openGraph: {
+    ...ogBase,
     title: "Corporate Mahjong Events & Team Building | Las Vegas",
     description: "Strategic, social, and genuinely fun. Corporate mahjong events in Las Vegas for teams of any size. Contact for a custom quote.",
-    url: "https://lasvegasmahj.com/mahjong-corporate-las-vegas",
-    images: ["https://lasvegasmahj.com/hero-bg.jpg"],
+    url: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Corporate Mahjong Events & Team Building | Las Vegas",
+    description: "Unique corporate team building in Las Vegas built around mahjong. Strategy, communication, real connection for teams, conferences, and conventions of any size. Contact for a quote.",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
 
@@ -32,20 +49,21 @@ const jsonLd = {
   provider: {
     "@type": "LocalBusiness",
     name: "Las Vegas Mahjong",
-    url: "https://lasvegasmahj.com",
-    "@id": "https://lasvegasmahj.com/#business",
+    url: "https://www.lasvegasmahj.com",
+    "@id": "https://www.lasvegasmahj.com/#business",
   },
   areaServed: { "@type": "City", name: "Las Vegas" },
-  offers: { "@type": "Offer", priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", description: "Custom pricing based on group size. Contact for a quote." } },
+  audience: { "@type": "BusinessAudience", name: "Corporate teams, conference and convention groups, incentive trips, and corporate retreats in Las Vegas" },
+  offers: { "@type": "Offer", availability: "https://schema.org/InStock", url: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas" },
 };
 
 const breadcrumb = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" },
-    { "@type": "ListItem", position: 2, name: "Private Events", item: "https://lasvegasmahj.com/mahjong-parties-las-vegas" },
-    { "@type": "ListItem", position: 3, name: "Corporate Events", item: "https://lasvegasmahj.com/mahjong-corporate-las-vegas" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" },
+    { "@type": "ListItem", position: 2, name: "Private Events", item: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas" },
+    { "@type": "ListItem", position: 3, name: "Corporate Events", item: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas" },
   ],
 };
 

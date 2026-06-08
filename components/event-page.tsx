@@ -140,7 +140,7 @@ export default function EventPage(props: EventPageProps) {
     venueState,
     ticketUrl,
     price: priceAmount,
-    imageUrl: imageUrl ?? "https://lasvegasmahj.com/hero-bg.jpg",
+    imageUrl: imageUrl ?? "https://www.lasvegasmahj.com/hero-bg.jpg",
     eventUrl: canonicalUrl,
     eventStatus,
   });
@@ -149,8 +149,8 @@ export default function EventPage(props: EventPageProps) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" },
-      { "@type": "ListItem", position: 2, name: "Events", item: "https://lasvegasmahj.com/#events" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" },
+      { "@type": "ListItem", position: 2, name: "Events", item: "https://www.lasvegasmahj.com/#events" },
       { "@type": "ListItem", position: 3, name, item: canonicalUrl },
     ],
   };
@@ -537,9 +537,9 @@ export default function EventPage(props: EventPageProps) {
  *   export const metadata: Metadata = buildEventMetadata({
  *     name: "Cafe Lola Open Play Mahjong Party",
  *     description: "...",
- *     canonicalUrl: "https://lasvegasmahj.com/events/cafe-lola-open-play-may-2026",
+ *     canonicalUrl: "https://www.lasvegasmahj.com/events/cafe-lola-open-play-may-2026",
  *     startDate: "2026-05-31T18:00:00-07:00",
- *     imageUrl: "https://lasvegasmahj.com/events/cafe-lola-may-2026.jpg",
+ *     imageUrl: "https://www.lasvegasmahj.com/events/cafe-lola-may-2026.jpg",
  *   });
  */
 export function buildEventMetadata({
@@ -571,13 +571,13 @@ export function buildEventMetadata({
       description,
       url: canonicalUrl,
       type: "website",
-      images: imageUrl ? [imageUrl] : ["https://lasvegasmahj.com/hero-bg.jpg"],
+      images: imageUrl ? [imageUrl] : ["https://www.lasvegasmahj.com/hero-bg.jpg"],
     },
     twitter: {
       card: "summary_large_image",
       title: `${name} | Las Vegas Mahjong`,
       description,
-      images: imageUrl ? [imageUrl] : ["https://lasvegasmahj.com/hero-bg.jpg"],
+      images: imageUrl ? [imageUrl] : ["https://www.lasvegasmahj.com/hero-bg.jpg"],
     },
   };
 }

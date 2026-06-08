@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
@@ -20,12 +21,13 @@ export const metadata: Metadata = {
     "things to do Las Vegas",
     "mahjong near me Las Vegas",
   ],
-  alternates: { canonical: "https://lasvegasmahj.com/mahjong-open-play-las-vegas" },
+  alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas" },
   openGraph: {
+    ...ogBase,
     title: "Mahjong Open Play Las Vegas | Events & Community Games",
     description: "Join mahjong open play events across Las Vegas, Summerlin, and Henderson. All skill levels welcome. Come solo, bring a friend, or meet new players.",
-    url: "https://lasvegasmahj.com/mahjong-open-play-las-vegas",
-    images: ["https://lasvegasmahj.com/hero-bg.jpg"],
+    url: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
 
@@ -34,15 +36,16 @@ const jsonLd = {
   "@type": "SportsOrganization",
   name: "Las Vegas Mahjong: Open Play Events",
   description: "Mahjong open play events, leagues, and community games across Las Vegas, Summerlin, and Henderson.",
-  url: "https://lasvegasmahj.com/mahjong-open-play-las-vegas",
+  url: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas",
   location: { "@type": "Place", address: { "@type": "PostalAddress", addressLocality: "Las Vegas", addressRegion: "NV" } },
+  parentOrganization: { "@id": "https://www.lasvegasmahj.com/#business" },
 };
 
 export default function MahjongOpenPlayLasVegas() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Mahjong Open Play Las Vegas", item: "https://lasvegasmahj.com/mahjong-open-play-las-vegas" }] }).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Mahjong Open Play Las Vegas", item: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
       <main style={{ paddingTop: "80px" }}>

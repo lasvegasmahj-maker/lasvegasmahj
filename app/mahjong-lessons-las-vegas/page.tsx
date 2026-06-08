@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Mahjong Lessons in Las Vegas | Certified Instructor",
+  title: "Mahjong Lessons in Las Vegas",
   description:
     "Learn mahjong from a certified Oh My Mahjong instructor. MAHJ101 for beginners, MAHJ102 for intermediate players. Lessons are $75 each or $150 for 3.",
   keywords: [
@@ -20,13 +21,14 @@ export const metadata: Metadata = {
     "Oh My Mahjong instructor Las Vegas",
     "mahjong private lessons Las Vegas",
   ],
-  alternates: { canonical: "https://lasvegasmahj.com/mahjong-lessons-las-vegas" },
+  alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas" },
   openGraph: {
+    ...ogBase,
     title: "Mahjong Lessons Las Vegas | Certified Instructor | Las Vegas Mahjong",
     description:
       "Book beginner or intermediate mahjong lessons in Las Vegas with a certified Oh My Mahjong instructor. $75 per lesson or $150 for a package of 3, across Summerlin, Henderson & the whole Valley.",
-    url: "https://lasvegasmahj.com/mahjong-lessons-las-vegas",
-    images: ["https://lasvegasmahj.com/shauna.jpg"],
+    url: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas",
+    images: ["https://www.lasvegasmahj.com/shauna.jpg"],
   },
 };
 
@@ -38,8 +40,9 @@ const jsonLd = {
     "Certified American Mahjong lessons in Las Vegas for all skill levels. MAHJ101 for complete beginners and MAHJ102 for intermediate players.",
   provider: {
     "@type": "LocalBusiness",
+    "@id": "https://www.lasvegasmahj.com/#business",
     name: "Las Vegas Mahjong",
-    url: "https://lasvegasmahj.com",
+    url: "https://www.lasvegasmahj.com",
     address: { "@type": "PostalAddress", addressLocality: "Las Vegas", addressRegion: "NV" },
   },
   offers: [
@@ -47,7 +50,12 @@ const jsonLd = {
     { "@type": "Offer", name: "Single Lesson", price: "75.00", priceCurrency: "USD" },
     { "@type": "Offer", name: "Private Lesson", description: "Contact for pricing" },
   ],
-  courseMode: "In-Person",
+  courseMode: "onsite",
+  hasCourseInstance: {
+    "@type": "CourseInstance",
+    courseMode: "onsite",
+    location: { "@type": "Place", name: "Las Vegas, NV" },
+  },
   audience: { "@type": "Audience", audienceType: "Beginners and intermediate mahjong players in Las Vegas" },
 };
 
@@ -64,7 +72,7 @@ export default function MahjongLessonsLasVegas() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }).replace(/</g, "\\u003c") }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Mahjong Lessons Las Vegas", item: "https://lasvegasmahj.com/mahjong-lessons-las-vegas" }] }).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Mahjong Lessons Las Vegas", item: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
       <main style={{ paddingTop: "80px" }}>

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "How to Learn American Mahjong | Beginner's Complete Guide",
+  title: "How to Learn American Mahjong",
   description:
-    "New to mahjong? This beginner's guide covers the tiles, NMJL card, and how to play your first hand. Written by a certified Oh My Mahjong instructor with 18 years of experience.",
+    "New to mahjong? This beginner's guide covers the tiles, the NMJL card, and how to play your first hand. Written by a certified Oh My Mahjong instructor.",
   keywords: [
     "how to learn mahjong",
     "learn American mahjong",
@@ -20,12 +21,13 @@ export const metadata: Metadata = {
     "learn mahjong online",
     "mahjong tips for beginners",
   ],
-  alternates: { canonical: "https://lasvegasmahj.com/learn-mahjong" },
+  alternates: { canonical: "https://www.lasvegasmahj.com/learn-mahjong" },
   openGraph: {
+    ...ogBase,
     title: "How to Learn American Mahjong | Complete Beginner's Guide",
     description: "Everything you need to start playing American Mahjong: the tiles, the card, your first hand, and where to find lessons near you. Written by a certified instructor.",
-    url: "https://lasvegasmahj.com/learn-mahjong",
-    images: ["https://lasvegasmahj.com/hero-bg.jpg"],
+    url: "https://www.lasvegasmahj.com/learn-mahjong",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
 
@@ -35,8 +37,8 @@ const jsonLd = {
   headline: "How to Learn American Mahjong: A Complete Beginner's Guide",
   description: "The complete beginner's guide to learning American Mahjong: tiles, the NMJL card, how to play, and how to find lessons near you.",
   author: { "@type": "Person", name: "Shauna", jobTitle: "Certified Oh My Mahjong Instructor" },
-  publisher: { "@type": "Organization", name: "Las Vegas Mahjong", url: "https://lasvegasmahj.com" },
-  mainEntityOfPage: "https://lasvegasmahj.com/learn-mahjong",
+  publisher: { "@type": "Organization", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
+  mainEntityOfPage: "https://www.lasvegasmahj.com/learn-mahjong",
 };
 
 const howToSchema = {
@@ -67,6 +69,7 @@ export default function LearnMahjong() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Learn Mahjong", item: "https://www.lasvegasmahj.com/learn-mahjong" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
       <main style={{ paddingTop: "80px" }}>
@@ -142,7 +145,7 @@ export default function LearnMahjong() {
             <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", marginBottom: "1.5rem" }}>As a certified instructor and affiliate partner, I earn a small commission on purchases at no extra cost to you.</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.2rem", marginBottom: "2.5rem" }}>
               {affiliates.map(a => (
-                <a key={a.name} href={a.url} target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "1.5rem", textDecoration: "none", transition: "border-color 0.2s" }}>
+                <a key={a.name} href={a.url} target="_blank" rel="sponsored noopener noreferrer" style={{ display: "block", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "1.5rem", textDecoration: "none", transition: "border-color 0.2s" }}>
                   <h3 style={{ fontFamily: "var(--font-nav)", fontWeight: 700, fontSize: "1rem", color: "var(--white)", marginBottom: "0.4rem" }}>{a.name}</h3>
                   <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "0.6rem" }}>{a.desc}</p>
                   <span style={{ fontFamily: "var(--font-nav)", fontSize: "0.75rem", color: "var(--green)", fontWeight: 700 }}>{a.discount} ↗</span>

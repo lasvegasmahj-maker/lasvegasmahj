@@ -11,11 +11,11 @@ const EVENT = {
   description:
     "Join Las Vegas Mahjong for a fun open play mahjong party at Cafe Lola! All skill levels welcome. Come solo, bring a friend, and play a few hands with the Valley's best mahjong community.",
   canonicalUrl:
-    "https://lasvegasmahj.com/events/cafe-lola-open-play-may-2026",
+    "https://www.lasvegasmahj.com/events/cafe-lola-open-play-may-2026",
   ticketUrl: "https://ilovecafelola.com",
   price: "See Eventbrite for tickets",
   tag: "open-play" as EventPageProps["tag"],
-  imageUrl: "https://lasvegasmahj.com/hero-bg.jpg",
+  imageUrl: "https://www.lasvegasmahj.com/hero-bg.jpg",
   body: [
     "Whether you've been playing for decades or you learned last month, this is the event for you. Open play means no pressure: just show up, pull up a chair, and start playing.",
     "We had multiple tables running all night at Cafe Lola, one of Las Vegas's most welcoming local spots. Certified Oh My Mahjong instructor Shauna was on hand the whole time for rules questions.",

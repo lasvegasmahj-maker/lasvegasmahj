@@ -151,7 +151,7 @@ export default function Footer({ onContactOpen }: FooterProps) {
         <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.2)", lineHeight: 1.7, textAlign: "center" }}>
           Las Vegas Mahjong offers mahjong lessons, open play events, leagues,
           tournaments, and private events across Las Vegas, Summerlin, Henderson,
-          North Las Vegas, and the entire Las Vegas Valley. Certified Oh My Mahjong
+          Green Valley, Anthem, and the entire Las Vegas Valley. Certified Oh My Mahjong
           instructor. Whether you&rsquo;re looking for beginner mahjong classes,
           corporate team building, bachelorette party activities, or just a fun
           girls&rsquo; night out in Las Vegas, we&rsquo;ve got a seat at the

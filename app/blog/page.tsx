@@ -4,11 +4,21 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Mahjong Blog | Las Vegas Mahjong",
+  title: { absolute: "Mahjong Blog | Las Vegas Mahjong" },
   description:
-    "Mahjong tips, Las Vegas activity guides, and bachelorette party ideas from the team at Las Vegas Mahjong.",
+    "Mahjong tips, Las Vegas activity guides, bachelorette party ideas, and group event inspiration from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
   alternates: {
-    canonical: "https://lasvegasmahj.com/blog",
+    canonical: "https://www.lasvegasmahj.com/blog",
+  },
+  openGraph: {
+    title: "Mahjong Blog | Las Vegas Mahjong",
+    description:
+      "Mahjong tips, Las Vegas activity guides, bachelorette party ideas, and group event inspiration from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
+    url: "https://www.lasvegasmahj.com/blog",
+    type: "website",
+    siteName: "Las Vegas Mahjong",
+    locale: "en_US",
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
 
@@ -34,6 +44,8 @@ const posts = [
 export default function BlogPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.lasvegasmahj.com/blog" }] }).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "Mahjong Blog", url: "https://www.lasvegasmahj.com/blog", hasPart: posts.map(p => ({ "@type": "Article", headline: p.title, url: `https://www.lasvegasmahj.com${p.href}` })), mainEntity: { "@type": "ItemList", itemListElement: posts.map((p, i) => ({ "@type": "ListItem", position: i + 1, url: `https://www.lasvegasmahj.com${p.href}` })) } }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
       <main>

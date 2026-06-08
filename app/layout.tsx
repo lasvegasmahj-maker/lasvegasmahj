@@ -24,14 +24,14 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://lasvegasmahj.com"),
+  metadataBase: new URL("https://www.lasvegasmahj.com"),
   title: {
     default:
       "Las Vegas Mahjong | Lessons, Events & Open Play",
     template: "%s | Las Vegas Mahjong",
   },
   description:
-    "Certified mahjong lessons, open play events, and private parties across Las Vegas, Summerlin, and Henderson. A certified Oh My Mahjong instructor with 18 years of experience. No experience needed.",
+    "Certified mahjong lessons, open play, and private parties across Las Vegas, Summerlin, and Henderson. Taught by a certified Oh My Mahjong instructor.",
   keywords: [
     "mahjong Las Vegas",
     "mahjong lessons Las Vegas",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     "mahjong instructor Las Vegas",
     "mahjong Summerlin",
     "mahjong Henderson",
-    "mahjong North Las Vegas",
+    "mahjong Green Valley",
     "mahjong open play Las Vegas",
     "mahjong events Las Vegas",
     "mahjong tournament Las Vegas",
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     "mahjong community Las Vegas",
   ],
   alternates: {
-    canonical: "https://lasvegasmahj.com",
+    canonical: "https://www.lasvegasmahj.com",
   },
   openGraph: {
     title:
@@ -71,18 +71,18 @@ export const metadata: Metadata = {
       "Join Las Vegas's most vibrant mahjong community. Beginner-friendly lessons, open play events, private parties, corporate team building, leagues & tournaments from Summerlin to Henderson. Certified Oh My Mahjong instructor. No experience needed!",
     type: "website",
     locale: "en_US",
-    url: "https://lasvegasmahj.com",
+    url: "https://www.lasvegasmahj.com",
     siteName: "Las Vegas Mahjong",
     images: [
       {
-        url: "https://lasvegasmahj.com/hero-bg.jpg",
+        url: "https://www.lasvegasmahj.com/hero-bg.jpg",
         width: 1599,
         height: 2000,
         alt: "Mahjong tiles at a Las Vegas Mahjong event",
         type: "image/jpeg",
       },
       {
-        url: "https://lasvegasmahj.com/shauna.jpg",
+        url: "https://www.lasvegasmahj.com/shauna.jpg",
         width: 1774,
         height: 2000,
         alt: "Shauna, certified mahjong instructor and founder of Las Vegas Mahjong",
@@ -92,10 +92,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Las Vegas Mahjong | Lessons, Events & Open Play",
-    description:
-      "Join Las Vegas's #1 mahjong community. Beginner lessons, open play, private parties & corporate events across the whole Valley. No experience needed!",
-    images: ["https://lasvegasmahj.com/hero-bg.jpg"],
   },
   robots: {
     index: true,
@@ -119,39 +115,44 @@ export const metadata: Metadata = {
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "@id": "https://lasvegasmahj.com/#business",
+  "@id": "https://www.lasvegasmahj.com/#business",
   name: "Las Vegas Mahjong",
   alternateName: "LV Mahjong",
   description:
     "Las Vegas's premier mahjong instruction and community. Certified Oh My Mahjong instructor offering beginner lessons, open play events, private parties, corporate team building, leagues, and tournaments across the Las Vegas Valley.",
-  url: "https://lasvegasmahj.com",
+  url: "https://www.lasvegasmahj.com",
   email: "lasvegasmahj@gmail.com",
   image: [
-    "https://lasvegasmahj.com/hero-bg.jpg",
-    "https://lasvegasmahj.com/shauna.jpg",
+    "https://www.lasvegasmahj.com/hero-bg.jpg",
+    "https://www.lasvegasmahj.com/shauna.jpg",
   ],
   priceRange: "$75+",
   currenciesAccepted: "USD",
   paymentAccepted: "Cash, Credit Card, Venmo",
   foundingDate: "2024",
-  knowsAbout: "American Mahjong, NMJL, mahjong instruction",
+  knowsAbout: [
+    "American Mahjong",
+    "NMJL",
+    "mahjong instruction",
+    "corporate team building",
+    "team building activities",
+    "corporate event entertainment",
+    "corporate events",
+    "group events",
+    "private events",
+  ],
   address: {
     "@type": "PostalAddress",
     addressLocality: "Las Vegas",
     addressRegion: "NV",
-    postalCode: "89101",
     addressCountry: "US",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: 36.1699,
-    longitude: -115.1398,
   },
   areaServed: [
     { "@type": "City", name: "Las Vegas" },
     { "@type": "City", name: "Henderson" },
     { "@type": "City", name: "Summerlin" },
-    { "@type": "City", name: "North Las Vegas" },
+    { "@type": "Place", name: "Green Valley" },
+    { "@type": "Place", name: "Anthem" },
     { "@type": "Place", name: "Las Vegas Valley" },
   ],
   founder: {
@@ -165,50 +166,6 @@ const localBusinessSchema = {
     "https://www.instagram.com/lasvegasmahjong",
     "https://www.facebook.com/profile.php?id=61581027728474",
     "https://www.tiktok.com/@lasvegasmahjong",
-  ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "5",
-    reviewCount: "5",
-    bestRating: "5",
-    worstRating: "1",
-  },
-  review: [
-    {
-      "@type": "Review",
-      author: { "@type": "Person", name: "Tamar" },
-      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-      reviewBody:
-        "I was on the verge of giving up on learning to play Mahjong. Then Shauna taught me. I 'got it' straight away, after having tried for months!! If it wasn't for Shauna, I wouldn't be playing Mahjong today and LOVING it!!",
-    },
-    {
-      "@type": "Review",
-      author: { "@type": "Person", name: "Sabrina" },
-      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-      reviewBody:
-        "I had such a great time learning Mahjong with Shauna! She's an amazing teacher -- super patient, clear in her explanations, and she makes the whole experience really fun. Highly recommend!",
-    },
-    {
-      "@type": "Review",
-      author: { "@type": "Person", name: "Molly" },
-      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-      reviewBody:
-        "If you need a mahjong lesson (or 5) @lasvegasmahjong is your woman. Amazing teacher.",
-    },
-    {
-      "@type": "Review",
-      author: { "@type": "Person", name: "Carole" },
-      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-      reviewBody:
-        "A big thank you for putting together such a fun, social evening of Mahjong at Lifetime Summerlin: new faces, beautiful table pads, fancy sets, and prizes!",
-    },
-    {
-      "@type": "Review",
-      author: { "@type": "Person", name: "Kristi, Northmarq" },
-      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
-      reviewBody:
-        "We worked with Shauna for a mahjong-oriented corporate event in early 2026. Her team was engaging with all of our guests, and we got some of the best guest feedback we've ever received. We hope to work with Shauna again!",
-    },
   ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
@@ -273,8 +230,9 @@ const courseSchema = [
       "Complete beginner American Mahjong lessons in Las Vegas. Learn tile sorting, NMJL card reading, and play your first hand. No experience needed.",
     provider: {
       "@type": "Organization",
+      "@id": "https://www.lasvegasmahj.com/#business",
       name: "Las Vegas Mahjong",
-      url: "https://lasvegasmahj.com",
+      url: "https://www.lasvegasmahj.com",
     },
     offers: {
       "@type": "Offer",
@@ -283,7 +241,12 @@ const courseSchema = [
       availability: "https://schema.org/InStock",
       category: "In-Person",
     },
-    courseMode: "In-Person",
+    courseMode: "onsite",
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      courseMode: "onsite",
+      location: { "@type": "Place", name: "Las Vegas, NV" },
+    },
     locationCreated: {
       "@type": "Place",
       name: "Las Vegas, NV",
@@ -301,8 +264,9 @@ const courseSchema = [
       "Intermediate American Mahjong lessons in Las Vegas. Build on MAHJ101 with more hands, strategy, and table time.",
     provider: {
       "@type": "Organization",
+      "@id": "https://www.lasvegasmahj.com/#business",
       name: "Las Vegas Mahjong",
-      url: "https://lasvegasmahj.com",
+      url: "https://www.lasvegasmahj.com",
     },
     offers: {
       "@type": "Offer",
@@ -311,7 +275,12 @@ const courseSchema = [
       availability: "https://schema.org/InStock",
       category: "In-Person",
     },
-    courseMode: "In-Person",
+    courseMode: "onsite",
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      courseMode: "onsite",
+      location: { "@type": "Place", name: "Las Vegas, NV" },
+    },
   },
 ];
 
@@ -410,14 +379,14 @@ const cafeLolaEventSchema = {
   organizer: {
     "@type": "Organization",
     name: "Las Vegas Mahjong",
-    url: "https://lasvegasmahj.com",
+    url: "https://www.lasvegasmahj.com",
     email: "lasvegasmahj@gmail.com",
   },
   image: [
-    "https://lasvegasmahj.com/hero-bg.jpg",
-    "https://lasvegasmahj.com/shauna.jpg",
+    "https://www.lasvegasmahj.com/hero-bg.jpg",
+    "https://www.lasvegasmahj.com/shauna.jpg",
   ],
-  url: "https://lasvegasmahj.com",
+  url: "https://www.lasvegasmahj.com",
   offers: {
     "@type": "Offer",
     availability: "https://schema.org/InStock",
@@ -430,16 +399,16 @@ const cafeLolaEventSchema = {
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": "https://lasvegasmahj.com/#website",
+  "@id": "https://www.lasvegasmahj.com/#website",
   name: "Las Vegas Mahjong",
-  url: "https://lasvegasmahj.com",
+  url: "https://www.lasvegasmahj.com",
   description:
     "Las Vegas's premier mahjong community offering lessons, events, and open play across the Valley.",
   publisher: {
     "@type": "Organization",
-    "@id": "https://lasvegasmahj.com/#business",
+    "@id": "https://www.lasvegasmahj.com/#business",
     name: "Las Vegas Mahjong",
-    url: "https://lasvegasmahj.com",
+    url: "https://www.lasvegasmahj.com",
   },
 };
 
