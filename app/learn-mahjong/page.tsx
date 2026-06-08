@@ -39,6 +39,8 @@ const jsonLd = {
   author: { "@type": "Person", name: "Shauna", jobTitle: "Certified Oh My Mahjong Instructor" },
   publisher: { "@type": "Organization", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
   mainEntityOfPage: "https://www.lasvegasmahj.com/learn-mahjong",
+  datePublished: "2025-01-01",
+  dateModified: "2026-06-08",
 };
 
 const howToSchema = {
