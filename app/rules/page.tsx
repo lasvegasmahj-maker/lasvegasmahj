@@ -64,7 +64,7 @@ const CATEGORIES = [
     title: "Winning",
     icon: "🏆",
     desc: "What makes a valid mahjong, self-drawn wins, false mahjong, and wall games.",
-    count: 7,
+    count: 8,
     highlight: false,
   },
   {

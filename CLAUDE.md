@@ -26,7 +26,7 @@ Non-negotiable. When any other instruction conflicts with this section, this sec
 - Open hands can call discards to build exposed sets. Closed hands must be built from your own draws, with no calling.
 
 ### Pricing
-- Group lessons: $50 per person, with a $200 minimum. Show this on lesson pages only.
+- Group lessons: $75 per person for a single lesson, or $150 per person for a package of 3 lessons. Group size is 4-8 people. Show this on lesson pages only.
 - Private lessons, parties, and corporate events: say "contact for pricing." Never show a dollar amount for these.
 
 ### Data honesty
@@ -105,7 +105,7 @@ American Mahjong facts that MUST be correct in every page, blog post, email, and
 
 ## Pricing
 
-- Group lessons: $50 per person, $200 minimum. Show this only on lesson pages.
+- Group lessons: $75 per person for a single lesson, or $150 per person for a 3-lesson package. Group size is 4-8 people. Show this only on lesson pages.
 - Private lessons, parties, and corporate events: "contact for pricing." Never show a dollar amount for these.
 
 ## No Hallucinated or Dead Links
