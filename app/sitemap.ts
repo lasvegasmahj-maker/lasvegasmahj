@@ -33,6 +33,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.85,
     },
     {
+      url: "https://www.lasvegasmahj.com/corporate-team-building-las-vegas",
+      lastModified: new Date("2026-06-07"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: "https://www.lasvegasmahj.com/conference-activities-las-vegas",
+      lastModified: new Date("2026-06-07"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: "https://www.lasvegasmahj.com/convention-activities-las-vegas",
+      lastModified: new Date("2026-06-07"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: "https://www.lasvegasmahj.com/about",
       lastModified: new Date("2026-05-23"),
       changeFrequency: "monthly",
