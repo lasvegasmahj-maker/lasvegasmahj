@@ -1,10 +1,21 @@
 "use client";
 
+import { useState, type FormEvent } from "react";
+import { useMailchimpSubscribe } from "@/lib/use-mailchimp";
+
 interface FooterProps {
   onContactOpen?: () => void;
 }
 
 export default function Footer({ onContactOpen }: FooterProps) {
+  const [email, setEmail] = useState("");
+  const { status, message, subscribe } = useMailchimpSubscribe();
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    void subscribe(email);
+  }
+
   return (
     <footer className="tile-bg">
       <div className="footer-inner">
@@ -123,26 +134,28 @@ export default function Footer({ onContactOpen }: FooterProps) {
             Event announcements and open play reminders, straight to your inbox.
           </p>
           <form
-            action="https://gmail.us15.list-manage.com/subscribe/post?u=85959bbed840b4e31ea78b3f3&id=6dacbc956d&f_id=0043a3e1f0"
-            method="POST"
-            target="_blank"
+            onSubmit={handleSubmit}
             noValidate
             style={{ display: "flex", flexDirection: "column", gap: "0.5rem", maxWidth: "260px" }}
           >
             <input
               type="email"
-              name="EMAIL"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
               required
               aria-label="Email address"
+              disabled={status === "loading"}
               style={{ padding: "0.6rem 0.75rem", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.05)", color: "#fff", fontSize: "0.9rem" }}
             />
-            <div aria-hidden="true" style={{ position: "absolute", left: "-5000px" }}>
-              <input type="text" name="b_85959bbed840b4e31ea78b3f3_6dacbc956d" tabIndex={-1} defaultValue="" />
-            </div>
-            <button type="submit" className="btn-primary" style={{ padding: "0.6rem", fontSize: "0.9rem" }}>
-              Subscribe
+            <button type="submit" className="btn-primary" disabled={status === "loading"} style={{ padding: "0.6rem", fontSize: "0.9rem" }}>
+              {status === "loading" ? "Subscribing..." : "Subscribe"}
             </button>
+            {message && (
+              <p role="status" aria-live="polite" style={{ fontSize: "0.8rem", lineHeight: 1.5, margin: 0, color: status === "error" ? "#ff8a8a" : status === "success" ? "var(--green)" : "rgba(255,255,255,0.7)" }}>
+                {message}
+              </p>
+            )}
           </form>
         </div>
       </div>
