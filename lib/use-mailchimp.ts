@@ -32,7 +32,15 @@ export function useMailchimpSubscribe() {
         setMessage("You're already on the list. See you at the next game!");
       } else if (data.result === "success") {
         setStatus("success");
-        setMessage("You're in! Check your inbox to confirm your subscription.");
+        // Double opt-in lists send a confirmation email and say so; single
+        // opt-in adds the contact immediately with no email. Match reality so
+        // we never tell people to check an inbox that has nothing in it.
+        const needsConfirm = /confirm|inbox|just sent/i.test(msg);
+        setMessage(
+          needsConfirm
+            ? "Almost there! Check your inbox to confirm your subscription."
+            : "You're subscribed! See you at the next game."
+        );
       } else {
         setStatus("error");
         setMessage(msg.replace(/<[^>]*>/g, "").trim() || "That didn't go through. Please try again.");
