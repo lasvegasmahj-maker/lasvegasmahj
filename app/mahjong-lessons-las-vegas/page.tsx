@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -123,19 +124,47 @@ export default function MahjongLessonsLasVegas() {
 
         {/* ABOUT YOUR INSTRUCTOR */}
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
-          <div className="container" style={{ maxWidth: "780px" }}>
-            <p className="section-label">Your Instructor</p>
-            <h2 className="section-title">Certified. <span className="accent-pink">Patient. Fun.</span></h2>
-            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
-              Hi, I&rsquo;m Shauna, a <strong>certified Oh My Mahjong instructor</strong> and the founder of Las Vegas Mahjong. I&rsquo;ve been playing American Mahjong for nearly 18 years, teaching friends and family long before I turned it into a business.
-            </p>
-            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
-              My teaching style is patient, clear, and beginner-obsessed. I break the game into simple, logical steps so you&rsquo;re not overwhelmed, and you&rsquo;re playing your first hand within the first hour, every time.
-            </p>
-            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "2rem" }}>
-              I offer lessons across <strong>Las Vegas, Summerlin, Henderson</strong>, and the entire Las Vegas Valley. I can also come to your home or host virtually via Zoom.
-            </p>
-            <a href="/#classes" className="btn-primary">Book Your Lesson</a>
+          <div className="container" style={{ maxWidth: "900px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "3rem", alignItems: "start" }}>
+            <div style={{ display: "grid", gap: "1.25rem" }}>
+              <Image
+                src="/lvm-lesson-group.jpg"
+                alt="Shauna with a group of students around the table at a Las Vegas Mahjong lesson, holding the National Mah Jongg League card"
+                width={1415}
+                height={1800}
+                sizes="(max-width: 760px) 100vw, 400px"
+                style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
+              />
+              <Image
+                src="/lvm-teaching-action.jpg"
+                alt="Shauna teaching American Mahjong to a group at a private lesson in Las Vegas"
+                width={1350}
+                height={1800}
+                sizes="(max-width: 760px) 100vw, 400px"
+                style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
+              />
+              <Image
+                src="/lvm-community-group.jpg"
+                alt="Shauna teaching American Mahjong to a community group around the table in Las Vegas"
+                width={1800}
+                height={1241}
+                sizes="(max-width: 760px) 100vw, 400px"
+                style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
+              />
+            </div>
+            <div>
+              <p className="section-label">Your Instructor</p>
+              <h2 className="section-title">Certified. <span className="accent-pink">Patient. Fun.</span></h2>
+              <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
+                Hi, I&rsquo;m Shauna, a <strong>certified Oh My Mahjong instructor</strong> and the founder of Las Vegas Mahjong. I&rsquo;ve been playing American Mahjong for nearly 18 years, teaching friends and family long before I turned it into a business.
+              </p>
+              <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
+                My teaching style is patient, clear, and beginner-obsessed. I break the game into simple, logical steps so you&rsquo;re not overwhelmed, and you&rsquo;re playing your first hand within the first hour, every time.
+              </p>
+              <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "2rem" }}>
+                I offer lessons across <strong>Las Vegas, Summerlin, Henderson</strong>, and the entire Las Vegas Valley. I can also come to your home or host virtually via Zoom.
+              </p>
+              <a href="/#classes" className="btn-primary">Book Your Lesson</a>
+            </div>
           </div>
         </section>
 
