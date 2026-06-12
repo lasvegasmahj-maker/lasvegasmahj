@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   const params = new URLSearchParams({ u: MC_U, id: MC_ID, EMAIL: email });
   params.set(MC_HONEYPOT, "");
   // post-json returns its HTML form page unless a JSONP callback is requested;
-  // with `c` it returns cb({...}), which the parser below unwraps.
+  // with `c` it returns cb({...}), which parseFirstJsonp() below unwraps.
   params.set("c", "cb");
 
   try {
@@ -33,21 +33,39 @@ export async function POST(req: Request) {
       headers: { "User-Agent": "lasvegasmahj.com newsletter signup" },
     });
     const text = await mcRes.text();
-    let data: { result?: string; msg?: string };
-    try {
-      data = JSON.parse(text);
-    } catch {
-      // Some responses are JSONP-wrapped; pull the JSON object out of cb({...}).
-      const wrapped = text.match(/\(\s*(\{[\s\S]*\})\s*\)\s*;?\s*$/);
-      data = wrapped
-        ? (JSON.parse(wrapped[1]) as { result?: string; msg?: string })
-        : { result: "error", msg: "The subscription service returned an unexpected response." };
-    }
-    return Response.json({ result: data.result ?? "error", msg: data.msg ?? "" });
+    const data = parseFirstJsonp(text);
+    return Response.json({
+      result: data?.result ?? "error",
+      msg: data?.msg ?? "The subscription service returned an unexpected response.",
+    });
   } catch {
     return Response.json(
       { result: "error", msg: "Could not reach the subscription service. Please try again." },
       { status: 502 }
     );
   }
+}
+
+// Mailchimp returns JSONP (cb({...})) and on some errors concatenates two
+// calls: cb({...})cb({...}). Extract and parse only the first balanced { }
+// object via brace counting, which also ignores ()/# characters in messages.
+function parseFirstJsonp(text: string): { result?: string; msg?: string } | null {
+  const start = text.indexOf("{");
+  if (start === -1) return null;
+  let depth = 0;
+  for (let i = start; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === "{") depth++;
+    else if (ch === "}") {
+      depth--;
+      if (depth === 0) {
+        try {
+          return JSON.parse(text.slice(start, i + 1)) as { result?: string; msg?: string };
+        } catch {
+          return null;
+        }
+      }
+    }
+  }
+  return null;
 }
