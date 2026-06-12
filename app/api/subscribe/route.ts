@@ -24,6 +24,9 @@ export async function POST(req: Request) {
 
   const params = new URLSearchParams({ u: MC_U, id: MC_ID, EMAIL: email });
   params.set(MC_HONEYPOT, "");
+  // post-json returns its HTML form page unless a JSONP callback is requested;
+  // with `c` it returns cb({...}), which the parser below unwraps.
+  params.set("c", "cb");
 
   try {
     const mcRes = await fetch(`${MC_BASE}?${params.toString()}`, {
