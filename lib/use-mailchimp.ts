@@ -25,12 +25,14 @@ export function useMailchimpSubscribe() {
       });
       const data = (await res.json()) as { result?: string; msg?: string };
       const msg = data.msg ?? "";
-      if (data.result === "success") {
-        setStatus("success");
-        setMessage("You're in! Check your inbox to confirm your subscription.");
-      } else if (/already subscribed/i.test(msg)) {
+      if (/already subscribed/i.test(msg)) {
+        // post-json reports an existing contact as result:"success", so this
+        // check must come before the success branch.
         setStatus("info");
         setMessage("You're already on the list. See you at the next game!");
+      } else if (data.result === "success") {
+        setStatus("success");
+        setMessage("You're in! Check your inbox to confirm your subscription.");
       } else {
         setStatus("error");
         setMessage(msg.replace(/<[^>]*>/g, "").trim() || "That didn't go through. Please try again.");
