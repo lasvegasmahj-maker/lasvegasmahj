@@ -151,7 +151,10 @@ export default function MahjongSetsGuide() {
         {/* QUICK PICKS */}
         <section style={{ padding: "3rem 2rem", background: "var(--navy)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
           <div className="container" style={{ maxWidth: "720px" }}>
-            <h2 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "1.5rem" }}>Quick Picks</h2>
+            <h2 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "0.5rem" }}>Quick Picks</h2>
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", marginBottom: "1.5rem", lineHeight: 1.6 }}>
+              Use code <span style={{ color: "var(--green)", fontWeight: 700, fontFamily: "var(--font-nav)", letterSpacing: "0.05em" }}>LASVEGASMAHJ</span> for 10% off at checkout.
+            </p>
             <div style={{ display: "grid", gap: "0.75rem" }}>
               {[
                 { label: "Best Overall", pick: "Oh My Mahjong", url: "https://ohmymahjong.com?sca_ref=9661578.Ks3olHSQzr" },
