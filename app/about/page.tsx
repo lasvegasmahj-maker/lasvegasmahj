@@ -75,10 +75,10 @@ export default function About() {
           <div className="container" style={{ maxWidth: "760px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "start" }}>
             <div>
               <Image
-                src="/shauna.jpg"
-                alt="Shauna, founder of Las Vegas Mahjong and certified mahjong instructor"
-                width={1774}
-                height={2000}
+                src="/lvm-private-game.jpg"
+                alt="Shauna teaching American Mahjong to a group around the table at a lesson in Las Vegas"
+                width={1350}
+                height={1800}
                 sizes="(max-width: 760px) 100vw, 380px"
                 style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
               />

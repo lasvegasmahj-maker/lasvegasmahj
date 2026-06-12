@@ -128,10 +128,10 @@ export default function MahjongPartiesLasVegas() {
             </div>
             <div>
               <Image
-                src="/birthday-mat.jpg"
-                alt="Happy Birthday mahjong mat with leopard print rack and NMJL cards"
-                width={820}
-                height={615}
+                src="/lvm-social-toast.jpg"
+                alt="Players toasting with wine over a Happy Birthday mahjong mat at a Las Vegas Mahjong party"
+                width={1800}
+                height={1350}
                 sizes="(max-width: 768px) 100vw, 410px"
                 style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
               />
