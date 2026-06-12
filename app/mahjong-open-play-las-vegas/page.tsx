@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Mahjong Open Play Las Vegas | All Levels Welcome",
@@ -77,6 +78,35 @@ export default function MahjongOpenPlayLasVegas() {
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8 }}>
               Already know how to play? Come and meet the local mahjong community. Just learning? Come anyway. Open play is the best way to practice and get better fast.
             </p>
+          </div>
+        </section>
+
+        {/* COMMUNITY PHOTOS */}
+        <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)", borderTop: "1px solid rgba(57,230,57,0.15)" }}>
+          <div className="container" style={{ maxWidth: "1000px" }}>
+            <p className="section-label">The Real Thing</p>
+            <h2 className="section-title">This Is What <span className="accent-green">Open Play</span> Looks Like</h2>
+            <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "560px", margin: "1rem 0 2.5rem", lineHeight: 1.7 }}>
+              Real players, real tables, real laughs. Come see why our open play events are the easiest way to find your people in the Valley.
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem", alignItems: "center", maxWidth: "900px" }}>
+              <Image
+                src="/lvm-openplay-social.jpg"
+                alt="Players laughing together during a Las Vegas Mahjong open play event"
+                width={1800}
+                height={1350}
+                sizes="(max-width: 760px) 100vw, 480px"
+                style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
+              />
+              <Image
+                src="/lvm-openplay-room.jpg"
+                alt="A full room of players at tables during a Las Vegas Mahjong open play social"
+                width={1350}
+                height={1800}
+                sizes="(max-width: 760px) 100vw, 380px"
+                style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
+              />
+            </div>
           </div>
         </section>
 
