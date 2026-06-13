@@ -50,7 +50,6 @@ const sets = [
     site: "ohmymahjong.com",
     badge: "My #1 Pick",
     badgeColor: "var(--pink)",
-    price: "$$-$$$",
     best: "Best overall selection",
     desc: "Oh My Mahjong is my go-to recommendation for almost every student. They offer a wide range of sets from beginner-friendly to luxury, all with beautiful tile quality. Their customer service is excellent and their designs are consistently stunning.",
     pros: ["Widest selection of styles and price points", "Excellent tile quality", "Fast shipping", "Great for gifts", "Accessories galore"],
@@ -63,7 +62,6 @@ const sets = [
     site: "bespokemahjong.com",
     badge: "Best for Beginners",
     badgeColor: "#ff8282",
-    price: "$$$",
     best: "Best beautiful first set to invest in",
     desc: "If you'd rather buy one gorgeous set you'll love for years than start with something basic, Bespoke is where I send new players. Their ready-made sets are beautifully designed and built to last, with nothing to assemble or design. It's a premium first set, not a budget one, but it may be the only one you ever need.",
     pros: ["Beautiful ready-made designer sets", "Premium, durable tiles", "Nothing to assemble or customize", "A first set you won't outgrow"],
@@ -76,7 +74,6 @@ const sets = [
     site: "mahjonggmaven.com",
     badge: "Most Customizable",
     badgeColor: "var(--green)",
-    price: "$$-$$$",
     best: "Best for custom, made-to-order sets",
     desc: "Mahjongg Maven is where I send players who want to make a set their own. You can design your own set, choose your tiles, racks, and case, and even add customized jokers. They've been at this for nearly 30 years, and the personalization options and quality are hard to beat.",
     pros: ["Design-your-own custom sets", "Customized jokers", "Choose your tiles, racks, and case", "Nearly 30 years in the craft"],
@@ -89,7 +86,6 @@ const sets = [
     site: "peacelovemahjong.com",
     badge: "Best for Travel",
     badgeColor: "var(--gold)",
-    price: "$$",
     best: "Best travel and portable sets",
     desc: "Peace Love Mahjong is my pick for players on the go. Their travel sets and crossbody travel bags make it easy to bring your game anywhere, and the modern, fresh designs are a bonus. Great for snowbirds, trips, and game nights out.",
     pros: ["Dedicated travel sets and bags", "Crossbody travel cases", "Modern, fresh designs", "Easy to pack and play anywhere"],
@@ -102,7 +98,6 @@ const sets = [
     site: "myfairmahjong.com",
     badge: "Best for Gifts",
     badgeColor: "#c8a8ff",
-    price: "$$-$$$",
     best: "Best for an elegant gift",
     desc: "My Fair Mahjong has a refined, elegant look that feels luxurious without the highest price tag, and it arrives beautifully packaged. When a student asks what to give the mahjong lover who has everything, this is my answer: lovely on the table and a treat to unwrap.",
     pros: ["Elegant, classic designs", "Beautiful gift packaging", "Great mid-range pricing", "A standout present"],
@@ -115,7 +110,6 @@ const sets = [
     site: "bambirdboutique.com",
     badge: "Best Accessories",
     badgeColor: "#64dcff",
-    price: "$-$$",
     best: "Best mats, bags, and game-night accessories",
     desc: "Bird Bam Boutique is my go-to for the extras that make game night better: mats, bags, racks and pushers, and the little essentials, plus tile sets and fun gift pieces. Once you have your tiles, this is where you round out your setup.",
     pros: ["Mats, bags, racks, and pushers", "Tile sets and bundles", "Game-night essentials", "Great gift accessories"],
@@ -135,7 +129,6 @@ export default function MahjongSetsGuide() {
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
-            <p className="section-label">Written by a Certified Oh My Mahjong Instructor</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.2rem, 7vw, 4.5rem)", marginBottom: "1.5rem" }}>
               Best Mahjong Sets <span className="accent-pink">2026</span>
             </h1>
@@ -186,7 +179,7 @@ export default function MahjongSetsGuide() {
                     <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.8rem", color: "var(--white)", margin: 0 }}>{set.name}</h3>
                     <span style={{ background: set.badgeColor, color: "var(--navy-dark)", fontFamily: "var(--font-nav)", fontSize: "0.7rem", fontWeight: 700, padding: "0.2rem 0.7rem", borderRadius: "3px", letterSpacing: "0.08em" }}>{set.badge}</span>
                   </div>
-                  <p style={{ color: "var(--green)", fontFamily: "var(--font-nav)", fontSize: "0.85rem", fontWeight: 700, marginBottom: "1rem" }}>{set.best} · Price: {set.price}</p>
+                  <p style={{ color: "var(--green)", fontFamily: "var(--font-nav)", fontSize: "0.85rem", fontWeight: 700, marginBottom: "1rem" }}>{set.best}</p>
                   <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>{set.desc}</p>
                   <ul style={{ listStyle: "none", padding: 0, marginBottom: "1.2rem" }}>
                     {set.pros.map(pro => (
