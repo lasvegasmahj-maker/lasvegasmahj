@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 interface InquiryModalProps {
   isOpen: boolean;
@@ -25,6 +26,10 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
       });
       if (res.ok) {
         setSubmitted(true);
+        trackEvent("lesson_inquiry", {
+          interest: String(data.get("interest") || ""),
+          group_size: String(data.get("group_size") || ""),
+        });
       } else {
         alert(
           "Oops! Something went wrong. Please try again or DM us on Instagram."
@@ -55,7 +60,10 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
 
         {submitted ? (
           <div className="form-success">
-            <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>
+            <div
+              style={{ fontSize: "2.5rem", marginBottom: "1rem" }}
+              aria-hidden="true"
+            >
               &#126980;
             </div>
             <h4>You&rsquo;re on my radar!</h4>

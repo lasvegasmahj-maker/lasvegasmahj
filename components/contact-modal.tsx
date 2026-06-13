@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -25,6 +26,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       });
       if (res.ok) {
         setSubmitted(true);
+        trackEvent("contact_submit");
       } else {
         alert(
           "Oops! Something went wrong. Please email us at lasvegasmahj@gmail.com"
@@ -55,7 +57,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
         {submitted ? (
           <div className="form-success">
-            <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>
+            <div
+              style={{ fontSize: "2.5rem", marginBottom: "1rem" }}
+              aria-hidden="true"
+            >
               &#126980;
             </div>
             <h4>Message Sent!</h4>
