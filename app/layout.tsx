@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Montserrat, DM_Sans } from "next/font/google";
+import { Analytics, AnalyticsNoscript } from "@/components/analytics";
 import "./globals.css";
 
 const bebasNeue = Bebas_Neue({
@@ -460,7 +461,11 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <AnalyticsNoscript />
+        <Analytics />
+        {children}
+      </body>
     </html>
   );
 }

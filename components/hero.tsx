@@ -5,7 +5,7 @@ export default function Hero() {
     <section className="hero" id="home">
       <Image
         src="/hero-bg.jpg"
-        alt=""
+        alt="Mahjong tiles at a Las Vegas Mahjong event"
         fill
         priority
         sizes="100vw"

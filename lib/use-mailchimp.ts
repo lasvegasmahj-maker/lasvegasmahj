@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 export type SubscribeStatus = "idle" | "loading" | "success" | "info" | "error";
 
@@ -32,6 +33,7 @@ export function useMailchimpSubscribe() {
         setMessage("You're already on the list. See you at the next game!");
       } else if (data.result === "success") {
         setStatus("success");
+        trackEvent("newsletter_signup");
         // Double opt-in lists send a confirmation email and say so; single
         // opt-in adds the contact immediately with no email. Match reality so
         // we never tell people to check an inbox that has nothing in it.
