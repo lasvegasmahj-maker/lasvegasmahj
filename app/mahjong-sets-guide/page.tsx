@@ -159,6 +159,7 @@ export default function MahjongSetsGuide() {
               {[
                 { label: "Best Overall", pick: "Oh My Mahjong", url: "https://ohmymahjong.com?sca_ref=9661578.Ks3olHSQzr" },
                 { label: "Best for Beginners", pick: "Bespoke Mahjong", url: "https://www.bespokemahjong.com?sca_ref=10595326.4agm2llL78" },
+                { label: "Best for Kids", pick: "Mini Mahjer", url: "https://minimahjer.com?sca_ref=11310244.mc7Mmov3WzzM" },
                 { label: "Best Custom Set", pick: "Mahjongg Maven", url: "https://mahjonggmaven.com/?ref=Lasvegasmahj" },
                 { label: "Best Travel Set", pick: "Peace Love Mahjong", url: "https://peacelovemahjong.com/?ref=LASVEGASMAHJ" },
                 { label: "Best Gift", pick: "My Fair Mahjong", url: "https://myfairmahjong.com/LASVEGASMAHJ" },
