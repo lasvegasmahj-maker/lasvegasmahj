@@ -69,6 +69,18 @@ const sets = [
     discount: "10% off",
   },
   {
+    name: "Mini Mahjer",
+    url: "https://minimahjer.com?sca_ref=11310244.mc7Mmov3WzzM",
+    site: "minimahjer.com",
+    badge: "Best for Kids",
+    badgeColor: "#ffb347",
+    best: "Best for kids and brand-new beginners",
+    desc: "Mini Mahjer is the set I point parents and grandparents to when they want to bring the kids to the table. It is the first game built to teach children American Mahjong, with kid-friendly tiles and simplified Beginner, Intermediate, and Advanced cards that grow with the player. Designed for ages 6 and up, it is also a gentle on-ramp for adult beginners who want to learn the basics before moving up to a full set.",
+    pros: ["Built to teach kids American Mahjong", "Kid-friendly tiles and racks", "Simplified Beginner, Intermediate, and Advanced cards", "Great for ages 6+ and adult beginners"],
+    code: "",
+    discount: "",
+  },
+  {
     name: "Mahjongg Maven",
     url: "https://mahjonggmaven.com/?ref=Lasvegasmahj",
     site: "mahjonggmaven.com",
@@ -190,7 +202,9 @@ export default function MahjongSetsGuide() {
                   </ul>
                   <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
                     <a href={set.url} target="_blank" rel="sponsored noopener noreferrer" className="btn-primary" style={{ fontSize: "0.8rem", padding: "0.7rem 1.5rem" }}>Shop {set.name} ↗</a>
-                    <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Code: <strong style={{ color: "var(--green)" }}>{set.code}</strong> · {set.discount}</span>
+                    {set.code ? (
+                      <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Code: <strong style={{ color: "var(--green)" }}>{set.code}</strong> · {set.discount}</span>
+                    ) : null}
                   </div>
                 </div>
               ))}
