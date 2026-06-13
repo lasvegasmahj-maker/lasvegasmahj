@@ -60,7 +60,7 @@ export default function About() {
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container" style={{ maxWidth: "800px" }}>
-            <p className="section-label">Certified Oh My Mahjong Instructor · Over 100 Students Taught</p>
+            <p className="section-label">Certified Oh My Mahjong Instructor · Hundreds of Students Taught</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
               Meet <span className="accent-pink">Shauna</span>
             </h1>
@@ -112,7 +112,7 @@ export default function About() {
                 { icon: "🀄", title: "18 Years Playing", desc: "Nearly two decades at the mahjong table means I've seen every type of hand, every learning style, and every common mistake. I know exactly where players get stuck at any level and how to get them moving again." },
                 { icon: "🌟", title: "Beginner to Advanced", desc: "I start complete beginners from zero, then build real strategy through MAHJ102 and MAHJ103 until you know all the rules and can play confidently on your own." },
                 { icon: "📍", title: "Across the Valley", desc: "I teach across all of Las Vegas: Summerlin, Henderson, Green Valley, Anthem, and the greater Valley. I come to you, which means you get a lesson at your home, your venue, or wherever works best." },
-                { icon: "👥", title: "Over 100 Taught", desc: "I've taught over 100 people to play across the Las Vegas Valley, from one-on-one beginners and group classes to birthday parties and corporate team-building events." },
+                { icon: "👥", title: "Hundreds Taught", desc: "I've taught hundreds of people to play across the Las Vegas Valley, from one-on-one beginners and group classes to birthday parties and corporate team-building events." },
                 { icon: "🎉", title: "Open Play & Events", desc: "Once you can play on your own, my open plays and events are where you keep the game going: meet new people, have fun, and play for prizes. Come to one, or hire me to host an event for your group." },
               ].map(item => (
                 <div key={item.title} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
