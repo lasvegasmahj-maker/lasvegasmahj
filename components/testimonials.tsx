@@ -4,24 +4,28 @@ import { useEffect, useRef } from "react";
 
 const testimonials = [
   {
-    name: "Molly",
-    text: "If you need a mahjong lesson (or 5) @lasvegasmahjong is your woman. Amazing teacher.",
+    name: "Tamar S.",
+    text: "Thanks to Shauna I learned how to play Mahjong. I nearly gave up after having tried for months... Her precise, logical and fun way of explaining the rules and concepts of the game allowed me to not only understand the game but also to really enjoy it.",
   },
   {
-    name: "Carole",
-    text: "Throwing a big thank you for putting together such a fun, social evening of Mahjong at Lifetime Summerlin with new faces, beautiful table pads, fancy sets, and PRIZES!",
+    name: "Nicole P.",
+    text: "Whether you're brand new to Mahjong or looking to improve your game, Shauna is a patient, knowledgeable, and engaging teacher. She makes learning the rules and strategies easy to understand while creating a fun and welcoming atmosphere.",
   },
   {
-    name: "Sabrina",
-    text: "I had such a great time learning Mahjong with Shauna! She\u2019s an amazing teacher, super patient, clear in her explanations, and she makes the whole experience really fun. Mahjong can feel a bit overwhelming at first, but Shauna breaks everything down in a way that\u2019s easy to understand and keeps the energy light and enjoyable. Highly recommend learning from her if you get the chance!",
+    name: "Carole B.",
+    text: "The people are friendly and Shauna always makes 2 hours go by lightning fast... and she has party favors AND prizes! Just come and meet other mahjong like minded folk who are searching for the right tiles, just like you.",
   },
   {
-    name: "Tamar",
-    text: "I was on the verge of giving up on learning to play Mahjong. I just couldn\u2019t wrap my head around it. So many people tried to teach me, but it just became more and more confusing. Then Shauna taught me. I \u2018got it\u2019 straight away, after having tried for months!! The way she teaches is so clear and logical, but also fun and exciting. Honestly, if it wasn\u2019t for Shauna, I wouldn\u2019t be playing Mahjong today and LOVING it!!",
+    name: "Kelly S.",
+    text: "Shauna made learning easy and fun! She came to my home and taught myself and 3 friends. I definitely recommend her if you're looking to learn American Mahjong.",
+  },
+  {
+    name: "Abby G.",
+    text: "I never played before, didn't even own a card, and walked away with my own card and a solid working knowledge of the game. Shauna is patient and makes the process fun.",
   },
   {
     name: "Kristi, Northmarq",
-    text: "We worked with Shauna for a mahjong-oriented corporate event in early 2026. Shauna was easy to work with and her team was engaging with all of our guests. We got some of the best guest feedback we\u2019ve ever received from this event, and we hope to work with Shauna again on a future mahjong social!",
+    text: "We worked with Shauna for a mahjong-oriented corporate event. She was easy to work with and her team was engaging with all of our guests. We got some of the best guest feedback we've ever received from this event.",
   },
 ];
 
