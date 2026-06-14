@@ -17,6 +17,7 @@ import Newsletter from "@/components/newsletter";
 import Footer from "@/components/footer";
 import ContactModal from "@/components/contact-modal";
 import InquiryModal from "@/components/inquiry-modal";
+import { homeFaqSchema } from "@/lib/home-faq";
 
 export default function Home() {
   const [contactOpen, setContactOpen] = useState(false);
@@ -24,6 +25,7 @@ export default function Home() {
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqSchema).replace(/</g, "\\u003c") }} />
       <Nav onContactOpen={() => setContactOpen(true)} />
       <Hero />
       <WhySection />
