@@ -175,9 +175,10 @@ export default function MahjongLessonsLasVegas() {
             <h2 className="section-title">Real <span className="accent-green">Results</span></h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
               {[
-                { name: "Tamar", text: "I was on the verge of giving up on learning to play Mahjong. Then Shauna taught me. I 'got it' straight away, after having tried for months!! If it wasn't for Shauna, I wouldn't be playing Mahjong today and LOVING it!!" },
-                { name: "Sabrina", text: "I had such a great time learning Mahjong with Shauna! She's an amazing teacher, super patient, clear in her explanations, and she makes the whole experience really fun. Highly recommend!" },
-                { name: "Molly", text: "If you need a mahjong lesson (or 5) @lasvegasmahjong is your woman. Amazing teacher." },
+                { name: "Abby G.", text: "I never played before, didn't even own a card, and walked away with my own card and a solid working knowledge of the game. Shauna is patient and makes the process fun." },
+                { name: "Tracy M.", text: "Took three lessons from Shauna... She breaks down the game into sections so that you truly understand all of the rules and strategies. Would highly recommend her if you would like to learn how to play American Mahjong." },
+                { name: "Brenda C.", text: "Just looking at the tiles made me think it would be impossible to learn. Shauna made it easy! After the first lesson, my brain was hurting, but after the second lesson, it all made sense. Then it turned to fun!" },
+                { name: "Sabrina F.", text: "Her mahjong lessons are fun, engaging, and so easy to follow. She has a wonderful way of teaching that makes even the most complicated parts of the game feel approachable. If you've ever wanted to learn mahjong, Shauna is the person to learn from." },
               ].map(t => (
                 <div key={t.name} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
                   <p style={{ color: "rgba(255,255,255,0.75)", lineHeight: 1.75, fontStyle: "italic", marginBottom: "1rem" }}>&ldquo;{t.text}&rdquo;</p>

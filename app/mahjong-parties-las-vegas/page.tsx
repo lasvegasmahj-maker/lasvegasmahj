@@ -177,12 +177,12 @@ export default function MahjongPartiesLasVegas() {
         {/* TESTIMONIAL */}
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
           <div className="container" style={{ maxWidth: "680px" }}>
-            <p className="section-label">Corporate Testimonial</p>
+            <p className="section-label">What Guests Say</p>
             <blockquote style={{ borderLeft: "3px solid var(--pink)", paddingLeft: "1.5rem", margin: "2rem 0" }}>
               <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, fontStyle: "italic", marginBottom: "1rem" }}>
-                &ldquo;We worked with Shauna for a mahjong-oriented corporate event in early 2026. Shauna was easy to work with and her team was engaging with all of our guests. We got some of the best guest feedback we&rsquo;ve ever received from this event, and we hope to work with Shauna again on a future mahjong social!&rdquo;
+                &ldquo;Shauna came to my house for a birthday Mahj session. She came fully prepared with a birthday-themed mat and her beautiful set. She was an excellent teacher and truly passionate about teaching mahjong. We are having her come again today, it was such a blast!&rdquo;
               </p>
-              <cite style={{ fontFamily: "var(--font-nav)", fontSize: "0.9rem", color: "var(--pink)", fontStyle: "normal", fontWeight: 700 }}>Kristi, Northmarq</cite>
+              <cite style={{ fontFamily: "var(--font-nav)", fontSize: "0.9rem", color: "var(--pink)", fontStyle: "normal", fontWeight: 700 }}>Amy G.</cite>
             </blockquote>
           </div>
         </section>
