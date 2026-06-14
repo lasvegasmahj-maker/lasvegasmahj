@@ -69,7 +69,7 @@ export default function Testimonials() {
           >
             <span style={{ color: "var(--gold)" }}>★★★★★</span>{" "}
             <span style={{ color: "var(--green)" }}>5.0 on Google</span>
-            {" · 27 five-star reviews"}
+            {" · 25+ five-star reviews"}
           </a>
         </div>
 
