@@ -61,6 +61,16 @@ export default function Testimonials() {
           <h2 className="section-title">
             What Players <span className="accent-pink">Are Saying</span>
           </h2>
+          <a
+            href="https://maps.app.goo.gl/dGeHMfMDjuXjDFPs5"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: "inline-block", marginTop: "0.75rem", fontFamily: "var(--font-nav)", fontWeight: 700, fontSize: "0.95rem", letterSpacing: "0.03em", color: "rgba(255,255,255,0.7)" }}
+          >
+            <span style={{ color: "var(--gold)" }}>★★★★★</span>{" "}
+            <span style={{ color: "var(--green)" }}>5.0 on Google</span>
+            {" · 27 five-star reviews"}
+          </a>
         </div>
 
         <div className="community-inner">
