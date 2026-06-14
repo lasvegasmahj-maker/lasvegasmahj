@@ -123,6 +123,7 @@ const localBusinessSchema = {
     "Las Vegas's premier mahjong instruction and community. Certified Oh My Mahjong instructor offering beginner lessons, open play events, private parties, corporate team building, leagues, and tournaments across the Las Vegas Valley.",
   url: "https://www.lasvegasmahj.com",
   email: "lasvegasmahj@gmail.com",
+  telephone: "+1-847-609-3112",
   image: [
     "https://www.lasvegasmahj.com/hero-bg.jpg",
     "https://www.lasvegasmahj.com/shauna.jpg",
@@ -146,6 +147,7 @@ const localBusinessSchema = {
     "@type": "PostalAddress",
     addressLocality: "Las Vegas",
     addressRegion: "NV",
+    postalCode: "89138",
     addressCountry: "US",
   },
   areaServed: [
@@ -164,8 +166,9 @@ const localBusinessSchema = {
       "Certified Oh My Mahjong instructor with 18 years of mahjong experience, teaching across the Las Vegas Valley.",
   },
   sameAs: [
+    "https://maps.app.goo.gl/dGeHMfMDjuXjDFPs5",
+    "https://www.facebook.com/lasvegasmahjong",
     "https://www.instagram.com/lasvegasmahjong",
-    "https://www.facebook.com/profile.php?id=61581027728474",
     "https://www.tiktok.com/@lasvegasmahjong",
   ],
   hasOfferCatalog: {
