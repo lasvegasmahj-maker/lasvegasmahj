@@ -40,11 +40,10 @@ const jsonLd = {
   description:
     "Certified American Mahjong lessons in Las Vegas for all skill levels. MAHJ101 for complete beginners and MAHJ102 for intermediate players.",
   provider: {
-    "@type": "LocalBusiness",
+    "@type": "Organization",
     "@id": "https://www.lasvegasmahj.com/#business",
     name: "Las Vegas Mahjong",
     url: "https://www.lasvegasmahj.com",
-    address: { "@type": "PostalAddress", addressLocality: "Las Vegas", addressRegion: "NV" },
   },
   offers: [
     { "@type": "Offer", name: "3-Lesson Package", price: "150.00", priceCurrency: "USD" },
