@@ -131,7 +131,7 @@ const localBusinessSchema = {
   priceRange: "$75+",
   currenciesAccepted: "USD",
   paymentAccepted: "Cash, Credit Card, Venmo",
-  foundingDate: "2024",
+  foundingDate: "2025-09",
   knowsAbout: [
     "American Mahjong",
     "NMJL",
