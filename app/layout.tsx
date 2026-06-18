@@ -359,47 +359,6 @@ const faqSchema = {
   ],
 };
 
-/* Hidden until the next live event:
-const cafeLolaEventSchema = {
-  "@context": "https://schema.org",
-  "@type": "Event",
-  name: "Cafe Lola Open Play Mahjong Party",
-  description:
-    "Join Las Vegas Mahjong for an open play mahjong party at Cafe Lola! All skill levels welcome -- come play, meet fellow mahjong lovers, and enjoy a fun evening in Las Vegas. Hosted by certified Oh My Mahjong instructor Shauna.",
-  startDate: "2026-05-31T18:00:00-07:00",
-  endDate: "2026-05-31T20:00:00-07:00",
-  eventStatus: "https://schema.org/EventScheduled",
-  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-  location: {
-    "@type": "Place",
-    name: "Cafe Lola",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Las Vegas",
-      addressRegion: "NV",
-      addressCountry: "US",
-    },
-  },
-  organizer: {
-    "@type": "Organization",
-    name: "Las Vegas Mahjong",
-    url: "https://www.lasvegasmahj.com",
-    email: "lasvegasmahj@gmail.com",
-  },
-  image: [
-    "https://www.lasvegasmahj.com/hero-bg.jpg",
-    "https://www.lasvegasmahj.com/shauna.jpg",
-  ],
-  url: "https://www.lasvegasmahj.com",
-  offers: {
-    "@type": "Offer",
-    availability: "https://schema.org/InStock",
-    url: "https://ilovecafelola.com",
-    validFrom: "2026-05-01",
-  },
-};
-*/
-
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -449,14 +408,6 @@ export default function RootLayout({
             __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c"),
           }}
         />
-        {/* Hidden until the next live event:
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(cafeLolaEventSchema).replace(/</g, "\\u003c"),
-          }}
-        />
-        */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
