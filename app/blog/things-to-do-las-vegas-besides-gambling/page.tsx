@@ -33,7 +33,7 @@ const articleSchema = {
   "@type": "Article",
   headline: "Things to Do in Las Vegas Besides Gambling: 20+ Ideas for 2026",
   description: "Las Vegas has way more than casinos. From mahjong parties to live music, hiking, and local food, here are the best non-gambling activities in Las Vegas.",
-  image: "https://www.lasvegasmahj.com/hero-bg.jpg",
+  image: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   datePublished: "2026-05-01",
   dateModified: "2026-05-23",
   author: {

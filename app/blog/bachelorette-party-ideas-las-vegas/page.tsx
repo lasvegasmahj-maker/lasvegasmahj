@@ -3,7 +3,7 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Bachelorette Party Ideas Las Vegas 2026 | Beyond the Basics",
+  title: "Bachelorette Party Ideas Las Vegas 2026",
   description:
     "The best bachelorette party ideas in Las Vegas for 2026. Mahjong parties, pool days, private dinners, and experiences that actually bond the group.",
   keywords: [
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "https://www.lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas" },
   openGraph: {
-    title: "Bachelorette Party Ideas Las Vegas 2026 | Beyond the Basics",
+    title: "Bachelorette Party Ideas Las Vegas 2026",
     description: "The best bachelorette party ideas in Las Vegas. Mahjong parties, pool days, private dinners, and experiences that actually bond the group.",
     url: "https://www.lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas",
     siteName: "Las Vegas Mahjong",
@@ -33,7 +33,7 @@ const articleSchema = {
   "@type": "Article",
   headline: "Bachelorette Party Ideas Las Vegas 2026: Beyond the Basics",
   description: "The best bachelorette party ideas in Las Vegas for 2026, from mahjong parties to pool days and private dinners.",
-  image: "https://www.lasvegasmahj.com/hero-bg.jpg",
+  image: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   datePublished: "2026-05-01",
   dateModified: "2026-05-23",
   author: {
