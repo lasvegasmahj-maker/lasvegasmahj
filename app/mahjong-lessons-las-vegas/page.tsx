@@ -158,7 +158,7 @@ export default function MahjongLessonsLasVegas() {
                 Hi, I&rsquo;m Shauna, a <strong>certified Oh My Mahjong instructor</strong> and the founder of Las Vegas Mahjong. I&rsquo;ve been playing American Mahjong for nearly 18 years, teaching friends and family long before I turned it into a business.
               </p>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
-                My teaching style is patient, clear, and beginner-obsessed. I break the game into simple, logical steps so you&rsquo;re not overwhelmed, and you&rsquo;re playing your first hand within the first hour, every time.
+                My teaching style is patient, clear, and beginner-obsessed. I break the game into simple, logical steps so you&rsquo;re not overwhelmed, and you&rsquo;ll play a game in your first lesson.
               </p>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "2rem" }}>
                 I offer lessons across <strong>Las Vegas, Summerlin, Henderson</strong>, and the entire Las Vegas Valley. I can also come to your home or host virtually via Zoom.

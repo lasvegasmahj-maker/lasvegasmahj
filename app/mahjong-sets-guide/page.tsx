@@ -238,7 +238,7 @@ export default function MahjongSetsGuide() {
           <div className="container">
             <h2 className="section-title">Ready to <span className="accent-green">Play?</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "480px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
-              Got your set? Now learn to use it! Book a beginner lesson in Las Vegas and you&rsquo;ll be playing your first hand within the hour.
+              Got your set? Now learn to use it! Book a beginner lesson in Las Vegas and you&rsquo;ll play a game in your first lesson.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/mahjong-lessons-las-vegas" className="btn-primary">Book a Lesson in Las Vegas</a>
