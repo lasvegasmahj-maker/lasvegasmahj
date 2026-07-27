@@ -55,7 +55,7 @@ const breadcrumb = {
 
 const faqs = [
   { q: "Do you teach mahjong lessons in Henderson, Nevada?", a: "Yes. We serve all of Henderson including Green Valley, Anthem, Seven Hills, and MacDonald Ranch. We come to your home, community space, or preferred venue." },
-  { q: "How much do mahjong lessons cost in Henderson?", a: "A package of 3 lessons is $150 per person, or single lessons are $75 each. Contact us for private lesson pricing." },
+  { q: "How much do mahjong lessons cost in Henderson?", a: "A package of 3 lessons is $150 per person, or single lessons are $75 each. Private lessons are available upon request; contact us for pricing." },
   { q: "Can I book a mahjong lesson at my Henderson home?", a: "Absolutely. We bring all the equipment and come to you. All you need is a table that seats four people." },
   { q: "What type of mahjong do you teach in Henderson?", a: "We teach American Mahjong using the National Mah Jongg League (NMJL) card, the most widely played version in the United States." },
 ];
