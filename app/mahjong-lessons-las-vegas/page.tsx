@@ -61,7 +61,7 @@ const jsonLd = {
 };
 
 const faqs = [
-  { q: "How much do mahjong lessons cost in Las Vegas?", a: "A package of 3 lessons is $150 per person, or single lessons are $75 each. Private lessons and events are custom -- contact us for pricing." },
+  { q: "How much do mahjong lessons cost in Las Vegas?", a: "A package of 3 lessons is $150 per person, or single lessons are $75 each. Private lessons and events are available upon request; contact us for pricing." },
   { q: "Do I need experience to take mahjong lessons?", a: "No experience needed at all. MAHJ101 starts completely from scratch: we cover everything from sorting the tiles to playing your first hand." },
   { q: "Where are mahjong lessons held in Las Vegas?", a: "We host lessons at venues across Las Vegas, Summerlin, and Henderson. We also offer private lessons at your home or preferred location." },
   { q: "What is the difference between MAHJ101 and MAHJ102?", a: "MAHJ101 is for complete beginners; we start from zero. MAHJ102 builds on that foundation with more hands, strategy, and game time. We recommend taking 101 first." },

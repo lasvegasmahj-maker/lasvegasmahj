@@ -55,7 +55,7 @@ const breadcrumb = {
 
 const faqs = [
   { q: "Do you teach mahjong in Summerlin?", a: "Yes. We teach mahjong lessons throughout Summerlin, including your home, clubhouse, or any venue you choose. We bring all the equipment." },
-  { q: "How much do mahjong lessons cost in Summerlin?", a: "A package of 3 lessons is $150 per person, or single lessons are $75 each. Private and corporate lessons are available, contact us for pricing." },
+  { q: "How much do mahjong lessons cost in Summerlin?", a: "A package of 3 lessons is $150 per person, or single lessons are $75 each. Private and corporate lessons are available upon request; contact us for pricing." },
   { q: "Do I need any experience to take a Summerlin mahjong lesson?", a: "None at all. We start from zero and have you playing your first real hand within the first session." },
   { q: "What version of mahjong do you teach?", a: "We teach American Mahjong using the National Mah Jongg League (NMJL) card, the most popular version across the US." },
 ];
