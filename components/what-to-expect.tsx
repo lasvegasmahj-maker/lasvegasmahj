@@ -16,7 +16,7 @@ const steps = [
   {
     num: "03",
     title: "Play Your First Hand",
-    desc: "You\u2019ll be playing within the first hour. We\u2019re right there guiding you through every pick, pass, and call.",
+    desc: "You\u2019ll play a game in your first lesson. We\u2019re right there guiding you through every pick, pass, and call.",
   },
   {
     num: "04",

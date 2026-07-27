@@ -66,7 +66,7 @@ const faqSchema = {
   mainEntity: [
     { "@type": "Question", name: "What is the most unique bachelorette party activity in Las Vegas?", acceptedAnswer: { "@type": "Answer", text: "A private mahjong party is one of the most unique bachelorette activities in Las Vegas. You learn to play together, it's social and strategic, and it gives the group something to do besides drink and shop. A certified instructor brings all the tiles and teaches everyone from scratch." } },
     { "@type": "Question", name: "How much does a bachelorette party mahjong experience cost in Las Vegas?", acceptedAnswer: { "@type": "Answer", text: "Pricing depends on your group size and what you're looking for. Contact Las Vegas Mahjong for a custom quote." } },
-    { "@type": "Question", name: "Do you need to know how to play mahjong for a bachelorette party?", acceptedAnswer: { "@type": "Answer", text: "No. The instructor teaches everyone from scratch. Most groups are playing their first real hand within the first hour. No prior experience needed." } },
+    { "@type": "Question", name: "Do you need to know how to play mahjong for a bachelorette party?", acceptedAnswer: { "@type": "Answer", text: "No. The instructor teaches everyone from scratch, and the group plays a real game during the party. No prior experience needed." } },
   ],
 };
 
