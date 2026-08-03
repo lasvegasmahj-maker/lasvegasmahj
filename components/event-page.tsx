@@ -258,7 +258,7 @@ export default function EventPage(props: EventPageProps) {
             >
               {[
                 { icon: "📅", label: displayDate },
-                { icon: "🕐", label: `${startTime} – ${endTime}` },
+                { icon: "🕐", label: `${startTime} to ${endTime}` },
                 { icon: "📍", label: venueAddress ? `${venueName}, ${venueAddress}` : `${venueName}, ${venueCity}, ${venueState}` },
                 ...(price ? [{ icon: "🎟️", label: price }] : []),
               ].map(({ icon, label }) => (
@@ -563,7 +563,7 @@ export function buildEventMetadata({
   });
 
   return {
-    title: `${name} — ${date}`,
+    title: `${name}, ${date}`,
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {
