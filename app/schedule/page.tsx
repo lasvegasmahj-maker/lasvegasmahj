@@ -79,24 +79,12 @@ export default function Schedule() {
                 loading="lazy"
               />
             */}
-            <div
-              style={{
-                border: "2px dashed rgba(233,30,140,0.4)",
-                borderRadius: "8px",
-                background: "rgba(255,255,255,0.03)",
-                padding: "4rem 2rem",
-                textAlign: "center",
-                maxWidth: "900px",
-                margin: "0 auto",
-              }}
-            >
-              <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.6rem", color: "var(--pink)", marginBottom: "0.75rem" }}>
-                Live booking calendar
-              </div>
-              <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "460px", margin: "0 auto", lineHeight: 1.7 }}>
-                The weekly and monthly schedule loads here once online booking is connected. You will be able to see every session and reserve a seat right on this page.
-              </p>
-            </div>
+            <iframe
+              title="Las Vegas Mahjong booking schedule"
+              src="https://bookwhen.com/lasvegasmahjong/iframe"
+              style={{ width: "100%", minHeight: "900px", border: 0, borderRadius: "8px", background: "#fff" }}
+              loading="lazy"
+            />
           </div>
         </section>
 
