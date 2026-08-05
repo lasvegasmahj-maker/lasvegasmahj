@@ -37,7 +37,8 @@ const bookOptions = [
 ];
 
 const events = [
-  { day: "TUE", num: "1", title: "Grand Opening & 1st Anniversary", time: "Tue 6:00 PM & Wed 10:00 AM", room: "Both studios", tone: "gold", price: "$35" },
+  { day: "TUE", num: "1", title: "Grand Opening & 1st Anniversary", time: "6:00 – 8:30 PM", room: "Both studios", tone: "gold", price: "$35" },
+  { day: "WED", num: "2", title: "Grand Opening & 1st Anniversary", time: "10:00 AM – 12:30 PM", room: "Both studios", tone: "gold", price: "$35" },
   { day: "FRI", num: "4", title: "Mahj 101 (Friday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
   { day: "FRI", num: "4", title: "Social Open Play", time: "10:00 AM – 1:00 PM", room: "Lucky Sevens", tone: "green", price: "$25" },
   { day: "TUE", num: "8", title: "Mahj 101 (Tuesday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
