@@ -36,6 +36,24 @@ const bookOptions = [
   },
 ];
 
+const events = [
+  { day: "TUE", num: "1", title: "Grand Opening & 1st Anniversary", time: "Tue 6:00 PM & Wed 10:00 AM", room: "Both studios", tone: "gold", price: "$35" },
+  { day: "FRI", num: "4", title: "Mahj 101 (Friday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
+  { day: "FRI", num: "4", title: "Social Open Play", time: "10:00 AM – 1:00 PM", room: "Lucky Sevens", tone: "green", price: "$25" },
+  { day: "TUE", num: "8", title: "Mahj 101 (Tuesday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
+  { day: "TUE", num: "8", title: "Social Open Play", time: "10:00 AM – 1:00 PM", room: "Lucky Sevens", tone: "green", price: "$25" },
+  { day: "THU", num: "10", title: "Mahj 101 (Thursday Evening)", time: "6:30 – 9:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
+  { day: "THU", num: "10", title: "Social Open Play", time: "6:00 – 9:00 PM", room: "Lucky Sevens", tone: "green", price: "$25" },
+  { day: "FRI", num: "11", title: "Mahj 102 (Friday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
+  { day: "TUE", num: "15", title: "Mahj 102 (Tuesday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
+  { day: "TUE", num: "22", title: "Mahj 103 (Tuesday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
+  { day: "THU", num: "24", title: "Mahj 102 (Thursday Evening)", time: "6:30 – 9:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
+  { day: "FRI", num: "25", title: "Mahj 103 (Friday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
+  { day: "SUN", num: "27", title: "Las Vegas Mahjong Turns 1!", time: "10:00 AM – 1:00 PM", room: "Birthday party", tone: "gold", price: "$45" },
+];
+
+const toneColor = (tone: string) => (tone === "green" ? "var(--green)" : tone === "gold" ? "var(--gold)" : "var(--pink)");
+
 export default function Schedule() {
   return (
     <>
@@ -50,7 +68,7 @@ export default function Schedule() {
               Class &amp; Open Play <span className="accent-pink">Schedule</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "640px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              See what is coming up at the studio and reserve your seat in a few taps. Classes, open play, and special events, all in one place. Spots are limited to 8 per session, with an automatic waitlist when a session fills.
+              See what is coming up at the studio and reserve your seat in a few taps. Classes, open play, and special events, all in one place. Spots are limited, with an automatic waitlist when a session fills.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="#calendar" className="btn-primary">See the Calendar</a>
@@ -68,23 +86,33 @@ export default function Schedule() {
               Pick a date below to see the details and book. Each listing shows the class or open play, the time, and how many seats are left.
             </p>
 
-            {/*
-              BOOKWHEN EMBED: once the Bookwhen account and events are live, replace the
-              placeholder block below with the embed, for example:
-
-              <iframe
-                title="Las Vegas Mahjong schedule"
-                src="https://bookwhen.com/lasvegasmahj/embed"
-                style={{ width: "100%", minHeight: "820px", border: 0, borderRadius: "8px" }}
-                loading="lazy"
-              />
-            */}
-            <iframe
-              title="Las Vegas Mahjong booking schedule"
-              src="https://bookwhen.com/lasvegasmahjong/iframe"
-              style={{ width: "100%", minHeight: "900px", border: 0, borderRadius: "8px", background: "#fff" }}
-              loading="lazy"
-            />
+            <div style={{ display: "grid", gap: "1rem", maxWidth: "760px", margin: "0 auto" }}>
+              {events.map((e, i) => {
+                const c = toneColor(e.tone);
+                return (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "1rem", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "1rem 1.25rem" }}>
+                    <div style={{ flex: "none", width: "58px", textAlign: "center", borderRight: "1px solid rgba(255,255,255,0.12)", paddingRight: "1rem" }}>
+                      <div style={{ color: "var(--pink)", fontWeight: 800, fontSize: "0.72rem", letterSpacing: "0.06em" }}>{e.day}</div>
+                      <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.7rem", lineHeight: 1, color: "#fff" }}>{e.num}</div>
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: 700, fontSize: "1.05rem", color: "#fff" }}>{e.title}</div>
+                      <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.85rem", marginTop: "0.15rem" }}>
+                        {e.time}
+                        <span style={{ display: "inline-block", fontSize: "0.68rem", fontWeight: 700, padding: "1px 8px", borderRadius: "999px", marginLeft: "8px", color: c, border: "1px solid " + c }}>{e.room}</span>
+                      </div>
+                    </div>
+                    <div style={{ flex: "none", textAlign: "right" }}>
+                      <div style={{ fontWeight: 800, fontSize: "1.05rem", color: "#fff", marginBottom: "0.4rem" }}>{e.price}</div>
+                      <a href="https://bookwhen.com/lasvegasmahjong" target="_blank" rel="noopener" className="btn-primary" style={{ padding: "0.5rem 1.1rem", fontSize: "0.85rem" }}>Book</a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", textAlign: "center", marginTop: "2rem" }}>
+              Pay by card or choose fee-free offline at checkout. Spots are limited, with an automatic waitlist when a session fills.
+            </p>
           </div>
         </section>
 
