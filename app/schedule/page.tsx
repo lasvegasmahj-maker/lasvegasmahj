@@ -117,7 +117,7 @@ export default async function Schedule() {
               </div>
             )}
             <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", textAlign: "center", marginTop: "2rem" }}>
-              Times shown in Pacific. Pay by card or choose fee-free offline at checkout. Spots are limited, with an automatic waitlist when a session fills.
+              Times shown in Pacific. Pay by card, Venmo, Zelle, or cash at checkout. Spots are limited, with an automatic waitlist when a session fills.
             </p>
           </div>
         </section>
