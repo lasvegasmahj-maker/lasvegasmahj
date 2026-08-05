@@ -44,9 +44,9 @@ function fmtClock(h: number, mi: number): string {
 
 function classify(title: string): { tone: Tone; room: string } {
   const t = title.toLowerCase();
-  if (t.includes("grand opening")) return { tone: "gold", room: "Both studios" };
-  if (t.includes("turns 1") || t.includes("anniversary") || t.includes("bling") || t.includes("bedazzle"))
-    return { tone: "gold", room: "Celebration" };
+  if (t.includes("grand opening") || t.includes("turns 1") || t.includes("anniversary"))
+    return { tone: "gold", room: "Both studios" };
+  if (t.includes("bling") || t.includes("bedazzle")) return { tone: "gold", room: "Celebration" };
   if (/\b10[123]\b/.test(t) || t.includes("mahj 1") || t.includes("lesson"))
     return { tone: "pink", room: "Lucky Wishbone" };
   if (t.includes("open play") || t.includes("social") || t.includes("guided") || t.includes("play"))
