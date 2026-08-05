@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+import { getScheduleEvents } from "@/lib/schedule";
 
 export const metadata: Metadata = {
   title: "Schedule & Booking",
@@ -36,26 +37,15 @@ const bookOptions = [
   },
 ];
 
-const events = [
-  { day: "TUE", num: "1", title: "Grand Opening & 1st Anniversary", time: "6:00 – 8:30 PM", room: "Both studios", tone: "gold", price: "$35" },
-  { day: "WED", num: "2", title: "Grand Opening & 1st Anniversary", time: "10:00 AM – 12:30 PM", room: "Both studios", tone: "gold", price: "$35" },
-  { day: "FRI", num: "4", title: "Mahj 101 (Friday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
-  { day: "FRI", num: "4", title: "Social Open Play", time: "10:00 AM – 1:00 PM", room: "Lucky Sevens", tone: "green", price: "$25" },
-  { day: "TUE", num: "8", title: "Mahj 101 (Tuesday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
-  { day: "TUE", num: "8", title: "Social Open Play", time: "10:00 AM – 1:00 PM", room: "Lucky Sevens", tone: "green", price: "$25" },
-  { day: "THU", num: "10", title: "Mahj 101 (Thursday Evening)", time: "6:30 – 9:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
-  { day: "THU", num: "10", title: "Social Open Play", time: "6:00 – 9:00 PM", room: "Lucky Sevens", tone: "green", price: "$25" },
-  { day: "FRI", num: "11", title: "Mahj 102 (Friday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
-  { day: "TUE", num: "15", title: "Mahj 102 (Tuesday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
-  { day: "TUE", num: "22", title: "Mahj 103 (Tuesday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
-  { day: "THU", num: "24", title: "Mahj 102 (Thursday Evening)", time: "6:30 – 9:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
-  { day: "FRI", num: "25", title: "Mahj 103 (Friday Daytime)", time: "10:30 AM – 1:00 PM", room: "Lucky Wishbone", tone: "pink", price: "$60" },
-  { day: "SUN", num: "27", title: "Las Vegas Mahjong Turns 1!", time: "10:00 AM – 1:00 PM", room: "Birthday party", tone: "gold", price: "$45" },
-];
-
 const toneColor = (tone: string) => (tone === "green" ? "var(--green)" : tone === "gold" ? "var(--gold)" : "var(--pink)");
 
-export default function Schedule() {
+export default async function Schedule() {
+  const events = await getScheduleEvents();
+  const months = events.reduce<Record<string, typeof events>>((acc, e) => {
+    (acc[e.monthLabel] ||= []).push(e);
+    return acc;
+  }, {});
+
   return (
     <>
       <SubpageNav />
@@ -84,35 +74,50 @@ export default function Schedule() {
             <p className="section-label">Upcoming</p>
             <h2 className="section-title">This Week &amp; <span className="accent-green">This Month</span></h2>
             <p style={{ color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "1rem auto 2.5rem", lineHeight: 1.75, textAlign: "center" }}>
-              Pick a date below to see the details and book. Each listing shows the class or open play, the time, and how many seats are left.
+              Pick a session below to see the details and book. Each listing shows the class or open play, the time, and which studio it is in.
             </p>
 
-            <div style={{ display: "grid", gap: "1rem", maxWidth: "760px", margin: "0 auto" }}>
-              {events.map((e, i) => {
-                const c = toneColor(e.tone);
-                return (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "1rem", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "1rem 1.25rem" }}>
-                    <div style={{ flex: "none", width: "58px", textAlign: "center", borderRight: "1px solid rgba(255,255,255,0.12)", paddingRight: "1rem" }}>
-                      <div style={{ color: "var(--pink)", fontWeight: 800, fontSize: "0.72rem", letterSpacing: "0.06em" }}>{e.day}</div>
-                      <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.7rem", lineHeight: 1, color: "#fff" }}>{e.num}</div>
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 700, fontSize: "1.05rem", color: "#fff" }}>{e.title}</div>
-                      <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.85rem", marginTop: "0.15rem" }}>
-                        {e.time}
-                        <span style={{ display: "inline-block", fontSize: "0.68rem", fontWeight: 700, padding: "1px 8px", borderRadius: "999px", marginLeft: "8px", color: c, border: "1px solid " + c }}>{e.room}</span>
-                      </div>
-                    </div>
-                    <div style={{ flex: "none", textAlign: "right" }}>
-                      <div style={{ fontWeight: 800, fontSize: "1.05rem", color: "#fff", marginBottom: "0.4rem" }}>{e.price}</div>
-                      <a href="https://bookwhen.com/lasvegasmahjong" target="_blank" rel="noopener" className="btn-primary" style={{ padding: "0.5rem 1.1rem", fontSize: "0.85rem" }}>Book</a>
+            {events.length === 0 ? (
+              <div style={{ maxWidth: "620px", margin: "0 auto", textAlign: "center", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "2.5rem 1.5rem" }}>
+                <p style={{ color: "rgba(255,255,255,0.75)", lineHeight: 1.75, marginBottom: "1.5rem" }}>
+                  New sessions are being added right now. Check back soon, or visit our booking page to see the latest openings.
+                </p>
+                <a href="https://bookwhen.com/lasvegasmahjong" target="_blank" rel="noopener" className="btn-primary">View Booking Page</a>
+              </div>
+            ) : (
+              <div style={{ display: "grid", gap: "2rem", maxWidth: "760px", margin: "0 auto" }}>
+                {Object.entries(months).map(([month, list]) => (
+                  <div key={month}>
+                    <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.1rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)", marginBottom: "1rem" }}>{month}</h3>
+                    <div style={{ display: "grid", gap: "1rem" }}>
+                      {list.map((e) => {
+                        const c = toneColor(e.tone);
+                        return (
+                          <div key={e.uid} style={{ display: "flex", alignItems: "center", gap: "1rem", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "1rem 1.25rem" }}>
+                            <div style={{ flex: "none", width: "58px", textAlign: "center", borderRight: "1px solid rgba(255,255,255,0.12)", paddingRight: "1rem" }}>
+                              <div style={{ color: "var(--pink)", fontWeight: 800, fontSize: "0.72rem", letterSpacing: "0.06em" }}>{e.day}</div>
+                              <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.7rem", lineHeight: 1, color: "#fff" }}>{e.num}</div>
+                            </div>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ fontWeight: 700, fontSize: "1.05rem", color: "#fff" }}>{e.title}</div>
+                              <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.85rem", marginTop: "0.15rem" }}>
+                                {e.time}
+                                <span style={{ display: "inline-block", fontSize: "0.68rem", fontWeight: 700, padding: "1px 8px", borderRadius: "999px", marginLeft: "8px", color: c, border: "1px solid " + c }}>{e.room}</span>
+                              </div>
+                            </div>
+                            <div style={{ flex: "none", textAlign: "right" }}>
+                              <a href={e.url} target="_blank" rel="noopener" className="btn-primary" style={{ padding: "0.5rem 1.1rem", fontSize: "0.85rem" }}>Book</a>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                ))}
+              </div>
+            )}
             <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", textAlign: "center", marginTop: "2rem" }}>
-              Pay by card or choose fee-free offline at checkout. Spots are limited, with an automatic waitlist when a session fills.
+              Times shown in Pacific. Pay by card or choose fee-free offline at checkout. Spots are limited, with an automatic waitlist when a session fills.
             </p>
           </div>
         </section>
