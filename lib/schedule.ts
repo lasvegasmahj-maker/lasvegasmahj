@@ -11,6 +11,7 @@ export interface ScheduleEvent {
   room: string;
   tone: Tone;
   url: string;
+  description: string;
 }
 
 const FEED_URL =
@@ -127,6 +128,10 @@ function buildEvent(fields: Record<string, string>): ScheduleEvent | null {
   const { tone, room } = classify(title);
   const weekday = DOW[new Date(Date.UTC(y, mo - 1, d)).getUTCDay()];
 
+  let description = unescapeText(fields["DESCRIPTION"] || "");
+  description = description.replace(/\n+https?:\/\/\S+\s*$/i, "");
+  description = description.replace(/\s*\n+\s*/g, " ").trim();
+
   return {
     uid: fields["UID"] || `${start}-${title}`,
     title,
@@ -138,5 +143,6 @@ function buildEvent(fields: Record<string, string>): ScheduleEvent | null {
     room,
     tone,
     url: fields["URL"] || "https://bookwhen.com/lasvegasmahjong",
+    description,
   };
 }
