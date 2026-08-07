@@ -7,7 +7,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Lessons in Las Vegas",
   description:
-    "Learn mahjong from a certified Oh My Mahjong instructor. MAHJ101 for beginners, MAHJ102 for intermediate players. Lessons are $75 each or $150 for 3.",
+    "Learn mahjong from a certified Oh My Mahjong instructor. MAHJ101 for beginners, MAHJ102 for intermediate players. Group lessons are $60 per person.",
   keywords: [
     "mahjong lessons Las Vegas",
     "mahjong classes Las Vegas",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     ...ogBase,
     title: "Mahjong Lessons Las Vegas | Certified Instructor | Las Vegas Mahjong",
     description:
-      "Book beginner or intermediate mahjong lessons in Las Vegas with a certified Oh My Mahjong instructor. $75 per lesson or $150 for a package of 3, across Summerlin, Henderson & the whole Valley.",
+      "Book beginner or intermediate mahjong lessons in Las Vegas with a certified Oh My Mahjong instructor. $60 per person, serving Summerlin, Henderson & the whole Valley.",
     url: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas",
     images: ["https://www.lasvegasmahj.com/shauna.jpg"],
   },
@@ -47,8 +47,7 @@ const jsonLd = {
     address: { "@type": "PostalAddress", addressLocality: "Las Vegas", addressRegion: "NV" },
   },
   offers: [
-    { "@type": "Offer", name: "3-Lesson Package", price: "150.00", priceCurrency: "USD" },
-    { "@type": "Offer", name: "Single Lesson", price: "75.00", priceCurrency: "USD" },
+    { "@type": "Offer", name: "Group Lesson", price: "60.00", priceCurrency: "USD" },
     { "@type": "Offer", name: "Private Lesson", description: "Contact for pricing" },
   ],
   courseMode: "onsite",
@@ -61,7 +60,7 @@ const jsonLd = {
 };
 
 const faqs = [
-  { q: "How much do mahjong lessons cost in Las Vegas?", a: "A package of 3 lessons is $150 per person, or single lessons are $75 each. Private lessons and events are available upon request; contact us for pricing." },
+  { q: "How much do mahjong lessons cost in Las Vegas?", a: "Group lessons are $60 per person. Private lessons and events are available upon request; contact us for pricing." },
   { q: "Do I need experience to take mahjong lessons?", a: "No experience needed at all. MAHJ101 starts completely from scratch: we cover everything from sorting the tiles to playing your first hand." },
   { q: "Where are mahjong lessons held in Las Vegas?", a: "We host lessons at venues across Las Vegas, Summerlin, and Henderson. We also offer private lessons at your home or preferred location." },
   { q: "What is the difference between MAHJ101 and MAHJ102?", a: "MAHJ101 is for complete beginners; we start from zero. MAHJ102 builds on that foundation with more hands, strategy, and game time. We recommend taking 101 first." },
@@ -101,8 +100,8 @@ export default function MahjongLessonsLasVegas() {
             <h2 className="section-title">What You&rsquo;ll <span className="accent-green">Learn</span></h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem", marginTop: "2.5rem" }}>
               {[
-                { num: "MAHJ101", title: "Absolute Beginners", price: "$75/lesson or book 3 lessons for $150", items: ["Sorting and identifying tiles", "Reading the NMJL card", "Understanding how a hand works", "Playing your first full game", "Tips for your first open play event"] },
-                { num: "MAHJ102", title: "Beyond the Basics", price: "$75/lesson or book 3 lessons for $150", items: ["Quick MAHJ101 recap", "More complex hands and patterns", "Strategy and decision-making", "Speed and confidence at the table", "Preparing for open play and leagues"] },
+                { num: "MAHJ101", title: "Absolute Beginners", price: "$60 per lesson", items: ["Sorting and identifying tiles", "Reading the NMJL card", "Understanding how a hand works", "Playing your first full game", "Tips for your first open play event"] },
+                { num: "MAHJ102", title: "Beyond the Basics", price: "$60 per lesson", items: ["Quick MAHJ101 recap", "More complex hands and patterns", "Strategy and decision-making", "Speed and confidence at the table", "Preparing for open play and leagues"] },
                 { num: "Private", title: "1-on-1 Lessons", price: "Contact for pricing", items: ["Fully customized to your pace", "Your home or preferred venue", "Any skill level welcome", "Great for busy schedules", "Zoom option available"] },
               ].map(tier => (
                 <div key={tier.num} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "2rem" }}>
