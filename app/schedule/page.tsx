@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description:
     "See the upcoming Las Vegas Mahjong schedule of classes, open play, and special events, and book your spot online.",
   alternates: { canonical: "https://www.lasvegasmahj.com/schedule" },
-  robots: { index: false, follow: false },
+  robots: { index: true, follow: true },
   openGraph: {
     ...ogBase,
     title: "Schedule & Booking | Las Vegas Mahjong",

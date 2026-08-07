@@ -9,6 +9,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: "https://www.lasvegasmahj.com/schedule",
+      lastModified: new Date("2026-08-07"),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas",
       lastModified: new Date("2026-05-23"),
       changeFrequency: "monthly",
