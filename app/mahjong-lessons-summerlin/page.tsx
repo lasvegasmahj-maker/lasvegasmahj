@@ -6,7 +6,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Lessons in Summerlin, NV",
   description:
-    "Certified mahjong lessons in Summerlin, NV. $75 per lesson or $150 for a package of 3. A certified Oh My Mahjong instructor comes to you. Beginners welcome.",
+    "Certified mahjong lessons in Summerlin, NV. Group and private lessons from a certified Oh My Mahjong instructor. Beginners welcome.",
   keywords: [
     "mahjong lessons Summerlin",
     "mahjong classes Summerlin NV",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     ...ogBase,
     title: "Mahjong Lessons in Summerlin | Las Vegas Mahjong",
-    description: "Certified mahjong instructor serving Summerlin, NV. $75 per lesson or $150 for a package of 3. We come to you. All skill levels welcome.",
+    description: "Certified mahjong instructor serving Summerlin, NV. Group and private lessons for all skill levels.",
     url: "https://www.lasvegasmahj.com/mahjong-lessons-summerlin",
     images: ["https://www.lasvegasmahj.com/shauna.jpg"],
   },
@@ -37,10 +37,6 @@ const jsonLd = {
     "@id": "https://www.lasvegasmahj.com/#business",
   },
   areaServed: { "@type": "Place", name: "Summerlin, Las Vegas, NV" },
-  offers: [
-    { "@type": "Offer", name: "Single Lesson (per person)", price: "75.00", priceCurrency: "USD" },
-    { "@type": "Offer", name: "3-Lesson Package (per person)", price: "150.00", priceCurrency: "USD" },
-  ],
 };
 
 const breadcrumb = {
@@ -55,7 +51,6 @@ const breadcrumb = {
 
 const faqs = [
   { q: "Do you teach mahjong in Summerlin?", a: "Yes. We teach mahjong lessons throughout Summerlin, including your home, clubhouse, or any venue you choose. We bring all the equipment." },
-  { q: "How much do mahjong lessons cost in Summerlin?", a: "A package of 3 lessons is $150 per person, or single lessons are $75 each. Private and corporate lessons are available upon request; contact us for pricing." },
   { q: "Do I need any experience to take a Summerlin mahjong lesson?", a: "None at all. We start from zero and have you playing your first real hand within the first session." },
   { q: "What version of mahjong do you teach?", a: "We teach American Mahjong using the National Mah Jongg League (NMJL) card, the most popular version across the US." },
 ];
@@ -102,27 +97,6 @@ export default function MahjongLessonsSummerlin() {
         </section>
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
-          <div className="container" style={{ maxWidth: "780px" }}>
-            <p className="section-label">Pricing</p>
-            <h2 className="section-title">Simple, Clear <span className="accent-pink">Pricing</span></h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.2rem", marginTop: "2.5rem" }}>
-              {[
-                { type: "3-Lesson Package", detail: "4-8 people", price: "$150", note: "per person" },
-                { type: "Single Lesson", detail: "4-8 people", price: "$75", note: "per person" },
-                { type: "Private & Groups", detail: "Any size", price: "Contact for pricing", note: "Custom quote" },
-              ].map(tier => (
-                <div key={tier.type} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "2rem" }}>
-                  <h3 style={{ fontFamily: "var(--font-nav)", fontWeight: 700, fontSize: "1rem", marginBottom: "0.3rem" }}>{tier.type}</h3>
-                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", marginBottom: "0.8rem" }}>{tier.detail}</p>
-                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.6rem", color: "var(--green)", marginBottom: "0.3rem" }}>{tier.price}</div>
-                  <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.8rem", margin: 0 }}>{tier.note}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container" style={{ maxWidth: "720px" }}>
             <p className="section-label">Questions?</p>
             <h2 className="section-title">FAQ: <span className="accent-green">Summerlin</span></h2>
@@ -137,7 +111,7 @@ export default function MahjongLessonsSummerlin() {
           </div>
         </section>
 
-        <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)", textAlign: "center", borderTop: "1px solid rgba(233,30,140,0.15)" }}>
+        <section style={{ padding: "5rem 2rem", background: "var(--navy)", textAlign: "center", borderTop: "1px solid rgba(233,30,140,0.15)" }}>
           <div className="container">
             <h2 className="section-title">Book Your <span className="accent-pink">Summerlin Lesson</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "480px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>

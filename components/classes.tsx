@@ -87,12 +87,8 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
               levels welcome, from absolute beginners to experienced players.
             </p>
             <div className="price-row">
-              <span>3-Lesson Package (4&ndash;8 people)</span>
-              <span className="price">$150 / person</span>
-            </div>
-            <div className="price-row">
-              <span>Single Lesson (4&ndash;8 people)</span>
-              <span className="price">$75 / person</span>
+              <span>Group Lesson (4-8 people)</span>
+              <span className="price">$60 / person</span>
             </div>
             <div className="price-row">
               <span>Private, Groups &amp; Corporate</span>

@@ -128,7 +128,7 @@ const localBusinessSchema = {
     "https://www.lasvegasmahj.com/hero-bg.jpg",
     "https://www.lasvegasmahj.com/shauna.jpg",
   ],
-  priceRange: "$75+",
+  priceRange: "$60+",
   currenciesAccepted: "USD",
   paymentAccepted: "Cash, Credit Card, Venmo",
   foundingDate: "2025-09",
@@ -183,11 +183,11 @@ const localBusinessSchema = {
           description:
             "Complete beginner mahjong lessons starting from scratch. Learn tile sorting, card reading, and play your first hand.",
         },
-        price: "75.00",
+        price: "60.00",
         priceCurrency: "USD",
         priceSpecification: {
           "@type": "UnitPriceSpecification",
-          price: "75.00",
+          price: "60.00",
           priceCurrency: "USD",
           unitText: "person",
         },
@@ -200,7 +200,7 @@ const localBusinessSchema = {
           description:
             "Intermediate mahjong lessons building on MAHJ101. More hands, more practice, more confidence at the table.",
         },
-        price: "75.00",
+        price: "60.00",
         priceCurrency: "USD",
       },
       {
@@ -240,7 +240,7 @@ const courseSchema = [
     },
     offers: {
       "@type": "Offer",
-      price: "75.00",
+      price: "60.00",
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
       category: "In-Person",
@@ -274,7 +274,7 @@ const courseSchema = [
     },
     offers: {
       "@type": "Offer",
-      price: "75.00",
+      price: "60.00",
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
       category: "In-Person",
@@ -353,7 +353,7 @@ const faqSchema = {
       name: "How much do mahjong lessons cost in Las Vegas?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "A package of 3 lessons is $150 per person, or single lessons are $75 each. Private lessons and events are available upon request; contact for pricing.",
+        text: "Group lessons are $60 per person. Private lessons and events are available upon request; contact for pricing.",
       },
     },
   ],

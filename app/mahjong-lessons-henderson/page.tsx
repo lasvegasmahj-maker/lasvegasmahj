@@ -6,7 +6,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Lessons in Henderson, NV",
   description:
-    "Certified mahjong lessons in Henderson, NV. $75 each or $150 for 3. Oh My Mahjong certified instructor serves Green Valley, Anthem, and all of Henderson.",
+    "Certified mahjong lessons in Henderson, NV. Oh My Mahjong certified instructor serves Green Valley, Anthem, and all of Henderson.",
   keywords: [
     "mahjong lessons Henderson NV",
     "mahjong classes Henderson Nevada",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     ...ogBase,
     title: "Mahjong Lessons in Henderson, NV | Las Vegas Mahjong",
-    description: "Certified mahjong instructor serving Henderson, Nevada. $75 per lesson or $150 for a package of 3. We come to you. Green Valley, Anthem, and all of Henderson.",
+    description: "Certified mahjong instructor serving Henderson, Nevada. We come to you. Green Valley, Anthem, and all of Henderson.",
     url: "https://www.lasvegasmahj.com/mahjong-lessons-henderson",
     images: ["https://www.lasvegasmahj.com/shauna.jpg"],
   },
@@ -37,10 +37,6 @@ const jsonLd = {
     "@id": "https://www.lasvegasmahj.com/#business",
   },
   areaServed: { "@type": "City", name: "Henderson", containedInPlace: { "@type": "State", name: "Nevada" } },
-  offers: [
-    { "@type": "Offer", name: "Single Lesson (per person)", price: "75.00", priceCurrency: "USD" },
-    { "@type": "Offer", name: "3-Lesson Package (per person)", price: "150.00", priceCurrency: "USD" },
-  ],
 };
 
 const breadcrumb = {
@@ -55,7 +51,6 @@ const breadcrumb = {
 
 const faqs = [
   { q: "Do you teach mahjong lessons in Henderson, Nevada?", a: "Yes. We serve all of Henderson including Green Valley, Anthem, Seven Hills, and MacDonald Ranch. We come to your home, community space, or preferred venue." },
-  { q: "How much do mahjong lessons cost in Henderson?", a: "A package of 3 lessons is $150 per person, or single lessons are $75 each. Private lessons are available upon request; contact us for pricing." },
   { q: "Can I book a mahjong lesson at my Henderson home?", a: "Absolutely. We bring all the equipment and come to you. All you need is a table that seats four people." },
   { q: "What type of mahjong do you teach in Henderson?", a: "We teach American Mahjong using the National Mah Jongg League (NMJL) card, the most widely played version in the United States." },
 ];
