@@ -64,7 +64,7 @@ export default function WhatToExpect() {
             <div className="expect-step reveal" key={step.num}>
               <div className="expect-num">{step.num}</div>
               <div>
-                <h4>{step.title}</h4>
+                <h3>{step.title}</h3>
                 <p>{step.desc}</p>
               </div>
             </div>

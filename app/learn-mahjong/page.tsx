@@ -7,20 +7,6 @@ export const metadata: Metadata = {
   title: "How to Learn American Mahjong",
   description:
     "New to mahjong? This beginner's guide covers the tiles, the NMJL card, and how to play your first hand. Written by a certified Oh My Mahjong instructor.",
-  keywords: [
-    "how to learn mahjong",
-    "learn American mahjong",
-    "how to play American mahjong",
-    "American mahjong for beginners",
-    "mahjong beginner guide",
-    "NMJL mahjong rules",
-    "mahjong tiles guide",
-    "mahjong card explained",
-    "American mahjong vs Chinese mahjong",
-    "mahjong lessons near me",
-    "learn mahjong online",
-    "mahjong tips for beginners",
-  ],
   alternates: { canonical: "https://www.lasvegasmahj.com/learn-mahjong" },
   openGraph: {
     ...ogBase,

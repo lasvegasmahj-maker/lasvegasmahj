@@ -8,20 +8,6 @@ export const metadata: Metadata = {
   title: "Mahjong Parties Las Vegas",
   description:
     "Host a mahjong party in Las Vegas. Bachelorettes, corporate teams, birthdays, and girls nights. Certified instructor, all equipment provided. Get a quote.",
-  keywords: [
-    "mahjong party Las Vegas",
-    "mahjong bachelorette party Las Vegas",
-    "mahjong corporate event Las Vegas",
-    "mahjong team building Las Vegas",
-    "private mahjong event Las Vegas",
-    "mahjong birthday party Las Vegas",
-    "mahjong girls night Las Vegas",
-    "mahjong charity event Las Vegas",
-    "things to do Las Vegas bachelorette",
-    "unique bachelorette ideas Las Vegas",
-    "corporate team building Las Vegas",
-    "fun things to do Las Vegas group",
-  ],
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas" },
   openGraph: {
     ...ogBase,

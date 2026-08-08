@@ -7,14 +7,6 @@ export const metadata: Metadata = {
   title: "Mahjong Lessons in Henderson, NV",
   description:
     "Certified mahjong lessons in Henderson, NV. Oh My Mahjong certified instructor serves Green Valley, Anthem, and all of Henderson.",
-  keywords: [
-    "mahjong lessons Henderson NV",
-    "mahjong classes Henderson Nevada",
-    "learn mahjong Henderson",
-    "mahjong instructor Henderson Las Vegas",
-    "mahjong Henderson Nevada",
-    "mahjong near me Henderson",
-  ],
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-lessons-henderson" },
   openGraph: {
     ...ogBase,

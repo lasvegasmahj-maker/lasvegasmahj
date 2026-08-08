@@ -90,7 +90,7 @@ export default function PrivateEvents({ onInquiryOpen }: PrivateEventsProps) {
           {eventTypes.map((item) => (
             <div className="private-event-card reveal" key={item.title}>
               <span className="private-event-icon">{item.icon}</span>
-              <h4>{item.title}</h4>
+              <h3>{item.title}</h3>
               <p>{item.desc}</p>
             </div>
           ))}

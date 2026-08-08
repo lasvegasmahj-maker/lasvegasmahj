@@ -7,14 +7,6 @@ export const metadata: Metadata = {
   title: "Mahjong Lessons in Summerlin, NV",
   description:
     "Certified mahjong lessons in Summerlin, NV. Group and private lessons from a certified Oh My Mahjong instructor. Beginners welcome.",
-  keywords: [
-    "mahjong lessons Summerlin",
-    "mahjong classes Summerlin NV",
-    "learn mahjong Summerlin Las Vegas",
-    "mahjong instructor Summerlin",
-    "mahjong Summerlin Nevada",
-    "mahjong lessons near me Summerlin",
-  ],
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-lessons-summerlin" },
   openGraph: {
     ...ogBase,

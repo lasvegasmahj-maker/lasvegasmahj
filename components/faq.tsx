@@ -85,11 +85,9 @@ export default function FAQ() {
                   {openIndex === i ? "\u2212" : "+"}
                 </span>
               </div>
-              {openIndex === i && (
-                <div className="faq-answer">
-                  <p>{faq.a}</p>
-                </div>
-              )}
+              <div className="faq-answer">
+                <p>{faq.a}</p>
+              </div>
             </div>
           ))}
         </div>

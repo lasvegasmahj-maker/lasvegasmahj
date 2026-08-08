@@ -33,35 +33,6 @@ export const metadata: Metadata = {
   },
   description:
     "Certified mahjong lessons, open play, and private parties across Las Vegas, Summerlin, and Henderson. Taught by a certified Oh My Mahjong instructor.",
-  keywords: [
-    "mahjong Las Vegas",
-    "mahjong lessons Las Vegas",
-    "learn mahjong Las Vegas",
-    "mahjong classes Las Vegas",
-    "mahjong teacher Las Vegas",
-    "mahjong instructor Las Vegas",
-    "mahjong Summerlin",
-    "mahjong Henderson",
-    "mahjong Green Valley",
-    "mahjong open play Las Vegas",
-    "mahjong events Las Vegas",
-    "mahjong tournament Las Vegas",
-    "mahjong league Las Vegas",
-    "mahjong party Las Vegas",
-    "mahjong corporate event Las Vegas",
-    "mahjong team building Las Vegas",
-    "mahjong bachelorette party Las Vegas",
-    "American mahjong lessons",
-    "Oh My Mahjong instructor Las Vegas",
-    "beginner mahjong Las Vegas",
-    "Las Vegas Mahjong",
-    "mahjong near me Las Vegas",
-    "things to do Las Vegas",
-    "ladies night Las Vegas",
-    "mahjong girls night Las Vegas",
-    "NMJL mahjong Las Vegas",
-    "mahjong community Las Vegas",
-  ],
   alternates: {
     canonical: "https://www.lasvegasmahj.com",
   },
@@ -147,7 +118,7 @@ const localBusinessSchema = {
     "@type": "PostalAddress",
     addressLocality: "Las Vegas",
     addressRegion: "NV",
-    postalCode: "89138",
+    postalCode: "89117",
     addressCountry: "US",
   },
   areaServed: [
@@ -288,77 +259,6 @@ const courseSchema = [
   },
 ];
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "Do I need to know how to play mahjong before coming?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Not at all! Most of our students are complete beginners. MAHJ101 starts from scratch: we'll teach you everything from sorting the tiles to playing your first hand. No experience needed.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What version of mahjong do you teach in Las Vegas?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "We teach American Mahjong, played with the National Mah Jongg League (NMJL) card. This is the most popular version in the US and the one you'll find at most local games.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What do I need to bring to a mahjong lesson?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Just yourself! We provide the tiles, racks, and everything else you need. If you have your own NMJL card, feel free to bring it; otherwise we'll have extras.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Can I come to a mahjong event alone?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "You're welcome to come solo! Open play events are a great way to meet fellow players. For private lessons, we can pair you with other students if you don't have a full group.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How long does it take to learn mahjong?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Most people feel comfortable playing after just one 2-3 hour lesson. You won't be an expert overnight, but you'll know enough to sit down and play, and that's when the real fun starts.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Where do you hold mahjong classes and events in Las Vegas?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "We host at restaurants, community spaces, and private venues across the Las Vegas Valley, from Summerlin to Henderson. We also offer private lessons at your home or preferred location.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Can you host a private mahjong event or party?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Absolutely! We do bachelorette parties, birthday celebrations, corporate team building, charity events, and more. Events are fully customized for your group. Just reach out and we'll plan something amazing.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How much do mahjong lessons cost in Las Vegas?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Group lessons are $60 per person. Private lessons and events are available upon request; contact for pricing.",
-      },
-    },
-  ],
-};
-
 /* Hidden until the next live event:
 const cafeLolaEventSchema = {
   "@context": "https://schema.org",
@@ -441,12 +341,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(courseSchema).replace(/</g, "\\u003c"),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c"),
           }}
         />
         {/* Hidden until the next live event:
