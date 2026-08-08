@@ -50,7 +50,8 @@ const breadcrumb = {
   "@type": "BreadcrumbList",
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" },
-    { "@type": "ListItem", position: 2, name: "Corporate Team Building", item: "https://www.lasvegasmahj.com/corporate-team-building-las-vegas" },
+    { "@type": "ListItem", position: 2, name: "Corporate Events", item: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas" },
+    { "@type": "ListItem", position: 3, name: "Corporate Team Building", item: "https://www.lasvegasmahj.com/corporate-team-building-las-vegas" },
   ],
 };
 
