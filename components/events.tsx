@@ -1,20 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { supabase } from "@/lib/supabase";
-
-interface Event {
-  id: string;
-  title: string;
-  event_date: string;
-  start_time: string | null;
-  end_time: string | null;
-  location: string | null;
-  description: string | null;
-  price: string | null;
-  ticket_url: string | null;
-  tag: string | null;
-}
+import { useEffect, useRef } from "react";
+import { SHOW_PAST_EVENTS, type HomeEvent } from "@/lib/events";
 
 const tagClasses: Record<string, string> = {
   tournament: "tag-tournament",
@@ -23,12 +10,6 @@ const tagClasses: Record<string, string> = {
   charity: "tag-charity",
   special: "tag-special",
 };
-
-// Reversible hide controls. Set SHOW_PAST_EVENTS to true to list past events
-// again; remove a title from HIDDEN_EVENT_TITLES to re-list that event. Supabase
-// rows are never deleted.
-const SHOW_PAST_EVENTS = false;
-const HIDDEN_EVENT_TITLES = ["Mahjong Open Play Party at Cafe Lola in Henderson!"];
 
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr + "T00:00:00");
@@ -40,7 +21,7 @@ function formatDate(dateStr: string): string {
   });
 }
 
-function EventCard({ event, isPast }: { event: Event; isPast: boolean }) {
+function EventCard({ event, isPast }: { event: HomeEvent; isPast: boolean }) {
   return (
     <div
       className="event-card reveal visible"
@@ -94,64 +75,14 @@ function EventCard({ event, isPast }: { event: Event; isPast: boolean }) {
   );
 }
 
-export default function Events() {
+export default function Events({
+  upcoming,
+  past,
+}: {
+  upcoming: HomeEvent[];
+  past: HomeEvent[];
+}) {
   const sectionRef = useRef<HTMLElement>(null);
-  const [upcoming, setUpcoming] = useState<Event[]>([]);
-  const [past, setPast] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchEvents() {
-      const { data, error } = await supabase
-        .from("events")
-        .select("*")
-        .order("event_date", { ascending: true });
-
-      if (error) {
-        console.error("Error fetching events:", error);
-        setLoading(false);
-        return;
-      }
-
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      // Move to past one day after the event
-      const cutoff = new Date(today);
-      cutoff.setDate(cutoff.getDate() - 1);
-
-      const upcomingEvents: Event[] = [];
-      const pastEvents: Event[] = [];
-
-      const visible = (data || []).filter(
-        (event: Event) => !HIDDEN_EVENT_TITLES.includes(event.title)
-      );
-
-      visible.forEach((event: Event) => {
-        const eventDate = new Date(event.event_date + "T00:00:00");
-        if (eventDate > cutoff) {
-          upcomingEvents.push(event);
-        } else {
-          pastEvents.push(event);
-        }
-      });
-
-      // Upcoming: soonest first; Past: most recent first
-      upcomingEvents.sort(
-        (a, b) =>
-          new Date(a.event_date).getTime() - new Date(b.event_date).getTime()
-      );
-      pastEvents.sort(
-        (a, b) =>
-          new Date(b.event_date).getTime() - new Date(a.event_date).getTime()
-      );
-
-      setUpcoming(upcomingEvents);
-      setPast(pastEvents);
-      setLoading(false);
-    }
-
-    fetchEvents();
-  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -178,7 +109,7 @@ export default function Events() {
   // It reappears automatically once there is an upcoming event again.
   const hasContent =
     upcoming.length > 0 || (SHOW_PAST_EVENTS && past.length > 0);
-  if (!loading && !hasContent) {
+  if (!hasContent) {
     return null;
   }
 
@@ -192,48 +123,40 @@ export default function Events() {
           </h2>
         </div>
 
-        {loading ? (
-          <p style={{ color: "rgba(255,255,255,0.5)", textAlign: "center" }}>
-            Loading events...
-          </p>
+        {upcoming.length > 0 ? (
+          <div className="events-grid">
+            {upcoming.map((event) => (
+              <EventCard key={event.id} event={event} isPast={false} />
+            ))}
+          </div>
         ) : (
-          <>
-            {upcoming.length > 0 ? (
-              <div className="events-grid">
-                {upcoming.map((event) => (
-                  <EventCard key={event.id} event={event} isPast={false} />
-                ))}
-              </div>
-            ) : (
-              <div className="reveal" style={{ textAlign: "center", padding: "2rem 0" }}>
-                <p
-                  style={{
-                    color: "rgba(255,255,255,0.5)",
-                    fontSize: "1.1rem",
-                    lineHeight: 1.7,
-                  }}
-                >
-                  No upcoming events right now. Check back soon!
-                </p>
-              </div>
-            )}
+          <div className="reveal" style={{ textAlign: "center", padding: "2rem 0" }}>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.5)",
+                fontSize: "1.1rem",
+                lineHeight: 1.7,
+              }}
+            >
+              No upcoming events right now. Check back soon!
+            </p>
+          </div>
+        )}
 
-            {SHOW_PAST_EVENTS && past.length > 0 && (
-              <div style={{ marginTop: "4rem" }}>
-                <div className="reveal">
-                  <p className="section-label">Looking Back</p>
-                  <h2 className="section-title">
-                    Past <span className="accent-green">Events</span>
-                  </h2>
-                </div>
-                <div className="events-grid">
-                  {past.map((event) => (
-                    <EventCard key={event.id} event={event} isPast={true} />
-                  ))}
-                </div>
-              </div>
-            )}
-          </>
+        {SHOW_PAST_EVENTS && past.length > 0 && (
+          <div style={{ marginTop: "4rem" }}>
+            <div className="reveal">
+              <p className="section-label">Looking Back</p>
+              <h2 className="section-title">
+                Past <span className="accent-green">Events</span>
+              </h2>
+            </div>
+            <div className="events-grid">
+              {past.map((event) => (
+                <EventCard key={event.id} event={event} isPast={true} />
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </section>
