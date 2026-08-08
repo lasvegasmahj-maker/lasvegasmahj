@@ -6,16 +6,6 @@ export const metadata: Metadata = {
   title: "Things to Do in Las Vegas Besides Gambling | 2026 Guide",
   description:
     "Las Vegas has way more than casinos. From mahjong parties to live music, hiking, and local food, here are the best non-gambling things to do in Las Vegas.",
-  keywords: [
-    "things to do in Las Vegas besides gambling",
-    "non-gambling Las Vegas activities",
-    "Las Vegas activities without gambling",
-    "what to do in Las Vegas not gambling",
-    "Las Vegas unique experiences",
-    "bachelorette party Las Vegas no gambling",
-    "team building Las Vegas",
-    "fun things Las Vegas",
-  ],
   alternates: { canonical: "https://www.lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling" },
   openGraph: {
     title: "Things to Do in Las Vegas Besides Gambling | 2026",

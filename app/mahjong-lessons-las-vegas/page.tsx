@@ -8,20 +8,6 @@ export const metadata: Metadata = {
   title: "Mahjong Lessons in Las Vegas",
   description:
     "Learn mahjong from a certified Oh My Mahjong instructor. MAHJ101 for beginners, MAHJ102 for intermediate players. Group lessons are $60 per person.",
-  keywords: [
-    "mahjong lessons Las Vegas",
-    "mahjong classes Las Vegas",
-    "learn mahjong Las Vegas",
-    "mahjong instructor Las Vegas",
-    "mahjong teacher Las Vegas",
-    "American mahjong lessons",
-    "NMJL mahjong Las Vegas",
-    "beginner mahjong Las Vegas",
-    "mahjong lessons Summerlin",
-    "mahjong lessons Henderson",
-    "Oh My Mahjong instructor Las Vegas",
-    "mahjong private lessons Las Vegas",
-  ],
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas" },
   openGraph: {
     ...ogBase,

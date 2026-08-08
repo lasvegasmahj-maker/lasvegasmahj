@@ -7,22 +7,6 @@ export const metadata: Metadata = {
   title: "Best Mahjong Sets 2026 | Buying Guide",
   description:
     "A certified instructor's honest guide to the best American mahjong sets. Honest picks, exclusive discount codes for every budget. Updated for 2026.",
-  keywords: [
-    "best mahjong set",
-    "best American mahjong set",
-    "mahjong set review",
-    "buy mahjong set",
-    "mahjong set recommendations",
-    "mahjong accessories",
-    "Oh My Mahjong review",
-    "Bespoke Mahjong review",
-    "mahjong set for beginners",
-    "mahjong gift ideas",
-    "mahjong sets 2026",
-    "where to buy mahjong set",
-    "mahjong set discount",
-    "NMJL mahjong set",
-  ],
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-sets-guide" },
   openGraph: {
     ...ogBase,

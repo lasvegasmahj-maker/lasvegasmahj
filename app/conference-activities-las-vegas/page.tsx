@@ -7,16 +7,6 @@ export const metadata: Metadata = {
   title: "Conference Activities Las Vegas",
   description:
     "Conference activities in Las Vegas built around mahjong. A memorable networking ice-breaker that runs in your hotel meeting room, scales to 100+, no experience needed. Get a quote.",
-  keywords: [
-    "conference activities Las Vegas",
-    "conference entertainment Las Vegas",
-    "conference networking activity Las Vegas",
-    "convention activities Las Vegas",
-    "meeting break-out activity Las Vegas",
-    "hotel meeting room activity Las Vegas",
-    "networking ice-breaker Las Vegas",
-    "group activities Las Vegas conferences",
-  ],
   alternates: { canonical: "https://www.lasvegasmahj.com/conference-activities-las-vegas" },
   openGraph: {
     ...ogBase,

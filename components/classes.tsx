@@ -45,7 +45,7 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
             <div className="tier">
               <div className="tier-num">MAHJ101</div>
               <div>
-                <h4>Absolute Beginners</h4>
+                <h3>Absolute Beginners</h3>
                 <p>
                   Never touched a tile? No problem. We start from scratch:
                   sorting the tiles, understanding the card, and playing your
@@ -56,7 +56,7 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
             <div className="tier">
               <div className="tier-num">MAHJ102</div>
               <div>
-                <h4>Beyond the Basics</h4>
+                <h3>Beyond the Basics</h3>
                 <p>
                   We&rsquo;ll start with a quick recap of everything covered in
                   MAHJ101, then jump straight into the tiles: more hands,
@@ -67,7 +67,7 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
             <div className="tier">
               <div className="tier-num">Teams &amp; Tiles</div>
               <div>
-                <h4>Large Groups, Corporate &amp; Charity Events</h4>
+                <h3>Large Groups, Corporate &amp; Charity Events</h3>
                 <p>
                   From bachelorette parties to corporate team building, charity
                   events, and more; private events for groups large and

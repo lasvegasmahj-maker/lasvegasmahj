@@ -418,7 +418,7 @@ section {
   margin-bottom: 0.5rem;
 }
 
-.pillar h4 {
+.pillar h3 {
   font-family: var(--font-nav);
   font-size: 0.8rem;
   font-weight: 700;
@@ -599,7 +599,7 @@ section {
   min-width: 5rem;
 }
 
-.tier h4 {
+.tier h3 {
   font-family: var(--font-nav);
   font-size: 0.9rem;
   font-weight: 700;
@@ -960,6 +960,10 @@ footer {
   line-height: 1;
 }
 
+.faq-item:not(.faq-open) .faq-answer {
+  display: none;
+}
+
 .faq-answer {
   padding: 0 0 1.4rem;
 }
@@ -1003,7 +1007,7 @@ footer {
   margin-bottom: 0.8rem;
 }
 
-.private-event-card h4 {
+.private-event-card h3 {
   font-family: var(--font-nav);
   font-size: 1.05rem;
   font-weight: 700;
@@ -1055,7 +1059,7 @@ footer {
   padding-top: 0.2rem;
 }
 
-.expect-step h4 {
+.expect-step h3 {
   font-family: var(--font-nav);
   font-size: 1.1rem;
   font-weight: 700;

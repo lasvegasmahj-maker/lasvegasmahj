@@ -8,20 +8,6 @@ export const metadata: Metadata = {
   title: "Mahjong Open Play Las Vegas | All Levels Welcome",
   description:
     "Play mahjong in Las Vegas with a welcoming community. Open play events across Summerlin and Henderson. All skill levels welcome. Find your next game.",
-  keywords: [
-    "mahjong open play Las Vegas",
-    "mahjong events Las Vegas",
-    "mahjong community Las Vegas",
-    "mahjong league Las Vegas",
-    "mahjong games Las Vegas",
-    "where to play mahjong Las Vegas",
-    "mahjong Summerlin",
-    "mahjong Henderson",
-    "mahjong social Las Vegas",
-    "mahjong tournament Las Vegas",
-    "things to do Las Vegas",
-    "mahjong near me Las Vegas",
-  ],
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas" },
   openGraph: {
     ...ogBase,

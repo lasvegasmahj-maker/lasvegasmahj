@@ -6,16 +6,6 @@ export const metadata: Metadata = {
   title: "Bachelorette Party Ideas Las Vegas 2026 | Beyond the Basics",
   description:
     "The best bachelorette party ideas in Las Vegas for 2026. Mahjong parties, pool days, private dinners, and experiences that actually bond the group.",
-  keywords: [
-    "bachelorette party ideas Las Vegas",
-    "Las Vegas bachelorette party",
-    "unique bachelorette Las Vegas",
-    "bachelorette activities Las Vegas",
-    "fun bachelorette ideas Vegas",
-    "mahjong bachelorette party Las Vegas",
-    "Las Vegas girls trip ideas",
-    "Las Vegas bach party",
-  ],
   alternates: { canonical: "https://www.lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas" },
   openGraph: {
     title: "Bachelorette Party Ideas Las Vegas 2026 | Beyond the Basics",

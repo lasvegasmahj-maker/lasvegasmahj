@@ -7,17 +7,6 @@ export const metadata: Metadata = {
   title: "Corporate Team Building Las Vegas",
   description:
     "Corporate team building in Las Vegas that teams actually remember. Strategic, social mahjong for any group size. We bring everything to your office, hotel, or venue. Get a quote.",
-  keywords: [
-    "corporate team building Las Vegas",
-    "team building activities Las Vegas",
-    "unique team building activities Las Vegas",
-    "corporate event entertainment Las Vegas",
-    "corporate team building activity Las Vegas",
-    "team building Las Vegas mahjong",
-    "offsite activities Las Vegas",
-    "group activities Las Vegas",
-    "fun team building Las Vegas",
-  ],
   alternates: { canonical: "https://www.lasvegasmahj.com/corporate-team-building-las-vegas" },
   openGraph: {
     ...ogBase,

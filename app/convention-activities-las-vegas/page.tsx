@@ -7,18 +7,6 @@ export const metadata: Metadata = {
   title: "Convention Activities Las Vegas",
   description:
     "Mahjong as a convention activity in Las Vegas. A social, hands-on experience for attendee groups, exhibitors, and booth draws, any size. Contact for a quote.",
-  keywords: [
-    "convention activities Las Vegas",
-    "convention entertainment Las Vegas",
-    "things to do for convention groups Las Vegas",
-    "convention group activities Las Vegas",
-    "attendee engagement activities Las Vegas",
-    "exhibitor booth activity Las Vegas",
-    "trade show entertainment Las Vegas",
-    "convention team building Las Vegas",
-    "mahjong convention activity Las Vegas",
-    "group activities for conventions Las Vegas",
-  ],
   alternates: { canonical: "https://www.lasvegasmahj.com/convention-activities-las-vegas" },
   openGraph: {
     ...ogBase,
