@@ -23,12 +23,12 @@ const bookOptions = [
   {
     title: "Classes",
     accent: "accent-pink" as const,
-    body: "Small-group lessons that build from your very first tiles to confident play. The Mahj 101 and 102 package is where beginners start, and Mahj 103 Strategies and Play is where you put it all together at the table.",
+    body: "Small-group lessons that build from your very first tiles to confident play. Start with MAHJ101 for absolute beginners, then move through MAHJ102 and MAHJ103 as you grow.",
   },
   {
     title: "Open Play",
     accent: "accent-green" as const,
-    body: "Come play in a friendly, no-pressure room. Guided Beginner sessions for brand-new players, and Social, Beginner, and Advanced open play for everyone building their game. Two hours at the table with help when you want it.",
+    body: "Come play in a friendly, no-pressure room. Social Open Play welcomes all levels, from brand-new players to regulars building their game. Two hours at the table with help when you want it.",
   },
   {
     title: "Private & Parties",
