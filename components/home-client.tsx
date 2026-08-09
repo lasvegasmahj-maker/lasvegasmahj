@@ -36,7 +36,7 @@ export default function HomeClient({
       <WhySection />
       <Teacher />
       <WhatToExpect />
-      <Classes onInquiryOpen={() => setInquiryOpen(true)} />
+      <Classes />
       <Events upcoming={upcoming} past={past} />
       <PrivateEvents onInquiryOpen={() => setInquiryOpen(true)} />
       <Testimonials />
