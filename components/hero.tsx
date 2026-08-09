@@ -20,14 +20,20 @@ export default function Hero() {
           <span className="line2">Mahjong</span>
         </h1>
         <p className="hero-sub">
-          Las Vegas is bigger than the Strip, and so is our mahjong community.
-          From Summerlin to Henderson, we&rsquo;re bringing players together across
-          the whole Valley for mahjong lessons, open play events, leagues,
-          tournaments, and more. No experience needed. Beginners welcome!
+          Our studio inside Lucky Hare on West Sahara is home base for the Las
+          Vegas mahjong community. Join us for lessons, open play, leagues, and
+          special events, with a warm welcome for every skill level. No
+          experience needed. Beginners welcome!
         </p>
         <div className="hero-btns">
-          <a href="#classes" className="btn-primary">
-            Learn to Play
+          <a href="/schedule" className="btn-primary">
+            Book a Lesson
+          </a>
+          <a href="/schedule" className="btn-outline">
+            Book Open Play
+          </a>
+          <a href="/schedule" className="btn-outline">
+            Special Events
           </a>
         </div>
       </div>
