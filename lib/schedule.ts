@@ -43,7 +43,9 @@ function fmtClock(h: number, mi: number): string {
   return `${hr}${mm} ${ap}`;
 }
 
-function classify(title: string): { tone: Tone; room: string } {
+// room is null when the title matches no known type, so the caller falls back
+// to the venue from the feed rather than guessing a room.
+function classify(title: string): { tone: Tone; room: string | null } {
   const t = title.toLowerCase();
   if (t.includes("grand opening") || t.includes("turns 1") || t.includes("anniversary"))
     return { tone: "gold", room: "Both studios" };
@@ -52,7 +54,7 @@ function classify(title: string): { tone: Tone; room: string } {
     return { tone: "pink", room: "Lucky Wishbone" };
   if (t.includes("open play") || t.includes("social") || t.includes("guided") || t.includes("play"))
     return { tone: "green", room: "Lucky Sevens" };
-  return { tone: "pink", room: "Lucky Hare" };
+  return { tone: "pink", room: null };
 }
 
 function todayInPacific(): number {
@@ -126,6 +128,7 @@ function buildEvent(fields: Record<string, string>): ScheduleEvent | null {
 
   const title = unescapeText(summary).trim();
   const { tone, room } = classify(title);
+  const venue = unescapeText(fields["LOCATION"] || "").split(",")[0].trim();
   const weekday = DOW[new Date(Date.UTC(y, mo - 1, d)).getUTCDay()];
 
   let description = unescapeText(fields["DESCRIPTION"] || "");
@@ -140,7 +143,8 @@ function buildEvent(fields: Record<string, string>): ScheduleEvent | null {
     num: String(d),
     monthLabel: `${MONTHS[mo - 1]} ${y}`,
     time: timeStr,
-    room,
+    room: room ?? (venue || "Lucky Hare"),
+    // room label: known type -> its studio; otherwise the venue from the feed
     tone,
     url: fields["URL"] || "https://bookwhen.com/lasvegasmahjong",
     description,
