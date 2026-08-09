@@ -2,11 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-interface ClassesProps {
-  onInquiryOpen: () => void;
-}
-
-export default function Classes({ onInquiryOpen }: ClassesProps) {
+export default function Classes() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -82,9 +78,9 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
               Book a <span style={{ color: "var(--green)" }}>Lesson</span>
             </h3>
             <p>
-              Private or group mahjong lessons available at venues across Las
-              Vegas, Summerlin, and Henderson, or virtually via Zoom. All
-              levels welcome, from absolute beginners to experienced players.
+              Group and private mahjong lessons at our studio inside Lucky Hare,
+              8687 W. Sahara Ave. Suite 200. All levels welcome, from absolute
+              beginners to experienced players.
             </p>
             <div className="price-row">
               <span>Group Lesson (4-8 people)</span>
@@ -94,18 +90,27 @@ export default function Classes({ onInquiryOpen }: ClassesProps) {
               <span>Private, Groups &amp; Corporate</span>
               <span className="price">Reach out for pricing</span>
             </div>
-            <button
+            <a
               className="btn-primary"
+              href="/schedule"
               style={{
                 display: "block",
                 textAlign: "center",
                 marginTop: "1.5rem",
                 width: "100%",
               }}
-              onClick={onInquiryOpen}
             >
               Book Now
-            </button>
+            </a>
+            <p style={{ fontSize: "0.85rem", lineHeight: 1.7, marginTop: "1.25rem", marginBottom: 0 }}>
+              Want a private lesson for a group of 4-8 at a time that is not on
+              the schedule? We can also come to you across the valley
+              (Henderson, Summerlin, and beyond) for an added fee. Email{" "}
+              <a href="mailto:lasvegasmahj@gmail.com" style={{ color: "var(--green)", fontWeight: 600 }}>
+                lasvegasmahj@gmail.com
+              </a>
+              .
+            </p>
           </div>
         </div>
       </div>
