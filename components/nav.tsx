@@ -45,11 +45,6 @@ export default function Nav({ onContactOpen }: NavProps) {
           </a>
         </li>
         <li>
-          <a href="/#events" onClick={handleLinkClick}>
-            Events
-          </a>
-        </li>
-        <li>
           <a href="/schedule" onClick={handleLinkClick}>
             Schedule
           </a>
@@ -82,7 +77,7 @@ export default function Nav({ onContactOpen }: NavProps) {
           </a>
         </li>
       </ul>
-      <a href="/#events" className="nav-cta" onClick={handleLinkClick}>
+      <a href="/schedule" className="nav-cta" onClick={handleLinkClick}>
         Join an Event
       </a>
     </nav>

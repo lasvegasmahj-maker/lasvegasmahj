@@ -48,7 +48,7 @@ export default function WhySection() {
               seasoned player, there&rsquo;s a seat at the table for you.
             </p>
             <a
-              href="#events"
+              href="/schedule"
               className="btn-primary"
               style={{ display: "inline-block", marginTop: "1.5rem" }}
             >

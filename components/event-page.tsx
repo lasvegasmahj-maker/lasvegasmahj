@@ -150,7 +150,7 @@ export default function EventPage(props: EventPageProps) {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" },
-      { "@type": "ListItem", position: 2, name: "Events", item: "https://www.lasvegasmahj.com/#events" },
+      { "@type": "ListItem", position: 2, name: "Events", item: "https://www.lasvegasmahj.com/schedule" },
       { "@type": "ListItem", position: 3, name, item: canonicalUrl },
     ],
   };
@@ -212,7 +212,7 @@ export default function EventPage(props: EventPageProps) {
               >
                 <li><a href="/" style={{ color: "inherit", textDecoration: "none" }}>Home</a></li>
                 <li aria-hidden>›</li>
-                <li><a href="/#events" style={{ color: "inherit", textDecoration: "none" }}>Events</a></li>
+                <li><a href="/schedule" style={{ color: "inherit", textDecoration: "none" }}>Events</a></li>
                 <li aria-hidden>›</li>
                 <li aria-current="page" style={{ color: "rgba(255,255,255,0.7)" }}>{name}</li>
               </ol>
@@ -463,7 +463,7 @@ export default function EventPage(props: EventPageProps) {
                 <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: "2rem", maxWidth: "520px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
                   We host open play events, themed parties, leagues, and tournaments across Las Vegas all year. Check out what is coming up next.
                 </p>
-                <a href="/#events" className="btn-primary">See All Upcoming Events</a>
+                <a href="/schedule" className="btn-primary">See All Upcoming Events</a>
               </>
             ) : (
               <>
@@ -484,7 +484,7 @@ export default function EventPage(props: EventPageProps) {
                   </a>
                 )}
                 <div style={{ marginTop: "1rem" }}>
-                  <a href="/#events" style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.875rem" }}>
+                  <a href="/schedule" style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.875rem" }}>
                     View all upcoming events
                   </a>
                 </div>
