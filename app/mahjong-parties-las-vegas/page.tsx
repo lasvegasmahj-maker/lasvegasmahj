@@ -75,7 +75,7 @@ export default function MahjongPartiesLasVegas() {
               Skip the same old party idea. We bring the tiles, the teaching, and the energy; you bring the crew. Every event is fully hosted and customized for your group.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-              <a href="/#classes" className="btn-primary">Plan Your Event</a>
+              <a href="/#private-events" className="btn-primary">Plan Your Event</a>
               <a href="/mahjong-lessons-las-vegas" className="btn-outline">View Lessons Instead</a>
             </div>
           </div>
@@ -110,7 +110,7 @@ export default function MahjongPartiesLasVegas() {
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2rem" }}>
                 We come to your home, a restaurant private room, or any venue you choose. You handle the cake. We handle everything else.
               </p>
-              <a href="/#classes" className="btn-primary">Book a Birthday Party</a>
+              <a href="/#private-events" className="btn-primary">Book a Birthday Party</a>
             </div>
             <div>
               <Image
@@ -156,7 +156,7 @@ export default function MahjongPartiesLasVegas() {
               Every event is different. Pricing depends on your group size, what we&rsquo;re bringing, and what you need. Reach out and we&rsquo;ll put together something that works for you.
             </p>
             <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.9rem", marginBottom: "2rem" }}>All equipment included · We come to you · No experience needed</p>
-            <a href="/#classes" className="btn-primary">Get a Quote</a>
+            <a href="/#private-events" className="btn-primary">Get a Quote</a>
           </div>
         </section>
 
@@ -196,7 +196,7 @@ export default function MahjongPartiesLasVegas() {
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "480px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
               Tell us what you&rsquo;re planning and we&rsquo;ll make it happen. Reach out today. Popular dates fill up fast.
             </p>
-            <a href="/#classes" className="btn-primary">Book Your Event</a>
+            <a href="/#private-events" className="btn-primary">Book Your Event</a>
           </div>
         </section>
       </main>
