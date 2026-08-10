@@ -88,6 +88,7 @@ export default function MahjongLessonsLasVegas() {
               {[
                 { num: "MAHJ101", title: "Absolute Beginners", price: "$60 per lesson", items: ["Sorting and identifying tiles", "Reading the NMJL card", "Understanding how a hand works", "Playing your first full game", "Tips for your first open play event"] },
                 { num: "MAHJ102", title: "Beyond the Basics", price: "$60 per lesson", items: ["Quick MAHJ101 recap", "More complex hands and patterns", "Strategy and decision-making", "Speed and confidence at the table", "Preparing for open play and leagues"] },
+                { num: "MAHJ103", title: "Confident Play", price: "$60 per lesson", items: ["The Charleston and smart passing", "Defensive play and reading the table", "Using jokers and exchanges wisely", "Knowing all the rules cold", "Playing confidently on your own"] },
                 { num: "Private", title: "1-on-1 Lessons", price: "Contact for pricing", items: ["Fully customized to your pace", "Your home or preferred venue", "Any skill level welcome", "Great for busy schedules", "Zoom option available"] },
               ].map(tier => (
                 <div key={tier.num} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "2rem" }}>
