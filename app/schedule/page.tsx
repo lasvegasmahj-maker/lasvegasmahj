@@ -93,12 +93,12 @@ export default async function Schedule() {
                       {list.map((e) => {
                         const c = toneColor(e.tone);
                         return (
-                          <div key={e.uid} style={{ display: "flex", alignItems: "flex-start", gap: "1rem", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "1rem 1.25rem" }}>
-                            <div style={{ flex: "none", width: "58px", textAlign: "center", borderRight: "1px solid rgba(255,255,255,0.12)", paddingRight: "1rem" }}>
+                          <div key={e.uid} className="sched-card" style={{ display: "flex", alignItems: "flex-start", gap: "1rem", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "1rem 1.25rem" }}>
+                            <div className="sched-date" style={{ flex: "none", width: "58px", textAlign: "center", borderRight: "1px solid rgba(255,255,255,0.12)", paddingRight: "1rem" }}>
                               <div style={{ color: "var(--pink)", fontWeight: 800, fontSize: "0.72rem", letterSpacing: "0.06em" }}>{e.day}</div>
                               <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.7rem", lineHeight: 1, color: "#fff" }}>{e.num}</div>
                             </div>
-                            <div style={{ flex: 1, minWidth: 0 }}>
+                            <div className="sched-body" style={{ flex: 1, minWidth: 0 }}>
                               <div style={{ fontWeight: 700, fontSize: "1.05rem", color: "#fff" }}>{e.title}</div>
                               <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.85rem", marginTop: "0.15rem" }}>
                                 {e.time}
@@ -108,7 +108,7 @@ export default async function Schedule() {
                                 <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem", lineHeight: 1.6, marginTop: "0.6rem", marginBottom: 0 }}>{e.description}</p>
                               )}
                             </div>
-                            <div style={{ flex: "none", textAlign: "right" }}>
+                            <div className="sched-book" style={{ flex: "none", textAlign: "right" }}>
                               <a href={e.url} target="_blank" rel="noopener" className="btn-primary" style={{ padding: "0.5rem 1.1rem", fontSize: "0.85rem" }}>{e.bookLabel}</a>
                             </div>
                           </div>

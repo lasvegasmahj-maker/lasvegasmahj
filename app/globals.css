@@ -1320,6 +1320,21 @@ footer {
   .hero-btns { flex-direction: column; align-items: center; gap: 0.8rem; }
   .btn-primary, .btn-outline { width: 100%; text-align: center; }
 
+  /* Schedule cards: stack date, details, and book button so the wide
+     booking label never crushes the title on a phone */
+  .sched-card { flex-direction: column; gap: 0.75rem; }
+  .sched-date {
+    border-right: none !important;
+    padding-right: 0 !important;
+    width: auto !important;
+    text-align: left !important;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .sched-body { width: 100%; }
+  .sched-book { width: 100%; text-align: left !important; }
+
   /* Section titles */
   .section-title { font-size: clamp(1.8rem, 8vw, 3rem); }
 
