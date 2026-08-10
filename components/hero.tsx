@@ -27,13 +27,7 @@ export default function Hero() {
         </p>
         <div className="hero-btns">
           <a href="/schedule" className="btn-primary">
-            Book a Lesson
-          </a>
-          <a href="/schedule" className="btn-outline">
-            Book Open Play
-          </a>
-          <a href="/schedule" className="btn-outline">
-            Special Events
+            See the Calendar
           </a>
         </div>
       </div>

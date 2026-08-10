@@ -1392,7 +1392,7 @@ footer {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(17, 18, 74, 0.98);
+    background: var(--navy-dark);
     flex-direction: column;
     align-items: center;
     justify-content: center;
