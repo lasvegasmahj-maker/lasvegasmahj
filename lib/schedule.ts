@@ -54,9 +54,9 @@ function classify(title: string): { tone: Tone; room: string | null } {
     return { tone: "gold", room: "Both studios" };
   if (t.includes("bling") || t.includes("bedazzle")) return { tone: "gold", room: "Celebration" };
   if (/mahj\s*10[123]/.test(t) || /\b10[123]\b/.test(t) || t.includes("lesson"))
-    return { tone: "pink", room: "Lucky Wishbone" };
+    return { tone: "pink", room: "in Lucky Wishbone room" };
   if (t.includes("open play") || t.includes("social") || t.includes("guided") || t.includes("play"))
-    return { tone: "green", room: "Lucky Sevens" };
+    return { tone: "green", room: "in Lucky Sevens room" };
   return { tone: "pink", room: null };
 }
 
