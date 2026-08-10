@@ -1,3 +1,5 @@
+import { PARTNER_EVENTS, type PartnerEventInput } from "@/lib/partner-events";
+
 export type Tone = "pink" | "green" | "gold";
 
 export interface ScheduleEvent {
@@ -11,6 +13,7 @@ export interface ScheduleEvent {
   room: string;
   tone: Tone;
   url: string;
+  bookLabel: string;
   description: string;
 }
 
@@ -69,43 +72,65 @@ function todayInPacific(): number {
 }
 
 export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
-  let text: string;
-  try {
-    const res = await fetch(FEED_URL, { next: { revalidate: 1800 } });
-    if (!res.ok) return [];
-    text = await res.text();
-  } catch {
-    return [];
-  }
-
-  const lines = unfold(text).split(/\r?\n/);
   const events: ScheduleEvent[] = [];
   const cutoff = todayInPacific();
-  let cur: Record<string, string> | null = null;
 
-  for (const line of lines) {
-    if (line === "BEGIN:VEVENT") {
-      cur = {};
-      continue;
-    }
-    if (line === "END:VEVENT") {
-      if (cur) {
-        const ev = buildEvent(cur);
-        if (ev && Math.floor(ev.sortKey / 10000) >= cutoff) events.push(ev);
+  try {
+    const res = await fetch(FEED_URL, { next: { revalidate: 1800 } });
+    if (res.ok) {
+      const lines = unfold(await res.text()).split(/\r?\n/);
+      let cur: Record<string, string> | null = null;
+      for (const line of lines) {
+        if (line === "BEGIN:VEVENT") {
+          cur = {};
+          continue;
+        }
+        if (line === "END:VEVENT") {
+          if (cur) {
+            const ev = buildEvent(cur);
+            if (ev && Math.floor(ev.sortKey / 10000) >= cutoff) events.push(ev);
+          }
+          cur = null;
+          continue;
+        }
+        if (!cur) continue;
+        const colon = line.indexOf(":");
+        if (colon === -1) continue;
+        const key = line.slice(0, colon).split(";")[0];
+        cur[key] = line.slice(colon + 1);
       }
-      cur = null;
-      continue;
     }
-    if (!cur) continue;
-    const colon = line.indexOf(":");
-    if (colon === -1) continue;
-    const rawKey = line.slice(0, colon);
-    const key = rawKey.split(";")[0];
-    cur[key] = line.slice(colon + 1);
+  } catch {
+    // Bookwhen unreachable: still show partner events below.
+  }
+
+  for (const p of PARTNER_EVENTS) {
+    const ev = buildPartnerEvent(p);
+    if (Math.floor(ev.sortKey / 10000) >= cutoff) events.push(ev);
   }
 
   events.sort((a, b) => a.sortKey - b.sortKey);
   return events;
+}
+
+function buildPartnerEvent(p: PartnerEventInput): ScheduleEvent {
+  let timeStr = fmtClock(p.startHour, p.startMinute);
+  if (p.endHour !== undefined) timeStr += " - " + fmtClock(p.endHour, p.endMinute ?? 0);
+  const weekday = DOW[new Date(Date.UTC(p.year, p.month - 1, p.day)).getUTCDay()];
+  return {
+    uid: `partner-${p.year}-${p.month}-${p.day}-${p.title}`,
+    title: p.title,
+    sortKey: p.year * 100000000 + p.month * 1000000 + p.day * 10000 + p.startHour * 100 + p.startMinute,
+    day: weekday,
+    num: String(p.day),
+    monthLabel: `${MONTHS[p.month - 1]} ${p.year}`,
+    time: timeStr,
+    room: p.venue,
+    tone: "gold",
+    url: p.url,
+    bookLabel: p.bookLabel,
+    description: p.description,
+  };
 }
 
 function buildEvent(fields: Record<string, string>): ScheduleEvent | null {
@@ -147,6 +172,7 @@ function buildEvent(fields: Record<string, string>): ScheduleEvent | null {
     // room label: known type -> its studio; otherwise the venue from the feed
     tone,
     url: fields["URL"] || "https://bookwhen.com/lasvegasmahjong",
+    bookLabel: "Book",
     description,
   };
 }
