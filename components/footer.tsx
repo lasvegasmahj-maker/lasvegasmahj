@@ -22,10 +22,18 @@ export default function Footer({ onContactOpen }: FooterProps) {
         <div className="footer-brand">
           <span className="logo">Las Vegas Mahjong</span>
           <p>
-            Bringing people together, one tile at a time. Based in Las Vegas, NV.
-            Follow us for daily mahjong content, event updates, and community
-            vibes.
+            Bringing people together, one tile at a time. Follow us for daily
+            mahjong content, event updates, and community vibes.
           </p>
+          <address style={{ fontStyle: "normal", fontSize: "0.85rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.7, marginTop: "1rem" }}>
+            <strong style={{ color: "rgba(255,255,255,0.7)" }}>Our Studio</strong>
+            <br />
+            Inside Lucky Hare
+            <br />
+            8687 W. Sahara Ave., Suite 200
+            <br />
+            Las Vegas, NV 89117
+          </address>
           <div className="social-links">
             <a
               href="https://instagram.com/lasvegasmahjong"
@@ -163,8 +171,9 @@ export default function Footer({ onContactOpen }: FooterProps) {
       <div className="footer-seo" style={{ padding: "1.5rem 2rem 0", maxWidth: "900px", margin: "0 auto" }}>
         <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.2)", lineHeight: 1.7, textAlign: "center" }}>
           Las Vegas Mahjong offers mahjong lessons, open play events, leagues,
-          tournaments, and private events across Las Vegas, Summerlin, Henderson,
-          Green Valley, Anthem, and the entire Las Vegas Valley. Certified Oh My Mahjong
+          tournaments, and private events at our studio inside Lucky Hare on West
+          Sahara Avenue, serving Las Vegas, Summerlin, Henderson, Green Valley,
+          Anthem, and the entire Las Vegas Valley. Certified Oh My Mahjong
           instructor. Whether you&rsquo;re looking for beginner mahjong classes,
           corporate team building, birthday party activities, or just a fun
           girls&rsquo; night out in Las Vegas, we&rsquo;ve got a seat at the
