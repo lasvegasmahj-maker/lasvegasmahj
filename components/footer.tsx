@@ -166,7 +166,7 @@ export default function Footer({ onContactOpen }: FooterProps) {
           tournaments, and private events across Las Vegas, Summerlin, Henderson,
           Green Valley, Anthem, and the entire Las Vegas Valley. Certified Oh My Mahjong
           instructor. Whether you&rsquo;re looking for beginner mahjong classes,
-          corporate team building, bachelorette party activities, or just a fun
+          corporate team building, birthday party activities, or just a fun
           girls&rsquo; night out in Las Vegas, we&rsquo;ve got a seat at the
           table for you. American Mahjong (NMJL) taught in a patient, fun, and
           beginner-friendly environment.

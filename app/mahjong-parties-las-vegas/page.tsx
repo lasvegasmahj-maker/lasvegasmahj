@@ -37,7 +37,6 @@ const jsonLd = {
 };
 
 const eventTypes = [
-  { icon: "🎉", title: "Bachelorette Parties", desc: "Tiles, drinks, and unforgettable fun: a unique Vegas experience your crew will talk about for years. Way more memorable than another club night." },
   { icon: "🏢", title: "Corporate Team Building", desc: "Break the ice and build real connections. Mahjong requires communication, strategy, and teamwork, perfect for any group size." },
   { icon: "🎂", title: "Birthday Celebrations", desc: "Special birthday mats, a personalized experience, and a celebration the birthday girl will actually remember. Skip the dinner reservation." },
   { icon: "❤️", title: "Charity & Fundraisers", desc: "Host a mahjong tournament or social to raise funds and bring your community together for a great cause." },
@@ -67,7 +66,7 @@ export default function MahjongPartiesLasVegas() {
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
-            <p className="section-label">Bachelorette · Corporate · Birthday · Girls&rsquo; Night</p>
+            <p className="section-label">Birthday · Corporate · Charity · Girls&rsquo; Night</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
               Mahjong <span className="accent-pink">Parties</span> in Las Vegas
             </h1>
