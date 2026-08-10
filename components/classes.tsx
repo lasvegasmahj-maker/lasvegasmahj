@@ -65,7 +65,7 @@ export default function Classes() {
               <div>
                 <h3>Large Groups, Corporate &amp; Charity Events</h3>
                 <p>
-                  From bachelorette parties to corporate team building, charity
+                  From birthday parties to corporate team building, charity
                   events, and more; private events for groups large and
                   small, fully customized and endlessly fun.
                 </p>

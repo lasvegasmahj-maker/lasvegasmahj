@@ -8,11 +8,6 @@ interface PrivateEventsProps {
 
 const eventTypes = [
   {
-    icon: "\uD83C\uDF89",
-    title: "Bachelorette Parties",
-    desc: "Tiles, wine, and unforgettable fun: a unique experience your crew will talk about forever.",
-  },
-  {
     icon: "\uD83C\uDFE2",
     title: "Corporate Team Building",
     desc: "Break the ice and build connections. Mahjong is the perfect mix of strategy and teamwork for any group size.",

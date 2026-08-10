@@ -33,7 +33,7 @@ const faqs = [
   },
   {
     q: "Can you host a private event for my group?",
-    a: "Absolutely! We do bachelorette parties, birthday celebrations, corporate team building, charity events, and more. Events are fully customized for your group. Just reach out and we\u2019ll plan something amazing.",
+    a: "Absolutely! We do birthday parties, corporate team building, charity events, girls\u2019 nights, and more. Events are fully customized for your group. Just reach out and we\u2019ll plan something amazing.",
   },
 ];
 
