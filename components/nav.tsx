@@ -55,6 +55,11 @@ export default function Nav({ onContactOpen }: NavProps) {
           </a>
         </li>
         <li>
+          <a href="/#shop" onClick={handleLinkClick}>
+            Shop
+          </a>
+        </li>
+        <li>
           <a href="/mahjong-parties-las-vegas" onClick={handleLinkClick}>
             Private Parties
           </a>

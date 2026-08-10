@@ -25,7 +25,7 @@ const faqs = [
   },
   {
     q: "Where do you hold classes and events?",
-    a: "We host at restaurants, community spaces, and private venues across the Las Vegas Valley, from Summerlin to Henderson. We also offer private lessons at your home or preferred location.",
+    a: "Group lessons and open play are held at our studio inside Lucky Hare at 8687 W. Sahara Ave., Suite 200, Las Vegas. For private lessons and private events, we can also come to your home or venue across the Valley for an added travel fee.",
   },
   {
     q: "What\u2019s the difference between MAHJ101 and MAHJ102?",
