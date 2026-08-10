@@ -6,7 +6,6 @@ import Hero from "@/components/hero";
 import WhySection from "@/components/why-section";
 import Teacher from "@/components/teacher";
 import WhatToExpect from "@/components/what-to-expect";
-import Events from "@/components/events";
 import Classes from "@/components/classes";
 import PrivateEvents from "@/components/private-events";
 import Testimonials from "@/components/testimonials";
@@ -17,15 +16,8 @@ import Newsletter from "@/components/newsletter";
 import Footer from "@/components/footer";
 import ContactModal from "@/components/contact-modal";
 import InquiryModal from "@/components/inquiry-modal";
-import type { HomeEvent } from "@/lib/events";
 
-export default function HomeClient({
-  upcoming,
-  past,
-}: {
-  upcoming: HomeEvent[];
-  past: HomeEvent[];
-}) {
+export default function HomeClient() {
   const [contactOpen, setContactOpen] = useState(false);
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
@@ -37,7 +29,6 @@ export default function HomeClient({
       <Teacher />
       <WhatToExpect />
       <Classes />
-      <Events upcoming={upcoming} past={past} />
       <PrivateEvents onInquiryOpen={() => setInquiryOpen(true)} />
       <Testimonials />
       <FAQ />

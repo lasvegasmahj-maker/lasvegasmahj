@@ -116,6 +116,16 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
                 />
               </div>
               <div className="form-group">
+                <label htmlFor="inquiry-phone">Phone Number *</label>
+                <input
+                  type="tel"
+                  id="inquiry-phone"
+                  name="phone"
+                  required
+                  placeholder="(702) 555-0123"
+                />
+              </div>
+              <div className="form-group">
                 <label htmlFor="inquiry-interest">I&rsquo;m Interested In *</label>
                 <select id="inquiry-interest" name="interest" required defaultValue="">
                   <option value="" disabled>

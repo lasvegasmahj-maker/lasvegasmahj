@@ -46,7 +46,7 @@ export default function MahjongOpenPlayLasVegas() {
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
               Show up, sit down, and play. Our open play events bring Las Vegas mahjong players together at great venues across the Valley. All skill levels welcome. Come solo or bring a friend.
             </p>
-            <a href="/#events" className="btn-primary">See Upcoming Events</a>
+            <a href="/schedule" className="btn-primary">See Upcoming Events</a>
           </div>
         </section>
 
@@ -126,7 +126,7 @@ export default function MahjongOpenPlayLasVegas() {
               Check the full event calendar for upcoming open play sessions, leagues, and tournaments across the Las Vegas Valley.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-              <a href="/#events" className="btn-primary">See All Events</a>
+              <a href="/schedule" className="btn-primary">See All Events</a>
               <a href="/mahjong-lessons-las-vegas" className="btn-outline">Learn First →</a>
             </div>
           </div>

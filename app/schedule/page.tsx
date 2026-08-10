@@ -71,8 +71,8 @@ export default async function Schedule() {
         {/* CALENDAR */}
         <section id="calendar" className="tile-bg" style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container">
-            <p className="section-label">Upcoming</p>
-            <h2 className="section-title">This Week &amp; <span className="accent-green">This Month</span></h2>
+            <p className="section-label">The Calendar</p>
+            <h2 className="section-title">What&rsquo;s <span className="accent-green">Coming Up</span></h2>
             <p style={{ color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "1rem auto 2.5rem", lineHeight: 1.75, textAlign: "center" }}>
               Pick a session below to see the details and book. Each listing shows what it is, the time, and where it takes place.
             </p>
@@ -139,9 +139,6 @@ export default async function Schedule() {
                   <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.75 }}>{opt.body}</p>
                 </div>
               ))}
-            </div>
-            <div style={{ textAlign: "center", marginTop: "3rem" }}>
-              <a href="/mahjong-lessons-las-vegas" className="btn-primary">About the Lessons</a>
             </div>
           </div>
         </section>

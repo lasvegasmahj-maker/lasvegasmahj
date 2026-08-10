@@ -151,7 +151,7 @@ export default function LearnMahjong() {
             </p>
             <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
               <a href="/mahjong-lessons-las-vegas" className="btn-primary">Book a Lesson in Las Vegas</a>
-              <a href="/#events" className="btn-outline">See Upcoming Events</a>
+              <a href="/schedule" className="btn-outline">See Upcoming Events</a>
             </div>
           </div>
         </section>
