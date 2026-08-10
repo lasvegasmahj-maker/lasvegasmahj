@@ -59,7 +59,7 @@ export default async function Schedule() {
               Class &amp; Open Play <span className="accent-pink">Schedule</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "640px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              See what is coming up at the studio and reserve your seat in a few taps. Classes, open play, and special events, all in one place. Spots are limited, with an automatic waitlist when a session fills.
+              See everything coming up in one place, at the studio and out around town. Classes, open play, special events, and partner nights at local spots, all here. Studio spots are limited, with an automatic waitlist when a session fills.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="#calendar" className="btn-primary">See the Calendar</a>
@@ -74,7 +74,7 @@ export default async function Schedule() {
             <p className="section-label">Upcoming</p>
             <h2 className="section-title">This Week &amp; <span className="accent-green">This Month</span></h2>
             <p style={{ color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "1rem auto 2.5rem", lineHeight: 1.75, textAlign: "center" }}>
-              Pick a session below to see the details and book. Each listing shows the class or open play, the time, and which studio it is in.
+              Pick a session below to see the details and book. Each listing shows what it is, the time, and where it takes place.
             </p>
 
             {events.length === 0 ? (
@@ -109,7 +109,7 @@ export default async function Schedule() {
                               )}
                             </div>
                             <div style={{ flex: "none", textAlign: "right" }}>
-                              <a href={e.url} target="_blank" rel="noopener" className="btn-primary" style={{ padding: "0.5rem 1.1rem", fontSize: "0.85rem" }}>Book</a>
+                              <a href={e.url} target="_blank" rel="noopener" className="btn-primary" style={{ padding: "0.5rem 1.1rem", fontSize: "0.85rem" }}>{e.bookLabel}</a>
                             </div>
                           </div>
                         );
