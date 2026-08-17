@@ -75,9 +75,9 @@ export default function PrivateEvents({ onInquiryOpen }: PrivateEventsProps) {
               marginBottom: "2.5rem",
             }}
           >
-            From intimate gatherings to large-scale events, we bring the tiles,
-            the teaching, and the energy. You bring the crew. Every event is
-            fully customized to your group.
+            Private parties such as birthday, bachelorette, holiday, or special
+            events. We bring the tiles, the teaching, and the energy. You bring
+            the crew. Every event is fully customized to your group.
           </p>
         </div>
 
