@@ -5,12 +5,12 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Holiday Party Las Vegas | A Party People Remember",
   description:
-    "Why a mahjong holiday party is the memorable choice for Las Vegas work teams and friend groups. A certified instructor brings the tiles and teaches everyone from scratch.",
+    "Why a mahjong party is the memorable holiday get-together for Las Vegas friend groups, families, and work teams. Beginners taught from scratch, or a hosted open play for groups that already play.",
   alternates: { canonical: "https://www.lasvegasmahj.com/blog/holiday-party-ideas-las-vegas" },
   openGraph: {
     title: "Mahjong Holiday Party Las Vegas | A Party People Remember",
     description:
-      "Why a mahjong holiday party is the memorable choice for Las Vegas work teams and friend groups. A certified instructor brings the tiles and teaches everyone from scratch.",
+      "Why a mahjong party is the memorable holiday get-together for Las Vegas friend groups, families, and work teams. Beginners taught from scratch, or a hosted open play for groups that already play.",
     url: "https://www.lasvegasmahj.com/blog/holiday-party-ideas-las-vegas",
     siteName: "Las Vegas Mahjong",
     locale: "en_US",
@@ -23,7 +23,7 @@ const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: "Mahjong Holiday Party Las Vegas: A Party People Remember",
-  description: "Why a mahjong holiday party is the memorable choice for Las Vegas work teams and friend groups, taught from scratch by a certified instructor.",
+  description: "Why a mahjong party is the memorable holiday get-together for Las Vegas friend groups, families, and work teams, whether they are learning from scratch or playing a hosted open play.",
   image: "https://www.lasvegasmahj.com/hero-bg.jpg",
   datePublished: "2026-08-09",
   dateModified: "2026-08-09",
@@ -55,8 +55,9 @@ const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   mainEntity: [
-    { "@type": "Question", name: "Is a mahjong party a good holiday party idea for a work team?", acceptedAnswer: { "@type": "Answer", text: "Yes. Everyone learns together, it puts quiet and outgoing people on equal footing, and it gives the group something to do besides stand around a bar. A certified instructor brings all the tiles and teaches from scratch, so no experience is needed." } },
-    { "@type": "Question", name: "Can you host a holiday mahjong party for a group of friends too?", acceptedAnswer: { "@type": "Answer", text: "Yes. Holiday mahjong parties work just as well for friend groups, neighbors, and family as they do for offices. Groups of 4 to 20 or more are welcome, and everyone plays a real game during the party." } },
+    { "@type": "Question", name: "Who is a holiday mahjong party good for?", acceptedAnswer: { "@type": "Answer", text: "Friend groups, families, neighbors, and work teams all fit. Everyone learns or plays together, which puts quiet and outgoing people on equal footing and gives the group something to do besides stand around a bar. Groups of 4 to 20 or more are welcome." } },
+    { "@type": "Question", name: "What if our group already knows how to play?", acceptedAnswer: { "@type": "Answer", text: "Then we set it up as a hosted open play. Tables are ready when you arrive, so your crew just sits down and plays. No lesson needed." } },
+    { "@type": "Question", name: "What if nobody has played before?", acceptedAnswer: { "@type": "Answer", text: "That is the most common setup. A certified instructor brings all the tiles and teaches the whole group from scratch, then everyone plays a real game together. No experience needed." } },
     { "@type": "Question", name: "How much does a holiday mahjong party cost?", acceptedAnswer: { "@type": "Answer", text: "Pricing depends on your group size, location, and what you're looking for. Contact us for a custom quote." } },
     { "@type": "Question", name: "How far in advance should I book a holiday mahjong party?", acceptedAnswer: { "@type": "Answer", text: "December fills up fast. Book four to six weeks ahead for prime December dates. Earlier weekends and weekday slots have more availability." } },
   ],
@@ -67,7 +68,7 @@ const reasons = [
     num: "01",
     title: "Everyone Is Included",
     tag: "No One Sits Out",
-    desc: "The usual holiday party leaves people clustered with the same three faces they always talk to. Around a mahjong table, the quiet person and the outgoing person are doing the exact same thing at the same moment. It levels the room in a way a bar never does.",
+    desc: "The usual holiday party leaves people clustered with the same few faces they always talk to. Around a mahjong table, the quiet person and the outgoing person are doing the exact same thing at the same moment. It levels the room in a way a bar never does, whether it is friends, family, or coworkers.",
     accent: "pink",
   },
   {
@@ -79,24 +80,31 @@ const reasons = [
   },
   {
     num: "03",
-    title: "No Experience Needed",
+    title: "Beginners Are Welcome",
     tag: "Taught From Scratch",
-    desc: "Nobody has to know how to play. A certified instructor brings every tile and rack and teaches the whole group from the ground up, then the group plays a real game together. Beginners are the point, not a problem.",
+    desc: "Nobody has to know how to play. A certified instructor brings every tile and rack and teaches the whole group from the ground up, then everyone plays a real game together. Beginners are the point, not a problem.",
     accent: "pink",
   },
   {
     num: "04",
-    title: "It Fits Any Group",
-    tag: "Work or Friends",
-    desc: "Office team, friend group, neighbors, or family, the party scales the same way. Groups of 4 to 20 or more are welcome, and the format works for a mixed-age crowd just as well as a room full of coworkers.",
+    title: "Or Make It an Open Play",
+    tag: "Already Know How",
+    desc: "If your friend group or team already plays, skip the lesson. We set the party up as a hosted open play with tables ready to go, so everyone just sits down and plays. It is a festive reason for a regular crew to get together over the holidays.",
     accent: "green",
   },
   {
     num: "05",
+    title: "It Fits Any Group",
+    tag: "Friends or Work",
+    desc: "Friend group, family, neighbors, or an office team, the party scales the same way. Groups of 4 to 20 or more are welcome, and the format works for a mixed-age crowd just as well as a room full of coworkers.",
+    accent: "pink",
+  },
+  {
+    num: "06",
     title: "It Is Actually Memorable",
     tag: "The Part People Talk About",
     desc: "This is the holiday party people bring up again in January. It is different from every other happy hour on the calendar, and plenty of groups keep playing long after the season ends. That is the whole goal: a get-together that sticks.",
-    accent: "pink",
+    accent: "green",
   },
 ];
 
@@ -116,7 +124,7 @@ export default function MahjongHolidayPartyLasVegas() {
               The Holiday Party <span className="accent-pink">People Remember</span>
             </h1>
             <p style={{ fontSize: "1.1rem", color: "rgba(255,255,255,0.7)", maxWidth: "580px", margin: "0 auto", lineHeight: 1.75 }}>
-              The holiday happy hour is fine. But if you want a get-together your team or your friends actually talk about afterward, host a mahjong party.
+              The holiday happy hour is fine. But if you want a get-together your friends, family, or team actually talk about afterward, host a mahjong party. Beginners learn from scratch, and groups who already play just play.
             </p>
           </div>
         </section>
@@ -127,7 +135,7 @@ export default function MahjongHolidayPartyLasVegas() {
               Every December runs the same playbook: a bar, a dinner, a round of drinks, and a lot of people standing in clusters talking to the same faces they always talk to. It is pleasant, and it is forgotten by New Year.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85 }}>
-              A mahjong party is the opposite. Everyone sits down, learns something together, and spends the night actually interacting instead of just sharing a room. It works for an office team and a group of friends the same way. Here is why it lands.
+              A mahjong party is the opposite. Everyone sits down and spends the night actually interacting instead of just sharing a room. If nobody has played, a certified instructor teaches the whole group from scratch. If your crew already knows the game, book it as a hosted open play and just play. It works for a friend group, a family get-together, or an office team the same way. Here is why it lands.
             </p>
           </div>
         </section>
@@ -157,10 +165,10 @@ export default function MahjongHolidayPartyLasVegas() {
               How the <span className="accent-pink">Party Runs</span>
             </h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
-              You pick the date and the place. The studio inside Lucky Hare is home base, or we can come to your office, home, or venue for private events. Everything you need comes with us: tiles, racks, and a certified instructor who teaches the whole group from scratch.
+              You pick the date and the place. The studio inside Lucky Hare is home base, or we can come to your home, venue, or office for private events. Everything you need comes with us: tiles, racks, and a certified instructor.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85 }}>
-              A typical party runs a couple of hours: a friendly walk-through of the basics, then a real game where everyone plays. Add food and drinks if you like, or keep it simple. Every event is customized to your group. Contact us for a custom quote.
+              A typical party runs a couple of hours. For a group of beginners, that is a friendly walk-through of the basics and then a real game. For a group that already plays, it is a hosted open play, so everyone just shows up and plays. Add food and drinks if you like, or keep it simple. Every event is customized to your group. Contact us for a custom quote.
             </p>
           </div>
         </section>
@@ -171,8 +179,9 @@ export default function MahjongHolidayPartyLasVegas() {
             <h2 className="section-title">Common <span className="accent-pink">Questions</span></h2>
             <div style={{ marginTop: "2rem" }}>
               {[
-                { q: "Is a mahjong party a good holiday party idea for a work team?", a: "Yes. Everyone learns together, it puts quiet and outgoing people on equal footing, and it gives the group something to do besides stand around a bar. A certified instructor brings all the tiles and teaches from scratch, so no experience is needed." },
-                { q: "Can you host a holiday mahjong party for a group of friends too?", a: "Yes. Holiday mahjong parties work just as well for friend groups, neighbors, and family as they do for offices. Groups of 4 to 20 or more are welcome, and everyone plays a real game during the party." },
+                { q: "Who is a holiday mahjong party good for?", a: "Friend groups, families, neighbors, and work teams all fit. Everyone learns or plays together, which puts quiet and outgoing people on equal footing and gives the group something to do besides stand around a bar. Groups of 4 to 20 or more are welcome." },
+                { q: "What if our group already knows how to play?", a: "Then we set it up as a hosted open play. Tables are ready when you arrive, so your crew just sits down and plays. No lesson needed." },
+                { q: "What if nobody has played before?", a: "That is the most common setup. A certified instructor brings all the tiles and teaches the whole group from scratch, then everyone plays a real game together. No experience needed." },
                 { q: "How much does a holiday mahjong party cost?", a: "Pricing depends on your group size, location, and what you're looking for. Contact us for a custom quote." },
                 { q: "How far in advance should I book a holiday mahjong party?", a: "December fills up fast. Book four to six weeks ahead for prime December dates. Earlier weekends and weekday slots have more availability." },
               ].map(faq => (
@@ -189,7 +198,7 @@ export default function MahjongHolidayPartyLasVegas() {
           <div className="container">
             <h2 className="section-title">Book a <span className="accent-pink">Holiday Party</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "500px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
-              Private mahjong parties for office teams, friend groups, and family get-togethers. We bring everything you need and teach from scratch. Beginners always welcome. Contact us for a custom quote.
+              Private mahjong parties for friend groups, family get-togethers, and office teams. Beginners learn from scratch, or we set up a hosted open play for groups that already play. We bring everything you need. Contact us for a custom quote.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/mahjong-parties-las-vegas" className="btn-primary">See Party Details</a>
