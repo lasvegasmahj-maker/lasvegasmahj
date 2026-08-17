@@ -157,11 +157,14 @@ export default function EventPage(props: EventPageProps) {
 
   return (
     <>
-      {/* Structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
-      />
+      {/* Structured data: omit Event markup once the event has passed so it
+          doesn't contradict the page's own past-event copy (no fake EventScheduled/InStock). */}
+      {!past && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+        />
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd).replace(/</g, "\\u003c") }}
