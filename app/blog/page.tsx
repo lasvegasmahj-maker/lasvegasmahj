@@ -39,6 +39,14 @@ const posts = [
     tag: "Bachelorette",
     tagColor: "accent-pink",
   },
+  {
+    href: "/blog/holiday-party-ideas-las-vegas",
+    title: "Holiday Party Ideas Las Vegas 2026",
+    description:
+      "Holiday party ideas for work teams and friend groups, from private mahjong parties to holiday lights and group classes.",
+    tag: "Holiday",
+    tagColor: "accent-green",
+  },
 ];
 
 export default function BlogPage() {
