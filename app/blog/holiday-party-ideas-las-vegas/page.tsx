@@ -55,10 +55,10 @@ const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   mainEntity: [
-    { "@type": "Question", name: "What is a good holiday party idea for a work team in Las Vegas?", acceptedAnswer: { "@type": "Answer", text: "A private mahjong party is one of the best holiday party ideas for a work team. Everyone learns to play together, it puts quiet people and loud people on equal footing, and it gives the group something to do besides stand around a bar. A certified instructor brings all the tiles and teaches from scratch, so no experience is needed." } },
+    { "@type": "Question", name: "What is a good holiday party idea for a work team?", acceptedAnswer: { "@type": "Answer", text: "A private mahjong party is one of the best options. Everyone learns together, it puts quiet and outgoing people on equal footing, and it gives the group something to do besides stand around a bar. A certified instructor brings all the tiles and teaches from scratch, so no experience is needed." } },
     { "@type": "Question", name: "Can you host a holiday get-together for a group of friends too?", acceptedAnswer: { "@type": "Answer", text: "Yes. Holiday mahjong parties work just as well for friend groups, neighbors, and family as they do for offices. Groups of 4 to 20 or more are welcome, and everyone plays a real game during the party." } },
-    { "@type": "Question", name: "How much does a holiday mahjong party cost in Las Vegas?", acceptedAnswer: { "@type": "Answer", text: "Pricing depends on your group size, location, and what you're looking for. Contact Las Vegas Mahjong for a custom quote." } },
-    { "@type": "Question", name: "How far in advance should I book a holiday party in Las Vegas?", acceptedAnswer: { "@type": "Answer", text: "December fills up fast for both venues and hosts. Book four to six weeks ahead for prime December dates. Earlier weekends and weekday slots have more availability." } },
+    { "@type": "Question", name: "How much does a holiday mahjong party cost?", acceptedAnswer: { "@type": "Answer", text: "Pricing depends on your group size, location, and what you're looking for. Contact us for a custom quote." } },
+    { "@type": "Question", name: "How far in advance should I book a holiday party?", acceptedAnswer: { "@type": "Answer", text: "December fills up fast for both venues and hosts. Book four to six weeks ahead for prime December dates. Earlier weekends and weekday slots have more availability." } },
   ],
 };
 
