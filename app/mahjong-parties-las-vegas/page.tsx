@@ -66,7 +66,7 @@ export default function MahjongPartiesLasVegas() {
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
-            <p className="section-label">Birthday · Corporate · Charity · Girls&rsquo; Night</p>
+            <p className="section-label">Birthday · Bachelorette · Holiday · Special Events</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
               Mahjong <span className="accent-pink">Parties</span> in Las Vegas
             </h1>
