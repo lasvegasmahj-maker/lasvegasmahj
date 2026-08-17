@@ -41,9 +41,9 @@ const posts = [
   },
   {
     href: "/blog/holiday-party-ideas-las-vegas",
-    title: "Holiday Party Ideas Las Vegas 2026",
+    title: "Mahjong Holiday Party Las Vegas",
     description:
-      "Holiday party ideas for work teams and friend groups, from private mahjong parties to holiday lights and group classes.",
+      "Why a mahjong party is the holiday get-together your work team or friend group actually remembers. Taught from scratch, beginners welcome.",
     tag: "Holiday",
     tagColor: "accent-green",
   },
