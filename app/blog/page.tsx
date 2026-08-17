@@ -39,6 +39,14 @@ const posts = [
     tag: "Bachelorette",
     tagColor: "accent-pink",
   },
+  {
+    href: "/blog/holiday-party-ideas-las-vegas",
+    title: "Mahjong Holiday Party Las Vegas",
+    description:
+      "Why a mahjong party is the holiday get-together your friends, family, or team actually remember. Beginners taught from scratch, or a hosted open play for groups that already play.",
+    tag: "Holiday",
+    tagColor: "accent-green",
+  },
 ];
 
 export default function BlogPage() {
