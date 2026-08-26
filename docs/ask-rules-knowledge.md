@@ -10,7 +10,7 @@ answer a rules question with text that is not in that file. Each entry carries a
 | source            | Meaning                                                                                  | UI label                     |
 |-------------------|------------------------------------------------------------------------------------------|------------------------------|
 | `shared_approved` | Verbatim copy of an owner-approved entry from Find My Mahj (`lib/rules/knowledge.ts`), same id, same text. | Standard rule / Can vary by house rule |
-| `lvm_rules_page`  | Verbatim text from a `/rules/*` page on this site (`source_url`). A few entries stitch two verbatim sentences together (`called-dead`, `wrong-exposure`). | Standard rule / Can vary by house rule |
+| `lvm_rules_page`  | Verbatim text from a `/rules/*` page on this site (`source_url`). One entry, `called-dead`, stitches one Find My Mahj sentence with two page sentences. | Standard rule / Can vary by house rule |
 | `derived`         | Composed only from approved statements, but the exact wording has not been reviewed by the instructor. | Pending instructor review    |
 
 The optional model layer (`lib/ask/llm.ts`) may rephrase retrieved entries; it cannot add
@@ -23,10 +23,12 @@ the approved text verbatim.
 Find My Mahj and Las Vegas Mahjong do not share code at runtime (no cross-site dependency).
 They share content by copy plus a test:
 
-1. `tests/ask-engine.logic.spec.ts` ("shared entries match Find My Mahj verbatim") reads the
-   committed `lib/rules/knowledge.ts` at the sister repo's HEAD (`git show`) when the repo is
-   checked out beside this one and fails if any `shared_approved` entry's answer or
-   `varies_by_house` differs, or if Find My Mahj has approved entries not copied here.
+1. `tests/ask-engine.logic.spec.ts` ("shared entries match Find My Mahj verbatim") reads
+   `lib/rules/knowledge.ts` from the sister repo's `main` branch (`git show main:`; falls back
+   to HEAD, then the working file) when the repo is checked out beside this one, and fails if
+   any `shared_approved` entry's answer or `varies_by_house` differs, or if Find My Mahj main
+   has approved entries not copied here. Entries on unmerged Find My Mahj branches are not
+   shared yet; copy them as `derived` if needed and flip to `shared_approved` after the merge.
 2. Rule of thumb: edit a shared rule in Find My Mahj first (it has the owner-approval
    metadata), then copy the new text here in the same sitting. The test catches a miss.
 3. New LVM-only entries should be added here first. If they are general enough for Find My
@@ -39,7 +41,9 @@ Read the entry, edit the wording if needed, change `source: "derived"` to
 text, then add the Q&A to that page) or to `shared_approved` after copying it into Find My
 Mahj. The "Pending instructor review" label disappears on the next deploy.
 
-Derived entries at launch (24): `charleston-blind-pass` (owner-reviewed wording that Find My Mahj
+Derived entries at launch (26): `stop-charleston`, `charleston-blind-pass`, `closed-hand-final-tile`
+(both of the latter are owner-reviewed Find My Mahj wording from 2026-08-26 that sits on an
+unmerged Find My Mahj branch; kept here because the card prints the same rules) (owner-reviewed wording that Find My Mahj
 put on hold in its 13:23 commit on 2026-08-26; kept here because the card prints the same rule),
 `call-during-charleston`, `joker-in-news`, `discarded-joker`,
 `call-for-pair`, `self-drawn-win`, `joker-call-complete`, `joker-free`, `pung-vs-kong`,
@@ -56,17 +60,17 @@ still awaits the instructor's eye.
 ## Open content decisions (owner must resolve; nothing was changed silently)
 
 The Find My Mahj knowledge base (owner approved 2026-08-22, two more entries owner
-reviewed 2026-08-26) and this site's `/rules` pages (written 2026-05-23) disagree on four
+reviewed 2026-08-26, one of which, the blind pass, was put on hold later that day) and this site's `/rules` pages (written 2026-05-23) disagree on four
 points. The Ask tool serves the Find My Mahj text and does not include the conflicting
 `/rules` Q&As. The `/rules` pages were not edited. Until the pages are fixed, `/ask` and
 the pages can give different answers on these items.
 
 | # | Topic | Find My Mahj (served by /ask) | /rules page (unchanged) | Status |
 |---|-------|-------------------------------|--------------------------|--------|
-| 1 | Blind pass timing | `charleston-blind-pass`: "allowed only on the last pass of each Charleston: First Left and, if a second Charleston is played, Last Right" | `/rules/charleston`: "A blind pass occurs during the 'across' pass in either charleston" | Owner reviewed the FMG text 2026-08-26. Page still needs the fix. |
+| 1 | Blind pass timing | `charleston-blind-pass`: "allowed only on the last pass of each Charleston: First Left and, if a second Charleston is played, Last Right" | `/rules/charleston`: "A blind pass occurs during the 'across' pass in either charleston" | Find My Mahj put this entry on hold (8460535, 2026-08-26 13:23); served here as derived, labelled Pending instructor review; the card agrees; page still needs the fix. |
 | 2 | Passing jokers | "You may never pass a joker in the Charleston" | `/rules/charleston`: "You may choose to pass jokers if you wish" | Open: owner decision, then fix the losing text. |
-| 3 | Stopping the first Charleston | "this first round is required" | `/rules/charleston`: "After the first right pass is complete, any player can call 'stop' before the first across pass" | Open: owner decision, then fix the losing text. |
-| 4 | Closed hands calling the last tile | `closed-hand-final-tile`: "you may claim a discard when it is the single tile that completes your mahjong" | `/rules/the-card`: "A closed hand must be built entirely from your own draws; you cannot call any discards" | Owner reviewed the FMG text 2026-08-26. Page still needs the fix. |
+| 3 | Stopping the first Charleston | `stop-charleston` (derived): compulsory first Charleston, stop only after first left | `/rules/charleston`: "After the first right pass is complete, any player can call 'stop' before the first across pass" | Card settles it; page still needs the fix. |
+| 4 | Closed hands calling the last tile | `closed-hand-final-tile`: "you may claim a discard when it is the single tile that completes your mahjong" | `/rules/the-card`: "A closed hand must be built entirely from your own draws; you cannot call any discards" | Owner reviewed the FMG text 2026-08-26 (still on an unmerged Find My Mahj branch); served here as derived, labelled Pending instructor review; the card agrees; page still needs the fix. |
 
 The NMJL FAQ page was "Under Construction" on 2026-08-26. The rules printed on the owner's own
 2025 card (repo folder `mahjcard/`, gitignored, photos of the rules panel only) settle all four:
@@ -86,7 +90,6 @@ The served text is right on all four. The two pages still need the owner's edit.
 | `/rules/winning`: false mahjong "typically" pays each player a full win | Not exposed and all hands intact: no penalty. Exposed: hand is dead. One other player exposed: pay double the value of the incorrect hand to the intact player. | `false-mahjong` |
 | `/rules/calling-tiles`: "you cannot call and then decide what to do" | A player may change the number and type of tiles in an exposure up until the player has discarded | `expose-immediately` |
 | `/rules/dead-hands`: an error may be corrected before the next player draws if the group agrees | Same rule as above; after the discard an incorrect exposure makes the hand dead, and a dead player still pays the winner | `wrong-exposure` (dead-hand-saved removed) |
-
 | `/rules/etiquette`: the calling window closes once the next player "has drawn" | Closes after the next player has picked and racked, or discarded; a tile must be correctly named before it can be claimed | `call-window` |
 | `/rules/calling-tiles`: "any player can call any discard" for mahjong, overriding "any order of play" | Any tile except a joker may be called for mahjong; two mahjong callers are settled by next-in-turn unless the other has racked or exposed | `call-for-mahjong` |
 | `/rules/calling-tiles`: exposure tiebreak is next-in-turn, no exception | Exception: a caller who has already placed the tile on the rack or exposed keeps it; same rule for two mahjong calls | `same-tile-two-calls` |

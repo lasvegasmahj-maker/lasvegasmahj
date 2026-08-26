@@ -64,7 +64,7 @@ export default function AskPage() {
           <div className="container">
             <h2>How this works</h2>
             <p>
-              Answers are based on National Mah Jongg League rules and drawn from our certified instructor&rsquo;s written rules guide, in plain language. Ask about jokers, the Charleston, calling tiles, dead hands, scoring, or the card, then keep going with a follow-up like &ldquo;what about a kong?&rdquo; When something varies by house rule, we say so. When we cannot verify a rule, we tell you instead of guessing. A few answers carry a Pending instructor review label while she checks the wording.
+              Answers are based on National Mah Jongg League rules, checked against the rules printed on the card and our certified instructor&rsquo;s written guide, in plain language. Ask about jokers, the Charleston, calling tiles, dead hands, scoring, or the card, then keep going with a follow-up like &ldquo;what about a kong?&rdquo; When something varies by house rule, we say so. When we cannot verify a rule, we tell you instead of guessing. Some answers carry a Pending instructor review label while she checks the wording.
             </p>
             <p>
               Prefer to read? Browse the full <Link href="/rules">American Mahjong rules guide</Link>. Want to learn at a real table? See our <Link href="/mahjong-lessons-las-vegas">mahjong lessons</Link> or join <Link href="/mahjong-open-play-las-vegas">open play</Link>.

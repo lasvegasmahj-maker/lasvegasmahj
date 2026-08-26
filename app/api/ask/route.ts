@@ -62,7 +62,7 @@ function parseHistory(raw: unknown): Turn[] | null {
 }
 
 export async function GET() {
-  return json({ ok: false, error: "Send a POST with { question }." }, 405);
+  return NextResponse.json({ ok: false, error: "Send a POST with { question }." }, { status: 405, headers: { ...NO_STORE, Allow: "POST" } });
 }
 
 export async function POST(req: NextRequest) {
@@ -78,6 +78,7 @@ export async function POST(req: NextRequest) {
   const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
   const question = typeof body?.question === "string" ? body.question.trim() : "";
   const history = parseHistory(body?.history);
+  const nudgedBefore = body?.nudged === true;
   if (!question || question.length > MAX_QUESTION_CHARS || !history) {
     return json({ ok: false, error: `Ask one question at a time, up to ${MAX_QUESTION_CHARS} characters.` }, 400);
   }
@@ -128,7 +129,7 @@ export async function POST(req: NextRequest) {
     if (response.kind === "answer" && response.entry_id) {
       const entry = KNOWLEDGE_BY_ID.get(response.entry_id);
       if (entry) {
-        const nudge = pickNudge(history, entry, (id) => KNOWLEDGE_BY_ID.get(id));
+        const nudge = nudgedBefore ? null : pickNudge(history, entry, (id) => KNOWLEDGE_BY_ID.get(id));
         if (nudge) response.nudge = nudge;
       }
     }

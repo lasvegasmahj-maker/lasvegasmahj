@@ -162,7 +162,7 @@ export async function composeWithModel(input: ModelInput, client: ModelClient = 
   try {
     const params: Anthropic.MessageCreateParamsNonStreaming = {
       model: MODEL,
-      max_tokens: 1500,
+      max_tokens: 3000,
       system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
       messages: [{ role: "user", content: buildUserMessage(input) }],
       ...(EFFORT_SUPPORTED ? { output_config: { effort: "low" } } : {}),

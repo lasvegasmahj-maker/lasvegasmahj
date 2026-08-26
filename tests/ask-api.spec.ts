@@ -4,7 +4,7 @@ import { test, expect, type APIRequestContext } from "@playwright/test";
 // never bleeds between tests or between the desktop and mobile projects.
 
 function ipFor(name: string) {
-  const project = test.info().project.name === "mobile" ? 20 : 10;
+  const project = test.info().project.name === "mobile" ? 40 : 10;
   const n = Math.abs([...name].reduce((a, c) => a + c.charCodeAt(0), 0)) % 200;
   return `203.0.113.${project + (n % 30)}`;
 }
@@ -64,6 +64,7 @@ test.describe("POST /api/ask", () => {
   test("GET is not allowed", async ({ request }) => {
     const res = await request.get("/api/ask");
     expect(res.status()).toBe(405);
+    expect(res.headers()["allow"]).toBe("POST");
     expect((await res.json()).ok).toBe(false);
   });
 

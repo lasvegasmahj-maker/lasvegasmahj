@@ -199,20 +199,33 @@ function scoreEntries(normalized: string, ctx?: { lastEntry?: KnowledgeEntry; el
         matchLength += m[0].length;
       }
     }
+    const genericMatches: string[] = [];
     for (const re of entry.generic ?? []) {
       const m = normalized.match(re);
       if (m) {
         score += 2;
         matchLength += m[0].length;
+        genericMatches.push(m[0]);
       }
     }
-    const patternHit = score > 0;
+    const patternHit = score > genericMatches.length * 2;
+    let keywordHits = 0;
     for (const kw of entry.keywords) {
-      if (new RegExp(`\\b${kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(normalized)) score += 1;
+      const re = new RegExp(`\\b${kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`);
+      // A word the generic regex already matched earns nothing extra; otherwise one common
+      // word ("wall", "call") would reach the candidate threshold on its own.
+      if (re.test(normalized) && !genericMatches.some((g) => re.test(g))) keywordHits += 1;
     }
+    score += keywordHits;
+    // Candidacy: a real pattern hit; or a catch-all word plus either another keyword or a
+    // short, direct question ("charleston rules?"); or three independent keywords. A lone
+    // catch-all word inside a long sentence ("is there a wall between the rooms") is not enough.
+    const wordCount = normalized.split(" ").filter(Boolean).length;
+    const catchAll = genericMatches.length > 0 && (keywordHits >= 1 || wordCount <= 7);
+    if (!patternHit && !catchAll && keywordHits < 3) continue;
     // Context may only amplify an entry the question already reached through a pattern;
     // otherwise a stray keyword plus the topic bonus would answer an unrelated question.
-    if (ctx?.elliptical && ctx.lastEntry && patternHit) {
+    if (ctx?.elliptical && ctx.lastEntry && (patternHit || genericMatches.length > 0)) {
       if (entry.category === ctx.lastEntry.category) score += 2;
       if (entry.id === ctx.lastEntry.id) score -= 2;
     }
@@ -225,9 +238,8 @@ function scoreEntries(normalized: string, ctx?: { lastEntry?: KnowledgeEntry; el
 
 export type Retrieval = { candidates: Scored[]; elliptical: boolean; effectiveQuery: string };
 
-// A pattern hit (3 points) or several keyword hits are needed before an entry counts as a
-// candidate; a single stray keyword never does, so "table" alone cannot surface table talk.
-const MIN_SCORE = 3;
+// Candidacy is decided inside scoreEntries; this floor only drops keyword-only stragglers.
+const MIN_SCORE = 2;
 
 export function retrieve(raw: string, history: Turn[] = []): Retrieval {
   const normalized = normalizeQuestion(raw);
@@ -296,8 +308,10 @@ export function labelFor(entry: KnowledgeEntry): AskLabel {
   return entry.varies_by_house ? "house" : "standard";
 }
 
+// A "Read more" link under a "Pending instructor review" label would be a mixed signal, so
+// derived entries never link back; their source_url is kept for the owner's reference.
 export function readMoreUrl(entry: KnowledgeEntry): string | undefined {
-  return entry.source_url;
+  return entry.source === "derived" ? undefined : entry.source_url;
 }
 
 export function approvedText(entry: KnowledgeEntry): string {

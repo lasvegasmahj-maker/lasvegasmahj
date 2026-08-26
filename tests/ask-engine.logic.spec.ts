@@ -91,13 +91,19 @@ test.describe("knowledge base integrity", () => {
   test("shared entries match Find My Mahj verbatim when the sister repo is present", () => {
     const sibling = path.resolve(__dirname, "../../findmymahjgame/lib/rules/knowledge.ts");
     test.skip(!fs.existsSync(sibling), "sister repo not checked out beside this one");
-    // Compare against the sister repo's committed file, not a half-edited working tree.
-    let src: string;
-    try {
-      src = execSync("git show HEAD:lib/rules/knowledge.ts", { cwd: path.dirname(path.dirname(path.dirname(sibling))), encoding: "utf8" });
-    } catch {
-      src = fs.readFileSync(sibling, "utf8");
+    // Compare against the sister repo's merged main branch, not whichever branch happens to be
+    // checked out or a half-edited working tree.
+    const cwd = path.dirname(path.dirname(path.dirname(sibling)));
+    let src: string | null = null;
+    for (const ref of ["main", "HEAD"]) {
+      try {
+        src = execSync(`git show ${ref}:lib/rules/knowledge.ts`, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+        break;
+      } catch {
+        src = null;
+      }
     }
+    src ??= fs.readFileSync(sibling, "utf8");
     const re = /id:\s*"([^"]+)"[\s\S]*?approved_answer:\s*"((?:[^"\\]|\\.)*)"[\s\S]*?varies_by_house:\s*(true|false)/g;
     const shared = new Map<string, { answer: string; varies: boolean }>();
     for (const m of src.matchAll(re)) shared.set(m[1], { answer: JSON.parse(`"${m[2]}"`), varies: m[3] === "true" });
@@ -134,7 +140,7 @@ test.describe("owner example questions", () => {
     ["What happens if someone calls me dead?", "called-dead"],
     ["Can I use a joker for NEWS?", "joker-in-news"],
     ["What happens if I expose the wrong tiles?", "wrong-exposure"],
-    ["Can I stop the Charleston?", "charleston"],
+    ["Can I stop the Charleston?", "stop-charleston"],
     ["Can I pick up a discarded joker?", "discarded-joker"],
     ["What happens if two people call the same tile?", "same-tile-two-calls"],
     ["how many tiles r in a set", "tile-count"],
@@ -262,6 +268,14 @@ test.describe("guards", () => {
     expect(poem.answer).not.toMatch(/pirate/i);
   });
 
+  test("one common word never earns a confident rule", () => {
+    expect(answerDeterministic("Do I need to call ahead for open play?").kind).not.toBe("answer");
+    expect(answerDeterministic("Is there a wall between the two rooms at the venue?").kind).not.toBe("answer");
+    expect(answerDeterministic("What should I call my new mahjong group?").kind).not.toBe("answer");
+    expect(answerDeterministic("What is the wall?").entry?.id).toBe("the-wall");
+    expect(answerDeterministic("Can I call for mahjong when it is not my turn?").entry?.id).toBe("call-for-mahjong");
+  });
+
   test("small talk is acknowledged without a rules answer", () => {
     expect(answerDeterministic("thanks!").kind).toBe("smalltalk");
   });
@@ -276,6 +290,12 @@ test.describe("guards", () => {
     const disagree = ["charleston", "charleston-blind-pass", "open-vs-closed", "closed-hand-final-tile", "self-drawn-win", "joker-call-complete", "joker-free", "pung-vs-kong", "card-numbers", "false-mahjong", "expose-immediately", "wrong-exposure", "call-window", "call-for-mahjong", "dead-hand-triggers", "courtesy-pass", "same-tile-two-calls", "change-mind-mahjong", "call-concealed", "out-of-turn", "extra-payments", "take-back-discard", "look-before-pass"];
     for (const id of disagree) expect(KNOWLEDGE_BY_ID.get(id)?.source_url, id).toBeUndefined();
     expect(KNOWLEDGE_BY_ID.get("joker-in-pair")?.source_url).toContain("/rules/jokers");
+    for (const e of RULES_KNOWLEDGE) {
+      if (e.source !== "derived") continue;
+      const r = answerDeterministic(e.question);
+      expect(r.entry?.id, `canonical question routes to itself: ${e.question}`).toBe(e.id);
+      expect(r.source_url, e.id).toBeUndefined();
+    }
     expect(answerDeterministic("Can I use a joker in a pair?").source_url).toContain("/rules/jokers");
     expect(answerDeterministic("What is a blind pass?").source_url).toBeUndefined();
   });

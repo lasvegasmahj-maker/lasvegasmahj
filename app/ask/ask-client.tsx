@@ -159,7 +159,7 @@ function AskThread() {
       const res = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q, history }),
+        body: JSON.stringify({ question: q, history, nudged: thread.some((t) => t.role === "assistant" && Boolean(t.nudge)) }),
       });
       const data = (await res.json().catch(() => null)) as AskApiResponse | null;
       if (res.ok && data?.ok) {

@@ -27,6 +27,7 @@ export default defineConfig({
         command: "pnpm build && pnpm start",
         url: "http://localhost:3000",
         timeout: 240_000,
-        reuseExistingServer: !process.env.CI,
+        // Opt in explicitly so a stale server on :3000 can never stand in for a fresh build.
+        reuseExistingServer: process.env.PLAYWRIGHT_REUSE === "1",
       },
 });
