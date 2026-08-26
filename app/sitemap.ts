@@ -81,6 +81,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: "https://www.lasvegasmahj.com/ask",
+      lastModified: new Date("2026-08-26"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: "https://www.lasvegasmahj.com/mahjong-sets-guide",
       lastModified: new Date("2026-05-23"),
       changeFrequency: "monthly",

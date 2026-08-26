@@ -172,6 +172,14 @@ export default function RulesIndexPage() {
                 </Link>
               ))}
             </div>
+
+            <div className="ask-callout">
+              <p>
+                <strong>Mid-game and cannot find it?</strong>
+                Ask a rules question in plain English and get a direct answer, with follow-ups.
+              </p>
+              <Link href="/ask" className="btn-outline">Ask a Mahjong Rule</Link>
+            </div>
           </div>
         </section>
 

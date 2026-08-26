@@ -108,6 +108,14 @@ export default function LearnMahjong() {
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
               Each player starts with 13 tiles (except East, the dealer, who starts with 14). You take turns drawing and discarding tiles, trying to build one of the hands on the NMJL card. When you complete a hand, you call &ldquo;Mahjong!&rdquo; and win the hand.
             </p>
+            <div className="ask-callout" style={{ margin: "0 0 2.5rem" }}>
+              <p>
+                <strong>Stuck on a rule at the table?</strong>
+                Ask a question like &ldquo;can I use a joker in a pair?&rdquo; and get a direct answer.
+              </p>
+              <a href="/ask" className="btn-outline">Ask a Mahjong Rule</a>
+            </div>
+
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>How to Get Started</h2>
             <div style={{ marginBottom: "2.5rem" }}>
               {[

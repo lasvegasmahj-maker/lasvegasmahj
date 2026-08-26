@@ -91,6 +91,14 @@ export default function FAQ() {
             </div>
           ))}
         </div>
+
+        <div className="ask-callout reveal">
+          <p>
+            <strong>Have a rules question?</strong>
+            Jokers, the Charleston, calling tiles, dead hands. Ask and get a straight answer.
+          </p>
+          <a href="/ask" className="btn-outline">Ask a Mahjong Rule</a>
+        </div>
       </div>
     </section>
   );
