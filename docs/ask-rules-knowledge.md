@@ -2,6 +2,30 @@
 
 Feature: `/ask` on lasvegasmahj.com. Code: `lib/ask/*`, `app/ask/*`, `app/api/ask/route.ts`.
 
+## The truth layer (2026-08-26 cleanup)
+
+Every `/rules` page renders its Q&A from a content module in `content/rules/<slug>.ts`. Each
+Q&A carries `kind` (`standard` or `house`) and `evidence`:
+
+| evidence     | Meaning |
+|--------------|---------|
+| `card`       | Stated on the rules panel printed on the League card (photos in the gitignored `mahjcard/` folder; rules panel only). |
+| `owner`      | Stated in the owner's own handouts (`LasVegasMahjong_HowToPlay_3.pdf`, the NMHC booklet) or approved by the owner. |
+| `rulebook`   | Attributed to the League rule book ("Mah Jongg Made Easy"), which our materials do not include. Each such claim is listed by name in `tests/rules-truth.logic.spec.ts` so a new one cannot appear silently. |
+| `unverified` | Published copy with no source in our materials. Allowed only when the answer does not claim League authority, or is a house rule. |
+
+Ask entries that mirror a page read their answer from the module (`page_ref`), so the two
+cannot drift: change the page and Ask changes with it. Pending (`derived`) entries that mirror
+a corrected page also read the page text, but keep the "Pending instructor review" label and
+no "Read more" link until the owner approves them. Three pending entries keep their own
+wording on purpose and are listed in `ALIGNMENT_EXCEPTIONS` with a reason; the test fails on
+any other divergence and on a stale exception.
+
+`tests/rules-truth.logic.spec.ts` fails when: an Ask mirror differs from its page; a house rule
+is written as a League rule; a rule book claim is not on the owner's list; a pending entry is
+served as verified or with a link; the `/rules` index counts drift; any card-verified
+correction from the 2026-08-26 audit regresses; the learn page or CLAUDE.md regresses.
+
 ## Where rule text comes from
 
 All rule text lives in one file, `lib/ask/knowledge.ts`. Nothing else on the site may
@@ -34,16 +58,22 @@ They share content by copy plus a test:
 3. New LVM-only entries should be added here first. If they are general enough for Find My
    Mahj, copy them there with the same id and change the source here to `shared_approved`.
 
-## Approving a derived entry
+## Approving a derived entry (after the 2026-08-26 cleanup)
+
+Most pending entries already carry the corrected page text. To approve one, change its
+`source` to `"lvm_rules_page"` (it will then show "Standard rule" and link to the page) and
+remove it from the pending list in the owner report. If the wording should change, edit the
+page module in `content/rules/` so both surfaces move together.
+
+## Approving a derived entry (original notes)
 
 Read the entry, edit the wording if needed, change `source: "derived"` to
 `source: "lvm_rules_page"` (and set `source_url` to the page that should carry the same
 text, then add the Q&A to that page) or to `shared_approved` after copying it into Find My
 Mahj. The "Pending instructor review" label disappears on the next deploy.
 
-Derived entries at launch (26): `stop-charleston`, `charleston-blind-pass`, `closed-hand-final-tile`
-(the latter two are owner-reviewed Find My Mahj wording from 2026-08-26 that still sits on an
-unmerged Find My Mahj branch; kept here because the card prints the same rules),
+Pending entries after the 2026-08-26 cleanup (24; `charleston-blind-pass` and
+`closed-hand-final-tile` are shared again now that Find My Mahj merged them): `stop-charleston`,
 `call-during-charleston`, `joker-in-news`, `discarded-joker`,
 `call-for-pair`, `self-drawn-win`, `joker-call-complete`, `joker-free`, `pung-vs-kong`,
 `card-numbers`, `false-mahjong`, `expose-immediately`, `wrong-exposure`, `call-window`,

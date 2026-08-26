@@ -101,7 +101,7 @@ export default function LearnMahjong() {
               The NMJL card is updated every year and lists all the valid winning hands for that year. Learning to read the card, and choosing which hands to build toward, is the core skill of American Mahjong.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2.5rem" }}>
-              The card is organized into categories (Like Numbers, Quints, Consecutive Run, etc.) and uses numbers to describe the structure of each hand: 2 for a Pair, 3 for a Pung, 4 for a Kong, 5 for a Quint, 6 for a Sextet. It looks intimidating at first, but within one lesson, most students are reading it confidently.
+              The card is organized into categories (Like Numbers, Quints, Consecutive Run, etc.) and shows each hand as a row of tiles; the card&rsquo;s key defines a Pair as 2 like tiles, a Pung as 3, a Kong as 4, a Quint as 5, and a Sextet as 6. It looks intimidating at first, but within one lesson, most students are reading it confidently.
             </p>
 
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>How a Game Works</h2>

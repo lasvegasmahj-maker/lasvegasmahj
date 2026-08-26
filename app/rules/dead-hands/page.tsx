@@ -3,6 +3,7 @@ import { ogBase } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+import { DEAD_HANDS } from "@/content/rules/dead-hands";
 
 export const metadata: Metadata = {
   title: { absolute: "Dead Hand Rules in American Mahjong | Las Vegas Mahjong" },
@@ -18,28 +19,7 @@ export const metadata: Metadata = {
   },
 };
 
-const QA = [
-  {
-    q: "What makes a hand dead?",
-    a: "A hand is declared dead when a player makes an illegal or impossible call, exposes tiles incorrectly, calls an out-of-turn tile, or exposes a set that cannot possibly complete a valid hand on the current card. False mahjong also results in a dead hand. House rules vary slightly; your group should agree on the list of dead-hand triggers before play.",
-  },
-  {
-    q: "Can a hand be saved before it is officially declared dead?",
-    a: "Yes, in some situations. If a player notices an error before other players have acted on it (before the next player draws), the group may agree to correct it. Once play has advanced past the error, the hand is typically dead. The key is catching it immediately.",
-  },
-  {
-    q: "Does a player with a dead hand still pay if someone wins?",
-    a: "Yes. A player whose hand is declared dead must still pay the winner if someone else wins. Their hand being dead does not excuse them from payment obligations for the rest of that game.",
-  },
-  {
-    q: "Does a dead hand player continue drawing tiles?",
-    a: "No. Once a hand is declared dead, that player does not draw or discard for the rest of the hand. They sit out until the next hand begins.",
-  },
-  {
-    q: "What happens if two players have dead hands?",
-    a: "Both sit out. The remaining two players continue, and both dead-hand players still pay if one of the active players wins.",
-  },
-];
+const QA = DEAD_HANDS.qa;
 
 const schema = {
   "@context": "https://schema.org",
