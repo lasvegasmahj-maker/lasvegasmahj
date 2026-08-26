@@ -78,7 +78,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     category: "tiles",
     level: "foundational",
     question: "What are the three suits?",
-    patterns: [/what (are|'re) the suit/, /suits? (in|of) (american )?mahjong/, /how many suit/, /\b(bam|crak|dot)\b.{0,30}\bsuit/, /\bsuit\b.{0,30}\b(bam|crak|dot)\b/],
+    patterns: [/what (are|'re) the (three |3 )?suit/, /(three|3) suit/, /suit (in|of) (american )?mahjong/, /how many suit/, /\b(bam|crak|dot)\b.{0,30}\bsuit/, /\bsuit\b.{0,30}\b(bam|crak|dot)\b/, /name the suit/, /which suit/],
+    generic: [/\bsuit\b/],
     keywords: ["suit", "bam", "crak", "dot"],
     answer:
       "American mahjong uses three suits: Bams, Craks, and Dots. Each suit runs from 1 to 9, and the set holds 4 copies of every suit tile.",

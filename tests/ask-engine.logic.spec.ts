@@ -192,6 +192,16 @@ test.describe("follow-up context", () => {
     for (const f of r.followups) expect(asked.has(f), f).toBe(false);
   });
 
+  test("an unrelated question after a joker thread is not answered as a joker rule", () => {
+    let history = answered("Can I use a joker in a pair?");
+    history = answered("What tiles can jokers substitute for?", history);
+    const r = answerDeterministic("what if my elbow knocks the rack over", history);
+    expect(r.kind).toBe("unverified");
+    expect(r.answer).toBe(CANNOT_VERIFY);
+    const chat = answerDeterministic("why?", history);
+    expect(chat.entry?.category ?? "none").not.toBe("none");
+  });
+
   test("retrieve exposes the effective query used for context", () => {
     const history = answered("Can I use a joker in a pair?");
     const r = retrieve("what about a kong", history);

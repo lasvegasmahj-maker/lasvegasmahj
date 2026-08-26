@@ -70,6 +70,10 @@ const SMALL_TALK_RE =
 const RULES_SIGNAL_RE =
   /\b(mahjong|joker|tile|charleston|kong|pung|quint|sextet|discard|call|pass|hand|dead|wall|card|nmjl|flower|dragon|wind|bam|crak|dot|soap|expose|pay|win|dealer|east|suit|news|courtesy|blind|rack|player|pair|single|concealed|exchange|mahjong)\b/;
 
+// Bare "why?" style follow-ups carry no topic words at all; the honest deterministic reply
+// is the last rule again, and the model layer (when enabled) explains the reason from it.
+const WHY_RE = /^(why|why not|really|are you sure|explain|explain that|how come|what does that mean|say more|tell me more|huh|what)\??$/;
+
 const ELLIPTICAL_RE =
   /^(what about|how about|and\b|also\b|same (for|with|thing)|does (that|this|it) (also )?(apply|work|count|go)|is (that|it) (the )?same|what if\b|can i do that|even (in|for|with|during)|what (about )?(in|for|with|during) (a|an|the)|during (a|an|the)|in (a|an|the)|for (a|an|the)|with (a|an|the)|or (a|an|the)|why\b|how come|really\??$|are you sure|what does that mean|explain|and if|but if|but what)/;
 
@@ -197,10 +201,13 @@ function scoreEntries(normalized: string, ctx?: { lastEntry?: KnowledgeEntry; el
         matchLength += m[0].length;
       }
     }
+    const patternHit = score > 0;
     for (const kw of entry.keywords) {
       if (new RegExp(`\\b${kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(normalized)) score += 1;
     }
-    if (ctx?.elliptical && ctx.lastEntry) {
+    // Context may only amplify an entry the question already reached through a pattern;
+    // otherwise a stray keyword plus the topic bonus would answer an unrelated question.
+    if (ctx?.elliptical && ctx.lastEntry && patternHit) {
       if (entry.category === ctx.lastEntry.category) score += 2;
       if (entry.id === ctx.lastEntry.id) score -= 2;
     }
@@ -323,12 +330,25 @@ export function answerDeterministic(raw: string, history: Turn[] = []): EngineRe
     };
   }
 
+  const last = lastAnsweredEntry(history);
+  if (last && WHY_RE.test(normalized)) {
+    return {
+      kind: "answer",
+      answer: approvedText(last),
+      label: labelFor(last),
+      entry: last,
+      candidates: [last],
+      followups: buildFollowups(last, askedEntryIds(history)),
+      source_url: last.source_url,
+      elliptical: true,
+    };
+  }
+
   const { candidates, elliptical } = retrieve(question, history);
   const entries = candidates.map((c) => c.entry);
 
   if (!entries.length) {
     if (!isRulesQuestion(normalized)) return { ...base, kind: "offtopic", answer: OFF_TOPIC, label: "unverified" };
-    const last = lastAnsweredEntry(history);
     return {
       ...base,
       kind: "unverified",
