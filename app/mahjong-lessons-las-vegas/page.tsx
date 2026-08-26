@@ -191,6 +191,18 @@ export default function MahjongLessonsLasVegas() {
           </div>
         </section>
 
+        <section style={{ background: "var(--navy-dark)", padding: "0 2rem 4rem" }}>
+          <div className="container" style={{ maxWidth: "720px" }}>
+            <div className="ask-callout" style={{ margin: 0 }}>
+              <p>
+                <strong>Rules question between lessons?</strong>
+                Ask about jokers, the Charleston, calling, or dead hands and get a direct answer any time.
+              </p>
+              <a href="/ask" className="btn-outline">Ask a Mahjong Rule</a>
+            </div>
+          </div>
+        </section>
+
         {/* CTA */}
         <section style={{ padding: "5rem 2rem", background: "var(--navy)", textAlign: "center", borderTop: "1px solid rgba(57,230,57,0.15)" }}>
           <div className="container">
