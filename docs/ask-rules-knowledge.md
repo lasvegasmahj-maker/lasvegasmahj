@@ -39,7 +39,10 @@ text, then add the Q&A to that page) or to `shared_approved` after copying it in
 Mahj. The "Pending instructor review" label disappears on the next deploy.
 
 Derived entries at launch: `call-during-charleston`, `joker-in-news`, `discarded-joker`,
-`call-for-pair`.
+`call-for-pair`, `self-drawn-win`, `joker-call-complete`, `joker-free`, `pung-vs-kong`,
+`card-numbers`, `false-mahjong`, `expose-immediately`, `wrong-exposure`. All but
+`self-drawn-win` and `discarded-joker` (exposure half) were checked against the rules printed on
+the owner's 2025 card (see below); the wording still awaits the instructor's eye.
 
 ## Open content decisions (owner must resolve; nothing was changed silently)
 
@@ -56,14 +59,33 @@ the pages can give different answers on these items.
 | 3 | Stopping the first Charleston | "this first round is required" | `/rules/charleston`: "After the first right pass is complete, any player can call 'stop' before the first across pass" | Open: owner decision, then fix the losing text. |
 | 4 | Closed hands calling the last tile | `closed-hand-final-tile`: "you may claim a discard when it is the single tile that completes your mahjong" | `/rules/the-card`: "A closed hand must be built entirely from your own draws; you cannot call any discards" | Owner reviewed the FMG text 2026-08-26. Page still needs the fix. |
 
-The NMJL FAQ page was "Under Construction" on 2026-08-26, so no online primary source was
-available to settle items 2 and 3.
+The NMJL FAQ page was "Under Construction" on 2026-08-26. The rules printed on the owner's own
+2025 card (repo folder `mahjcard/`, gitignored, photos of the rules panel only) settle all four:
+jokers may not be passed in the Charleston; the first Charleston is compulsory and may be stopped
+only after first left; the blind pass is permitted on first left and/or last right; any tile
+except a joker may be called for mahjong, including concealed and Singles and Pairs hands.
+The served text is right on all four. The two pages still need the owner's edit.
+
+## Page statements corrected in the tool (card-verified, pages unchanged)
+
+| /rules page statement | Card rule | Tool entry |
+|---|---|---|
+| `/rules/winning`, `/rules/scoring`: self-drawn wins pay the standard amount, all three pay the full amount | Not printed on the card. Treated as unverified: the tool says the payment is under instructor review. | `self-drawn-win` (pay-self-drawn removed) |
+| `/rules/jokers`: calling with jokers needs "at least one real matching tile" from your hand | Jokers may be used in place of any tile(s) in any Pung, Kong or Quint; no natural-tile requirement | `joker-call-complete` |
+| `/rules/jokers`, `/rules/scoring`: joker-free pays double, no exception | Double the value is paid by all; exception: Singles and Pairs | `joker-free` |
+| `/rules/the-card`, `/rules/calling-tiles`: "the numbers on the card tell you how many tiles are in a group" | A printed digit is the tile number; the card's key defines Pair 2, Pung 3, Kong 4, Quint 5, Sextet 6 | `card-numbers`, `pung-vs-kong` |
+| `/rules/winning`: false mahjong "typically" pays each player a full win | Not exposed and all hands intact: no penalty. Exposed: hand is dead. One other player exposed: pay double the value of the incorrect hand to the intact player. | `false-mahjong` |
+| `/rules/calling-tiles`: "you cannot call and then decide what to do" | A player may change the number and type of tiles in an exposure up until the player has discarded | `expose-immediately` |
+| `/rules/dead-hands`: an error may be corrected before the next player draws if the group agrees | Same rule as above; after the discard an incorrect exposure makes the hand dead, and a dead player still pays the winner | `wrong-exposure` (dead-hand-saved removed) |
+
+Once the owner approves, fix the page text and flip these entries to `lvm_rules_page`.
 
 ## Annual card
 
 `CURRENT_CARD_YEAR` in `lib/ask/knowledge.ts` names the card in refusals and year notes.
 Update it each spring when the new card releases; a logic test fails if it falls more than
-a year behind the calendar. No card hands, categories, or values exist anywhere in the code.
+a year behind the calendar. No card hands or point values exist anywhere in the code; generic
+teaching terms such as "Singles and Pairs" and "Quint" appear because the live /rules pages use them.
 
 ## Model configuration (Vercel environment variables)
 

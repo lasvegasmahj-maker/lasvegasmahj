@@ -25,17 +25,40 @@ type AnswerTurn = {
 type UserTurn = { role: "user"; content: string };
 type ThreadTurn = UserTurn | AnswerTurn;
 
+type AskApiResponse = {
+  ok?: boolean;
+  error?: string;
+  answer?: string;
+  label?: string;
+  kind?: string;
+  entry_id?: string;
+  category?: string;
+  source_url?: string;
+  followups?: string[];
+  nudge?: Nudge;
+  year_note?: string;
+  via?: string;
+};
+
 const STORAGE_KEY = "lvm-ask-thread";
 const MAX_CHARS = 300;
 
 const FAILED_MESSAGE =
   "The rules helper is taking a break. The written rules guide still works, and you can try again in a moment.";
 
+function isTurn(x: unknown): x is ThreadTurn {
+  if (!x || typeof x !== "object") return false;
+  const t = x as Record<string, unknown>;
+  if (typeof t.content !== "string") return false;
+  if (t.role === "user") return true;
+  return t.role === "assistant" && Array.isArray(t.followups) && typeof t.label === "string";
+}
+
 function loadThread(): ThreadTurn[] {
   try {
     const raw = window.sessionStorage.getItem(STORAGE_KEY);
-    const parsed = raw ? (JSON.parse(raw) as ThreadTurn[]) : [];
-    return Array.isArray(parsed) ? parsed.slice(-20) : [];
+    const parsed: unknown = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed.filter(isTurn).slice(-20) : [];
   } catch {
     return [];
   }
@@ -131,11 +154,11 @@ function AskThread() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: q, history }),
       });
-      const data = (await res.json().catch(() => null)) as Partial<AnswerTurn> & { ok?: boolean; error?: string } | null;
+      const data = (await res.json().catch(() => null)) as AskApiResponse | null;
       if (res.ok && data?.ok) {
         answer = {
           role: "assistant",
-          content: data.content ?? (data as unknown as { answer?: string }).answer ?? "",
+          content: data.answer ?? "",
           label: (data.label as AskLabel) ?? "unverified",
           kind: data.kind ?? "answer",
           entry_id: data.entry_id,
@@ -175,7 +198,12 @@ function AskThread() {
     if (answer.nudge) trackEvent("ask_nudge_shown", { target: answer.nudge.key });
   }
 
+  const restoredRef = useRef(true);
   useEffect(() => {
+    if (restoredRef.current) {
+      restoredRef.current = false;
+      return;
+    }
     if (!thread.length) return;
     const last = thread[thread.length - 1];
     if (last.role === "assistant") lastAnswerRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
@@ -255,7 +283,7 @@ function AskThread() {
             )
           )}
           {busy ? (
-            <div className="ask-turn ask-turn-answer ask-thinking" role="status">
+            <div className="ask-turn ask-turn-answer ask-thinking">
               <span className="ask-turn-who">Las Vegas Mahjong</span>
               <p>Checking the rules...</p>
             </div>

@@ -25,7 +25,7 @@ import { validateModelOutput, composeWithModel, type ModelClient } from "../lib/
 
 const MONTH_RE =
   /\b(january|february|march|april|june|july|august|september|october|november|december)\b|\b(in|every|each|late|early|mid) may\b/i;
-const DASH_RE = /[–—]/;
+const DASH_RE = /[\u2013\u2014]/;
 const LETTER_CODE_RE = /\b[PKN]\b/;
 
 function text(e: (typeof RULES_KNOWLEDGE)[number]): string {
@@ -174,7 +174,7 @@ test.describe("follow-up context", () => {
   test("what about self drawn? after a payment question stays on scoring", () => {
     const history = answered("Who pays when someone wins on a discard?");
     const r = answerDeterministic("What about self drawn?", history);
-    expect(r.entry?.id).toBe("pay-self-drawn");
+    expect(r.entry?.id).toBe("self-drawn-win");
   });
 
   test("a strong new topic switches away from the previous topic", () => {
@@ -269,6 +269,8 @@ test.describe("guards", () => {
     expect(answerDeterministic("Can I pick up a discarded joker?").label).toBe("pending");
     expect(answerDeterministic("Can I use a joker in a pair?").label).toBe("standard");
     expect(answerDeterministic("What is a wall game?").label).toBe("house");
+    expect(answerDeterministic("Who pays on a self drawn win?").entry?.id).toBe("self-drawn-win");
+    expect(answerDeterministic("Who pays on a self drawn win?").label).toBe("pending");
   });
 });
 
@@ -310,6 +312,25 @@ test.describe("nudges", () => {
   });
 });
 
+test.describe("server-only boundary", () => {
+  test("no client component imports the knowledge base, engine, model layer, or limiter", () => {
+    const roots = ["app", "components"].map((d) => path.resolve(__dirname, "..", d));
+    const offenders: string[] = [];
+    const walk = (dir: string) => {
+      for (const name of fs.readdirSync(dir)) {
+        const p = path.join(dir, name);
+        if (fs.statSync(p).isDirectory()) walk(p);
+        else if (/\.tsx?$/.test(name)) {
+          const src = fs.readFileSync(p, "utf8");
+          if (/^\s*["']use client["']/m.test(src) && /lib\/ask\/(knowledge|engine|llm|rate-limit|nudges)/.test(src)) offenders.push(p);
+        }
+      }
+    };
+    roots.forEach(walk);
+    expect(offenders).toEqual([]);
+  });
+});
+
 test.describe("rate limiter", () => {
   test("sliding window blocks the N+1th hit and recovers after the window", () => {
     const w = new SlidingWindow(3, 1000);
@@ -341,9 +362,15 @@ test.describe("model output validation", () => {
     expect(r.followups.length).toBe(3);
   });
 
+  test("rejects letter set codes and markdown in model output", () => {
+    expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No. A joker works in a P, K, or Q only.", followups: [] }, input)).toBeNull();
+    expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "**No.** Never in a pair.", followups: [] }, input)).toBeNull();
+    expect(validateModelOutput({ entry_ids: [], label: "clarify", answer: "Do you mean [this](x)?", followups: [] }, input)).toBeNull();
+  });
+
   test("rejects invented numbers, dashes, months, links, and unknown ids", () => {
     expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No, and you get 8 chances per hand.", followups: [] }, input)).toBeNull();
-    expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No — never in a pair.", followups: [] }, input)).toBeNull();
+    expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No \u2014 never in a pair.", followups: [] }, input)).toBeNull();
     expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No. The card comes out in March.", followups: [] }, input)).toBeNull();
     expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No. See https://example.com", followups: [] }, input)).toBeNull();
     expect(validateModelOutput({ entry_ids: ["not-a-real-id"], label: "standard", answer: "Sure thing.", followups: [] }, input)).toEqual({ kind: "unverified" });

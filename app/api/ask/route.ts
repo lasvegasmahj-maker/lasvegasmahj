@@ -20,7 +20,6 @@ import { ipOf, modelPerDay, modelPerMinute, perDay, perMinute } from "@/lib/ask/
 // may rephrase them but cannot add rule content (see lib/ask/llm.ts).
 
 export const maxDuration = 30;
-export const dynamic = "force-dynamic";
 
 const MAX_HISTORY = 10;
 const MAX_TURN_CHARS = 900;

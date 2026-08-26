@@ -1,7 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { CURRENT_CARD_YEAR, KNOWLEDGE_BY_ID, RULES_KNOWLEDGE, type KnowledgeEntry } from "./knowledge";
-import { approvedText, labelFor, type AskLabel, type Turn } from "./engine";
-import { synthesisDigitGuard } from "./engine";
+import { approvedText, labelFor, synthesisDigitGuard, type AskLabel, type Turn } from "./engine";
 
 // Optional conversational layer. Ships dormant: without ANTHROPIC_API_KEY every question is
 // answered from approved text by lib/ask/engine.ts and the site behaves identically. With a
@@ -9,12 +8,14 @@ import { synthesisDigitGuard } from "./engine";
 // but every field it returns is validated here and any failure falls back to approved text.
 
 const MODEL = process.env.ASK_MODEL || "claude-opus-5";
-const EFFORT_SUPPORTED = /-(5|4-[678])$/.test(MODEL);
+const EFFORT_SUPPORTED = /^claude-(opus|sonnet)-(5|4-[678])$/.test(MODEL);
 const MAX_HISTORY_TURNS = 6;
 const MAX_ANSWER_CHARS = 700;
 const MONTH_RE = /\b(january|february|march|april|june|july|august|september|october|november|december)\b|\b(in|every|each|late|early|mid) may\b/i;
-const DASH_RE = /[–—]/;
+const DASH_RE = /[\u2013\u2014]/;
 const LINK_RE = /https?:\/\/|www\.|<[a-z]/i;
+const LETTER_CODE_RE = /\b[PKN]\b/;
+const MARKDOWN_RE = /\*\*|__|\[[^\]]+\]\(|^#+\s/m;
 
 export function isModelEnabled(): boolean {
   return Boolean(process.env.ANTHROPIC_API_KEY) && process.env.ASK_MODEL_DISABLED !== "1";
@@ -70,12 +71,16 @@ function renderEntry(e: KnowledgeEntry): string {
   return `[id=${e.id}] Q: ${e.question}\nA: ${e.answer}${house}`;
 }
 
+// Assistant turns are re-rendered from the approved entry the server answered with, never
+// from client-supplied text, so a forged history cannot steer the model.
 function renderHistory(history: Turn[]): string {
   const recent = history.slice(-MAX_HISTORY_TURNS);
-  if (!recent.length) return "(none)";
-  return recent
-    .map((t) => `${t.role === "user" ? "Player" : "Helper"}: ${t.content.replace(/\s+/g, " ").slice(0, 500)}`)
-    .join("\n");
+  const lines: string[] = [];
+  for (const t of recent) {
+    if (t.role === "user") lines.push(`Player: ${t.content.replace(/\s+/g, " ").slice(0, 300)}`);
+    else if (t.entry_id && KNOWLEDGE_BY_ID.has(t.entry_id)) lines.push(`Helper: ${approvedText(KNOWLEDGE_BY_ID.get(t.entry_id)!)}`);
+  }
+  return lines.length ? lines.join("\n") : "(none)";
 }
 
 function buildUserMessage(input: ModelInput): string {
@@ -129,7 +134,7 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
   if (label === "unverified" || (!ids.length && label !== "clarify")) return { kind: "unverified" };
 
   if (label === "clarify") {
-    if (!answer || answer.length > 240 || !answer.includes("?") || LINK_RE.test(answer) || DASH_RE.test(answer)) return null;
+    if (!answer || answer.length > 240 || !answer.includes("?") || LINK_RE.test(answer) || DASH_RE.test(answer) || MARKDOWN_RE.test(answer) || LETTER_CODE_RE.test(answer)) return null;
     return { kind: "clarify", answer, followups };
   }
 
@@ -142,7 +147,7 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
   }
 
   if (!answer || answer.length > MAX_ANSWER_CHARS) return null;
-  if (LINK_RE.test(answer) || DASH_RE.test(answer) || MONTH_RE.test(answer)) return null;
+  if (LINK_RE.test(answer) || DASH_RE.test(answer) || MONTH_RE.test(answer) || LETTER_CODE_RE.test(answer) || MARKDOWN_RE.test(answer)) return null;
   const cited = ids.map((id) => KNOWLEDGE_BY_ID.get(id)).filter(Boolean) as KnowledgeEntry[];
   const allowedText = [...cited.map(approvedText), input.question, String(CURRENT_CARD_YEAR)].join(" ");
   if (!synthesisDigitGuard(allowedText, answer)) return null;
@@ -155,7 +160,7 @@ export async function composeWithModel(input: ModelInput, client: ModelClient = 
   try {
     const params: Anthropic.MessageCreateParamsNonStreaming = {
       model: MODEL,
-      max_tokens: 400,
+      max_tokens: 1500,
       system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
       messages: [{ role: "user", content: buildUserMessage(input) }],
       ...(EFFORT_SUPPORTED ? { output_config: { effort: "low" } } : {}),
@@ -164,7 +169,10 @@ export async function composeWithModel(input: ModelInput, client: ModelClient = 
     if (res.stop_reason === "refusal") return null;
     const text = res.content.map((b) => (b.type === "text" ? b.text : "")).join("").trim();
     const parsed = parseJson(text);
-    if (!parsed) return null;
+    if (!parsed) {
+      console.error(JSON.stringify({ event: "ask_model_error", reason: "unparseable", stop_reason: res.stop_reason, chars: text.length }));
+      return null;
+    }
     return validateModelOutput(parsed, input);
   } catch (e) {
     const status = e instanceof Anthropic.APIError ? e.status : undefined;

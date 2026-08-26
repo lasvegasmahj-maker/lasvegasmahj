@@ -63,6 +63,11 @@ const CARD_CONTENT_RES: RegExp[] = [
 const VARIANT_RE =
   /\b(riichi|japanese|chinese|hong ?kong|cantonese|sichuan|taiwanese|korean|filipino|singapor(e|ean)|mcr|zung ?jung|shanghai)\b/;
 const AMERICAN_RE = /\b(american|nmjl)\b/;
+const VARIANT_NAMES: Record<string, string> = {
+  riichi: "Riichi", japanese: "Japanese", chinese: "Chinese", "hong kong": "Hong Kong", hongkong: "Hong Kong",
+  cantonese: "Cantonese", sichuan: "Sichuan", taiwanese: "Taiwanese", korean: "Korean", filipino: "Filipino",
+  singapore: "Singapore", singaporean: "Singaporean", mcr: "Chinese Official", "zung jung": "Zung Jung", zungjung: "Zung Jung", shanghai: "Shanghai",
+};
 
 const SMALL_TALK_RE =
   /^(thanks?|thank you|thx|ty|ok(ay)?|got it|cool|great|perfect|awesome|nice|good|yes|nope?|hi|hello|hey|bye)\b[!. ]*$/i;
@@ -320,7 +325,7 @@ export function answerDeterministic(raw: string, history: Turn[] = []): EngineRe
   }
 
   if (VARIANT_RE.test(normalized) && !AMERICAN_RE.test(normalized)) {
-    const variant = normalized.match(VARIANT_RE)?.[0] ?? "another";
+    const variant = VARIANT_NAMES[normalized.match(VARIANT_RE)?.[0] ?? ""] ?? "a different";
     return {
       ...base,
       kind: "clarify",

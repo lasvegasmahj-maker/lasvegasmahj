@@ -68,6 +68,7 @@ test.describe("POST /api/ask", () => {
   });
 
   test("rate limit returns 429 with a friendly message after 30 questions in a minute", async ({ request }) => {
+    test.skip(Boolean(process.env.PLAYWRIGHT_BASE_URL?.includes("vercel.app") || process.env.PLAYWRIGHT_BASE_URL?.includes("lasvegasmahj.com")), "deployed hosts see one real IP; local only");
     const ip = `198.51.100.${test.info().project.name === "mobile" ? 2 : 1}`;
     let last = 200;
     for (let i = 0; i < 31; i++) {
@@ -85,6 +86,6 @@ test.describe("POST /api/ask", () => {
   test("responses never leak internals", async ({ request }) => {
     const { body } = await ask(request, "How does the Charleston work?");
     const raw = JSON.stringify(body);
-    for (const f of ["ANTHROPIC", "system", "patterns", "keywords", "api_key", "process.env"]) expect(raw).not.toContain(f);
+    for (const f of ["ANTHROPIC", "SYSTEM_PROMPT", "KNOWLEDGE INDEX", "sk-ant-", "patterns", "keywords", "api_key", "process.env"]) expect(raw).not.toContain(f);
   });
 });
