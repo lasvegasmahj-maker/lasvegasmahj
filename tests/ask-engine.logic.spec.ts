@@ -215,6 +215,14 @@ test.describe("follow-up context", () => {
     expect(chat.entry?.category ?? "none").not.toBe("none");
   });
 
+  test("a context term never creates a match by itself", () => {
+    const history = answered("What makes a hand dead?");
+    expect(answerDeterministic("what about jokers?", history).entry?.id).not.toBe("dead-hand");
+    expect(answerDeterministic("in the charleston?", history).entry?.category).toBe("charleston");
+    const calls = answered("When can I call a discard?");
+    expect(answerDeterministic("what about the wall?", calls).entry?.id).toBe("the-wall");
+  });
+
   test("retrieve exposes the effective query used for context", () => {
     const history = answered("Can I use a joker in a pair?");
     const r = retrieve("what about a kong", history);
@@ -272,7 +280,14 @@ test.describe("guards", () => {
     expect(answerDeterministic("Do I need to call ahead for open play?").kind).not.toBe("answer");
     expect(answerDeterministic("Is there a wall between the two rooms at the venue?").kind).not.toBe("answer");
     expect(answerDeterministic("What should I call my new mahjong group?").kind).not.toBe("answer");
+    expect(answerDeterministic("can I call ahead?").kind).not.toBe("answer");
+    expect(answerDeterministic("my phone is dead").kind).not.toBe("answer");
+    expect(answerDeterministic("dragon boat").kind).not.toBe("answer");
+    expect(answerDeterministic("flower arrangement").kind).not.toBe("answer");
     expect(answerDeterministic("What is the wall?").entry?.id).toBe("the-wall");
+    expect(answerDeterministic("how does the wall work").entry?.id).toBe("the-wall");
+    expect(answerDeterministic("charleston rules?").entry?.id).toBe("charleston");
+    expect(answerDeterministic("tell me about dragons").entry?.id).toBe("dragons");
     expect(answerDeterministic("Can I call for mahjong when it is not my turn?").entry?.id).toBe("call-for-mahjong");
   });
 

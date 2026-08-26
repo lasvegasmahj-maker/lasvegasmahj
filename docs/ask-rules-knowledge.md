@@ -42,9 +42,8 @@ text, then add the Q&A to that page) or to `shared_approved` after copying it in
 Mahj. The "Pending instructor review" label disappears on the next deploy.
 
 Derived entries at launch (26): `stop-charleston`, `charleston-blind-pass`, `closed-hand-final-tile`
-(both of the latter are owner-reviewed Find My Mahj wording from 2026-08-26 that sits on an
-unmerged Find My Mahj branch; kept here because the card prints the same rules) (owner-reviewed wording that Find My Mahj
-put on hold in its 13:23 commit on 2026-08-26; kept here because the card prints the same rule),
+(the latter two are owner-reviewed Find My Mahj wording from 2026-08-26 that still sits on an
+unmerged Find My Mahj branch; kept here because the card prints the same rules),
 `call-during-charleston`, `joker-in-news`, `discarded-joker`,
 `call-for-pair`, `self-drawn-win`, `joker-call-complete`, `joker-free`, `pung-vs-kong`,
 `card-numbers`, `false-mahjong`, `expose-immediately`, `wrong-exposure`, `call-window`,
@@ -125,10 +124,11 @@ teaching terms such as "Singles and Pairs" and "Quint" appear because the live /
 | `ANTHROPIC_API_KEY` | Turns on the conversational layer. Absent: fully deterministic, approved text only. |
 | `ASK_MODEL`         | Optional model id override (default `claude-opus-5`). |
 | `ASK_MODEL_DISABLED`| Set to `1` to switch the model off without removing the key. |
+| `ASK_DISABLED`      | Set to `1` to switch the whole helper off: /ask shows a short notice and the API returns 503. Links stay in place. |
 
 Cost fuses: 30 questions per minute and 400 per day per IP (a venue's players share one IP); 40 model calls per minute and
 1,500 per day per warm instance (beyond that, answers fall back to approved text, never an
-error); 1,500 output tokens per call (this also covers the model's thinking on Opus 5); 300 character questions; last 6 turns of context.
+error); 3,000 output tokens per call (this also covers the model's thinking on Opus 5); 300 character questions; last 6 turns of context.
 Tapping a starter or follow-up chip never calls the model.
 
 ## What is logged

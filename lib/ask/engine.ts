@@ -32,6 +32,9 @@ export type EngineResult = {
   source_url?: string;
   year_note?: string;
   elliptical: boolean;
+  // True when the top entry was reached only through a catch-all word, so the model layer
+  // (when enabled) may overrule it with "cannot verify".
+  catch_all_only?: boolean;
 };
 
 export const MAX_QUESTION_CHARS = 300;
@@ -185,23 +188,32 @@ export function mentionedYear(raw: string): number | null {
   return m ? Number(m[1]) : null;
 }
 
-type Scored = { entry: KnowledgeEntry; score: number; matchLength: number };
+type Scored = { entry: KnowledgeEntry; score: number; matchLength: number; patternHit: boolean };
 
-function scoreEntries(normalized: string, ctx?: { lastEntry?: KnowledgeEntry; elliptical: boolean }): Scored[] {
+// Question words, plus the elliptical starters a follow-up uses ("in the charleston?").
+const FRAME_RE = /^(what|what's|whats|how|when|why|can|could|may|is|are|do|does|did|should|explain|tell me|which|who|about|rule|and|also|or)\b|^(in|for|during|with|on|at|what about|how about|what if|same for) (a|an|the|my|your)?\b|\brule\b/;
+
+// Patterns and keywords run against the effective query, so a follow-up's context term can
+// complete a pattern ("what about a kong" plus "joker"). Catch-all regexes run against the
+// bare question only, so the context term can never create a catch-all match by itself.
+function scoreEntries(bare: string, effective: string, ctx?: { lastEntry?: KnowledgeEntry; elliptical: boolean }): Scored[] {
   const out: Scored[] = [];
+  const normalized = effective;
   for (const entry of RULES_KNOWLEDGE) {
     let score = 0;
     let matchLength = 0;
     for (const re of entry.patterns) {
       const m = normalized.match(re);
-      if (m) {
+      // A match must begin inside the player's own words; the appended context term may
+      // finish a pattern but never supply all of it.
+      if (m && (m.index ?? 0) < bare.length) {
         score += 3;
         matchLength += m[0].length;
       }
     }
     const genericMatches: string[] = [];
     for (const re of entry.generic ?? []) {
-      const m = normalized.match(re);
+      const m = bare.match(re);
       if (m) {
         score += 2;
         matchLength += m[0].length;
@@ -214,14 +226,16 @@ function scoreEntries(normalized: string, ctx?: { lastEntry?: KnowledgeEntry; el
       const re = new RegExp(`\\b${kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`);
       // A word the generic regex already matched earns nothing extra; otherwise one common
       // word ("wall", "call") would reach the candidate threshold on its own.
-      if (re.test(normalized) && !genericMatches.some((g) => re.test(g))) keywordHits += 1;
+      if (re.test(effective) && !genericMatches.some((g) => re.test(g))) keywordHits += 1;
     }
     score += keywordHits;
-    // Candidacy: a real pattern hit; or a catch-all word plus either another keyword or a
-    // short, direct question ("charleston rules?"); or three independent keywords. A lone
-    // catch-all word inside a long sentence ("is there a wall between the rooms") is not enough.
-    const wordCount = normalized.split(" ").filter(Boolean).length;
-    const catchAll = genericMatches.length > 0 && (keywordHits >= 1 || wordCount <= 7);
+    // Candidacy: a real pattern hit; or a catch-all word plus another keyword; or a catch-all
+    // word in a short direct question ("charleston rules?", "how does the wall work"); or three
+    // independent keywords. A lone catch-all word in a long sentence or a non-question phrase
+    // ("is there a wall between the rooms", "dragon boat") is not enough.
+    const wordCount = bare.split(" ").filter(Boolean).length;
+    const shortDirect = wordCount === 1 || (wordCount <= 5 && FRAME_RE.test(bare));
+    const catchAll = genericMatches.length > 0 && (keywordHits >= 1 || shortDirect);
     if (!patternHit && !catchAll && keywordHits < 3) continue;
     // Context may only amplify an entry the question already reached through a pattern;
     // otherwise a stray keyword plus the topic bonus would answer an unrelated question.
@@ -230,7 +244,7 @@ function scoreEntries(normalized: string, ctx?: { lastEntry?: KnowledgeEntry; el
       if (entry.id === ctx.lastEntry.id) score -= 2;
     }
     if (score <= 0) continue;
-    out.push({ entry, score, matchLength });
+    out.push({ entry, score, matchLength, patternHit });
   }
   out.sort((a, b) => b.score - a.score || b.matchLength - a.matchLength);
   return out;
@@ -247,12 +261,12 @@ export function retrieve(raw: string, history: Turn[] = []): Retrieval {
   const wordCount = normalized.split(" ").filter(Boolean).length;
   const elliptical = Boolean(lastEntry) && (ELLIPTICAL_RE.test(normalized) || wordCount <= 5);
 
-  const plain = scoreEntries(normalized).filter((s) => s.score >= MIN_SCORE);
+  const plain = scoreEntries(normalized, normalized).filter((s) => s.score >= MIN_SCORE);
   if (!elliptical || !lastEntry) return { candidates: plain, elliptical: false, effectiveQuery: normalized };
 
   const contextTerm = CATEGORY_CONTEXT[lastEntry.category];
   const effectiveQuery = contextTerm ? `${normalized} ${contextTerm}` : normalized;
-  const contextual = scoreEntries(effectiveQuery, { lastEntry, elliptical: true }).filter((s) => s.score >= MIN_SCORE);
+  const contextual = scoreEntries(normalized, effectiveQuery, { lastEntry, elliptical: true }).filter((s) => s.score >= MIN_SCORE);
   // A strong direct hit on a new topic beats context carry-over ("what about the Charleston?"
   // after a joker question should switch topics, not stay on jokers).
   const plainTop = plain[0];
@@ -393,6 +407,7 @@ export function answerDeterministic(raw: string, history: Turn[] = []): EngineRe
     source_url: readMoreUrl(entry),
     year_note: yearNoteFor(question),
     elliptical,
+    catch_all_only: !candidates[0].patternHit,
   };
 }
 

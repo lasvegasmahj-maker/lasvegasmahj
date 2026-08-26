@@ -58,7 +58,17 @@ export default function AskPage() {
           </div>
         </section>
 
-        <AskClient />
+        {process.env.ASK_DISABLED === "1" ? (
+          <section className="ask-shell">
+            <div className="container ask-container">
+              <p className="ask-lede" style={{ textAlign: "left" }}>
+                The rules helper is switched off for the moment. The written <Link href="/rules">rules guide</Link> has every topic, and it will be back soon.
+              </p>
+            </div>
+          </section>
+        ) : (
+          <AskClient />
+        )}
 
         <section className="ask-about">
           <div className="container">

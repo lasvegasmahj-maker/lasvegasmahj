@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
+  CANNOT_VERIFY,
   answerDeterministic,
   buildFollowups,
   askedEntryIds,
@@ -66,6 +67,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  if (process.env.ASK_DISABLED === "1") {
+    return json({ ok: false, error: "The rules helper is switched off for the moment. The rules guide still works.", fallback: "/rules" }, 503);
+  }
   const started = Date.now();
   const ip = ipOf(req.headers);
   if (!perMinute.check(ip) || !perDay.check(ip)) {
@@ -123,6 +127,8 @@ export async function POST(req: NextRequest) {
         };
       } else if (m?.kind === "clarify") {
         response = { ...response, answer: m.answer, label: "clarify", kind: "clarify", entry_id: undefined, category: undefined, source_url: undefined, followups: m.followups, via: "model" };
+      } else if (m?.kind === "unverified" && det.catch_all_only) {
+        response = { ...response, answer: CANNOT_VERIFY, label: "unverified", kind: "unverified", entry_id: undefined, category: undefined, source_url: undefined, followups: det.followups, via: "model" };
       }
     }
 

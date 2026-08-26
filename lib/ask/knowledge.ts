@@ -271,7 +271,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     level: "core",
     question: "When can I call a discard?",
     patterns: [/\bcall\b.{0,20}\b(discard|tile)\b/, /when can (i|you) call/, /(pick up|take(?! back)).{0,20}\b(discard|thrown tile)\b/, /how (do|does) call/],
-    generic: [/\b(call|discard)\b/],
+    generic: [/\bdiscard\b/],
     keywords: ["call", "discard"],
     answer:
       "You may call the most recent discard when you can use it right away in an exposed group of 3 or more identical tiles, with jokers allowed to fill in, or when it completes your mahjong. When you call for a group, you must place that group face up on your rack. A call for mahjong beats a call for an exposure.",

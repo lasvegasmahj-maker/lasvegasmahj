@@ -21,7 +21,8 @@ export default defineConfig({
     // PLAYWRIGHT_WEBKIT=1 to run the same project on real WebKit where it works.
     { name: "mobile", testIgnore: /.*\.logic\.spec\.ts/, use: { ...devices["iPhone 13"], extraHTTPHeaders: { "x-forwarded-for": "203.0.113.251" }, ...(process.env.PLAYWRIGHT_WEBKIT ? {} : { browserName: "chromium" }) } },
   ],
-  webServer: process.env.PLAYWRIGHT_BASE_URL
+  // Logic specs never touch the server, so a logic-only run should not build or start one.
+  webServer: process.env.PLAYWRIGHT_BASE_URL || process.argv.some((a) => /^--project=logic$/.test(a) || a === "logic")
     ? undefined
     : {
         command: "pnpm build && pnpm start",
