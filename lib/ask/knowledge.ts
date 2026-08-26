@@ -152,6 +152,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     varies_by_house: false,
     confidence: "high",
     source: "shared_approved",
+    source_url: `${RULES}/jokers`,
     related: ["joker-in-pair", "joker-exchange", "joker-substitute"],
   },
   {
