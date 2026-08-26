@@ -234,7 +234,10 @@ function scoreEntries(bare: string, effective: string, ctx?: { lastEntry?: Knowl
     // independent keywords. A lone catch-all word in a long sentence or a non-question phrase
     // ("is there a wall between the rooms", "dragon boat") is not enough.
     const wordCount = bare.split(" ").filter(Boolean).length;
-    const shortDirect = wordCount === 1 || (wordCount <= 5 && FRAME_RE.test(bare));
+    const shortDirect =
+      wordCount === 1 ||
+      genericMatches.some((g) => g === bare || `the ${g}` === bare) ||
+      (wordCount <= 5 && FRAME_RE.test(bare));
     const catchAll = genericMatches.length > 0 && (keywordHits >= 1 || shortDirect);
     if (!patternHit && !catchAll && keywordHits < 3) continue;
     // Context may only amplify an entry the question already reached through a pattern;
@@ -270,7 +273,7 @@ export function retrieve(raw: string, history: Turn[] = []): Retrieval {
   // A strong direct hit on a new topic beats context carry-over ("what about the Charleston?"
   // after a joker question should switch topics, not stay on jokers).
   const plainTop = plain[0];
-  const strongSwitch = plainTop && plainTop.score >= 6 && plainTop.entry.id !== lastEntry.id && !ELLIPTICAL_RE.test(normalized);
+  const strongSwitch = plainTop && (plainTop.score >= 6 || plainTop.patternHit) && plainTop.entry.id !== lastEntry.id && !ELLIPTICAL_RE.test(normalized);
   if (strongSwitch) return { candidates: plain, elliptical: false, effectiveQuery: normalized };
   if (contextual.length) return { candidates: contextual, elliptical: true, effectiveQuery };
   return { candidates: plain, elliptical: true, effectiveQuery };

@@ -140,7 +140,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     category: "jokers",
     level: "foundational",
     question: "How do jokers work?",
-    patterns: [/what (is|are) (a )?joker/, /how (do|does) (a )?joker work/, /joker (wild|rule)/, /\bwild tile/, /\bjoker\b.{0,30}\b(pung|kong|quint|sextet|group|set)\b/, /\b(pung|kong|quint|sextet|group|set)\b.{0,30}\bjoker\b/],
+    patterns: [/what (is|are) (a )?joker/, /how (do|does) (a )?joker work/, /joker (wild|rule)/, /\bwild tile/, /\babout joker\b/, /^joker$/, /\bjoker\b.{0,30}\b(pung|kong|quint|sextet|group|set)\b/, /\b(pung|kong|quint|sextet|group|set)\b.{0,30}\bjoker\b/],
     keywords: ["joker", "wild", "kong", "pung", "quint", "sextet"],
     answer:
       "Jokers are wild tiles, and they are unique to American mahjong. A joker can stand in for any tile inside a group of 3 or more, meaning a Pung, Kong, Quint, or Sextet. An American set has 8 jokers.",
@@ -270,7 +270,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     category: "calling",
     level: "core",
     question: "When can I call a discard?",
-    patterns: [/\bcall\b.{0,20}\b(discard|tile)\b/, /when can (i|you) call/, /(pick up|take(?! back)).{0,20}\b(discard|thrown tile)\b/, /how (do|does) call/],
+    patterns: [/\bcall\b.{0,20}\b(discard|tile)\b/, /when can (i|you) call/, /(pick up|take(?! back)).{0,20}\b(discard|thrown tile)\b/, /how (do|does)( i| you| we)? call\b/, /what (is|does) (a |the )?call(ing)?\b/, /\bcall rule\b/, /^can (i|you|we) call$/],
     generic: [/\bdiscard\b/],
     keywords: ["call", "discard"],
     answer:

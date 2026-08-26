@@ -217,7 +217,12 @@ test.describe("follow-up context", () => {
 
   test("a context term never creates a match by itself", () => {
     const history = answered("What makes a hand dead?");
-    expect(answerDeterministic("what about jokers?", history).entry?.id).not.toBe("dead-hand");
+    expect(answerDeterministic("what about jokers?", history).entry?.id).toBe("jokers-basics");
+    expect(answerDeterministic("what is a kong?", answered("Can I use a joker in a pair?")).entry?.id).toBe("pung-vs-kong");
+    expect(answerDeterministic("dead hand").entry?.id).toBe("dead-hand");
+    expect(answerDeterministic("the wall").entry?.id).toBe("the-wall");
+    expect(answerDeterministic("how do I call?").entry?.id).toBe("calling-discard");
+    expect(answerDeterministic("jokers?").entry?.id).toBe("jokers-basics");
     expect(answerDeterministic("in the charleston?", history).entry?.category).toBe("charleston");
     const calls = answered("When can I call a discard?");
     expect(answerDeterministic("what about the wall?", calls).entry?.id).toBe("the-wall");
