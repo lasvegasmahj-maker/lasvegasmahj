@@ -44,6 +44,8 @@ export type KnowledgeEntry = {
   house_note?: string;
   confidence: "high" | "medium";
   source: AskSource;
+  // Set only when the linked /rules page agrees with the answer; a link would otherwise send
+  // the player straight to the opposite wording. Restore it when the page is corrected.
   source_url?: string;
   related: string[];
 };
@@ -205,7 +207,6 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     varies_by_house: false,
     confidence: "high",
     source: "shared_approved",
-    source_url: `${RULES}/charleston`,
     related: ["charleston-passes", "charleston-blind-pass", "call-during-charleston"],
   },
   {
@@ -219,8 +220,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
       "A blind pass is allowed only on the last pass of each Charleston: First Left and, if a second Charleston is played, Last Right. If you do not want to pass three tiles from your own hand, you may take one, two, or all three tiles being passed to you and pass them onward without looking at them. You still pass three tiles total.",
     varies_by_house: false,
     confidence: "high",
-    source: "shared_approved",
-    source_url: `${RULES}/charleston`,
+    source: "derived",
     related: ["charleston-passes", "look-before-pass", "courtesy-pass"],
   },
   {
@@ -235,7 +235,6 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     varies_by_house: false,
     confidence: "high",
     source: "shared_approved",
-    source_url: `${RULES}/the-card`,
     related: ["closed-hand-final-tile", "calling-discard", "call-concealed"],
   },
   {
@@ -250,7 +249,6 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     varies_by_house: false,
     confidence: "high",
     source: "shared_approved",
-    source_url: `${RULES}/the-card`,
     related: ["open-vs-closed", "call-for-mahjong", "calling-discard"],
   },
   {
@@ -439,7 +437,6 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     varies_by_house: false,
     confidence: "high",
     source: "derived",
-    source_url: `${RULES}/jokers`,
     related: ["pay-discard-win", "self-drawn-win", "extra-payments"],
   },
   {
@@ -454,7 +451,6 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     varies_by_house: false,
     confidence: "high",
     source: "derived",
-    source_url: `${RULES}/jokers`,
     related: ["calling-discard", "joker-exchange", "expose-immediately"],
   },
   {
@@ -496,11 +492,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/courtesy pass/, /\bcourtesy\b.{0,20}\b(optional|tile|across)/, /\bpass\b.{0,20}\b(across|opposite)\b.{0,20}\b(after|end|optional)/],
     keywords: ["courtesy", "pass", "optional", "across"],
     answer:
-      "After both charlestons are complete, players may offer a courtesy pass (exchanging 1 to 3 tiles with the player across from you). Both players must agree on how many tiles to exchange, and both pass simultaneously. It is optional and either player can decline.",
+      "After the Charleston ends, whether it stopped after the first left pass or ran through a second Charleston, you and the player across from you may make an optional courtesy pass of 0, 1, 2, or 3 tiles. Both of you must agree on how many tiles to exchange, and either player can decline.",
     varies_by_house: false,
     confidence: "high",
-    source: "lvm_rules_page",
-    source_url: `${RULES}/charleston`,
+    source: "derived",
     related: ["charleston-passes", "charleston", "look-before-pass"],
   },
   {
@@ -511,11 +506,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/look.{0,20}(before|at).{0,20}pass/, /see.{0,20}tile.{0,20}pass/, /(allowed|can|may) (i|you|we) look/],
     keywords: ["look", "pass", "blind"],
     answer:
-      "Yes, except during a blind pass. In all other passes you see and choose which 3 tiles to pass. During a blind pass, you may pass tiles you just received without looking at them, but you are not required to; you can look and still pass them.",
+      "Yes, always. You choose which 3 tiles to pass and you may look at anything in your hand. The blind pass on first left or last right is simply an option: you may pass 1, 2, or 3 of the tiles being passed to you without looking at them, and you may still look if you prefer.",
     varies_by_house: false,
     confidence: "high",
-    source: "lvm_rules_page",
-    source_url: `${RULES}/charleston`,
+    source: "derived",
     related: ["charleston-blind-pass", "charleston-passes", "courtesy-pass"],
   },
   {
@@ -542,11 +536,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/what (is|are) (a |an )?(pung|kong|quint|sextet)/, /(pung|kong|quint|sextet).{0,15}(vs|versus|or|and|difference).{0,15}(pung|kong|quint|sextet)/, /difference between.{0,10}(pung|kong)/, /how many tile.{0,20}(pung|kong|quint|sextet)/],
     keywords: ["pung", "kong", "quint", "sextet", "difference"],
     answer:
-      "The key printed on the card defines them: a Pair is 2 like tiles, a Pung is 3, a Kong is 4, a Quint is 5, and a Sextet is 6. Quints and Sextets need jokers, since a set holds only 4 of any tile. On the card a group is shown by repeating the tile that many times.",
+      "The key printed on the card defines them: a Pair is 2 like tiles, a Pung is 3, a Kong is 4, a Quint is 5, and a Sextet is 6. A Quint or Sextet of a suit tile, wind, or dragon needs jokers, since the set holds only 4 of each; flowers are the exception, because the set has 8 interchangeable flowers. On the card a group is shown by repeating the tile that many times.",
     varies_by_house: false,
     confidence: "high",
     source: "derived",
-    source_url: `${RULES}/calling-tiles`,
     related: ["card-numbers", "jokers-basics", "calling-discard"],
   },
   {
@@ -569,14 +562,13 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     category: "calling",
     level: "advanced",
     question: "What happens when two players call the same tile?",
-    patterns: [/(two|2|both|multiple|several).{0,20}(player|people).{0,20}call/, /call.{0,20}(same|the) (tile|discard).{0,20}(same time|at once|together)/, /same (tile|discard)/, /who (get|has|wins|takes).{0,20}(tile|priority|discard)/, /priority/],
+    patterns: [/(two|2|both|multiple|several).{0,20}(player|people).{0,20}call/, /call.{0,20}(same|the) (tile|discard).{0,20}(same time|at once|together)/, /same (tile|discard)/, /who (get|gets|has|win|take|takes).{0,20}(tile|priority|discard)/, /priority/],
     keywords: ["two", "both", "same", "priority", "call"],
     answer:
-      "The player calling for mahjong (to win) has priority over all other calls regardless of seating position. Among players calling for a pung, kong, or quint (not mahjong), the player who would receive the tile in the natural turn order takes priority (specifically, the player closest to the discarder going counterclockwise).",
+      "A call for mahjong always beats a call for an exposure, even if the other caller has already exposed tiles. When two players want the same tile for an exposure (a Pung, Kong, Quint, or Sextet), the player next in turn after the discarder gets it, unless the other caller has already claimed it by placing the tile on top of their rack or exposing tiles from their hand. The same rule settles two players both calling for mahjong.",
     varies_by_house: false,
     confidence: "high",
-    source: "lvm_rules_page",
-    source_url: `${RULES}/calling-tiles`,
+    source: "derived",
     related: ["call-for-mahjong", "calling-discard", "call-window"],
   },
   {
@@ -587,11 +579,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/call.{0,30}mahjong.{0,30}(not my turn|out of turn|any time|anytime)/, /(not my turn|out of turn).{0,30}mahjong/, /call.{0,20}(win|mahjong)/, /(win|mahjong).{0,20}(on|from|with) (a |the )?(call|discard)/],
     keywords: ["call", "mahjong", "win", "turn"],
     answer:
-      "Yes. Any player can call any discard to complete a winning hand (mahjong). This overrides all other calls and any order of play.",
+      "Yes. Any player may claim a discard to complete mahjong, including for a concealed hand or a Singles and Pairs hand, as long as the player next in turn has not yet picked and racked. The one tile you can never claim is a discarded joker. A call for mahjong beats any call for an exposure, even one already placed on a rack. If two players both call the same tile for mahjong, the player next in turn after the discarder gets it, unless the other caller has already racked the tile or exposed.",
     varies_by_house: false,
     confidence: "high",
-    source: "lvm_rules_page",
-    source_url: `${RULES}/calling-tiles`,
+    source: "derived",
     related: ["same-tile-two-calls", "discard-win", "false-mahjong"],
   },
   {
@@ -602,13 +593,11 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/out of turn/, /call.{0,20}(before|too early|too soon)/, /wrong turn/],
     keywords: ["out of turn", "turn", "early"],
     answer:
-      "Calling a tile that is not the most recent discard, or calling before the discard is complete, is an out-of-turn call. The penalty varies by house rules but typically results in the hand being declared dead. At minimum, the call is void and play continues.",
-    varies_by_house: true,
-    house_note: "The penalty for an out-of-turn call is set by house rules.",
-    confidence: "medium",
-    source: "lvm_rules_page",
-    source_url: `${RULES}/calling-tiles`,
-    related: ["most-recent-discard", "dead-hand-triggers", "call-window"],
+      "A tile that is no longer the most recent discard, or that the next player has already picked and racked behind, cannot be claimed; the call is void and play continues. Your hand becomes dead only if the mistaken call leaves you with an incorrect exposure or the wrong number of tiles.",
+    varies_by_house: false,
+    confidence: "high",
+    source: "derived",
+    related: ["most-recent-discard", "call-window", "dead-hand-triggers"],
   },
   {
     id: "call-concealed",
@@ -618,11 +607,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/call.{0,30}(concealed|hidden|unexposed|in my hand|without exposing)/, /(concealed|hidden|unexposed).{0,30}call/, /keep.{0,20}(call|tile).{0,20}(hidden|in my hand|rack)/],
     keywords: ["call", "concealed", "hidden", "expose"],
     answer:
-      "No. You can only call a discarded tile to complete a group that will be immediately exposed on the table. You cannot call a tile to add to a concealed section of your hand.",
+      "No. A discard may only be claimed to complete a Pung, Kong, Quint, or Sextet in an exposed hand; you cannot call a tile and keep it hidden in your rack. The one exception is the tile that completes your mahjong: any tile except a joker may be called for mahjong, even for a concealed hand or a Singles and Pairs hand.",
     varies_by_house: false,
     confidence: "high",
-    source: "lvm_rules_page",
-    source_url: `${RULES}/calling-tiles`,
+    source: "derived",
     related: ["closed-hand-final-tile", "expose-immediately", "open-vs-closed"],
   },
   {
@@ -637,7 +625,6 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     varies_by_house: false,
     confidence: "high",
     source: "derived",
-    source_url: `${RULES}/calling-tiles`,
     related: ["wrong-exposure", "call-concealed", "joker-call-complete"],
   },
   {
@@ -648,12 +635,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/what (makes|make|causes|cause).{0,20}dead/, /(when|why) (is|does|would).{0,20}(hand|i|someone).{0,20}dead/, /dead.{0,20}(trigger|reason|cause)/],
     keywords: ["dead", "make", "cause", "illegal", "why"],
     answer:
-      "A hand is declared dead when a player makes an illegal or impossible call, exposes tiles incorrectly, calls an out-of-turn tile, or exposes a set that cannot possibly complete a valid hand on the current card. False mahjong also results in a dead hand. House rules vary slightly; your group should agree on the list of dead-hand triggers before play.",
-    varies_by_house: true,
-    house_note: "Groups differ on the exact list of dead-hand triggers; agree on it before play.",
+      "The card declares a hand dead when it has too few or too many tiles, or contains an incorrect exposure: an exposed group that cannot fit any hand on the card, or one made with a wrongly named tile. A mahjong declared in error makes your hand dead only if you exposed all or part of it; if you exposed nothing and every other hand is intact, play continues with no penalty. A dead player stops picking and discarding but still pays the winner like everyone else.",
+    varies_by_house: false,
     confidence: "high",
-    source: "lvm_rules_page",
-    source_url: `${RULES}/dead-hands`,
+    source: "derived",
     related: ["wrong-exposure", "called-dead", "dead-hand-pays"],
   },
   {
@@ -709,11 +694,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/(number|digit).{0,30}(on|in).{0,10}card/, /card.{0,20}(number|digit).{0,20}mean/, /what (does|do) (the )?(2|3|4|5|6) mean/, /read(ing)? the card/, /how (do|to) (i )?read/],
     keywords: ["number", "card", "mean", "read"],
     answer:
-      "A digit printed in a hand on the card is the tile's number, not a group size. The card shows a group by repeating that digit: three of the same digit is a Pung of that number, four is a Kong, five is a Quint. The key on the card defines a Pair as 2 like tiles, a Pung as 3, a Kong as 4, a Quint as 5, and a Sextet as 6.",
+      "A digit printed in a hand on the card is usually the tile's number, not a group size. The card shows a group by repeating that digit: three of the same digit is a Pung of that number, four is a Kong, five is a Quint. The key on the card defines a Pair as 2 like tiles, a Pung as 3, a Kong as 4, a Quint as 5, and a Sextet as 6.",
     varies_by_house: false,
     confidence: "high",
     source: "derived",
-    source_url: `${RULES}/the-card`,
     related: ["any-like-number", "consecutive-numbers", "pung-vs-kong"],
   },
   {
@@ -800,11 +784,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/self draw/, /(own|my) draw/, /draw.{0,20}(win|last|final) tile/, /win.{0,20}(from|off) the wall/, /\bpay\b.{0,30}self draw/, /self draw.{0,30}\bpay\b/],
     keywords: ["self", "draw", "own", "win", "pay"],
     answer:
-      "Yes. Drawing the tile you need from the wall to complete your hand is a self-drawn win, and you declare mahjong the same way as on a called tile. Whether a self-drawn win pays more than a win on a discard is a point our instructor is reviewing, so check with your table before you settle up.",
+      "Yes. Drawing the tile you need from the wall to complete your hand is a self-drawn win, and you declare mahjong the same way as on a called tile. Whether a self-drawn win pays more than a win on a discard is a point our instructor is reviewing.",
     varies_by_house: false,
     confidence: "medium",
     source: "derived",
-    source_url: `${RULES}/winning`,
     related: ["discard-win", "pay-discard-win", "joker-free"],
   },
   {
@@ -831,11 +814,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/false mahjong/, /(wrong|incorrect|bad|mistaken|accident).{0,20}mahjong/, /(call|declare).{0,10}mahjong.{0,30}(wrong|mistake|not valid|invalid|by mistake|error)/, /mahjong.{0,20}(by mistake|wrong|in error)/],
     keywords: ["false", "mahjong", "wrong", "penalty", "error"],
     answer:
-      "A false mahjong is declaring mahjong when your hand does not match a hand on the card. If you have not exposed your hand and every other hand is intact, play simply continues with no penalty. If you exposed all or part of your hand, your hand is dead. If your call made one other player expose their hand, the game goes on with the two players whose hands are intact and you pay double the value of the incorrect hand to the one player whose hand is still intact; if more than one other player exposed, the game cannot continue.",
+      "A false mahjong is declaring mahjong when your hand does not match a hand on the card. If you have not exposed your hand and every other hand is intact, play simply continues with no penalty. If you exposed all or part of your hand, your hand is dead. If your call made one other player expose their hand, the game continues between the two players whose hands are intact. If more than one other player exposed, the game cannot continue, and you pay double the value of the incorrect hand to the one player whose hand is still intact. That is why players should not throw in their hands until a mahjong is verified.",
     varies_by_house: false,
     confidence: "high",
     source: "derived",
-    source_url: `${RULES}/winning`,
     related: ["change-mind-mahjong", "valid-mahjong", "dead-hand-triggers"],
   },
   {
@@ -846,11 +828,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/(take back|undo|retract|change (my|your) mind).{0,30}mahjong/, /mahjong.{0,30}(take back|undo|retract|change (my|your) mind)/],
     keywords: ["take back", "mahjong", "change", "mind"],
     answer:
-      "No. Once you call mahjong and expose your tiles, the declaration stands. If it turns out your hand is not valid, it is treated as a false mahjong. Do not call mahjong until you are certain.",
+      "It depends on whether you exposed. If you declared mahjong but exposed nothing and every other hand is still intact, play continues with no penalty. Once you expose all or part of your hand, the declaration stands; if the hand is not valid, your hand is dead and it counts as a mahjong declared in error.",
     varies_by_house: false,
     confidence: "high",
-    source: "lvm_rules_page",
-    source_url: `${RULES}/winning`,
+    source: "derived",
     related: ["false-mahjong", "valid-mahjong", "take-back-discard"],
   },
   {
@@ -909,12 +890,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/(extra|bonus|double|triple).{0,30}(hand|pay|quint|single)/, /(quint|single).{0,20}(hand).{0,20}(pay|worth|double)/, /pay (extra|more|double|triple)/],
     keywords: ["extra", "bonus", "double", "triple", "pay"],
     answer:
-      "Some groups play that certain named hands (like Singles and Pairs or Quint hands) pay double or triple by house agreement. The NMJL card itself does not designate specific multipliers beyond the joker-free rule; any extra payments are house rules and should be agreed on before the game.",
-    varies_by_house: true,
-    house_note: "Any multiplier beyond joker-free is a house rule.",
+      "Every hand's value is printed beside it on the card, so a higher-paying category is a card value, not a house rule. Beyond that, the card doubles a joker-free mahjong (except Singles and Pairs), makes a player who declared mahjong in error pay double the value of the incorrect hand when the game cannot continue, and makes a player who misnamed a tile that was then called for mahjong pay the claimant 4 times the value of the hand while the others pay nothing. Any other multiplier is a house rule to agree on before you play.",
+    varies_by_house: false,
     confidence: "high",
-    source: "lvm_rules_page",
-    source_url: `${RULES}/scoring`,
+    source: "derived",
     related: ["joker-free", "game-value", "pay-discard-win"],
   },
   {
@@ -925,11 +904,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/(take back|undo|retract|change (my|your) mind|pick back up|oops).{0,30}discard/, /discard.{0,30}(take back|undo|retract|change (my|your) mind|by mistake|accident)/, /(accident|mistake).{0,20}discard/],
     keywords: ["take back", "discard", "mistake", "accident"],
     answer:
-      "No. Once a tile is placed face-up on the table as a discard, it cannot be taken back. The moment a tile is set down as a discard, other players may call it. Be certain before you discard.",
+      "No. Once you name a tile and place it face up as a discard, it is out of your hand and other players may claim it as soon as it has been correctly named. A tile cannot be claimed until it is named correctly, so name every discard clearly, and be certain before you set it down.",
     varies_by_house: false,
     confidence: "high",
-    source: "lvm_rules_page",
-    source_url: `${RULES}/etiquette`,
+    source: "derived",
     related: ["most-recent-discard", "change-mind-mahjong", "call-window"],
   },
   {
@@ -950,18 +928,16 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
   },
   {
     id: "call-window",
-    category: "etiquette",
+    category: "calling",
     level: "core",
     question: "How fast do I have to call a discard?",
-    patterns: [/how (fast|quick|long|soon).{0,30}call/, /(window|time|too late|late).{0,30}call/, /call.{0,30}(too late|late|window|before the next|next player draw)/, /(next player|already) (draw|drew|picked)/],
-    keywords: ["fast", "late", "window", "call", "draw"],
+    patterns: [/how (fast|quick|long|soon).{0,30}call/, /(window|time|too late|late).{0,30}call/, /call.{0,30}(too late|late|window|before the next|next player draw|next player pick)/, /(next player|already) (draw|drew|pick|racked|rack)/],
+    keywords: ["fast", "late", "window", "call", "draw", "rack"],
     answer:
-      "You must call a tile before the next player draws from the wall. Once the next player has drawn, the window to call the previous discard is closed. There is no strict timer, but you should call promptly; hesitating too long is considered poor etiquette.",
-    varies_by_house: true,
-    house_note: "Tables differ on the exact moment the calling window closes; agree on it before you start.",
+      "You may still claim the discard until the player next in turn has picked a tile from the wall and racked it, or has discarded. Once that player has picked and racked, the discard can no longer be claimed, for an exposure or for mahjong. Call promptly and say it out loud; a discard must also be correctly named before it can be claimed.",
+    varies_by_house: false,
     confidence: "high",
-    source: "lvm_rules_page",
-    source_url: `${RULES}/etiquette`,
+    source: "derived",
     related: ["most-recent-discard", "calling-discard", "take-back-discard"],
   },
   {
@@ -1042,7 +1018,6 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     varies_by_house: false,
     confidence: "high",
     source: "derived",
-    source_url: `${RULES}/dead-hands`,
     related: ["expose-immediately", "dead-hand-triggers", "called-dead"],
   },
 
@@ -1087,7 +1062,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer:
       "No. Once a joker is discarded it is out of play for the rest of the hand; no player may call it, not even for mahjong. The only way to take a joker from the table is a joker exchange from an exposed group on your own turn.",
     varies_by_house: false,
-    confidence: "medium",
+    confidence: "high",
     source: "derived",
     source_url: `${RULES}/jokers`,
     related: ["joker-exchange", "calling-discard", "take-back-discard"],

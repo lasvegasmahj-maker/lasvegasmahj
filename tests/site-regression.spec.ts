@@ -33,6 +33,22 @@ test.describe("site regression", () => {
     await expect(page.locator("nav .nav-cta")).toHaveText("Join an Event");
   });
 
+  test("tablet widths get a working menu button and an unobstructed CTA", async ({ page, isMobile }) => {
+    test.skip(isMobile, "desktop project only");
+    for (const width of [1024, 820]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/");
+      const toggle = page.locator(".nav-toggle");
+      await expect(toggle, `toggle at ${width}`).toBeVisible();
+      const logo = (await page.locator(".nav-logo").boundingBox())!;
+      const cta = (await page.locator(".nav-cta").boundingBox())!;
+      expect(cta.x, `CTA clear of logo at ${width}`).toBeGreaterThan(logo.x + logo.width);
+      await toggle.click();
+      await expect(page.locator('nav .nav-links a[href="/ask"]')).toBeVisible();
+      await toggle.click();
+    }
+  });
+
   test("homepage FAQ still opens and closes", async ({ page }) => {
     await page.goto("/");
     const item = page.locator(".faq-item").first();

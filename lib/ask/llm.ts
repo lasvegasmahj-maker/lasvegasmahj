@@ -134,7 +134,9 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
   if (label === "unverified" || (!ids.length && label !== "clarify")) return { kind: "unverified" };
 
   if (label === "clarify") {
-    if (!answer || answer.length > 240 || !answer.includes("?") || LINK_RE.test(answer) || DASH_RE.test(answer) || MARKDOWN_RE.test(answer) || LETTER_CODE_RE.test(answer)) return null;
+    if (!answer || answer.length > 240 || !answer.includes("?") || LINK_RE.test(answer) || DASH_RE.test(answer) || MARKDOWN_RE.test(answer) || LETTER_CODE_RE.test(answer) || MONTH_RE.test(answer)) return null;
+    const clarifyAllowed = [...input.candidates.map(approvedText), input.question, String(CURRENT_CARD_YEAR)].join(" ");
+    if (!synthesisDigitGuard(clarifyAllowed, answer)) return null;
     return { kind: "clarify", answer, followups };
   }
 

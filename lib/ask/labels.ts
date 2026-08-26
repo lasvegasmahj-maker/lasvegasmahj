@@ -1,4 +1,4 @@
-// Confidence labels shown on answers. Shared by the server engine and the client.
+// Lives outside engine.ts so the client bundle never pulls in the knowledge base.
 export type AskLabel = "standard" | "house" | "card" | "pending" | "unverified" | "clarify" | "chat";
 
 export const LABEL_TEXT: Record<AskLabel, string> = {

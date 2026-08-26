@@ -11,8 +11,12 @@ export function ipOf(headers: Headers): string {
   return first || "unknown";
 }
 
+const MAX_KEYS = 10_000;
+const SWEEP_EVERY_MS = 60_000;
+
 export class SlidingWindow {
   private hits = new Map<string, number[]>();
+  private lastSweep = 0;
   constructor(private max: number, private windowMs: number) {}
 
   check(key: string, now = Date.now()): boolean {
@@ -23,12 +27,16 @@ export class SlidingWindow {
       return false;
     }
     list.push(now);
+    this.hits.delete(key);
     this.hits.set(key, list);
-    if (this.hits.size > 5000) this.sweep(now);
+    if (now - this.lastSweep > SWEEP_EVERY_MS) this.sweep(now);
+    // Map keeps insertion order, so the first keys are the least recently active.
+    while (this.hits.size > MAX_KEYS) this.hits.delete(this.hits.keys().next().value!);
     return true;
   }
 
   private sweep(now: number) {
+    this.lastSweep = now;
     const since = now - this.windowMs;
     for (const [k, list] of this.hits) {
       const kept = list.filter((t) => t > since);
@@ -38,6 +46,7 @@ export class SlidingWindow {
   }
 }
 
+// Above the site's 20/min baseline because a whole table (or a venue) shares one IP.
 export const perMinute = new SlidingWindow(30, 60_000);
 export const perDay = new SlidingWindow(400, 24 * 60 * 60_000);
 export const modelPerMinute = new SlidingWindow(40, 60_000);

@@ -15,11 +15,11 @@ export default defineConfig({
   use: { baseURL, trace: "on-first-retry" },
   projects: [
     { name: "logic", testMatch: /.*\.logic\.spec\.ts/ },
-    { name: "desktop-chromium", testIgnore: /.*\.logic\.spec\.ts/, use: { ...devices["Desktop Chrome"] } },
+    { name: "desktop-chromium", testIgnore: /.*\.logic\.spec\.ts/, use: { ...devices["Desktop Chrome"], extraHTTPHeaders: { "x-forwarded-for": "203.0.113.250" } } },
     // iPhone 13 viewport, touch, and user agent on the Chromium engine. Playwright's WebKit
     // build for macOS 14 crashes on launch (Bus error) on the owner's machine; set
     // PLAYWRIGHT_WEBKIT=1 to run the same project on real WebKit where it works.
-    { name: "mobile", testIgnore: /.*\.logic\.spec\.ts/, use: { ...devices["iPhone 13"], ...(process.env.PLAYWRIGHT_WEBKIT ? {} : { browserName: "chromium" }) } },
+    { name: "mobile", testIgnore: /.*\.logic\.spec\.ts/, use: { ...devices["iPhone 13"], extraHTTPHeaders: { "x-forwarded-for": "203.0.113.251" }, ...(process.env.PLAYWRIGHT_WEBKIT ? {} : { browserName: "chromium" }) } },
   ],
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined

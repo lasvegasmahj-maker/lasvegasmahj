@@ -13,7 +13,7 @@ import {
 // unmatched question returns an honest "cannot verify", never a guessed rule.
 
 import { type AskLabel } from "./labels";
-export { LABEL_TEXT, type AskLabel } from "./labels";
+export { type AskLabel } from "./labels";
 
 export type Turn = {
   role: "user" | "assistant";
@@ -296,6 +296,10 @@ export function labelFor(entry: KnowledgeEntry): AskLabel {
   return entry.varies_by_house ? "house" : "standard";
 }
 
+export function readMoreUrl(entry: KnowledgeEntry): string | undefined {
+  return entry.source_url;
+}
+
 export function approvedText(entry: KnowledgeEntry): string {
   return entry.house_note ? `${entry.answer} ${entry.house_note}` : entry.answer;
 }
@@ -303,7 +307,7 @@ export function approvedText(entry: KnowledgeEntry): string {
 export function yearNoteFor(raw: string): string | undefined {
   const year = mentionedYear(raw);
   if (!year || year === CURRENT_CARD_YEAR) return undefined;
-  return `General rules do not change from year to year; only the hands printed on the card change. The current card is the ${CURRENT_CARD_YEAR} card.`;
+  return `General rules rarely change from year to year; the hands printed on the card are what changes. The current card is the ${CURRENT_CARD_YEAR} card.`;
 }
 
 export function answerDeterministic(raw: string, history: Turn[] = []): EngineResult {
@@ -344,7 +348,7 @@ export function answerDeterministic(raw: string, history: Turn[] = []): EngineRe
       entry: last,
       candidates: [last],
       followups: buildFollowups(last, askedEntryIds(history)),
-      source_url: last.source_url,
+      source_url: readMoreUrl(last),
       elliptical: true,
     };
   }
@@ -372,7 +376,7 @@ export function answerDeterministic(raw: string, history: Turn[] = []): EngineRe
     entry,
     candidates: entries.slice(0, 4),
     followups: buildFollowups(entry, askedEntryIds(history)),
-    source_url: entry.source_url,
+    source_url: readMoreUrl(entry),
     year_note: yearNoteFor(question),
     elliptical,
   };

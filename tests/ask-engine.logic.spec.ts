@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
+import { execSync } from "node:child_process";
 import { CURRENT_CARD_YEAR, KNOWLEDGE_BY_ID, RULES_KNOWLEDGE } from "../lib/ask/knowledge";
 import { STARTER_QUESTIONS } from "../lib/ask/starters";
 import {
@@ -90,7 +91,13 @@ test.describe("knowledge base integrity", () => {
   test("shared entries match Find My Mahj verbatim when the sister repo is present", () => {
     const sibling = path.resolve(__dirname, "../../findmymahjgame/lib/rules/knowledge.ts");
     test.skip(!fs.existsSync(sibling), "sister repo not checked out beside this one");
-    const src = fs.readFileSync(sibling, "utf8");
+    // Compare against the sister repo's committed file, not a half-edited working tree.
+    let src: string;
+    try {
+      src = execSync("git show HEAD:lib/rules/knowledge.ts", { cwd: path.dirname(path.dirname(path.dirname(sibling))), encoding: "utf8" });
+    } catch {
+      src = fs.readFileSync(sibling, "utf8");
+    }
     const re = /id:\s*"([^"]+)"[\s\S]*?approved_answer:\s*"((?:[^"\\]|\\.)*)"[\s\S]*?varies_by_house:\s*(true|false)/g;
     const shared = new Map<string, { answer: string; varies: boolean }>();
     for (const m of src.matchAll(re)) shared.set(m[1], { answer: JSON.parse(`"${m[2]}"`), varies: m[3] === "true" });
@@ -265,6 +272,14 @@ test.describe("guards", () => {
     }
   });
 
+  test("entries that disagree with their /rules page carry no Read more link", () => {
+    const disagree = ["charleston", "charleston-blind-pass", "open-vs-closed", "closed-hand-final-tile", "self-drawn-win", "joker-call-complete", "joker-free", "pung-vs-kong", "card-numbers", "false-mahjong", "expose-immediately", "wrong-exposure", "call-window", "call-for-mahjong", "dead-hand-triggers", "courtesy-pass", "same-tile-two-calls", "change-mind-mahjong", "call-concealed", "out-of-turn", "extra-payments", "take-back-discard", "look-before-pass"];
+    for (const id of disagree) expect(KNOWLEDGE_BY_ID.get(id)?.source_url, id).toBeUndefined();
+    expect(KNOWLEDGE_BY_ID.get("joker-in-pair")?.source_url).toContain("/rules/jokers");
+    expect(answerDeterministic("Can I use a joker in a pair?").source_url).toContain("/rules/jokers");
+    expect(answerDeterministic("What is a blind pass?").source_url).toBeUndefined();
+  });
+
   test("derived entries carry the pending label; approved ones do not", () => {
     expect(answerDeterministic("Can I pick up a discarded joker?").label).toBe("pending");
     expect(answerDeterministic("Can I use a joker in a pair?").label).toBe("standard");
@@ -366,6 +381,9 @@ test.describe("model output validation", () => {
     expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No. A joker works in a P, K, or Q only.", followups: [] }, input)).toBeNull();
     expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "**No.** Never in a pair.", followups: [] }, input)).toBeNull();
     expect(validateModelOutput({ entry_ids: [], label: "clarify", answer: "Do you mean [this](x)?", followups: [] }, input)).toBeNull();
+    expect(validateModelOutput({ entry_ids: [], label: "clarify", answer: "Do you mean the card that comes out in March?", followups: [] }, input)).toBeNull();
+    expect(validateModelOutput({ entry_ids: [], label: "clarify", answer: "Do you mean a group of 7 tiles?", followups: [] }, input)).toBeNull();
+    expect(validateModelOutput({ entry_ids: [], label: "clarify", answer: "Do you mean a pair or a single tile?", followups: [] }, input)?.kind).toBe("clarify");
   });
 
   test("rejects invented numbers, dashes, months, links, and unknown ids", () => {

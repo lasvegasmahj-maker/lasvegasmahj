@@ -51,7 +51,14 @@ function isTurn(x: unknown): x is ThreadTurn {
   const t = x as Record<string, unknown>;
   if (typeof t.content !== "string") return false;
   if (t.role === "user") return true;
-  return t.role === "assistant" && Array.isArray(t.followups) && typeof t.label === "string";
+  if (t.role !== "assistant" || typeof t.label !== "string") return false;
+  if (!Array.isArray(t.followups) || !t.followups.every((f) => typeof f === "string")) return false;
+  for (const k of ["source_url", "year_note", "entry_id", "category"]) if (t[k] !== undefined && typeof t[k] !== "string") return false;
+  if (t.nudge !== undefined) {
+    const n = t.nudge as Record<string, unknown> | null;
+    if (!n || typeof n !== "object" || typeof n.href !== "string" || typeof n.text !== "string" || typeof n.cta !== "string" || typeof n.key !== "string") return false;
+  }
+  return true;
 }
 
 function loadThread(): ThreadTurn[] {
@@ -127,7 +134,7 @@ function AskThread() {
   const [busy, setBusy] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
-  const lastAnswerRef = useRef<HTMLDivElement>(null);
+  const lastQuestionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     saveThread(thread);
@@ -206,7 +213,8 @@ function AskThread() {
     }
     if (!thread.length) return;
     const last = thread[thread.length - 1];
-    if (last.role === "assistant") lastAnswerRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+    // Scroll the question, not the answer, so both clear the fixed nav together.
+    if (last.role === "assistant") lastQuestionRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
     else endRef.current?.scrollIntoView({ block: "end", behavior: "smooth" });
   }, [thread]);
 
@@ -223,6 +231,7 @@ function AskThread() {
   }
 
   const lastAnswerIndex = thread.map((t) => t.role).lastIndexOf("assistant");
+  const lastQuestionIndex = thread.map((t) => t.role).lastIndexOf("user");
 
   return (
     <section className="ask-shell" aria-label="Ask a Mahjong Rule">
@@ -230,12 +239,12 @@ function AskThread() {
         <div className="ask-thread" aria-live="polite" aria-busy={busy}>
           {thread.map((t, i) =>
             t.role === "user" ? (
-              <div key={i} className="ask-turn ask-turn-user">
+              <div key={i} className="ask-turn ask-turn-user" ref={i === lastQuestionIndex ? lastQuestionRef : undefined}>
                 <span className="ask-turn-who">You</span>
                 <p>{t.content}</p>
               </div>
             ) : (
-              <div key={i} className={`ask-turn ask-turn-answer${t.failed ? " ask-turn-failed" : ""}`} ref={i === lastAnswerIndex ? lastAnswerRef : undefined}>
+              <div key={i} className={`ask-turn ask-turn-answer${t.failed ? " ask-turn-failed" : ""}`}>
                 <div className="ask-answer-head">
                   <span className="ask-turn-who">Las Vegas Mahjong</span>
                   {t.label !== "chat" && LABEL_TEXT[t.label] ? (
@@ -316,7 +325,7 @@ function AskThread() {
           {thread.length ? (
             <>
               Follow-ups understand context.{" "}
-              <button type="button" className="ask-reset" onClick={reset}>Start a new question</button>
+              <button type="button" className="ask-reset" onClick={reset} disabled={busy}>Start a new question</button>
             </>
           ) : (
             "Based on National Mah Jongg League rules. Follow-ups understand context."

@@ -6,6 +6,7 @@ import {
   canonicalEntryFor,
   isRulesQuestion,
   normalizeQuestion,
+  readMoreUrl,
   summarizeGap,
   MAX_QUESTION_CHARS,
   type Turn,
@@ -15,9 +16,8 @@ import { composeWithModel, isModelEnabled } from "@/lib/ask/llm";
 import { pickNudge, type Nudge } from "@/lib/ask/nudges";
 import { ipOf, modelPerDay, modelPerMinute, perDay, perMinute } from "@/lib/ask/rate-limit";
 
-// Ask a Mahjong Rule. Stateless: the browser sends the recent thread with every request and
-// nothing is stored server side. Answers come from lib/ask/knowledge.ts; the optional model
-// may rephrase them but cannot add rule content (see lib/ask/llm.ts).
+// Stateless by design: the browser sends the recent thread with every request and nothing
+// is stored server side.
 
 export const maxDuration = 30;
 
@@ -69,7 +69,10 @@ export async function POST(req: NextRequest) {
   const started = Date.now();
   const ip = ipOf(req.headers);
   if (!perMinute.check(ip) || !perDay.check(ip)) {
-    return json({ ok: false, error: "That is a lot of questions at once. Give it a minute and ask again, or browse the rules guide.", fallback: "/rules" }, 429);
+    return NextResponse.json(
+      { ok: false, error: "That is a lot of questions at once. Give it a minute and ask again, or browse the rules guide.", fallback: "/rules" },
+      { status: 429, headers: { ...NO_STORE, "Retry-After": "60" } }
+    );
   }
 
   const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
@@ -113,7 +116,7 @@ export async function POST(req: NextRequest) {
           kind: "answer",
           entry_id: m.entry.id,
           category: m.entry.category,
-          source_url: m.entry.source_url,
+          source_url: readMoreUrl(m.entry),
           followups: m.followups.length ? m.followups : buildFollowups(m.entry, askedEntryIds(history)),
           via: "model",
         };
