@@ -3,6 +3,7 @@ import { ogBase } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+import { THE_CARD } from "@/content/rules/the-card";
 
 export const metadata: Metadata = {
   title: { absolute: "Reading the NMJL Mahjong Card | Las Vegas Mahjong" },
@@ -18,32 +19,7 @@ export const metadata: Metadata = {
   },
 };
 
-const QA = [
-  {
-    q: "When does the new NMJL card come out each year?",
-    a: "The National Mah Jongg League releases a new card every spring. The new card is the only valid card for that year's play; the previous year's card is retired. You can order the new card at the NMJL website (nationalmahjonggleague.org) for a small annual fee.",
-  },
-  {
-    q: "What do the numbers on the card mean?",
-    a: "The numbers on the card tell you how many identical tiles are in that group: 2 is a Pair, 3 is a Pung, 4 is a Kong, 5 is a Quint, 6 is a Sextet. When you see a number placeholder like 'any like number,' that means you pick the number yourself and use it consistently throughout that hand.",
-  },
-  {
-    q: "What does 'any like number' mean on the card?",
-    a: "'Any like number' means you can choose any number (1 through 9) and use that same number across the required suits. For example, if the hand calls for 3 Bams, 3 Craks, and 3 Dots of 'any like number,' all three sets must use the same number (say, all 4s).",
-  },
-  {
-    q: "What does 'consecutive numbers' mean?",
-    a: "Consecutive numbers are sequential: 1-2-3, or 4-5-6, etc. The hand will specify how many consecutive numbers you need and in which suits. You choose the starting number, but all tiles must follow in order without gaps.",
-  },
-  {
-    q: "What is the difference between an open and closed hand?",
-    a: "An open hand allows you to call discards from other players to build exposed sets. A closed hand must be built entirely from your own draws; you cannot call any discards. On the card, closed hands typically pay more and are noted as 'closed' or have no calling permitted. Always confirm with your group which hands require closed play.",
-  },
-  {
-    q: "Can I play with last year's card?",
-    a: "Not in official or competitive play. The NMJL releases a new card each year and play should use the current year's card. However, in casual home games, groups sometimes agree to use any card they have; just make sure everyone is playing from the same card.",
-  },
-];
+const QA = THE_CARD.qa;
 
 const schema = {
   "@context": "https://schema.org",

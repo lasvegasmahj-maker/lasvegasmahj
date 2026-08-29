@@ -3,6 +3,7 @@ import { ogBase } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+import { CALLING_TILES } from "@/content/rules/calling-tiles";
 
 export const metadata: Metadata = {
   title: { absolute: "Calling Tiles Rules in American Mahjong | Las Vegas Mahjong" },
@@ -18,36 +19,7 @@ export const metadata: Metadata = {
   },
 };
 
-const QA = [
-  {
-    q: "What is the difference between a pung and a kong?",
-    a: "A pung is a set of three identical tiles. A kong is a set of four. A quint is five, and a sextet is six (both require jokers). The card shows which group size each hand requires using the numbers 3, 4, 5, and 6.",
-  },
-  {
-    q: "Can I call any discard or only the most recent one?",
-    a: "You can only call the most recently discarded tile, the one that was just discarded by the player whose turn just ended. You cannot call a tile that was discarded earlier in the game.",
-  },
-  {
-    q: "What happens when two players call the same discarded tile?",
-    a: "The player calling for mahjong (to win) has priority over all other calls regardless of seating position. Among players calling for a pung, kong, or quint (not mahjong), the player who would receive the tile in the natural turn order takes priority (specifically, the player closest to the discarder going counterclockwise).",
-  },
-  {
-    q: "Can I call a tile to complete mahjong even if it is not my turn?",
-    a: "Yes. Any player can call any discard to complete a winning hand (mahjong). This overrides all other calls and any order of play.",
-  },
-  {
-    q: "What is calling out of turn and what are the consequences?",
-    a: "Calling a tile that is not the most recent discard, or calling before the discard is complete, is an out-of-turn call. The penalty varies by house rules but typically results in the hand being declared dead. At minimum, the call is void and play continues.",
-  },
-  {
-    q: "Can I call a tile for a concealed (unexposed) group?",
-    a: "No. You can only call a discarded tile to complete a group that will be immediately exposed on the table. You cannot call a tile to add to a concealed section of your hand.",
-  },
-  {
-    q: "Do I have to expose tiles immediately when I call?",
-    a: "Yes. When you call a tile, you must immediately expose the full group (pung, kong, quint, or mahjong) to the table. You cannot call and then decide what to do; the declaration and exposure happen together.",
-  },
-];
+const QA = CALLING_TILES.qa;
 
 const schema = {
   "@context": "https://schema.org",

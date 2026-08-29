@@ -3,6 +3,7 @@ import { ogBase } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+import { JOKERS } from "@/content/rules/jokers";
 
 export const metadata: Metadata = {
   title: { absolute: "Joker Rules in American Mahjong | Las Vegas Mahjong" },
@@ -18,40 +19,7 @@ export const metadata: Metadata = {
   },
 };
 
-const QA = [
-  {
-    q: "What tiles can jokers substitute for?",
-    a: "Jokers can substitute for any tile in a set of three or more identical tiles: a pung (3), kong (4), or quint (5). They cannot substitute in pairs or single tiles. So jokers work in groups, never alone or in twos.",
-  },
-  {
-    q: "Can jokers be used in a pair?",
-    a: "No. Jokers cannot be used in pairs under any circumstance. A pair must be two real, identical tiles. This is one of the most common misconceptions for newer players.",
-  },
-  {
-    q: "Can jokers be used in a single tile slot?",
-    a: "No. A single tile position on the card requires a real tile. Jokers only work in groups of three or more.",
-  },
-  {
-    q: "Can I swap a real tile for a joker in another player's exposed set?",
-    a: "Yes, but only when it is your turn to discard. You may exchange a real tile for a joker sitting in any player's exposed pung, kong, or quint. You take the joker and leave the real tile in its place. You cannot do this mid-turn or out of turn.",
-  },
-  {
-    q: "Can I use a joker in a Singles and Pairs hand?",
-    a: "No. Singles and Pairs hands (hands with all single tiles and pairs) are joker-free by definition. No jokers anywhere in those hands.",
-  },
-  {
-    q: "What is a joker-free hand and what does it pay?",
-    a: "A joker-free hand is any complete mahjong hand that contains zero jokers. These hands pay double from all three players, meaning you collect twice the normal amount. This applies to self-drawn wins too.",
-  },
-  {
-    q: "Can I call another player's discard and use a joker to complete the set?",
-    a: "Yes. When you call a discard to complete a pung, kong, or quint, you can use jokers to fill the remaining tiles in that exposed group. You just need the called tile plus at least one real matching tile in the group.",
-  },
-  {
-    q: "What happens to jokers at the end of a wall game?",
-    a: "In a wall game (nobody wins), there is no payment for jokers specifically. Each player pays the others based on house rules; most groups pay a flat amount per player per wall game.",
-  },
-];
+const QA = JOKERS.qa;
 
 const schema = {
   "@context": "https://schema.org",

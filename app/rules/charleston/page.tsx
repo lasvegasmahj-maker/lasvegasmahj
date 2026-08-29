@@ -3,6 +3,7 @@ import { ogBase } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+import { CHARLESTON } from "@/content/rules/charleston";
 
 export const metadata: Metadata = {
   title: { absolute: "The Charleston Rules in American Mahjong | Las Vegas Mahjong" },
@@ -18,36 +19,7 @@ export const metadata: Metadata = {
   },
 };
 
-const QA = [
-  {
-    q: "How many passes are in the charleston?",
-    a: "The first charleston has three mandatory passes: first right (3 tiles), first across (3 tiles), and first left (3 tiles). After the first charleston, players may agree to a second charleston with the same three passes in reverse order: second left, second across, second right. The second charleston requires all four players to agree.",
-  },
-  {
-    q: "Can I stop the charleston before it is finished?",
-    a: "After the first right pass is complete, any player can call 'stop' before the first across pass. This ends the charleston immediately. However, once the first across pass begins, you must complete the full first charleston (through first left). The second charleston can be refused by any single player.",
-  },
-  {
-    q: "What is a blind pass?",
-    a: "A blind pass occurs during the 'across' pass in either charleston. You must pass 3 tiles across, but you may also pass some (or all) of the tiles you just received from the right without looking at them. These unseen tiles pass 'blindly' to the player across from you. You can use the blind pass to get rid of unwanted tiles without technically seeing them.",
-  },
-  {
-    q: "What is a courtesy pass and is it optional?",
-    a: "After both charlestons are complete, players may offer a courtesy pass (exchanging 1 to 3 tiles with the player across from you). Both players must agree on how many tiles to exchange, and both pass simultaneously. It is optional and either player can decline.",
-  },
-  {
-    q: "Can I look at tiles before passing them?",
-    a: "Yes, except during a blind pass. In all other passes you see and choose which 3 tiles to pass. During a blind pass, you may pass tiles you just received without looking at them, but you are not required to; you can look and still pass them.",
-  },
-  {
-    q: "What happens if someone passes fewer than 3 tiles?",
-    a: "If a player passes the wrong number of tiles and it is caught before play begins, the pass should be corrected. If it is caught after the first tile is drawn, house rules typically apply. The standard remedy is to correct the count if possible, or replay the charleston if necessary.",
-  },
-  {
-    q: "Do I have to pass jokers?",
-    a: "No. You are never required to pass a joker. You may choose to pass jokers if you wish, but most players hold them.",
-  },
-];
+const QA = CHARLESTON.qa;
 
 const schema = {
   "@context": "https://schema.org",

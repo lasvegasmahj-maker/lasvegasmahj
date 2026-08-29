@@ -2,10 +2,36 @@
 
 Feature: `/ask` on lasvegasmahj.com. Code: `lib/ask/*`, `app/ask/*`, `app/api/ask/route.ts`.
 
+## The truth layer (2026-08-26 cleanup)
+
+Every `/rules` page renders its Q&A from a content module in `content/rules/<slug>.ts`. Each
+Q&A carries `kind` (`standard` or `house`) and `evidence`:
+
+| evidence     | Meaning |
+|--------------|---------|
+| `card`       | Stated on the rules panel printed on the League card (photos in the gitignored `mahjcard/` folder; rules panel only). |
+| `owner`      | Stated in the owner's own handouts (`LasVegasMahjong_HowToPlay_3.pdf`, the NMHC booklet) or approved by the owner. |
+| `rulebook`   | Attributed to the League rule book ("Mah Jongg Made Easy"), which our materials do not include. Each such claim is listed by name in `tests/rules-truth.logic.spec.ts` so a new one cannot appear silently. |
+| `unverified` | Published copy with no source in our materials. Allowed only when the answer does not claim League authority, or is a house rule. |
+
+Ask entries that mirror a page read their answer from the module (`page_ref`), so the two
+cannot drift: change the page and Ask changes with it. Pending (`derived`) entries that mirror
+a corrected page also read the page text, but keep the "Pending instructor review" label and
+no "Read more" link until the owner approves them. Two pending entries (`out-of-turn`, `self-drawn-win`) and one approved stitched entry
+(`called-dead`) keep their own wording on purpose and are listed in `ALIGNMENT_EXCEPTIONS`
+with a reason; the test fails on any other divergence and on a stale exception. Standard-rule
+page answers with no source in our materials are listed in `OWNER_REVIEW` in the same test.
+
+`tests/rules-truth.logic.spec.ts` fails when: an Ask mirror differs from its page; a house rule
+is written as a League rule; a rule book claim is not on the owner's list; a pending entry is
+served as verified or with a link; the `/rules` index counts drift; any card-verified
+correction from the 2026-08-26 audit regresses; the learn page or CLAUDE.md regresses.
+
 ## Where rule text comes from
 
-All rule text lives in one file, `lib/ask/knowledge.ts`. Nothing else on the site may
-answer a rules question with text that is not in that file. Each entry carries a `source`:
+Page rule text lives in `content/rules/*.ts`; Ask entries either mirror a page Q&A through
+`pageAnswer()` or carry their own text in `lib/ask/knowledge.ts`. Nothing else on the site may
+answer a rules question with text outside those files. Each Ask entry carries a `source`:
 
 | source            | Meaning                                                                                  | UI label                     |
 |-------------------|------------------------------------------------------------------------------------------|------------------------------|
@@ -34,81 +60,33 @@ They share content by copy plus a test:
 3. New LVM-only entries should be added here first. If they are general enough for Find My
    Mahj, copy them there with the same id and change the source here to `shared_approved`.
 
-## Approving a derived entry
+## Approving a derived entry (after the 2026-08-26 cleanup)
 
-Read the entry, edit the wording if needed, change `source: "derived"` to
-`source: "lvm_rules_page"` (and set `source_url` to the page that should carry the same
-text, then add the Q&A to that page) or to `shared_approved` after copying it into Find My
-Mahj. The "Pending instructor review" label disappears on the next deploy.
+Most pending entries already carry the corrected page text. To approve one, change its
+`source` to `"lvm_rules_page"` and set `source_url` to the page it mirrors (it will then show
+"Standard rule" or "Can vary by house rule" and link to the page); then remove it from the
+pending list in the owner report. If the wording should change, edit the
+page module in `content/rules/` so both surfaces move together.
 
-Derived entries at launch (26): `stop-charleston`, `charleston-blind-pass`, `closed-hand-final-tile`
-(the latter two are owner-reviewed Find My Mahj wording from 2026-08-26 that still sits on an
-unmerged Find My Mahj branch; kept here because the card prints the same rules),
-`call-during-charleston`, `joker-in-news`, `discarded-joker`,
-`call-for-pair`, `self-drawn-win`, `joker-call-complete`, `joker-free`, `pung-vs-kong`,
-`card-numbers`, `false-mahjong`, `expose-immediately`, `wrong-exposure`, `call-window`,
-`call-for-mahjong`, `dead-hand-triggers`, `courtesy-pass`, `same-tile-two-calls`,
-`change-mind-mahjong`, `call-concealed`, `out-of-turn`, `extra-payments`, `take-back-discard`,
-`look-before-pass`. Entries whose text disagrees with the /rules page they came from carry no
-`source_url`, so the UI shows no "Read more" link for them; restore the field when the page is
-corrected. All but
-`self-drawn-win` and the exposure half of `discarded-joker` were checked against the rules printed
-on the owner's 2025 card (see below) and re-checked by an adversarial verifier agent; the wording
-still awaits the instructor's eye.
+## Content decisions after the 2026-08-26 cleanup
 
-## Open content decisions (owner must resolve; nothing was changed silently)
+The `/rules` pages were reconciled with the rules panel printed on the owner's card and the
+owner's own handouts on 2026-08-26. Every clear correction was applied in `content/rules/`
+(both the page and its Ask mirror change together). The owner-review report filed in the CEO OS
+Drive lists each discrepancy with its old and new wording.
 
-The Find My Mahj knowledge base (owner approved 2026-08-22, two more entries owner
-reviewed 2026-08-26, one of which, the blind pass, was put on hold later that day) and this site's `/rules` pages (written 2026-05-23) disagree on four
-points. The Ask tool serves the Find My Mahj text and does not include the conflicting
-`/rules` Q&As. The `/rules` pages were not edited. Until the pages are fixed, `/ask` and
-the pages can give different answers on these items.
+Left for the owner (unchanged, marked `unverified` or `house` in the content modules):
 
-| # | Topic | Find My Mahj (served by /ask) | /rules page (unchanged) | Status |
-|---|-------|-------------------------------|--------------------------|--------|
-| 1 | Blind pass timing | `charleston-blind-pass`: "allowed only on the last pass of each Charleston: First Left and, if a second Charleston is played, Last Right" | `/rules/charleston`: "A blind pass occurs during the 'across' pass in either charleston" | Find My Mahj put this entry on hold (8460535, 2026-08-26 13:23); served here as derived, labelled Pending instructor review; the card agrees; page still needs the fix. |
-| 2 | Passing jokers | "You may never pass a joker in the Charleston" | `/rules/charleston`: "You may choose to pass jokers if you wish" | Open: owner decision, then fix the losing text. |
-| 3 | Stopping the first Charleston | `stop-charleston` (derived): compulsory first Charleston, stop only after first left | `/rules/charleston`: "After the first right pass is complete, any player can call 'stop' before the first across pass" | Card settles it; page still needs the fix. |
-| 4 | Closed hands calling the last tile | `closed-hand-final-tile`: "you may claim a discard when it is the single tile that completes your mahjong" | `/rules/the-card`: "A closed hand must be built entirely from your own draws; you cannot call any discards" | Owner reviewed the FMG text 2026-08-26 (still on an unmerged Find My Mahj branch); served here as derived, labelled Pending instructor review; the card agrees; page still needs the fix. |
+| Page Q&A | Why it waits |
+|---|---|
+| `winning.self-drawn`, `scoring.self-drawn-pays` | Self-drawn payment is not in the card, the handouts, or any approved entry. Ask stays neutral. |
+| `scoring.discard-pays`, `scoring.wall-game` | Rule book claims ("discarder pays double", "no payment in a wall game") that our materials do not cover; listed by name in the truth test. |
+| `calling-tiles.out-of-turn` | "Typically results in a dead hand" is a house claim; the card supports only "cannot be claimed". |
+| `scoring.game-value`, `jokers.wall-game`, `charleston.wrong-count`, `winning.wall-game`, `etiquette.table-talk`, `etiquette.disputes` | House rules; presented as such. |
 
-The NMJL FAQ page was "Under Construction" on 2026-08-26. The rules printed on the owner's own
-2025 card (repo folder `mahjcard/`, gitignored, photos of the rules panel only) settle all four:
-jokers may not be passed in the Charleston; the first Charleston is compulsory and may be stopped
-only after first left; the blind pass is permitted on first left and/or last right; any tile
-except a joker may be called for mahjong, including concealed and Singles and Pairs hands.
-The served text is right on all four. The two pages still need the owner's edit.
-
-## Page statements corrected in the tool (card-verified, pages unchanged)
-
-| /rules page statement | Card rule | Tool entry |
-|---|---|---|
-| `/rules/winning`, `/rules/scoring`: self-drawn wins pay the standard amount, all three pay the full amount | Not printed on the card. Treated as unverified: the tool says the payment is under instructor review. | `self-drawn-win` (pay-self-drawn removed) |
-| `/rules/jokers`: calling with jokers needs "at least one real matching tile" from your hand | Jokers may be used in place of any tile(s) in any Pung, Kong or Quint; no natural-tile requirement | `joker-call-complete` |
-| `/rules/jokers`, `/rules/scoring`: joker-free pays double, no exception | Double the value is paid by all; exception: Singles and Pairs | `joker-free` |
-| `/rules/the-card`, `/rules/calling-tiles`: "the numbers on the card tell you how many tiles are in a group" | A printed digit is the tile number; the card's key defines Pair 2, Pung 3, Kong 4, Quint 5, Sextet 6 | `card-numbers`, `pung-vs-kong` |
-| `/rules/winning`: false mahjong "typically" pays each player a full win | Not exposed and all hands intact: no penalty. Exposed: hand is dead. One other player exposed: pay double the value of the incorrect hand to the intact player. | `false-mahjong` |
-| `/rules/calling-tiles`: "you cannot call and then decide what to do" | A player may change the number and type of tiles in an exposure up until the player has discarded | `expose-immediately` |
-| `/rules/dead-hands`: an error may be corrected before the next player draws if the group agrees | Same rule as above; after the discard an incorrect exposure makes the hand dead, and a dead player still pays the winner | `wrong-exposure` (dead-hand-saved removed) |
-| `/rules/etiquette`: the calling window closes once the next player "has drawn" | Closes after the next player has picked and racked, or discarded; a tile must be correctly named before it can be claimed | `call-window` |
-| `/rules/calling-tiles`: "any player can call any discard" for mahjong, overriding "any order of play" | Any tile except a joker may be called for mahjong; two mahjong callers are settled by next-in-turn unless the other has racked or exposed | `call-for-mahjong` |
-| `/rules/calling-tiles`: exposure tiebreak is next-in-turn, no exception | Exception: a caller who has already placed the tile on the rack or exposed keeps it; same rule for two mahjong calls | `same-tile-two-calls` |
-| `/rules/dead-hands`: "false mahjong also results in a dead hand", triggers vary by house | Dead: too few or too many tiles, incorrect exposure, exposure with a misnamed tile; mahjong in error is dead only if exposed | `dead-hand-triggers` |
-| `/rules/charleston`: courtesy pass "after both charlestons are complete", 1 to 3 tiles | Courtesy pass still applies when the Charleston stops after first left; 0, 1, 2, or 3 tiles | `courtesy-pass` |
-| `/rules/winning`: "Can I take back a mahjong call? No." | No penalty if nothing was exposed and all other hands are intact; dead once exposed | `change-mind-mahjong` |
-| `/rules/calling-tiles`: concealed groups cannot be called, no exception | Any tile except a joker may be called for mahjong, even for a concealed or Singles and Pairs hand | `call-concealed` |
-| `/rules/calling-tiles`: out-of-turn call "typically results in the hand being declared dead" | A late call is simply void; dead only for wrong tile count or incorrect exposure | `out-of-turn` |
-| `/rules/scoring`: the card "does not designate specific multipliers beyond joker-free" | Card prints every hand's value, doubles jokerless (except Singles and Pairs), doubles the erring declarer, and charges a misnamer 4 times when the misnamed tile is called for mahjong | `extra-payments` |
-| `/rules/etiquette`: "the moment a tile is set down as a discard, other players may call it" | A tile cannot be claimed until correctly named | `take-back-discard` |
-| `/rules/charleston`: "Yes, except during a blind pass" (looking) | The blind pass is an option not to look; looking is never forbidden | `look-before-pass` |
-
-Two Find My Mahj owner-approved entries also sit slightly off the card and are served as-is
-(shared text is never changed here; decide in Find My Mahj first, then copy):
-`calling-discard` house note ("tables differ on exactly when the calling window closes") where
-the card fixes it at picked-and-racked or discarded; `courtesies-vs-rules` gives the courtesy
-pass as an example of a table custom, while the card prints it as an optional League rule.
-Also `called-dead` stitches one Find My Mahj sentence with two `/rules/dead-hands` sentences.
-
-Once the owner approves, fix the page text and flip these entries to `lvm_rules_page`.
+Find My Mahj entries that sit slightly off the card are documented in the same report and are
+never edited from this repo: `calling-discard` (house note on the calling window) and
+`courtesies-vs-rules` (courtesy pass used as an example of a table custom).
 
 ## Annual card
 

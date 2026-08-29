@@ -23,7 +23,7 @@ Non-negotiable. When any other instruction conflicts with this section, this sec
 - The NMJL card releases every spring. Never say "March" or name a specific month.
 - Each player starts with 13 tiles, except East (the dealer), who starts with 14.
 - Set sizes are written as numbers: 2 = Pair, 3 = Pung, 4 = Kong, 5 = Quint, 6 = Sextet. Never use letter codes (no P, K, N).
-- Open hands can call discards to build exposed sets. Closed hands must be built from your own draws, with no calling.
+- Open hands can call discards to build exposed sets. Closed hands must be built from your own draws, with no calling to build groups; the one exception, printed on the card, is the single discard that completes mahjong, which any hand may claim (never a joker).
 
 ### Pricing
 - Group lessons: $60 per person. Group size is 4-8 people. Show this on lesson pages only.

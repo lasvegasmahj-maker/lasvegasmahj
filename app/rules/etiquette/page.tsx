@@ -3,6 +3,7 @@ import { ogBase } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+import { ETIQUETTE } from "@/content/rules/etiquette";
 
 export const metadata: Metadata = {
   title: { absolute: "Mahjong Table Etiquette and Disputes | Las Vegas Mahjong" },
@@ -18,32 +19,7 @@ export const metadata: Metadata = {
   },
 };
 
-const QA = [
-  {
-    q: "Can I take back a discard once it leaves my hand?",
-    a: "No. Once a tile is placed face-up on the table as a discard, it cannot be taken back. The moment a tile is set down as a discard, other players may call it. Be certain before you discard.",
-  },
-  {
-    q: "What counts as table talk?",
-    a: "Table talk is any verbal communication that gives information about your hand or strategy to other players, or that influences how others play. Examples: announcing what you need, commenting on another player's discard choices, or reacting to tiles in a way that signals your hand. Table talk is generally prohibited in competitive play. In casual home games, groups set their own rules.",
-  },
-  {
-    q: "How fast do I have to call a discarded tile?",
-    a: "You must call a tile before the next player draws from the wall. Once the next player has drawn, the window to call the previous discard is closed. There is no strict timer, but you should call promptly; hesitating too long is considered poor etiquette.",
-  },
-  {
-    q: "Who resolves rules disputes during a game?",
-    a: "In a home game, all four players agree together (majority rules or unanimity, depending on the group). In a league or club setting, a designated rule referee or club leader makes the call. If no resolution is possible mid-game, the safest option is to replay the hand.",
-  },
-  {
-    q: "Can I ask to see another player's exposed tiles?",
-    a: "Yes. Exposed tiles (those placed face-up on the table after a call) are always visible and any player may look at them at any time. Concealed tiles in another player's rack are private.",
-  },
-  {
-    q: "What is the difference between a house rule and an NMJL rule?",
-    a: "NMJL rules are the official rules published by the National Mah Jongg League and apply to all standard American Mahjong play. House rules are variations or additions agreed upon by a specific group that are not part of the official rules. House rules are fine for casual play; just make sure all players agree before the game starts. When in doubt about what is 'official,' the NMJL card and published guidelines are the authority.",
-  },
-];
+const QA = ETIQUETTE.qa;
 
 const schema = {
   "@context": "https://schema.org",

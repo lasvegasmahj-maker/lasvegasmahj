@@ -3,6 +3,7 @@ import { ogBase } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+import { WINNING } from "@/content/rules/winning";
 
 export const metadata: Metadata = {
   title: { absolute: "Winning Rules in American Mahjong | Las Vegas Mahjong" },
@@ -18,40 +19,7 @@ export const metadata: Metadata = {
   },
 };
 
-const QA = [
-  {
-    q: "How many tiles does each player start with?",
-    a: "Each player starts with 13 tiles (except East, the dealer, who starts with 14). East is already holding a full hand and discards first to begin play.",
-  },
-  {
-    q: "What makes a valid mahjong?",
-    a: "A valid mahjong is a complete hand of 14 tiles that exactly matches one of the hands on the current year's NMJL card. Every tile must be in the right position, every suit must be correct, and exposed sets must match what you declared. If any element is off, it is not a valid mahjong.",
-  },
-  {
-    q: "Can I win on a tile I called (not my own draw)?",
-    a: "Yes. You can win by calling a discarded tile from any other player to complete your hand. This is called a 'discard win.' You declare mahjong, expose your full winning hand, and collect payment.",
-  },
-  {
-    q: "Can I win on my own draw?",
-    a: "Yes. Drawing the tile you need from the wall to complete your hand is called a 'self-drawn win.' Self-drawn wins still pay the standard amount, though some groups play that self-drawn pays double; confirm your group's house rules.",
-  },
-  {
-    q: "What is a wall game and how does it pay?",
-    a: "A wall game occurs when all tiles in the wall are drawn and no one has won. Play ends immediately when the last tile is drawn. In a wall game, nobody collects a win payment. Each player typically pays a flat amount to every other player (house rules determine the amount), or in some groups no money changes hands.",
-  },
-  {
-    q: "What is a false mahjong and what is the penalty?",
-    a: "A false mahjong is calling mahjong when your hand does not actually complete a valid hand on the card. The penalty is set by house rules but typically means the player pays each other player the value of a full win. Play continues without that player; their hand is dead for the rest of the game.",
-  },
-  {
-    q: "Can I declare mahjong and then change my mind?",
-    a: "No. Once you call mahjong and expose your tiles, the declaration stands. If it turns out your hand is not valid, it is treated as a false mahjong. Do not call mahjong until you are certain.",
-  },
-  {
-    q: "What happens if a player passes on their winning tile during the charleston?",
-    a: "This happens! If you accidentally pass a tile you could have used to win, you can simply continue play. There is no penalty; you just do not have that tile anymore.",
-  },
-];
+const QA = WINNING.qa;
 
 const schema = {
   "@context": "https://schema.org",
