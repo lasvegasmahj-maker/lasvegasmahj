@@ -7,7 +7,7 @@ export const JOKERS: RulesTopic = {
     {
       id: "substitute",
       q: "What tiles can jokers substitute for?",
-      a: "Jokers can substitute for any tile in a set of three or more identical tiles: a pung (3), kong (4), or quint (5). They cannot substitute in pairs or single tiles. So jokers work in groups, never alone or in twos.",
+      a: "Jokers can substitute for any tile in a set of three or more identical tiles: a pung (3), kong (4), quint (5), or sextet (6). They cannot substitute in pairs or single tiles. So jokers work in groups, never alone or in twos.",
       kind: "standard",
       evidence: "card",
     },
@@ -28,7 +28,7 @@ export const JOKERS: RulesTopic = {
     {
       id: "exchange",
       q: "Can I swap a real tile for a joker in another player's exposed set?",
-      a: "Yes, but only when it is your turn to discard. You may exchange a real tile for a joker sitting in any player's exposed pung, kong, or quint. You take the joker and leave the real tile in its place. You cannot do this mid-turn or out of turn.",
+      a: "Yes, but only on your own turn: after you pick or claim a tile and before you discard. You may exchange a real tile for a joker sitting in any player's exposed pung, kong, or quint. You take the joker and leave the real tile in its place. You cannot do it during another player's turn.",
       kind: "standard",
       evidence: "card",
     },
@@ -56,7 +56,7 @@ export const JOKERS: RulesTopic = {
     {
       id: "wall-game",
       q: "What happens to jokers at the end of a wall game?",
-      a: "In a wall game (nobody wins), there is no payment for jokers specifically. Each player pays the others based on house rules; most groups pay a flat amount per player per wall game.",
+      a: "In a wall game (nobody wins), there is no payment for jokers specifically. Each player pays the others based on house rules; some groups pay a flat amount per player per wall game.",
       kind: "house",
       evidence: "unverified",
     },

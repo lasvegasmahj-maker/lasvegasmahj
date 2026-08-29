@@ -9,7 +9,7 @@ export const THE_CARD: RulesTopic = {
       q: "When does the new NMJL card come out each year?",
       a: "The National Mah Jongg League releases a new card every spring. The new card is the only valid card for that year's play; the previous year's card is retired. You can order the new card at the NMJL website (nationalmahjonggleague.org) for a small annual fee.",
       kind: "standard",
-      evidence: "owner",
+      evidence: "unverified",
     },
     {
       id: "numbers",
@@ -35,7 +35,7 @@ export const THE_CARD: RulesTopic = {
     {
       id: "open-closed",
       q: "What is the difference between an open and closed hand?",
-      a: "An open hand allows you to call discards from other players to build exposed sets. A closed hand must be built from your own draws; you cannot call discards to build groups. The one exception is the tile that completes your mahjong: any tile except a joker may be called for mahjong, even for a concealed hand. On the card, closed hands typically pay more and are noted as 'closed' or have no calling permitted. Always confirm with your group which hands require closed play.",
+      a: "An open hand allows you to call discards from other players to build exposed sets. A closed hand must be built from your own draws; you cannot call discards to build groups. The one exception is the tile that completes your mahjong: any tile except a joker may be called for mahjong, even for a concealed hand. On the card, concealed hands are marked C in the value column; check that mark before you call.",
       kind: "standard",
       evidence: "card",
     },
@@ -44,7 +44,7 @@ export const THE_CARD: RulesTopic = {
       q: "Can I play with last year's card?",
       a: "Not in official or competitive play. The NMJL releases a new card each year and play should use the current year's card. However, in casual home games, groups sometimes agree to use any card they have; just make sure everyone is playing from the same card.",
       kind: "house",
-      evidence: "owner",
+      evidence: "unverified",
     },
   ],
 };

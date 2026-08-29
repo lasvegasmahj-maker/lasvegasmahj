@@ -7,7 +7,7 @@ export const DEAD_HANDS: RulesTopic = {
     {
       id: "triggers",
       q: "What makes a hand dead?",
-      a: "Under the card, a hand is dead when it has too few or too many tiles, or contains an incorrect exposure: an exposed group that cannot fit any hand on the card, or an exposure made with a wrongly named tile. Declaring mahjong in error makes your hand dead only if you exposed all or part of it; if you exposed nothing and every other hand is intact, play continues with no penalty.",
+      a: "The card's rules say a hand is dead when it has too few or too many tiles, or contains an incorrect exposure: an exposed group that cannot fit any hand on the card, or an exposure made with a wrongly named tile. Declaring mahjong in error makes your hand dead only if you exposed all or part of it; if you exposed nothing and every other hand is intact, play continues with no penalty.",
       kind: "standard",
       evidence: "card",
     },
@@ -37,7 +37,7 @@ export const DEAD_HANDS: RulesTopic = {
       q: "What happens if two players have dead hands?",
       a: "Both sit out. The remaining two players continue, and both dead-hand players still pay if one of the active players wins.",
       kind: "standard",
-      evidence: "card",
+      evidence: "unverified",
     },
   ],
 };

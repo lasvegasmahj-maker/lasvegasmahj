@@ -21,7 +21,7 @@ export const CALLING_TILES: RulesTopic = {
     {
       id: "two-callers",
       q: "What happens when two players call the same discarded tile?",
-      a: "The player calling for mahjong (to win) has priority over all other calls regardless of seating position, even if the other caller has already exposed tiles. Among players calling for a pung, kong, or quint (not mahjong), the player who would receive the tile in the natural turn order takes priority (specifically, the player closest to the discarder going counterclockwise), unless the other caller has already claimed the tile by placing it on top of their rack or exposing tiles from their hand. The same tiebreak settles two players calling the same tile for mahjong.",
+      a: "The player calling for mahjong (to win) has priority over all other calls regardless of seating position, even if the other caller has already exposed tiles. Among players calling for a pung, kong, quint, or sextet (not mahjong), the player who would receive the tile in the natural turn order takes priority (specifically, the player closest to the discarder going counterclockwise), unless the other caller has already claimed the tile by placing it on top of their rack or exposing tiles from their hand. The same tiebreak settles two players calling the same tile for mahjong.",
       kind: "standard",
       evidence: "card",
     },
@@ -49,7 +49,7 @@ export const CALLING_TILES: RulesTopic = {
     {
       id: "expose",
       q: "Do I have to expose tiles immediately when I call?",
-      a: "Yes. When you call a tile, you must immediately expose the completed group (pung, kong, quint, or the tiles for mahjong) on your rack. You may change the number and type of tiles shown in that exposure up until you discard; once you have discarded, the exposure is locked in and must be part of your final mahjong.",
+      a: "Yes. When you call a tile, you must immediately expose the completed group (pung, kong, quint, sextet, or the tiles for mahjong) on your rack. You may change the number and type of tiles shown in that exposure up until you discard; once you have discarded, the exposure is locked in and must be part of your final mahjong.",
       kind: "standard",
       evidence: "card",
     },

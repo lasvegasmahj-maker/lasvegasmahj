@@ -42,14 +42,14 @@ export const CHARLESTON: RulesTopic = {
     {
       id: "wrong-count",
       q: "What happens if someone passes fewer than 3 tiles?",
-      a: "If a player passes the wrong number of tiles and it is caught before play begins, the pass should be corrected. If it is caught after the first tile is drawn, house rules typically apply. The standard remedy is to correct the count if possible, or replay the charleston if necessary.",
+      a: "If a player passes the wrong number of tiles and it is caught before play begins, the pass should be corrected. If it is caught after the first tile is drawn, house rules typically apply. A common remedy is to correct the count if possible, or replay the charleston if necessary.",
       kind: "house",
       evidence: "unverified",
     },
     {
       id: "pass-jokers",
       q: "Do I have to pass jokers?",
-      a: "Jokers may not be passed in the charleston at all. Any other 3 tiles may be passed, so hold your jokers and pass something else.",
+      a: "No, and you may not: jokers cannot be passed in the charleston at all. Any other 3 tiles may be passed, so hold your jokers and pass something else.",
       kind: "standard",
       evidence: "card",
     },

@@ -19,7 +19,7 @@ type Journey = {
 const JOURNEYS: Journey[] = [
   { name: "joker in a pair", question: "Can I use a joker in a pair?", answer: /never be used in a pair/i, contradiction: /jokers? (can|may) be used in (a )?pair/i, page: /Jokers cannot be used in pairs/, expectLink: true, label: /Standard rule/ },
   { name: "joker in a pung or kong", question: "Can I use a joker in a kong?", answer: /pung|kong/i, contradiction: /cannot substitute in (a )?(pung|kong)/i, page: /Jokers can substitute for any tile in a set of three or more/, expectLink: true, label: /Standard rule/ },
-  { name: "joker during the Charleston", question: "Can I pass a joker in the Charleston?", answer: /never pass a joker|may not be passed/i, contradiction: /choose to pass jokers|jokers? (can|may) be passed/i, page: /Jokers may not be passed in the charleston/, expectLink: true, label: /Standard rule/ },
+  { name: "joker during the Charleston", question: "Can I pass a joker in the Charleston?", answer: /cannot be passed in the charleston/i, contradiction: /choose to pass jokers|jokers? (can|may) be passed/i, page: /jokers cannot be passed in the charleston/, expectLink: true, label: /Standard rule/ },
   { name: "stopping the Charleston", question: "Can I stop the Charleston?", answer: /compulsory/i, contradiction: /before the first across/i, page: /compulsory/, expectLink: false, label: /Pending instructor review/ },
   { name: "blind pass", question: "What is a blind pass?", answer: /First Left/i, contradiction: /across' pass/i, page: /First Left and, if a second Charleston is played, Last Right/, expectLink: true, label: /Standard rule/ },
   { name: "closed hand calling its winning tile", question: "Can a closed hand call the last tile for mahjong?", answer: /completes your mahjong/i, contradiction: /cannot call any discards/i, page: /any tile except a joker may be called for mahjong, even for a concealed hand/, expectLink: true, label: /Standard rule/ },
@@ -60,14 +60,17 @@ JOURNEYS.forEach((j, index) => {
     }
 
     // Every follow-up chip must lead to a verified answer that does not contradict this rule.
+    // Deployed hosts see one real IP for the whole run, so the chip probes run locally only.
+    const deployed = /vercel\.app|lasvegasmahj\.com/.test(process.env.PLAYWRIGHT_BASE_URL ?? "");
     const chips = card.locator(".ask-followups .ask-chip");
-    const chipCount = await chips.count();
+    const chipCount = deployed ? 0 : await chips.count();
     for (let i = 0; i < chipCount && i < 3; i++) {
       const label = (await card.locator(".ask-followups .ask-chip").nth(i).textContent())!.trim();
-      const res = await request.post("/api/ask", { data: { question: label }, headers: { "x-forwarded-for": `203.0.113.${(isMobile ? 120 : 60) + index}` } });
+      const res = await request.post("/api/ask", { data: { question: label }, headers: { "x-forwarded-for": `203.0.113.${(isMobile ? 140 : 80) + index}` } });
       const body = await res.json();
       expect(body.ok, `${j.name}: chip "${label}"`).toBe(true);
       expect(body.kind, `${j.name}: chip "${label}" is verified`).toBe("answer");
+      expect(typeof body.entry_id, `${j.name}: chip "${label}" has an entry`).toBe("string");
       if (j.contradiction) expect(String(body.answer), `${j.name}: chip "${label}" contradicts`).not.toMatch(j.contradiction);
     }
 
@@ -83,14 +86,14 @@ JOURNEYS.forEach((j, index) => {
 
 test("the corrected /rules pages no longer carry the old wording", async ({ request }) => {
   const checks: Array<[string, RegExp[], RegExp[]]> = [
-    ["/rules/charleston", [/Jokers may not be passed/, /compulsory/, /First Left and, if a second Charleston is played, Last Right/, /0, 1, 2, or 3 tiles/], [/choose to pass jokers/, /before the first across pass/, /during the 'across' pass/, /After both charlestons are complete/]],
+    ["/rules/charleston", [/jokers cannot be passed in the charleston/, /compulsory/, /First Left and, if a second Charleston is played, Last Right/, /0, 1, 2, or 3 tiles/], [/choose to pass jokers/, /before the first across pass/, /during the 'across' pass/, /After both charlestons are complete/]],
     ["/rules/the-card", [/any tile except a joker may be called for mahjong/, /usually the tile's number/], [/you cannot call any discards/, /tell you how many identical tiles/]],
     ["/rules/jokers", [/The one exception is Singles and Pairs hands/, /called tile itself must be a real tile/], [/at least one real matching tile/]],
     ["/rules/calling-tiles", [/up until you discard/, /except a discarded joker/, /on top of their rack/], [/cannot call and then decide/, /any order of play/, /using the numbers 3, 4, 5, and 6/]],
     ["/rules/dead-hands", [/too few or too many tiles/, /right up until you discard/], [/False mahjong also results in a dead hand/, /group may agree to correct it/]],
     ["/rules/winning", [/play continues with no penalty/, /It depends on whether you exposed/, /other than a joker/], [/set by house rules but typically/, /match what you declared/]],
     ["/rules/scoring", [/4 times the value of the hand/, /The one exception is Singles and Pairs/], [/does not designate specific multipliers/]],
-    ["/rules/etiquette", [/picked a tile from the wall and racked it/, /named correctly/], [/Once the next player has drawn/, /The moment a tile is set down/]],
+    ["/rules/etiquette", [/picked a tile from the wall and racked it/, /correctly named/], [/Once the next player has drawn/, /The moment a tile is set down/]],
     ["/learn-mahjong", [/key defines a Pair as 2 like tiles/], [/uses numbers to describe the structure/]],
   ];
   for (const [path, must, mustNot] of checks) {

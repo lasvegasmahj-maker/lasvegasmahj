@@ -17,9 +17,10 @@ Q&A carries `kind` (`standard` or `house`) and `evidence`:
 Ask entries that mirror a page read their answer from the module (`page_ref`), so the two
 cannot drift: change the page and Ask changes with it. Pending (`derived`) entries that mirror
 a corrected page also read the page text, but keep the "Pending instructor review" label and
-no "Read more" link until the owner approves them. Three pending entries keep their own
-wording on purpose and are listed in `ALIGNMENT_EXCEPTIONS` with a reason; the test fails on
-any other divergence and on a stale exception.
+no "Read more" link until the owner approves them. Two pending entries (`out-of-turn`, `self-drawn-win`) and one approved stitched entry
+(`called-dead`) keep their own wording on purpose and are listed in `ALIGNMENT_EXCEPTIONS`
+with a reason; the test fails on any other divergence and on a stale exception. Standard-rule
+page answers with no source in our materials are listed in `OWNER_REVIEW` in the same test.
 
 `tests/rules-truth.logic.spec.ts` fails when: an Ask mirror differs from its page; a house rule
 is written as a League rule; a rule book claim is not on the owner's list; a pending entry is
@@ -28,8 +29,9 @@ correction from the 2026-08-26 audit regresses; the learn page or CLAUDE.md regr
 
 ## Where rule text comes from
 
-All rule text lives in one file, `lib/ask/knowledge.ts`. Nothing else on the site may
-answer a rules question with text that is not in that file. Each entry carries a `source`:
+Page rule text lives in `content/rules/*.ts`; Ask entries either mirror a page Q&A through
+`pageAnswer()` or carry their own text in `lib/ask/knowledge.ts`. Nothing else on the site may
+answer a rules question with text outside those files. Each Ask entry carries a `source`:
 
 | source            | Meaning                                                                                  | UI label                     |
 |-------------------|------------------------------------------------------------------------------------------|------------------------------|
@@ -61,8 +63,9 @@ They share content by copy plus a test:
 ## Approving a derived entry (after the 2026-08-26 cleanup)
 
 Most pending entries already carry the corrected page text. To approve one, change its
-`source` to `"lvm_rules_page"` (it will then show "Standard rule" and link to the page) and
-remove it from the pending list in the owner report. If the wording should change, edit the
+`source` to `"lvm_rules_page"` and set `source_url` to the page it mirrors (it will then show
+"Standard rule" or "Can vary by house rule" and link to the page); then remove it from the
+pending list in the owner report. If the wording should change, edit the
 page module in `content/rules/` so both surfaces move together.
 
 ## Approving a derived entry (original notes)
@@ -79,9 +82,8 @@ Pending entries after the 2026-08-26 cleanup (24; `charleston-blind-pass` and
 `card-numbers`, `false-mahjong`, `expose-immediately`, `wrong-exposure`, `call-window`,
 `call-for-mahjong`, `dead-hand-triggers`, `courtesy-pass`, `same-tile-two-calls`,
 `change-mind-mahjong`, `call-concealed`, `out-of-turn`, `extra-payments`, `take-back-discard`,
-`look-before-pass`. Entries whose text disagrees with the /rules page they came from carry no
-`source_url`, so the UI shows no "Read more" link for them; restore the field when the page is
-corrected. All but
+`look-before-pass`. Pending entries never show a "Read more" link (`readMoreUrl` returns nothing for source
+`derived`); their `page_ref` already points at the matching page text. All but
 `self-drawn-win` and the exposure half of `discarded-joker` were checked against the rules printed
 on the owner's 2025 card (see below) and re-checked by an adversarial verifier agent; the wording
 still awaits the instructor's eye.

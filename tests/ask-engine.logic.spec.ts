@@ -147,7 +147,7 @@ test.describe("owner example questions", () => {
     ["can i swap a joker from someone elses exposure", "joker-exchange"],
     ["Whats a blind pass", "charleston-blind-pass"],
     ["Can a closed hand call the last tile for mahjong?", "closed-hand-final-tile"],
-    ["Can I pass a joker in the Charleston?", "charleston"],
+    ["Can I pass a joker in the Charleston?", "charleston-jokers"],
     ["what is a kong", "pung-vs-kong"],
     ["can i take back a discard", "take-back-discard"],
     ["who pays when i win on a discard", "pay-discard-win"],
@@ -306,7 +306,7 @@ test.describe("guards", () => {
     }
   });
 
-  test("entries that disagree with their /rules page carry no Read more link", () => {
+  test("pending entries carry no Read more link", () => {
     const disagree = ["self-drawn-win", "joker-call-complete", "joker-free", "pung-vs-kong", "card-numbers", "false-mahjong", "expose-immediately", "wrong-exposure", "call-window", "call-for-mahjong", "dead-hand-triggers", "courtesy-pass", "same-tile-two-calls", "change-mind-mahjong", "call-concealed", "out-of-turn", "extra-payments", "take-back-discard", "look-before-pass"];
     for (const id of disagree) expect(KNOWLEDGE_BY_ID.get(id)?.source_url, id).toBeUndefined();
     expect(KNOWLEDGE_BY_ID.get("joker-in-pair")?.source_url).toContain("/rules/jokers");

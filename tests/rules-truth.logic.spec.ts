@@ -18,6 +18,9 @@ const NMJL_CLAIM_RE = /\b(standard NMJL|NMJL standard|official (NMJL |League )?r
 // League rule book claims the site makes that our materials (card panel, owner handouts) do
 // not cover. New ones cannot be added silently: list them here with the owner's eyes on them.
 const RULEBOOK_CLAIMS = ["scoring.discard-pays", "scoring.wall-game"];
+// Standard-rule answers with no source in our materials, awaiting the owner's confirmation.
+// The same rule: a new one must be listed here, not slipped in.
+const OWNER_REVIEW = ["winning.passed-winning-tile", "the-card.new-card", "dead-hands.two-dead"];
 
 test.describe("rules content modules", () => {
   test("every topic has unique ids, kinds, evidence, and clean copy", () => {
@@ -35,18 +38,25 @@ test.describe("rules content modules", () => {
     }
   });
 
-  test("a house rule is never presented as a League rule", () => {
+  test("a house rule or unverified claim is never presented as a League rule", () => {
     for (const qa of allQA) {
       const claimsLeague = NMJL_CLAIM_RE.test(qa.a);
+      const listed = RULEBOOK_CLAIMS.includes(qa.ref);
       if (qa.kind === "standard" && claimsLeague) {
         expect(["card", "owner", "rulebook"], `${qa.ref} claims a League rule without evidence`).toContain(qa.evidence);
       }
-      if (qa.kind === "house") {
+      if (qa.kind === "house" && !listed) {
         expect(qa.a, `${qa.ref} is a house rule but reads as a League standard`).not.toMatch(/\bthe (standard|official) NMJL (rule|payment structure)\b/i);
+        if (qa.evidence === "unverified") expect(qa.a, `${qa.ref} is unverified yet claims League authority`).not.toMatch(NMJL_CLAIM_RE);
+      }
+      if (qa.kind === "standard" && qa.evidence === "unverified") {
+        expect(OWNER_REVIEW, `${qa.ref} is an unverified standard claim not on the owner's review list`).toContain(qa.ref);
+        expect(qa.a, `${qa.ref} is unverified yet claims League authority`).not.toMatch(NMJL_CLAIM_RE);
       }
       if (qa.evidence === "rulebook") expect(RULEBOOK_CLAIMS, `${qa.ref} cites the rule book but is not on the owner's list`).toContain(qa.ref);
     }
     for (const ref of RULEBOOK_CLAIMS) expect(getQA(ref).evidence, `${ref} no longer cites the rule book; drop it from the list`).toBe("rulebook");
+    for (const ref of OWNER_REVIEW) expect(getQA(ref).evidence, `${ref} is now sourced; drop it from OWNER_REVIEW`).toBe("unverified");
   });
 
   test("the /rules index counts match the content", () => {
@@ -69,6 +79,27 @@ test.describe("Ask mirrors the pages", () => {
       expect(e.page_ref!.length, e.id).toBe(1);
       expect(e.answer, e.id).toBe(getQA(e.page_ref![0]).a);
       expect(e.varies_by_house, `${e.id} house flag disagrees with the page`).toBe(getQA(e.page_ref![0]).kind === "house");
+    }
+    for (const e of RULES_KNOWLEDGE) {
+      if (!e.page_ref || !e.source_url) continue;
+      expect(e.source_url, `${e.id} links to a different page than it mirrors`).toBe(`https://www.lasvegasmahj.com/rules/${e.page_ref[0].split(".")[0]}`);
+    }
+  });
+
+  test("shared Find My Mahj entries that link to a page agree with it", () => {
+    const agreement: Array<[string, RegExp]> = [
+      ["charleston-blind-pass", /First Left and, if a second Charleston is played, Last Right/],
+      ["closed-hand-final-tile", /any tile except a joker may be called for mahjong, even for a concealed hand/],
+      ["charleston", /jokers cannot be passed in the charleston/i],
+      ["open-vs-closed", /except the tile that completes your mahjong|any tile except a joker may be called for mahjong/i],
+      ["jokers-basics", /Jokers can substitute for any tile in a set of three or more/],
+    ];
+    for (const [id, re] of agreement) {
+      const e = KNOWLEDGE_BY_ID.get(id)!;
+      expect(e.source_url, id).toBeTruthy();
+      const slug = e.source_url!.split("/").pop()!;
+      const pageText = RULES_TOPICS.find((t) => t.slug === slug)!.qa.map((q) => q.a).join(" ");
+      expect(pageText, `${id}: linked page ${slug} agrees`).toMatch(re);
     }
   });
 
@@ -121,12 +152,12 @@ test.describe("Ask mirrors the pages", () => {
 
 test.describe("card-verified corrections stay corrected", () => {
   const cases: Array<[string, RegExp[], RegExp[]]> = [
-    ["charleston.pass-jokers", [/may not be passed/i], [/choose to pass jokers/i, /never required/i]],
+    ["charleston.pass-jokers", [/cannot be passed/i], [/choose to pass jokers/i, /never required/i]],
     ["charleston.stop", [/compulsory/i, /first left/i], [/before the first across/i]],
     ["charleston.blind-pass", [/first left/i, /last right/i, /one, two, or all three|1, 2, or all 3/i], [/across' pass/i, /during the 'across'/i]],
     ["charleston.courtesy-pass", [/0, 1, 2, or 3/, /stopped after the first left/i], [/after both charlestons/i]],
     ["charleston.look", [/yes, always/i], [/yes, except/i]],
-    ["the-card.open-closed", [/completes your mahjong/i, /except a joker/i], [/cannot call any discards/i]],
+    ["the-card.open-closed", [/completes your mahjong/i, /except a joker/i, /marked C/], [/cannot call any discards/i, /confirm with your group which hands/i]],
     ["jokers.call-with-joker", [/called tile itself must be a real tile/i], [/at least one real matching tile/i]],
     ["jokers.joker-free", [/singles and pairs/i], []],
     ["scoring.joker-free", [/singles and pairs/i], []],
@@ -142,7 +173,7 @@ test.describe("card-verified corrections stay corrected", () => {
     ["dead-hands.saved", [/up until you discard/i], [/group may agree/i]],
     ["calling-tiles.concealed", [/completes your mahjong/i], []],
     ["scoring.extra", [/4 times/i, /mahjong in error/i], [/does not designate specific multipliers/i]],
-    ["etiquette.take-back", [/named correctly/i], [/the moment a tile is set down/i]],
+    ["etiquette.take-back", [/correctly named/i], [/the moment a tile is set down/i]],
     ["winning.valid", [/anything you exposed must be part of it/i], [/match what you declared/i]],
     ["winning.discard-win", [/other than a joker/i], []],
   ];
@@ -167,7 +198,7 @@ test.describe("card-verified corrections stay corrected", () => {
 
   test("Ask serves the corrected rule for each discrepancy question", () => {
     const probes: Array<[string, RegExp]> = [
-      ["Can I pass a joker in the Charleston?", /never pass a joker|may not be passed/i],
+      ["Can I pass a joker in the Charleston?", /cannot be passed in the charleston/i],
       ["Can I stop the Charleston?", /compulsory/i],
       ["What is a blind pass?", /first left/i],
       ["Can a closed hand call the last tile for mahjong?", /completes your mahjong/i],

@@ -7,7 +7,7 @@ export const ETIQUETTE: RulesTopic = {
     {
       id: "take-back",
       q: "Can I take back a discard once it leaves my hand?",
-      a: "No. Once a tile is placed face-up on the table as a discard, it cannot be taken back. As soon as it is correctly named, other players may call it; a tile cannot be claimed until it is named correctly, so name every discard clearly. Be certain before you discard.",
+      a: "Treat a discard as final. The card says a tile cannot be claimed until it is correctly named, and once it is named, other players may call it. So name every discard clearly, and be certain before you set it down.",
       kind: "standard",
       evidence: "card",
     },

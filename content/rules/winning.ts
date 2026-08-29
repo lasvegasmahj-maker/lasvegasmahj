@@ -35,7 +35,7 @@ export const WINNING: RulesTopic = {
     {
       id: "wall-game",
       q: "What is a wall game and how does it pay?",
-      a: "A wall game occurs when all tiles in the wall are drawn and no one has won. Play ends immediately when the last tile is drawn. In a wall game, nobody collects a win payment. Each player typically pays a flat amount to every other player (house rules determine the amount), or in some groups no money changes hands.",
+      a: "A wall game occurs when all tiles in the wall are drawn and no one has won. Play ends immediately when the last tile is drawn. In a wall game, nobody collects a win payment. Some groups pay a flat amount to every other player (a house rule), and in others no money changes hands.",
       kind: "house",
       evidence: "unverified",
     },
