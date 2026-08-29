@@ -68,26 +68,6 @@ Most pending entries already carry the corrected page text. To approve one, chan
 pending list in the owner report. If the wording should change, edit the
 page module in `content/rules/` so both surfaces move together.
 
-## Approving a derived entry (original notes)
-
-Read the entry, edit the wording if needed, change `source: "derived"` to
-`source: "lvm_rules_page"` (and set `source_url` to the page that should carry the same
-text, then add the Q&A to that page) or to `shared_approved` after copying it into Find My
-Mahj. The "Pending instructor review" label disappears on the next deploy.
-
-Pending entries after the 2026-08-26 cleanup (24; `charleston-blind-pass` and
-`closed-hand-final-tile` are shared again now that Find My Mahj merged them): `stop-charleston`,
-`call-during-charleston`, `joker-in-news`, `discarded-joker`,
-`call-for-pair`, `self-drawn-win`, `joker-call-complete`, `joker-free`, `pung-vs-kong`,
-`card-numbers`, `false-mahjong`, `expose-immediately`, `wrong-exposure`, `call-window`,
-`call-for-mahjong`, `dead-hand-triggers`, `courtesy-pass`, `same-tile-two-calls`,
-`change-mind-mahjong`, `call-concealed`, `out-of-turn`, `extra-payments`, `take-back-discard`,
-`look-before-pass`. Pending entries never show a "Read more" link (`readMoreUrl` returns nothing for source
-`derived`); their `page_ref` already points at the matching page text. All but
-`self-drawn-win` and the exposure half of `discarded-joker` were checked against the rules printed
-on the owner's 2025 card (see below) and re-checked by an adversarial verifier agent; the wording
-still awaits the instructor's eye.
-
 ## Content decisions after the 2026-08-26 cleanup
 
 The `/rules` pages were reconciled with the rules panel printed on the owner's card and the

@@ -18,14 +18,15 @@ type Journey = {
 
 const JOURNEYS: Journey[] = [
   { name: "joker in a pair", question: "Can I use a joker in a pair?", answer: /never be used in a pair/i, contradiction: /jokers? (can|may) be used in (a )?pair/i, page: /Jokers cannot be used in pairs/, expectLink: true, label: /Standard rule/ },
-  { name: "joker in a pung or kong", question: "Can I use a joker in a kong?", answer: /pung|kong/i, contradiction: /cannot substitute in (a )?(pung|kong)/i, page: /Jokers can substitute for any tile in a set of three or more/, expectLink: true, label: /Standard rule/ },
+  // Canonical questions take the always-deterministic chip path even if the model layer is on.
+  { name: "joker in a pung or kong", question: "How do jokers work?", answer: /pung|kong/i, contradiction: /cannot substitute in (a )?(pung|kong)/i, page: /Jokers can substitute for any tile in a set of three or more/, expectLink: true, label: /Standard rule/ },
   { name: "joker during the Charleston", question: "Can I pass a joker in the Charleston?", answer: /cannot be passed in the charleston/i, contradiction: /choose to pass jokers|jokers? (can|may) be passed/i, page: /jokers cannot be passed in the charleston/, expectLink: true, label: /Standard rule/ },
   { name: "stopping the Charleston", question: "Can I stop the Charleston?", answer: /compulsory/i, contradiction: /before the first across/i, page: /compulsory/, expectLink: false, label: /Pending instructor review/ },
   { name: "blind pass", question: "What is a blind pass?", answer: /First Left/i, contradiction: /across' pass/i, page: /First Left and, if a second Charleston is played, Last Right/, expectLink: true, label: /Standard rule/ },
   { name: "closed hand calling its winning tile", question: "Can a closed hand call the last tile for mahjong?", answer: /completes your mahjong/i, contradiction: /cannot call any discards/i, page: /any tile except a joker may be called for mahjong, even for a concealed hand/, expectLink: true, label: /Standard rule/ },
-  { name: "changing an exposure", question: "Can I change my exposure after I call?", answer: /up until you discard/i, contradiction: /cannot call and then decide/i, page: /up until you discard/, expectLink: false, label: /Pending instructor review/ },
-  { name: "false mahjong", question: "What happens if I call mahjong by mistake?", answer: /no penalty/i, contradiction: /set by house rules/i, page: /play continues with no penalty/, expectLink: false, label: /Pending instructor review/ },
-  { name: "jokerless hand", question: "Does a jokerless hand pay double?", answer: /Singles and Pairs/i, contradiction: /no exception/i, page: /The one exception is Singles and Pairs hands/, expectLink: false, label: /Pending instructor review/ },
+  { name: "changing an exposure", question: "Do I have to expose tiles right away when I call?", answer: /up until you discard/i, contradiction: /cannot call and then decide/i, page: /up until you discard/, expectLink: false, label: /Pending instructor review/ },
+  { name: "false mahjong", question: "What is a false mahjong?", answer: /no penalty/i, contradiction: /set by house rules/i, page: /play continues with no penalty/, expectLink: false, label: /Pending instructor review/ },
+  { name: "jokerless hand", question: "What is a joker-free hand and what does it pay?", answer: /Singles and Pairs/i, contradiction: /no exception/i, page: /The one exception is Singles and Pairs hands/, expectLink: false, label: /Pending instructor review/ },
   { name: "printed digits", question: "What do the numbers on the card mean?", answer: /tile's number/i, contradiction: /tell you how many identical tiles/i, page: /A digit printed in a hand on the card is usually the tile's number/, expectLink: false, label: /Pending instructor review/ },
   { name: "unknown rule", question: "What happens if my elbow knocks over the rack?", answer: /cannot verify/i, expectLink: false, label: /Not verified/ },
   { name: "house-rule question", question: "How does payment work in a wall game?", answer: /house rule/i, page: /wall game/i, expectLink: true, label: /Can vary by house rule/ },
@@ -84,6 +85,8 @@ JOURNEYS.forEach((j, index) => {
   });
 });
 
+// These checks read the served HTML; apostrophes match inside the FAQPage JSON-LD, which is
+// built from the same Q&A array the visible copy renders.
 test("the corrected /rules pages no longer carry the old wording", async ({ request }) => {
   const checks: Array<[string, RegExp[], RegExp[]]> = [
     ["/rules/charleston", [/jokers cannot be passed in the charleston/, /compulsory/, /First Left and, if a second Charleston is played, Last Right/, /0, 1, 2, or 3 tiles/], [/choose to pass jokers/, /before the first across pass/, /during the 'across' pass/, /After both charlestons are complete/]],

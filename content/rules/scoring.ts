@@ -14,14 +14,14 @@ export const SCORING: RulesTopic = {
     {
       id: "self-drawn-pays",
       q: "Who pays when someone wins on their own draw (self-drawn)?",
-      a: "On a self-drawn win, all three other players each pay the full amount. No one discarded the winning tile, so the cost is shared equally among all three losers.",
+      a: "On a self-drawn win, all three other players each pay the full amount. No one discarded the winning tile, so the cost is shared equally among all three losers. Some groups play that a self-drawn win pays double; confirm your group's house rules.",
       kind: "house",
       evidence: "unverified",
     },
     {
       id: "game-value",
       q: "What is the standard game value and how do groups set it?",
-      a: "The NMJL does not set a fixed dollar amount; groups agree on their own bet per hand before play begins. Common amounts range from 25 cents to $1 per point or per hand. Whatever your group agrees, that amount is what 'one unit' means for payment purposes.",
+      a: "The card prints a value beside each hand, but groups agree before play what those values are worth in money. Common amounts range from 25 cents to $1 per point or per hand. Whatever your group agrees, that amount is what 'one unit' means for payment purposes.",
       kind: "house",
       evidence: "unverified",
     },

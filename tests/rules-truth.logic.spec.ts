@@ -57,6 +57,12 @@ test.describe("rules content modules", () => {
     }
     for (const ref of RULEBOOK_CLAIMS) expect(getQA(ref).evidence, `${ref} no longer cites the rule book; drop it from the list`).toBe("rulebook");
     for (const ref of OWNER_REVIEW) expect(getQA(ref).evidence, `${ref} is now sourced; drop it from OWNER_REVIEW`).toBe("unverified");
+    // An unverified page answer must not reach Ask as a verified rule.
+    for (const e of RULES_KNOWLEDGE) {
+      if (e.source === "lvm_rules_page" && e.page_ref?.some((r) => OWNER_REVIEW.includes(r))) {
+        throw new Error(`${e.id} mirrors an owner-review answer but is served as verified`);
+      }
+    }
   });
 
   test("the /rules index counts match the content", () => {

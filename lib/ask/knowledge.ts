@@ -723,9 +723,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("dead-hands.two-dead"),
     varies_by_house: false,
     confidence: "high",
-    source: "lvm_rules_page",
+    source: "derived",
     page_ref: ["dead-hands.two-dead"],
-    source_url: `${RULES}/dead-hands`,
     related: ["dead-hand-draws", "dead-hand-pays", "wall-game"],
   },
   {
@@ -887,9 +886,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("winning.passed-winning-tile"),
     varies_by_house: false,
     confidence: "high",
-    source: "lvm_rules_page",
+    source: "derived",
     page_ref: ["winning.passed-winning-tile"],
-    source_url: `${RULES}/winning`,
     related: ["charleston", "look-before-pass", "charleston-passes"],
   },
   {

@@ -87,9 +87,9 @@ export default function LearnMahjong() {
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>The Tiles</h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>A standard American Mahjong set has 152 tiles, divided into several categories:</p>
             <ul style={{ color: "rgba(255,255,255,0.7)", lineHeight: 2, paddingLeft: "1.5rem", marginBottom: "2.5rem" }}>
-              <li><strong style={{ color: "var(--white)" }}>Bams (Bamboo):</strong> numbered 1–9, shown with bamboo stalks</li>
-              <li><strong style={{ color: "var(--white)" }}>Craks (Characters):</strong> numbered 1–9, shown with Chinese characters</li>
-              <li><strong style={{ color: "var(--white)" }}>Dots:</strong> numbered 1–9, shown with circles</li>
+              <li><strong style={{ color: "var(--white)" }}>Bams (Bamboo):</strong> numbered 1-9, shown with bamboo stalks</li>
+              <li><strong style={{ color: "var(--white)" }}>Craks (Characters):</strong> numbered 1-9, shown with Chinese characters</li>
+              <li><strong style={{ color: "var(--white)" }}>Dots:</strong> numbered 1-9, shown with circles</li>
               <li><strong style={{ color: "var(--white)" }}>Winds:</strong> North, South, East, West</li>
               <li><strong style={{ color: "var(--white)" }}>Dragons:</strong> Red (Crak), Green (Bam), White (Soap)</li>
               <li><strong style={{ color: "var(--white)" }}>Flowers:</strong> a flower is a flower is a flower; all are interchangeable</li>

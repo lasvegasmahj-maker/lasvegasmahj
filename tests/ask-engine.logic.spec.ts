@@ -307,7 +307,7 @@ test.describe("guards", () => {
   });
 
   test("pending entries carry no Read more link", () => {
-    const disagree = ["self-drawn-win", "joker-call-complete", "joker-free", "pung-vs-kong", "card-numbers", "false-mahjong", "expose-immediately", "wrong-exposure", "call-window", "call-for-mahjong", "dead-hand-triggers", "courtesy-pass", "same-tile-two-calls", "change-mind-mahjong", "call-concealed", "out-of-turn", "extra-payments", "take-back-discard", "look-before-pass"];
+    const disagree = ["passed-winning-tile", "two-dead-hands", "self-drawn-win", "joker-call-complete", "joker-free", "pung-vs-kong", "card-numbers", "false-mahjong", "expose-immediately", "wrong-exposure", "call-window", "call-for-mahjong", "dead-hand-triggers", "courtesy-pass", "same-tile-two-calls", "change-mind-mahjong", "call-concealed", "out-of-turn", "extra-payments", "take-back-discard", "look-before-pass"];
     for (const id of disagree) expect(KNOWLEDGE_BY_ID.get(id)?.source_url, id).toBeUndefined();
     expect(KNOWLEDGE_BY_ID.get("joker-in-pair")?.source_url).toContain("/rules/jokers");
     for (const e of RULES_KNOWLEDGE) {
