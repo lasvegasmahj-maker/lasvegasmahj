@@ -171,5 +171,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    {
+      url: "https://www.lasvegasmahj.com/blog/holiday-party-ideas-las-vegas",
+      lastModified: new Date("2026-08-09"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
   ];
 }
