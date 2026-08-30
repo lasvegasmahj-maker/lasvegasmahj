@@ -216,7 +216,7 @@ test.describe("card-verified corrections stay corrected", () => {
     ["etiquette.take-back", [/correctly named/i], [/the moment a tile is set down/i]],
     ["winning.valid", [/anything you exposed must be part of it/i], [/match what you declared/i]],
     ["winning.discard-win", [/other than a joker/i], []],
-    ["calling-tiles.out-of-turn", [/void and play continues/i, /names no penalty/i, /cannot be claimed until it has been correctly named/i], [/typically results in the hand being declared dead/i, /varies by house rules/i, /calling a tile before it has been correctly named/i]],
+    ["calling-tiles.out-of-turn", [/may not be claimed, so the call does not stand/i, /names no penalty/i, /cannot be claimed until it has been correctly named/i], [/typically results in the hand being declared dead/i, /varies by house rules/i, /calling a tile before it has been correctly named/i]],
     ["scoring.discard-pays", [/Payment conventions can vary by group/], [/standard NMJL payment structure/i, /League rule book describes/i]],
     ["scoring.self-drawn-pays", [/Payment conventions can vary by group/], [/each pay the full amount/i]],
     ["winning.self-drawn", [/settled by your group/i], [/still pay the standard amount/i]],

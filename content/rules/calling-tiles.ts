@@ -35,7 +35,7 @@ export const CALLING_TILES: RulesTopic = {
     {
       id: "out-of-turn",
       q: "What is calling out of turn and what are the consequences?",
-      a: "Calling a tile that is not the most recent discard, or calling after the player next in turn has already picked and racked or discarded, is an out-of-turn call. The card does not allow the claim: the call is void and play continues. The card names no penalty for the attempt itself; a hand is dead only if it ends up with too few or too many tiles or an incorrect exposure, and any further penalty is not printed on the card. A tile also cannot be claimed until it has been correctly named; the misnamed tile rules are on the dead hands and scoring pages.",
+      a: "Calling a tile that is not the most recent discard, or calling after the player next in turn has already picked and racked or discarded, is an out-of-turn call. The card says the tile may not be claimed, so the call does not stand and play goes on. The card names no penalty for the attempt itself; a hand is dead only if it ends up with too few or too many tiles or an incorrect exposure, and any further penalty is not printed on the card. A tile also cannot be claimed until it has been correctly named; what the card prints for a misnamed tile (a dead hand on an exposure, 4 times the value on a mahjong call) is on the dead hands and scoring pages.",
       kind: "standard",
       evidence: "card",
     },
