@@ -98,11 +98,11 @@ test.describe("live model battery", () => {
 
   test("approved rules survive paraphrase, typos, slang, shorthand, assertions and false premises", async () => {
     const cases: Array<{ q: string; entry: string | string[]; must?: RegExp[]; mustNot?: RegExp[] }> = [
-      { q: "So jokers are okay in pairs, right?", entry: "joker-in-pair", must: [/^no\b/i], mustNot: [/^yes/i] },
+      { q: "So jokers are okay in pairs, right?", entry: "joker-in-pair", must: [/never be used in a pair/i], mustNot: [/^(yes|nope|not quite)\b/i] },
       { q: "My friend says I can pass a joker in Charleston.", entry: "charleston-jokers", must: [/\bno\b|cannot|can't|not\b/i] },
       { q: "If I need my mahjong tile on a closed hand I can't call it, correct?", entry: "closed-hand-final-tile", must: [/exception|may claim|can claim|single tile|completes your mahjong/i] },
-      { q: "can i uze a jokr in a payr", entry: "joker-in-pair", must: [/^no\b/i] },
-      { q: "joker pair?", entry: "joker-in-pair", must: [/^no\b/i] },
+      { q: "can i uze a jokr in a payr", entry: "joker-in-pair", must: [/never be used in a pair/i], mustNot: [/^yes/i] },
+      { q: "joker pair?", entry: "joker-in-pair", must: [/never be used in a pair/i], mustNot: [/^yes/i] },
       { q: "yo can my joker chill in a kong", entry: ["jokers-basics", "joker-in-pair", "joker-substitute"], must: [/kong/i] },
       { q: "blind pass, what is that", entry: "charleston-blind-pass", must: [/last pass|without looking|three tiles|3 tiles/i] },
       { q: "i put down the wrong tiles for my exposure, am i dead", entry: ["wrong-exposure", "dead-hand-triggers", "dead-hand"], must: [/discard|dead/i] },
@@ -218,7 +218,7 @@ test.describe("live model battery", () => {
       if (r.entry) {
         const e = KNOWLEDGE_BY_ID.get(r.entry)!;
         if (e.source === "derived") expect(r.answer, q).toBe(approvedText(e));
-        if (r.entry === "joker-in-pair") expect(r.answer, q).toMatch(/^no\b/i);
+        if (r.entry === "joker-in-pair") expect(r.answer, q).toMatch(/never be used in a pair/i);
       } else {
         expect([CANNOT_VERIFY, OFF_TOPIC, CARD_REFUSAL], q).toContain(r.answer);
       }

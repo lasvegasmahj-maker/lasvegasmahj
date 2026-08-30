@@ -132,13 +132,15 @@ How a typed question is answered when a model key is present:
    network in `tests/ask-model.logic.spec.ts`). The approved sentences must appear word for
    word, complete, and in order; the opener must be on the list; "Yes." or "No." (and "Nope.",
    "Not quite.") is allowed only when the entry itself opens with that bare word, only on the
-   entry the engine chose, and only when the question carries no opinion of its own ("so I
-   can't...", "my friend says...", "...right?" get a neutral opener at most); a second entry
-   must be whole and may not be a house-varying entry attached to a standard rule; a
-   clarification must quote two entries' own questions. The text shown to the visitor is
-   rebuilt from the approved strings, so nothing the model typed reaches the page. Anything
-   else, and the plain approved answer is served instead. A visitor never sees an internal
-   error.
+   entry the engine chose, and only on a plain question (one that starts with can, is, do,
+   what, when, how and carries no opinion, report, or negation; "so I can't...", "my friend
+   says...", "I thought..." get a neutral opener at most, and the entry's own bare Yes. or No. is
+   dropped there too); pointing at an entry the engine did not retrieve is allowed only when it
+   retrieved nothing; a second entry must be whole and carry the same label as the first; a
+   clarification must quote two retrieved entries' own questions (never a pending or money
+   entry). The text shown to the visitor is rebuilt from the approved strings, so nothing the
+   model typed reaches the page. Anything else, and the plain approved answer is served instead.
+   A visitor never sees an internal error.
 
 Why the model may not paraphrase: two independent review rounds showed that any free wording,
 even from harmless-looking words, can reverse a rule ("The answer is yes." before a No rule),

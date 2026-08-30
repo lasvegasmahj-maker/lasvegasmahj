@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { answerDeterministic, approvedText, buildFollowups, canonicalEntryFor, splitQuestions, CANNOT_VERIFY, CARD_REFUSAL } from "../lib/ask/engine";
+import { answerDeterministic, approvedText, buildFollowups, canonicalEntryFor, labelFor, splitQuestions, CANNOT_VERIFY, CARD_REFUSAL } from "../lib/ask/engine";
 import { KNOWLEDGE_BY_ID, PENDING_BY_OWNER_DECISION, RULES_KNOWLEDGE } from "../lib/ask/knowledge";
 import {
   buildUserMessage,
@@ -204,23 +204,39 @@ test.describe("openers and polarity", () => {
       expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Yes. ${PAIR_BODY}` }), input), q).toBeNull();
       expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Here is the rule. ${PAIR_BODY}` }), input)?.kind, q).toBe("answer");
       expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: PAIR_BODY }), input)?.kind, q).toBe("answer");
-      expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: approvedText(jokerPair) }), input), q).toBeNull();
+      const kept = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: approvedText(jokerPair) }), input);
+      expect(kept?.kind === "answer" && kept.answer, q).toBe(PAIR_BODY);
+    }
+    for (const q of ["so jokers cant go in a pair?", "I thought jokers couldn't go in a pair?", "jokers cant go in pairs, yes?", "is it illegal to put a joker in a pair?", "surely you cant use a joker in a pair?", "isnt it fine to put a joker in a pair?"]) {
+      const input = inputFor(q);
+      expect(input.candidates[0]?.id, q).toBe("joker-in-pair");
+      expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Nope. ${PAIR_BODY}` }), input), q).toBeNull();
+      expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Not quite. ${PAIR_BODY}` }), input), q).toBeNull();
     }
     const history: ModelInput["history"] = [{ role: "user", content: "my friend says a dead hand doesn't have to pay the winner" }];
     const followup = { ...inputFor("is she right?", history), history, candidates: [KNOWLEDGE_BY_ID.get("dead-hand-pays")!], preferred: "dead-hand-pays" };
     const pays = bodyOf("dead-hand-pays");
-    expect(validateModelOutput(raw({ entry_ids: ["dead-hand-pays"], conversational_answer: `Yes. ${pays}` }), followup)).toBeNull();
+    const dropped = validateModelOutput(raw({ entry_ids: ["dead-hand-pays"], conversational_answer: `Yes. ${pays}` }), followup);
+    expect(dropped?.kind === "answer" && dropped.answer).toBe(pays);
     expect(validateModelOutput(raw({ entry_ids: ["dead-hand-pays"], conversational_answer: `Here is how that works. ${pays}` }), followup)?.kind).toBe("answer");
   });
 
   test("a verdict opener is allowed only on the entry retrieval itself chose", () => {
-    const closed = inputFor("can a closed hand call its last tile for mahjong");
-    expect(closed.preferred).toBe("closed-hand-final-tile");
-    const sibling = closed.candidates.find((c) => c.id !== "closed-hand-final-tile" && entryParts(c).opener && !mustServeVerbatim(c));
-    if (sibling) {
-      expect(validateModelOutput(raw({ entry_ids: [sibling.id], conversational_answer: `${entryParts(sibling).opener === "No." ? "Nope." : "Yes."} ${bodyOf(sibling.id)}` }), closed), sibling.id).toBeNull();
-      expect(validateModelOutput(raw({ entry_ids: [sibling.id], conversational_answer: approvedText(sibling) }), closed)?.kind, sibling.id).toBe("answer");
-    }
+    const exchange = KNOWLEDGE_BY_ID.get("joker-exchange")!;
+    const input: ModelInput = { question: "can i use a joker from the table in a pair", history: [], candidates: [exchange, jokerPair], followupOptions: [], preferred: "joker-exchange" };
+    expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Nope. ${PAIR_BODY}` }), input)).toBeNull();
+    expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Here is the rule. ${PAIR_BODY}` }), input)?.kind).toBe("answer");
+    expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: approvedText(jokerPair) }), input)?.kind).toBe("answer");
+    expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Nope. ${PAIR_BODY}` }), { ...input, preferred: "joker-in-pair" })?.kind).toBe("answer");
+  });
+
+  test("pointing at an entry the engine did not retrieve is allowed only when it retrieved nothing", () => {
+    const routed = validateModelOutput(raw({ entry_ids: ["joker-call-complete"] }), pairInput);
+    expect(routed?.kind === "answer" && routed.entry.id).toBe("joker-in-pair");
+    expect(routed?.kind === "answer" && routed.answer).toBe(approvedText(jokerPair));
+    const nothing: ModelInput = { question: "wat abt jokrs in a payr of flowrs rule", history: [], candidates: [], followupOptions: [] };
+    const r = validateModelOutput(raw({ entry_ids: ["joker-in-pair"] }), nothing);
+    expect(r?.kind === "answer" && r.entry.id).toBe("joker-in-pair");
   });
 
   test("an entry with no bare opener takes no Yes/No opener from the model, but a neutral one is fine", () => {
@@ -324,10 +340,13 @@ test.describe("house-varying entries", () => {
     expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair", "wall-game"], conversational_answer: `No. ${PAIR_BODY}`, optional_explanation: firstOnly }), input)).toBeNull();
     expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair", "wall-game"], conversational_answer: `No. ${PAIR_BODY}`, optional_explanation: approvedText(wall) }), input)).toBeNull();
     const dealing = KNOWLEDGE_BY_ID.get("dead-hand")!;
+    expect(labelFor(dealing)).toBe("house");
     const both = { question: "what is a wall game and what is a dead hand", history: [], candidates: [wall, dealing], followupOptions: [], preferred: "wall-game" };
     const r = validateModelOutput(raw({ entry_ids: ["wall-game", "dead-hand"], conversational_answer: `Two parts to that. ${approvedText(wall)}`, optional_explanation: approvedText(dealing) }), both);
     expect(r?.kind === "answer" && r.label).toBe("house");
     expect(r?.kind === "answer" && r.answer).toBe(`Two parts to that. ${approvedText(wall)} ${dealing.question} ${approvedText(dealing)}`);
+    const mixed = { question: "what is a wall game and can a joker go in a pair", history: [], candidates: [wall, jokerPair], followupOptions: [], preferred: "wall-game" };
+    expect(validateModelOutput(raw({ entry_ids: ["wall-game", "joker-in-pair"], conversational_answer: approvedText(wall), optional_explanation: approvedText(jokerPair) }), mixed)).toBeNull();
   });
 
   test("a house-varying primary keeps its note because the body includes it", () => {
@@ -459,8 +478,16 @@ test.describe("conversation handling", () => {
     expect(ok?.kind).toBe("clarify");
     expect(ok?.kind === "clarify" && ok.answer).toBe(`Are you asking about "${exchange.question}" or "${jokerPair.question}"?`);
     expect(validateModelOutput(raw({ entry_ids: [], covered: false, clarification_question: `Do you mean "${jokerPair.question}", or about "${exchange.question}"?` }), input)?.kind).toBe("clarify");
-    const withPending = { ...input, candidates: [exchange, KNOWLEDGE_BY_ID.get("discarded-joker")!] };
+    const withPending = { ...input, candidates: [exchange, jokerPair, KNOWLEDGE_BY_ID.get("discarded-joker")!] };
     expect(validateModelOutput(raw({ entry_ids: [], covered: false, clarification_question: `Are you asking about "${exchange.question}" or "Can I pick up a discarded joker?"?` }), withPending)).toBeNull();
+    expect(validateModelOutput(raw({ entry_ids: [], covered: false, clarification_question: `Are you asking about "${exchange.question}" or "${jokerPair.question}"?` }), withPending)?.kind).toBe("clarify");
+    const preferredPending = { ...withPending, preferred: "discarded-joker" };
+    const locked = validateModelOutput(raw({ entry_ids: [], covered: false, clarification_question: `Are you asking about "${exchange.question}" or "${jokerPair.question}"?` }), preferredPending);
+    expect(locked?.kind === "answer" && locked.entry.id).toBe("discarded-joker");
+    const orQuestion = KNOWLEDGE_BY_ID.get("most-recent-discard")!;
+    expect(orQuestion.question).toMatch(/ or /);
+    const withOr = { ...input, candidates: [orQuestion, jokerPair] };
+    expect(validateModelOutput(raw({ entry_ids: [], covered: false, clarification_question: `Are you asking about "${orQuestion.question}" or "${jokerPair.question}"?` }), withOr)?.kind).toBe("clarify");
     for (const bad of [
       "Do you mean a joker in a pair, or a joker as a single tile?",
       `Are you asking about "${jokerPair.question}" or "${jokerPair.question}"?`,

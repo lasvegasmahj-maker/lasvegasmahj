@@ -412,7 +412,7 @@ test.describe("rate limiter", () => {
 test.describe("model output validation", () => {
   const entry = KNOWLEDGE_BY_ID.get("joker-in-pair")!;
   const body = entry.answer.split(/(?<=[.!?])\s+/).slice(1).join(" ");
-  const input = { question: "Can I use a joker in a pair?", history: [], candidates: [entry], followupOptions: buildFollowups(entry, new Set(), 6) };
+  const input = { question: "Can I use a joker in a pair?", history: [], candidates: [entry], followupOptions: buildFollowups(entry, new Set(), 6), preferred: "joker-in-pair" };
   const out = (o: Record<string, unknown>) => ({ entry_ids: ["joker-in-pair"], covered: true, conversational_answer: "", optional_explanation: "", clarification_question: "", followups: [], ...o });
 
   test("accepts a framed verbatim answer and keeps chips from the option list", () => {
@@ -446,12 +446,13 @@ test.describe("model output validation", () => {
     expect(validateModelOutput(out({ entry_ids: ["not-a-real-id"], conversational_answer: "Sure thing." }), input)).toEqual({ kind: "unverified" });
   });
 
-  test("routing to an entry outside the candidates serves approved text verbatim", () => {
+  test("pointing at an entry outside the candidates keeps the engine's own pick, served verbatim", () => {
     const r = validateModelOutput(out({ entry_ids: ["joker-exchange"], conversational_answer: "" }), input);
     expect(r?.kind).toBe("answer");
     if (r?.kind !== "answer") return;
     expect(r.verbatim).toBe(true);
-    expect(r.answer).toBe(KNOWLEDGE_BY_ID.get("joker-exchange")!.answer);
+    expect(r.entry.id).toBe("joker-in-pair");
+    expect(r.answer).toBe(entry.answer);
   });
 
   test("a pending entry is served verbatim with the pending label whatever the model wrote", () => {

@@ -21,16 +21,14 @@ const MAX_HISTORY_TURNS = 6;
 const MAX_ANSWER_CHARS = 1_600;
 const MAX_CLARIFY_CHARS = 240;
 
-const MONTH_RE = /\b(january|february|march|april|june|july|august|september|october|november|december)\b|\b(in|every|each|late|early|mid|by|around|before|after) may\b/i;
 const DASH_RE = /[‒-―−]/;
 const LINK_RE = /https?:\/\/|www\.|<[a-z]/i;
 const MARKDOWN_RE = /\*\*|__|\[[^\]]+\]\(|^#+\s/m;
-const STATUS_RE = /\b(pending|unverified|verified|official(ly)?|standard|approved|instructor)\b/i;
-const LEAGUE_RE = /\b(nmjl|league)\b/i;
-const CARD_YEAR_ASK_RE = /\b(year|card)\b/i;
-// A question that carries its own verdict ("so jokers can't go in a pair, right?", "my friend
-// says...") gets no Yes or No from the model: those words would answer the premise, not the rule.
-const PREMISE_RE = /\b(can't|cannot|don't|doesn't|isn't|aren't|won't|not|never|no|friend|friends|says|said|told|right|correct|true|wrong)\b/;
+// A Yes or No from the model answers the player's words, not the rule, so it is allowed only on a
+// plain question: one that starts with a question word and carries no opinion, report, or
+// negation of its own ("so jokers cant go in a pair?", "my friend says...", "I thought...").
+const PLAIN_QUESTION_RE = /^(can|could|may|is|are|do|does|did|should|will|would|am|what|when|how|who|which|where)\b/;
+const PREMISE_RE = /\b(can|cannot|don|doesn|isn|aren|won|couldn|shouldn|wouldn|didn|wasn|weren)['`]?t\b|\b(not|never|no|nobody|none|unless|illegal|forbidden|against|friend|friends|say|says|said|told|taught|teacher|thought|heard|assumed|assume|believe|sure|surely|right|correct|true|wrong|ok|okay|yes|fine)\b/;
 
 export function isModelEnabled(): boolean {
   return Boolean(process.env.ANTHROPIC_API_KEY) && process.env.ASK_MODEL_DISABLED !== "1";
@@ -81,9 +79,9 @@ export const OUTPUT_SCHEMA = {
   properties: {
     entry_ids: { type: "array", items: { type: "string" }, description: "Ids of the approved entries the answer is built from, the main one first. Empty when no entry covers the question." },
     covered: { type: "boolean", description: "True only when an approved entry answers the question." },
-    conversational_answer: { type: "string", description: "One opener from the OPENERS list or none, then the main entry's text word for word. Empty when asking a clarification or when not covered." },
+    conversational_answer: { type: "string", description: "One opener from the OPENERS list or none, then the main entry's text word for word; drop the entry's own bare Yes. or No. when you use any opener or when the question states a premise. Empty when asking a clarification or when not covered." },
     optional_explanation: { type: "string", description: "The full text of a second cited entry, word for word, when the question has two parts. Otherwise empty." },
-    clarification_question: { type: "string", description: "One short question in the form 'Are you asking about X, or about Y?' when the entries could answer two different things. Otherwise empty." },
+    clarification_question: { type: "string", description: "Exactly 'Are you asking about <question of entry A> or <question of entry B>?' quoting two provided entries' own questions, only when both could answer. Otherwise empty." },
     followups: { type: "array", items: { type: "string" }, description: "Up to 3 questions copied exactly from FOLLOWUP OPTIONS, most relevant first." },
   },
   required: ["entry_ids", "covered", "conversational_answer", "optional_explanation", "clarification_question", "followups"],
@@ -92,7 +90,8 @@ export const OUTPUT_SCHEMA = {
 
 // The only sentences the model may put in front of an approved entry, with the Yes/No class
 // each one carries. A Yes or No class is allowed only when the entry itself opens with the
-// same bare word; neutral openers work everywhere.
+// same bare word, the entry is the engine's own pick, and the question is a plain one;
+// neutral openers work everywhere.
 export const OPENERS: ReadonlyArray<readonly [string, "yes" | "no" | null]> = [
   ["No.", "no"],
   ["Nope.", "no"],
@@ -111,13 +110,13 @@ const KNOWLEDGE_INDEX = RULES_KNOWLEDGE.map((e) => `${e.id}: ${e.question}`).joi
 const SYSTEM_PROMPT = [
   "You are Ask Las Vegas Mahjong, the rules helper on lasvegasmahj.com. You sound like a warm, confident American Mahjong instructor sitting next to the player at the table: friendly, clear, brief.",
   "",
-  "GROUND TRUTH. The APPROVED ENTRIES in the user message are the only source of rules. If no provided entry answers the question but the KNOWLEDGE INDEX lists one that would, return that id in entry_ids with covered true and leave conversational_answer empty. If nothing covers it, return covered false and leave the text fields empty; never answer from memory.",
+  "GROUND TRUTH. The APPROVED ENTRIES in the user message are the only source of rules. Answer from a provided entry; the one marked [engine's pick] is usually right. Only when no entry was provided at all and the KNOWLEDGE INDEX lists one that would answer, return that id in entry_ids with covered true and leave conversational_answer empty. If nothing covers it, return covered false and leave the text fields empty; never answer from memory.",
   "",
-  "HOW TO ANSWER. conversational_answer is exactly: one opener copied from OPENERS below, or no opener, followed by the main entry's text copied word for word and complete. Nothing else: never paraphrase, shorten, reorder, or add a sentence of your own. \"Yes.\", \"No.\", \"Nope.\" and \"Not quite.\" may be used only when the entry itself starts with that bare Yes. or No. and the player's question is a plain question with no opinion in it; then drop the entry's own bare word. If the question states a premise (\"so I can't...\", \"my friend says...\", \"...right?\"), use a neutral opener or none and keep the entry's own words. When the player asks two things and a second entry covers the second part, cite both ids and put the second entry's full text, word for word, in optional_explanation; entries marked money or pending are never combined.",
+  "HOW TO ANSWER. conversational_answer is exactly: one opener copied from OPENERS below, or no opener, followed by the main entry's text copied word for word and complete. Nothing else: never paraphrase, shorten, reorder, or add a sentence of your own. \"Yes.\", \"No.\", \"Nope.\" and \"Not quite.\" may be used only when the entry itself starts with that bare Yes. or No., the entry is the [engine's pick], and the player's question is a plain question (it starts with can, is, do, what, when, how and states no opinion, report, or negation); then drop the entry's own bare word. On any other question use a neutral opener or none, drop the entry's own bare Yes. or No., and keep the rest of the entry word for word. When the player asks two things and a second entry with the same label covers the second part, cite both ids and put the second entry's full text, word for word, in optional_explanation; entries marked money or pending are never combined.",
   "",
   "OPENERS. Verdict openers: \"No.\" \"Nope.\" \"Not quite.\" \"Yes.\" Neutral openers: \"Good question.\" \"Here is how that works.\" \"Here is the rule.\" \"Two parts to that.\" \"That comes up a lot.\" \"Here is what applies.\"",
   "",
-  "FOLLOW-UPS. Resolve short follow-ups such as \"what about a kong?\" against the previous topic in CONVERSATION SO FAR and pick the entry that answers it. Ask a clarifying question only when two of the provided entries could each answer the question and the difference changes the answer, in exactly this form: \"Are you asking about <question of entry A> or <question of entry B>?\" using the two entries' own questions word for word. Never ask which year's card for a general rule.",
+  "FOLLOW-UPS. Resolve short follow-ups such as \"what about a kong?\" against the previous topic in CONVERSATION SO FAR and pick the entry that answers it. Ask a clarifying question only when two of the provided entries (neither marked pending or money) could each answer the question and the difference changes the answer, in exactly this form: \"Are you asking about <question of entry A> or <question of entry B>?\" using the two entries' own questions word for word. Never ask which year's card for a general rule.",
   "",
   `THE CARD. The League publishes a new card every spring; the current card is the ${CURRENT_CARD_YEAR} card. Never reproduce hands, categories, or values from any year's card.`,
   "",
@@ -145,7 +144,7 @@ function renderHistory(history: Turn[]): string {
 }
 
 export function buildUserMessage(input: ModelInput): string {
-  const entries = input.candidates.length ? input.candidates.map(renderEntry).join("\n\n") : "(none retrieved)";
+  const entries = input.candidates.length ? input.candidates.map((e) => renderEntry(e) + (e.id === input.preferred ? " [engine's pick]" : "")).join("\n\n") : "(none retrieved)";
   return [
     "APPROVED ENTRIES",
     entries,
@@ -252,24 +251,26 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
   const clarify = cleanText(raw.clarification_question);
   const answerText = [cleanText(raw.conversational_answer), cleanText(raw.optional_explanation)].filter(Boolean).join(" ");
   const followups = pickFollowups(raw.followups, input.followupOptions);
+  const asVerbatim = (e: KnowledgeEntry): ModelResult => ({ kind: "answer", entry: e, answer: approvedText(e), label: labelFor(e), followups, verbatim: true });
 
   // The owner's pending and money answers stand whatever the model proposes, including a
   // clarification or a different entry.
   const preferred = input.preferred ? KNOWLEDGE_BY_ID.get(input.preferred) : undefined;
-  if (preferred && mustServeVerbatim(preferred)) {
-    return { kind: "answer", entry: preferred, answer: approvedText(preferred), label: labelFor(preferred), followups, verbatim: true };
-  }
+  if (preferred && mustServeVerbatim(preferred)) return asVerbatim(preferred);
 
   if (clarify) {
     const s = norm(clarify);
-    if (s.length > MAX_CLARIFY_CHARS || !styleOk(clarify) || input.candidates.some(mustServeVerbatim)) return null;
-    const m = s.match(/^(?:are you asking about|do you mean|is this about) (.+?),? or (?:about )?(.+?)\??$/);
+    if (s.length > MAX_CLARIFY_CHARS || !styleOk(clarify)) return null;
+    const m = s.match(/^(?:are you asking about|do you mean|is this about) (.+?)\??$/);
     if (!m) return null;
-    const pick = (text: string) => input.candidates.find((c) => stripQuestion(c.question) === stripQuestion(text));
-    const a = pick(m[1]);
-    const b = pick(m[2]);
-    if (!a || !b || a.id === b.id) return null;
-    return { kind: "clarify", answer: `Are you asking about "${a.question}" or "${b.question}"?`, followups };
+    const rest = m[1];
+    const pick = (text: string) => input.candidates.find((c) => !mustServeVerbatim(c) && stripQuestion(c.question) === stripQuestion(text));
+    for (let i = rest.indexOf(" or "); i >= 0; i = rest.indexOf(" or ", i + 1)) {
+      const a = pick(rest.slice(0, i).replace(/,$/, ""));
+      const b = pick(rest.slice(i + 4).replace(/^about /, ""));
+      if (a && b && a.id !== b.id) return { kind: "clarify", answer: `Are you asking about "${a.question}" or "${b.question}"?`, followups };
+    }
+    return null;
   }
 
   if (!covered || !ids.length) return { kind: "unverified" };
@@ -279,8 +280,10 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
   if (!primary) return { kind: "unverified" };
 
   const candidateIds = new Set(input.candidates.map((c) => c.id));
-  const verbatim = { kind: "answer" as const, entry: primary, answer: approvedText(primary), label: labelFor(primary), followups, verbatim: true };
-  if (!answerText || cited.some((e) => !candidateIds.has(e.id) || mustServeVerbatim(e))) return verbatim;
+  // Pointing at an entry the engine did not retrieve is allowed only when it retrieved nothing;
+  // otherwise the engine's own pick stands.
+  if (!candidateIds.has(primary.id)) return asVerbatim(input.candidates.length ? preferred ?? input.candidates[0] : primary);
+  if (!answerText || cited.some((e) => !candidateIds.has(e.id) || mustServeVerbatim(e))) return asVerbatim(primary);
   if (answerText.length > MAX_ANSWER_CHARS || !styleOk(answerText)) return null;
 
   const sentences = splitSentences(norm(answerText));
@@ -298,25 +301,25 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
   const after = sentences.slice(at + main.bodyNorm.length);
   if (before.length > 2) return null;
   const lastUser = [...input.history].reverse().find((t) => t.role === "user")?.content ?? "";
-  const premise = PREMISE_RE.test(norm(`${input.question} ${lastUser}`));
-  const verdictAllowed = !premise && (!preferred || preferred.id === primary.id);
+  const question = norm(input.question);
+  const plain = PLAIN_QUESTION_RE.test(question) && !PREMISE_RE.test(`${question} ${norm(lastUser)}`);
+  const verdictAllowed = plain && Boolean(preferred) && preferred!.id === primary.id;
   const mainClass = main.opener ? openerClass(main.opener) : null;
   const served: string[] = [];
   if (before.length) {
     const bare = main.opener && before[before.length - 1] === norm(main.opener) ? main.opener : null;
     const listed = OPENERS_BY_NORM.get(before[0]);
-    // On a premise question the entry's own bare Yes or No would answer the premise too.
-    if (bare && premise) return null;
     if (before.length === 2) {
       if (!bare || !listed || listed.cls) return null;
-      served.push(listed.text, bare);
-    } else if (bare) {
-      served.push(bare);
-    } else {
+      served.push(listed.text);
+    } else if (!bare) {
       if (!listed) return null;
       if (listed.cls && (!verdictAllowed || listed.cls !== mainClass)) return null;
       served.push(listed.text);
     }
+    // The entry's own bare Yes. or No. is kept only on a plain question; elsewhere it would
+    // read as a verdict on the player's words, so it is dropped and the body speaks.
+    if (bare && plain) served.push(bare);
   }
   served.push(...main.body);
 
@@ -330,8 +333,7 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
         break;
       }
     }
-    if (!secondary || secondary.id === primary.id) return null;
-    if (labelFor(secondary) === "house" && labelFor(primary) !== "house") return null;
+    if (!secondary || secondary.id === primary.id || labelFor(secondary) !== labelFor(primary)) return null;
     served.push(secondary.question, approvedText(secondary));
   }
 
