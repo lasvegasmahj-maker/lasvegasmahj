@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  checks:
+    name: Typecheck, build, rules-truth and logic tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Production build
+        run: pnpm build
+      - name: Rules truth layer and other logic tests (no browser, no server)
+        run: pnpm test:logic
+
+  browser:
+    name: Browser tests (desktop and phone, Chromium)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Production build
+        run: pnpm build
+      - name: Start the production server
+        run: |
+          nohup pnpm start > server.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf -o /dev/null http://localhost:3000/ && exit 0; sleep 1; done
+          echo "server did not start"; cat server.log; exit 1
+      - name: Browser suites
+        run: pnpm exec playwright test --project=desktop-chromium --project=mobile
+        env:
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+            server.log
+          retention-days: 7
+
+  lint:
+    name: Lint (changed files must not add errors; full lint is advisory)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Full lint (advisory; main carries known pre-existing errors)
+        run: pnpm lint
+        continue-on-error: true
+      - name: Lint regression check (files changed since the base commit must not gain errors)
+        run: node scripts/lint-regression.mjs "${{ github.event.pull_request.base.sha || github.event.before }}"
