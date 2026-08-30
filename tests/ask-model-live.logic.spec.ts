@@ -98,7 +98,7 @@ test.describe("live model battery", () => {
 
   test("approved rules survive paraphrase, typos, slang, shorthand, assertions and false premises", async () => {
     const cases: Array<{ q: string; entry: string | string[]; must?: RegExp[]; mustNot?: RegExp[] }> = [
-      { q: "So jokers are okay in pairs, right?", entry: "joker-in-pair", must: [/never be used in a pair/i], mustNot: [/^(yes|nope|not quite)\b/i] },
+      { q: "So jokers are okay in pairs, right?", entry: "joker-in-pair", must: [/never be used in a pair/i], mustNot: [/^(yes|no|nope|not quite)\b/i] },
       { q: "My friend says I can pass a joker in Charleston.", entry: "charleston-jokers", must: [/\bno\b|cannot|can't|not\b/i] },
       { q: "If I need my mahjong tile on a closed hand I can't call it, correct?", entry: "closed-hand-final-tile", must: [/exception|may claim|can claim|single tile|completes your mahjong/i] },
       { q: "can i uze a jokr in a payr", entry: "joker-in-pair", must: [/never be used in a pair/i], mustNot: [/^yes/i] },

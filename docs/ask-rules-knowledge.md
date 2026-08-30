@@ -121,31 +121,32 @@ How a typed question is answered when a model key is present:
 2. The model is shown the approved entries the engine picked, the list of all entry questions
    (so it can point at a better entry), the recent conversation (rebuilt from approved answers,
    never from the browser's text), and the follow-up questions the engine allows. It may do
-   five things: choose one opener from a fixed list ("Not quite.", "Nope.", "Two parts to
-   that.", and so on; the full list is `OPENERS` in `lib/ask/llm.ts`), keep or drop an entry's
-   bare "Yes." or "No.", add a second approved entry in full when the player asked two things
-   (introduced by that entry's own question), pick the follow-up chips, or ask one clarifying
-   question that quotes two entries' own questions ("Are you asking about A or B?"). It may
-   also say "this is not covered" or point at a different approved entry, which is then served
-   word for word.
+   five things: choose one neutral opener from a fixed list ("Good question.", "Two parts to
+   that.", "Here is the rule.", and so on; the full list is `OPENERS` in `lib/ask/llm.ts`),
+   keep or drop an entry's bare "Yes." or "No.", add a second approved entry in full when the
+   player asked two things (introduced by that entry's own question), pick the follow-up chips,
+   or ask one clarifying question that quotes two entries' own questions ("Are you asking
+   about A or B?"). It may also say "this is not covered" or, when the engine found nothing,
+   point at an approved entry, which is then served word for word. It never adds a Yes or No of
+   its own.
 3. Everything the model returns is checked in `validateModelOutput` (pure, tested without a
    network in `tests/ask-model.logic.spec.ts`). The approved sentences must appear word for
-   word, complete, and in order; the opener must be on the list; "Yes." or "No." (and "Nope.",
-   "Not quite.") is allowed only when the entry itself opens with that bare word, only on the
-   entry the engine chose, and only on a plain question (one that starts with can, is, do,
-   what, when, how and carries no opinion, report, or negation; "so I can't...", "my friend
-   says...", "I thought..." get a neutral opener at most, and the entry's own bare Yes. or No. is
-   dropped there too); pointing at an entry the engine did not retrieve is allowed only when it
-   retrieved nothing; a second entry must be whole and carry the same label as the first; a
-   clarification must quote two retrieved entries' own questions (never a pending or money
-   entry). The text shown to the visitor is rebuilt from the approved strings, so nothing the
-   model typed reaches the page. Anything else, and the plain approved answer is served instead.
-   A visitor never sees an internal error.
+   word, complete, and in order; the opener must be on the neutral list; the entry's own bare
+   "Yes." or "No." is kept only on a plain question (one that starts with can, is, do, what,
+   when, how and carries no opinion, report, negation, or inversion) about the entry the engine
+   chose, and is dropped everywhere else ("so I can't...", "my friend says...", "is a joker
+   prohibited...", "I thought..."); pointing at an entry the engine did not retrieve is allowed
+   only when it retrieved nothing; a second entry must be whole and carry the same label as the
+   first; a clarification must quote two retrieved entries' own questions (never a pending or
+   money entry). The text shown to the visitor is rebuilt from the approved strings, so nothing
+   the model typed reaches the page. Anything else, and the plain approved answer is served
+   instead. A visitor never sees an internal error.
 
-Why the model may not paraphrase: two independent review rounds showed that any free wording,
-even from harmless-looking words, can reverse a rule ("The answer is yes." before a No rule),
-drop an exception, or hedge a League rule into table practice, and no word-level check can
-catch that. So the entry speaks and the model frames. The live battery
+Why the model may not paraphrase or add a verdict: five independent review rounds showed that
+any model-chosen wording, even a bare "Not quite.", can contradict the player's phrasing ("Is a
+joker prohibited in a pair?") or reverse a rule, drop an exception, or hedge a League rule into
+table practice, and no word-level check can catch that. So the entry speaks and the model
+frames. The live battery
 (`tests/ask-model-live.logic.spec.ts`) confirms the behaviour with the real provider and a
 separate judge model whenever a key is present.
 

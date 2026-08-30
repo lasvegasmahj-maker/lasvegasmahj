@@ -5,12 +5,13 @@ import { approvedText, canonicalEntryFor, isRulesQuestion, labelFor, normalizeQu
 
 // Optional conversational layer. Ships dormant: without ANTHROPIC_API_KEY every question is
 // answered from approved text by lib/ask/engine.ts and the site behaves identically. With a
-// key, the model frames and the approved entry speaks. It may choose one opener from a fixed
-// list, keep or drop an entry's bare "Yes." or "No.", append a second approved entry whole,
-// resolve follow-ups, ask one clarifying question from a fixed template, or route to another
-// approved entry. It never paraphrases a rule: two review rounds showed that any free wording,
-// even from harmless-looking words, can reverse or hedge a rule, so the served text is
-// rebuilt from the approved strings and anything else falls back to the deterministic answer.
+// key, the model frames and the approved entry speaks. It may choose one neutral opener from
+// a fixed list, append a second approved entry whole, resolve follow-ups, ask one clarifying
+// question built from two entries' own questions, or point at an approved entry when the
+// engine found none. It never adds a Yes or No of its own and never paraphrases a rule: five
+// review rounds showed that any model-chosen wording, even a bare verdict word, can contradict
+// the player's phrasing or the rule, so the served text is rebuilt from the approved strings
+// and anything else falls back to the deterministic answer.
 
 export const DEFAULT_MODEL = "claude-haiku-4-5";
 const MODEL = process.env.ASK_MODEL || DEFAULT_MODEL;
@@ -24,11 +25,12 @@ const MAX_CLARIFY_CHARS = 240;
 const DASH_RE = /[‒-―−]/;
 const LINK_RE = /https?:\/\/|www\.|<[a-z]/i;
 const MARKDOWN_RE = /\*\*|__|\[[^\]]+\]\(|^#+\s/m;
-// A Yes or No from the model answers the player's words, not the rule, so it is allowed only on a
-// plain question: one that starts with a question word and carries no opinion, report, or
-// negation of its own ("so jokers cant go in a pair?", "my friend says...", "I thought...").
+// An entry's own bare "Yes." or "No." answers its own canonical question. It is kept only on a
+// plain question to the engine's own pick: one that starts with a question word and carries no
+// opinion, report, negation, or inversion of its own. Anywhere else it is dropped and the body
+// speaks, which is stricter than the deterministic text.
 const PLAIN_QUESTION_RE = /^(can|could|may|is|are|do|does|did|should|will|would|am|what|when|how|who|which|where)\b/;
-const PREMISE_RE = /\b(can|cannot|don|doesn|isn|aren|won|couldn|shouldn|wouldn|didn|wasn|weren)['`]?t\b|\b(not|never|no|nobody|none|unless|illegal|forbidden|against|friend|friends|say|says|said|told|taught|teacher|thought|heard|assumed|assume|believe|sure|surely|right|correct|true|wrong|ok|okay|yes|fine)\b/;
+const PREMISE_RE = /\b(can|don|doesn|isn|aren|won|couldn|shouldn|wouldn|didn|wasn|weren)['`]?t\b|\bcannot\b|\b(not|never|no|nobody|none|unless|illegal|forbidden|banned|prohibited|disallowed|barred|excused|exempt|skip|stop|wait|delay|optional|still|except|exception|really|against|friend|friends|say|says|said|told|taught|teacher|thought|heard|assumed|assume|believe|sure|surely|right|correct|true|wrong|ok|okay|yes|fine|mean)\b/;
 
 export function isModelEnabled(): boolean {
   return Boolean(process.env.ANTHROPIC_API_KEY) && process.env.ASK_MODEL_DISABLED !== "1";
@@ -79,7 +81,7 @@ export const OUTPUT_SCHEMA = {
   properties: {
     entry_ids: { type: "array", items: { type: "string" }, description: "Ids of the approved entries the answer is built from, the main one first. Empty when no entry covers the question." },
     covered: { type: "boolean", description: "True only when an approved entry answers the question." },
-    conversational_answer: { type: "string", description: "One opener from the OPENERS list or none, then the main entry's text word for word; drop the entry's own bare Yes. or No. when you use any opener or when the question states a premise. Empty when asking a clarification or when not covered." },
+    conversational_answer: { type: "string", description: "One neutral opener from the OPENERS list or none, then the main entry's text word for word. Empty when asking a clarification or when not covered." },
     optional_explanation: { type: "string", description: "The full text of a second cited entry, word for word, when the question has two parts. Otherwise empty." },
     clarification_question: { type: "string", description: "Exactly 'Are you asking about <question of entry A> or <question of entry B>?' quoting two provided entries' own questions, only when both could answer. Otherwise empty." },
     followups: { type: "array", items: { type: "string" }, description: "Up to 3 questions copied exactly from FOLLOWUP OPTIONS, most relevant first." },
@@ -88,15 +90,9 @@ export const OUTPUT_SCHEMA = {
   additionalProperties: false,
 } as const;
 
-// The only sentences the model may put in front of an approved entry, with the Yes/No class
-// each one carries. A Yes or No class is allowed only when the entry itself opens with the
-// same bare word, the entry is the engine's own pick, and the question is a plain one;
-// neutral openers work everywhere.
+// The only sentences the model may put in front of an approved entry. None carries a verdict:
+// the entry's own words do that.
 export const OPENERS: ReadonlyArray<readonly [string, "yes" | "no" | null]> = [
-  ["No.", "no"],
-  ["Nope.", "no"],
-  ["Not quite.", "no"],
-  ["Yes.", "yes"],
   ["Good question.", null],
   ["Here is how that works.", null],
   ["Here is the rule.", null],
@@ -112,9 +108,9 @@ const SYSTEM_PROMPT = [
   "",
   "GROUND TRUTH. The APPROVED ENTRIES in the user message are the only source of rules. Answer from a provided entry; the one marked [engine's pick] is usually right. Only when no entry was provided at all and the KNOWLEDGE INDEX lists one that would answer, return that id in entry_ids with covered true and leave conversational_answer empty. If nothing covers it, return covered false and leave the text fields empty; never answer from memory.",
   "",
-  "HOW TO ANSWER. conversational_answer is exactly: one opener copied from OPENERS below, or no opener, followed by the main entry's text copied word for word and complete. Nothing else: never paraphrase, shorten, reorder, or add a sentence of your own. \"Yes.\", \"No.\", \"Nope.\" and \"Not quite.\" may be used only when the entry itself starts with that bare Yes. or No., the entry is the [engine's pick], and the player's question is a plain question (it starts with can, is, do, what, when, how and states no opinion, report, or negation); then drop the entry's own bare word. On any other question use a neutral opener or none, drop the entry's own bare Yes. or No., and keep the rest of the entry word for word. When the player asks two things and a second entry with the same label covers the second part, cite both ids and put the second entry's full text, word for word, in optional_explanation; entries marked money or pending are never combined.",
+  "HOW TO ANSWER. conversational_answer is exactly: one opener copied from OPENERS below, or no opener, followed by the main entry's text copied word for word and complete. Nothing else: never paraphrase, shorten, reorder, or add a sentence of your own, and never add a Yes or No of your own; the entry's own words carry the verdict. If the entry starts with a bare \"Yes.\" or \"No.\", keep it only when the player asked a plain question (it starts with can, is, do, what, when, how and states no opinion, report, or negation) about the [engine's pick]; otherwise drop that bare word and keep the rest word for word. When the player asks two things and a second entry with the same label covers the second part, cite both ids and put the second entry's full text, word for word, in optional_explanation; entries marked money or pending are never combined.",
   "",
-  "OPENERS. Verdict openers: \"No.\" \"Nope.\" \"Not quite.\" \"Yes.\" Neutral openers: \"Good question.\" \"Here is how that works.\" \"Here is the rule.\" \"Two parts to that.\" \"That comes up a lot.\" \"Here is what applies.\"",
+  "OPENERS. \"Good question.\" \"Here is how that works.\" \"Here is the rule.\" \"Two parts to that.\" \"That comes up a lot.\" \"Here is what applies.\"",
   "",
   "FOLLOW-UPS. Resolve short follow-ups such as \"what about a kong?\" against the previous topic in CONVERSATION SO FAR and pick the entry that answers it. Ask a clarifying question only when two of the provided entries (neither marked pending or money) could each answer the question and the difference changes the answer, in exactly this form: \"Are you asking about <question of entry A> or <question of entry B>?\" using the two entries' own questions word for word. Never ask which year's card for a general rule.",
   "",
@@ -303,23 +299,21 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
   const lastUser = [...input.history].reverse().find((t) => t.role === "user")?.content ?? "";
   const question = norm(input.question);
   const plain = PLAIN_QUESTION_RE.test(question) && !PREMISE_RE.test(`${question} ${norm(lastUser)}`);
-  const verdictAllowed = plain && Boolean(preferred) && preferred!.id === primary.id;
-  const mainClass = main.opener ? openerClass(main.opener) : null;
+  const keepBare = plain && Boolean(preferred) && preferred!.id === primary.id;
   const served: string[] = [];
   if (before.length) {
     const bare = main.opener && before[before.length - 1] === norm(main.opener) ? main.opener : null;
     const listed = OPENERS_BY_NORM.get(before[0]);
     if (before.length === 2) {
-      if (!bare || !listed || listed.cls) return null;
+      if (!bare || !listed) return null;
       served.push(listed.text);
     } else if (!bare) {
       if (!listed) return null;
-      if (listed.cls && (!verdictAllowed || listed.cls !== mainClass)) return null;
       served.push(listed.text);
     }
-    // The entry's own bare Yes. or No. is kept only on a plain question; elsewhere it would
-    // read as a verdict on the player's words, so it is dropped and the body speaks.
-    if (bare && plain) served.push(bare);
+    // The entry's own bare Yes. or No. is kept only on a plain question to the engine's own
+    // pick; anywhere else it would read as a verdict on the player's words, so the body speaks.
+    if (bare && keepBare) served.push(bare);
   }
   served.push(...main.body);
 

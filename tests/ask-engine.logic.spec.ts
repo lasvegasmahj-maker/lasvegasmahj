@@ -416,8 +416,8 @@ test.describe("model output validation", () => {
   const out = (o: Record<string, unknown>) => ({ entry_ids: ["joker-in-pair"], covered: true, conversational_answer: "", optional_explanation: "", clarification_question: "", followups: [], ...o });
 
   test("accepts a framed verbatim answer and keeps chips from the option list", () => {
-    const r = validateModelOutput(out({ conversational_answer: `Nope. ${body}`, followups: ["Made up question?", input.followupOptions[1]] }), input);
-    expect(r?.kind === "answer" && r.answer).toBe(`Nope. ${body}`);
+    const r = validateModelOutput(out({ conversational_answer: `Good question. ${body}`, followups: ["Made up question?", input.followupOptions[1]] }), input);
+    expect(r?.kind === "answer" && r.answer).toBe(`Good question. ${body}`);
     expect(r?.kind).toBe("answer");
     if (r?.kind !== "answer") return;
     expect(r.entry.id).toBe("joker-in-pair");
@@ -472,7 +472,7 @@ test.describe("model output validation", () => {
       messages: {
         create: async () => ({
           id: "m", type: "message", role: "assistant", model: "x", stop_reason: "end_turn", stop_sequence: null,
-          content: [{ type: "text", text: JSON.stringify({ entry_ids: ["joker-in-pair"], covered: true, conversational_answer: `Nope. ${body}`, optional_explanation: "", clarification_question: "", followups: [] }), citations: null }],
+          content: [{ type: "text", text: JSON.stringify({ entry_ids: ["joker-in-pair"], covered: true, conversational_answer: `Good question. ${body}`, optional_explanation: "", clarification_question: "", followups: [] }), citations: null }],
           usage: { input_tokens: 1, output_tokens: 1 },
         }) as never,
       },

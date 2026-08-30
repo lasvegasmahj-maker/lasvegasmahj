@@ -78,21 +78,21 @@ test.describe("model output contract", () => {
 
 test.describe("the entry speaks, the model frames", () => {
   test("an allowed opener plus the entry's body is accepted and served from the canonical strings", () => {
-    const r = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Not quite. ${PAIR_BODY}`, followups: ["Made up question?", pairInput.followupOptions[1]] }), pairInput);
+    const r = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Good question. ${PAIR_BODY}`, followups: ["Made up question?", pairInput.followupOptions[1]] }), pairInput);
     expect(r?.kind).toBe("answer");
     if (r?.kind !== "answer") return;
     expect(r.verbatim).toBe(false);
-    expect(r.answer).toBe(`Not quite. ${PAIR_BODY}`);
+    expect(r.answer).toBe(`Good question. ${PAIR_BODY}`);
     expect(r.followups[0]).toBe(pairInput.followupOptions[1]);
     expect(r.followups).not.toContain("Made up question?");
     expect(r.followups.length).toBe(3);
   });
 
   test("the served text is rebuilt from approved strings, so hidden characters and case tricks never reach the page", () => {
-    const tricked = `not quite. ${PAIR_BODY.replace("never", "ne­ver").replace("pair", "p​air").toUpperCase()}`;
+    const tricked = `good question. ${PAIR_BODY.replace("never", "ne­ver").replace("pair", "p​air").toUpperCase()}`;
     const r = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: tricked }), pairInput);
     expect(r?.kind).toBe("answer");
-    expect(r?.kind === "answer" && r.answer).toBe(`Not quite. ${PAIR_BODY}`);
+    expect(r?.kind === "answer" && r.answer).toBe(`Good question. ${PAIR_BODY}`);
   });
 
   test("the entry's bare opener may be kept or dropped, but the body must be complete and unchanged", () => {
@@ -112,7 +112,7 @@ test.describe("the entry speaks, the model frames", () => {
     const withoutRule = approvedText(cj).split(/(?<=[.!?])\s+/).slice(1).join(" ");
     expect(validateModelOutput(raw({ entry_ids: ["charleston-jokers"], conversational_answer: withoutRule }), input)).toBeNull();
     expect(validateModelOutput(raw({ entry_ids: ["charleston-jokers"], conversational_answer: `Yes. ${withoutRule}` }), input)).toBeNull();
-    expect(validateModelOutput(raw({ entry_ids: ["charleston-jokers"], conversational_answer: `Not quite. ${approvedText(cj)}` }), input)).toBeNull();
+    expect(validateModelOutput(raw({ entry_ids: ["charleston-jokers"], conversational_answer: `Nope. ${approvedText(cj)}` }), input)).toBeNull();
     expect(validateModelOutput(raw({ entry_ids: ["charleston-jokers"], conversational_answer: `Here is the rule. ${approvedText(cj)}` }), input)?.kind).toBe("answer");
   });
 
@@ -126,6 +126,8 @@ test.describe("the entry speaks, the model frames", () => {
     const neutralPlusBare = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Good question. No. ${PAIR_BODY}` }), pairInput);
     expect(neutralPlusBare?.kind === "answer" && neutralPlusBare.answer).toBe(`Good question. No. ${PAIR_BODY}`);
     expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Nope. No. ${PAIR_BODY}` }), pairInput)).toBeNull();
+    expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Nope. ${PAIR_BODY}` }), pairInput)).toBeNull();
+    expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Not quite. ${PAIR_BODY}` }), pairInput)).toBeNull();
     expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `No. Actually, a joker can be used in a pair or as a single tile.` }), pairInput)).toBeNull();
   });
 
@@ -173,26 +175,29 @@ test.describe("the entry speaks, the model frames", () => {
 
 test.describe("openers and polarity", () => {
   test("opener classes come from the fixed list", () => {
-    expect(openerClass("Nope.")).toBe("no");
-    expect(openerClass("Not quite.")).toBe("no");
+    expect(openerClass("No.")).toBe("no");
     expect(openerClass("Yes.")).toBe("yes");
     expect(openerClass("Good question.")).toBeNull();
+    expect(openerClass("Nope.")).toBeNull();
     expect(openerClass("Right.")).toBeNull();
-    expect(openerClass("Absolutely.")).toBeNull();
     expect(openerClass("A joker can never be used in a pair.")).toBeNull();
-    expect(isFramingSentence("Not quite.")).toBe(true);
     expect(isFramingSentence("Good question.")).toBe(true);
-    for (const s of ["No, your friend has that backwards.", "Right.", "Not for a pair by itself.", "Your hand is dead.", "There are 8 jokers.", "The League allows it.", "This is the standard rule.", "The answer is yes.", "You can."]) expect(isFramingSentence(s), s).toBe(false);
+    expect(isFramingSentence("Two parts to that.")).toBe(true);
+    for (const s of ["No.", "Nope.", "Not quite.", "Yes.", "No, your friend has that backwards.", "Right.", "Not for a pair by itself.", "Your hand is dead.", "There are 8 jokers.", "The League allows it.", "This is the standard rule.", "The answer is yes.", "You can."]) expect(isFramingSentence(s), s).toBe(false);
+    for (const [text, cls] of OPENERS) expect(cls, text).toBeNull();
   });
 
-  test("a Yes opener on a No entry is refused; listed No openers are accepted", () => {
-    expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Yes. ${PAIR_BODY}` }), pairInput)).toBeNull();
-    expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Right. ${PAIR_BODY}` }), pairInput)).toBeNull();
-    expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Absolutely. ${PAIR_BODY}` }), pairInput)).toBeNull();
-    for (const opener of ["Nope.", "Not quite.", "No.", "Good question."]) {
+  test("the model never adds a verdict of its own; the entry's own bare word survives only on a plain question to the engine's pick", () => {
+    for (const opener of ["Yes.", "Right.", "Absolutely.", "Nope.", "Not quite.", "The answer is yes."]) expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `${opener} ${PAIR_BODY}` }), pairInput), opener).toBeNull();
+    for (const opener of ["No.", "Good question.", "Here is the rule.", "Good question. No."]) {
       const r = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `${opener} ${PAIR_BODY}` }), pairInput);
       expect(r?.kind, opener).toBe("answer");
       expect(r?.kind === "answer" && r.answer, opener).toBe(`${opener} ${PAIR_BODY}`);
+    }
+    for (const q of ["Is a joker prohibited in a pair?", "Are jokers disallowed in pairs?", "do you mean I cannot use a joker in a pair?", "Can I really use a joker in a pair?", "Is it true that a joker can go in a pair?"]) {
+      const input = { ...inputFor(q), candidates: [jokerPair], preferred: "joker-in-pair" };
+      const r = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: approvedText(jokerPair) }), input);
+      expect(r?.kind === "answer" && r.answer, q).toBe(PAIR_BODY);
     }
   });
 
@@ -202,6 +207,8 @@ test.describe("openers and polarity", () => {
       expect(input.candidates[0]?.id, q).toBe("joker-in-pair");
       expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Nope. ${PAIR_BODY}` }), input), q).toBeNull();
       expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Yes. ${PAIR_BODY}` }), input), q).toBeNull();
+      const bareDropped = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Good question. No. ${PAIR_BODY}` }), input);
+      expect(bareDropped?.kind === "answer" && bareDropped.answer, q).toBe(`Good question. ${PAIR_BODY}`);
       expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Here is the rule. ${PAIR_BODY}` }), input)?.kind, q).toBe("answer");
       expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: PAIR_BODY }), input)?.kind, q).toBe("answer");
       const kept = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: approvedText(jokerPair) }), input);
@@ -221,13 +228,15 @@ test.describe("openers and polarity", () => {
     expect(validateModelOutput(raw({ entry_ids: ["dead-hand-pays"], conversational_answer: `Here is how that works. ${pays}` }), followup)?.kind).toBe("answer");
   });
 
-  test("a verdict opener is allowed only on the entry retrieval itself chose", () => {
+  test("the entry's own bare word is dropped when the cited entry is not the engine's pick", () => {
     const exchange = KNOWLEDGE_BY_ID.get("joker-exchange")!;
     const input: ModelInput = { question: "can i use a joker from the table in a pair", history: [], candidates: [exchange, jokerPair], followupOptions: [], preferred: "joker-exchange" };
     expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Nope. ${PAIR_BODY}` }), input)).toBeNull();
     expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Here is the rule. ${PAIR_BODY}` }), input)?.kind).toBe("answer");
-    expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: approvedText(jokerPair) }), input)?.kind).toBe("answer");
-    expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Nope. ${PAIR_BODY}` }), { ...input, preferred: "joker-in-pair" })?.kind).toBe("answer");
+    const sibling = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: approvedText(jokerPair) }), input);
+    expect(sibling?.kind === "answer" && sibling.answer).toBe(PAIR_BODY);
+    const own = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: approvedText(jokerPair) }), { ...input, preferred: "joker-in-pair" });
+    expect(own?.kind === "answer" && own.answer).toBe(approvedText(jokerPair));
   });
 
   test("pointing at an entry the engine did not retrieve is allowed only when it retrieved nothing", () => {
@@ -245,6 +254,7 @@ test.describe("openers and polarity", () => {
     const body = bodyOf("closed-hand-final-tile");
     expect(body).toBe(approvedText(KNOWLEDGE_BY_ID.get("closed-hand-final-tile")!));
     expect(validateModelOutput(raw({ entry_ids: ["closed-hand-final-tile"], conversational_answer: `No. ${body}` }), closed)).toBeNull();
+    expect(validateModelOutput(raw({ entry_ids: ["closed-hand-final-tile"], conversational_answer: `Yes. ${body}` }), closed)).toBeNull();
     expect(validateModelOutput(raw({ entry_ids: ["closed-hand-final-tile"], conversational_answer: `Here is how that works. ${body}` }), closed)?.kind).toBe("answer");
     expect(validateModelOutput(raw({ entry_ids: ["closed-hand-final-tile"], conversational_answer: body }), closed)?.kind).toBe("answer");
   });
@@ -314,7 +324,7 @@ test.describe("pending and money entries can never be framed, combined, or swapp
     expect(r?.kind === "answer" && r.answer).toBe(approvedText(KNOWLEDGE_BY_ID.get("joker-exchange")!));
     const pay = KNOWLEDGE_BY_ID.get("pay-discard-win")!;
     const input2 = { ...pairInput, candidates: [jokerPair, pay] };
-    const r2 = validateModelOutput(raw({ entry_ids: ["joker-in-pair", "pay-discard-win"], conversational_answer: `No. ${PAIR_BODY}`, optional_explanation: approvedText(pay) }), input2);
+    const r2 = validateModelOutput(raw({ entry_ids: ["joker-in-pair", "pay-discard-win"], conversational_answer: approvedText(jokerPair), optional_explanation: approvedText(pay) }), input2);
     expect(r2?.kind === "answer" && r2.verbatim).toBe(true);
   });
 
