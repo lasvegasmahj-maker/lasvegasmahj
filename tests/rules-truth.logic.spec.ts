@@ -154,7 +154,7 @@ test.describe("Ask mirrors the pages", () => {
     for (const e of RULES_KNOWLEDGE) {
       if (e.source === "shared_approved") continue;
       expect(e.house_note ?? "", `${e.id} house note`).not.toMatch(NMJL_CLAIM_RE);
-      if (!e.page_ref?.length) expect(e.answer, `${e.id} own text`).not.toMatch(NMJL_CLAIM_RE);
+      if (!e.page_ref?.length || e.id in ALIGNMENT_EXCEPTIONS) expect(e.answer, `${e.id} own text`).not.toMatch(NMJL_CLAIM_RE);
     }
     const served = [
       "How does payment work in a wall game?",
@@ -216,12 +216,12 @@ test.describe("card-verified corrections stay corrected", () => {
     ["etiquette.take-back", [/correctly named/i], [/the moment a tile is set down/i]],
     ["winning.valid", [/anything you exposed must be part of it/i], [/match what you declared/i]],
     ["winning.discard-win", [/other than a joker/i], []],
-    ["calling-tiles.out-of-turn", [/void and play continues/i, /names no penalty/i], [/typically results in the hand being declared dead/i, /varies by house rules/i]],
+    ["calling-tiles.out-of-turn", [/void and play continues/i, /names no penalty/i, /cannot be claimed until it has been correctly named/i], [/typically results in the hand being declared dead/i, /varies by house rules/i, /calling a tile before it has been correctly named/i]],
     ["scoring.discard-pays", [/Payment conventions can vary by group/], [/standard NMJL payment structure/i, /League rule book describes/i]],
     ["scoring.self-drawn-pays", [/Payment conventions can vary by group/], [/each pay the full amount/i]],
     ["winning.self-drawn", [/settled by your group/i], [/still pay the standard amount/i]],
     ["scoring.wall-game", [/Confirm your table/i], [/NMJL standard/i]],
-    ["dead-hands.two-dead", [/only stops play when three hands are dead/i], []],
+    ["dead-hands.two-dead", [/stops play for dead hands only when three are dead/i], []],
     ["the-card.new-card", [/every spring/i], [/only valid card/i, /small annual fee/i, /retired/i]],
     ["the-card.last-year", [/current year's card/i], [/official or competitive/i]],
     ["winning.passed-winning-tile", [/Nothing on the card penalizes/i], [/There is no penalty/i]],

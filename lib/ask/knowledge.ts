@@ -837,7 +837,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     keywords: ["self", "draw", "own", "win", "pay"],
     answer:
       "A self-drawn win is drawing the tile you need from the wall to complete your hand; you declare mahjong the same way as on a called tile. Whether a self-drawn win pays more than a win on a discard is settled by your group; confirm your table's payment rules before play.",
-    varies_by_house: false,
+    varies_by_house: true,
     confidence: "medium",
     source: "derived",
     page_ref: ["winning.self-drawn"],

@@ -54,10 +54,10 @@ Find My Mahj and Las Vegas Mahjong do not share code at runtime (no cross-site d
 They share content by copy plus a test:
 
 1. `tests/ask-engine.logic.spec.ts` ("shared entries match Find My Mahj verbatim") reads
-   `lib/rules/knowledge.ts` from the sister repo's `main` branch (`git show main:`; falls back
-   to HEAD, then the working file) when the repo is checked out beside this one, and fails if
-   any `shared_approved` entry's answer or `varies_by_house` differs, or if Find My Mahj main
-   has approved entries not copied here. Entries on unmerged Find My Mahj branches are not
+   `lib/rules/knowledge.ts` from the sister repo's `origin/main` (then `main`, then HEAD, then
+   the working file) when the repo is checked out beside this one, and fails if any
+   `shared_approved` entry's answer, `varies_by_house`, or `house_note` differs, or if Find My
+   Mahj main has approved entries not copied here. Entries on unmerged Find My Mahj branches are not
    shared yet; copy them as `derived` if needed and flip to `shared_approved` after the merge.
 2. Rule of thumb: edit a shared rule in Find My Mahj first (it has the owner-approval
    metadata), then copy the new text here in the same sitting. The test catches a miss.
