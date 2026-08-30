@@ -11,7 +11,6 @@ import {
   normalizeQuestion,
   retrieve,
   summarizeGap,
-  synthesisDigitGuard,
   CANNOT_VERIFY,
   CARD_REFUSAL,
   OFF_TOPIC,
@@ -335,12 +334,7 @@ test.describe("guards", () => {
   });
 });
 
-test.describe("digit guard and gap summary", () => {
-  const approved = "Each player starts with 13 tiles, except East, the dealer, who starts with 14.";
-  test("rejects new numbers, accepts existing ones", () => {
-    expect(synthesisDigitGuard(approved, "You start with 15 tiles.")).toBe(false);
-    expect(synthesisDigitGuard(approved, "East starts with 14 and everyone else with 13.")).toBe(true);
-  });
+test.describe("gap summary", () => {
   test("gap summary strips emails and digits and caps length", () => {
     const s = summarizeGap("Email JANE.DOE@example.com about the 2026 card rules " + "x".repeat(200));
     expect(s).not.toMatch(/@|\d/);

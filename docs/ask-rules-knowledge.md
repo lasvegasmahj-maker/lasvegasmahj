@@ -136,9 +136,10 @@ How a typed question is answered when a model key is present:
    when, how and carries no opinion, report, negation, or inversion) about the entry the engine
    chose, and is dropped everywhere else ("so I can't...", "my friend says...", "is a joker
    prohibited...", "I thought..."); pointing at an entry the engine did not retrieve is allowed
-   only when it retrieved nothing; a second entry must be whole and carry the same label as the
-   first; a clarification must quote two retrieved entries' own questions (never a pending or
-   money entry). The text shown to the visitor is rebuilt from the approved strings, so nothing
+   only when it retrieved nothing; an entry other than the engine's pick is introduced by its
+   own question; a second entry must be whole, carry the same label as the first, and is the
+   only case where "Two parts to that." is allowed; a clarification must quote two retrieved
+   entries' own questions, one of them the engine's pick (never a pending or money entry). The text shown to the visitor is rebuilt from the approved strings, so nothing
    the model typed reaches the page. Anything else, and the plain approved answer is served
    instead. A visitor never sees an internal error.
 

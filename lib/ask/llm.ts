@@ -92,14 +92,15 @@ export const OUTPUT_SCHEMA = {
 
 // The only sentences the model may put in front of an approved entry. None carries a verdict:
 // the entry's own words do that.
-export const OPENERS: ReadonlyArray<readonly [string, "yes" | "no" | null]> = [
-  ["Good question.", null],
-  ["Here is how that works.", null],
-  ["Here is the rule.", null],
-  ["Two parts to that.", null],
-  ["That comes up a lot.", null],
-  ["Here is what applies.", null],
+export const OPENERS: readonly string[] = [
+  "Good question.",
+  "Here is how that works.",
+  "Here is the rule.",
+  "Two parts to that.",
+  "That comes up a lot.",
+  "Here is what applies.",
 ];
+const TWO_PARTS = "Two parts to that.";
 
 const KNOWLEDGE_INDEX = RULES_KNOWLEDGE.map((e) => `${e.id}: ${e.question}`).join("\n");
 
@@ -200,21 +201,11 @@ function splitSentences(text: string): string[] {
   return text.split(/(?<=[.!?])\s+/).map((s) => s.trim()).filter(Boolean);
 }
 
-const OPENERS_BY_NORM = new Map(OPENERS.map(([text, cls]) => [norm(text), { text, cls }]));
+const OPENERS_BY_NORM = new Map(OPENERS.map((text) => [norm(text), text]));
 
-export function openerClass(sentence: string): "yes" | "no" | null {
-  const s = norm(sentence);
-  if (s === "no.") return "no";
-  if (s === "yes.") return "yes";
-  return OPENERS_BY_NORM.get(s)?.cls ?? null;
-}
-
-export function isFramingSentence(sentence: string): boolean {
-  return OPENERS_BY_NORM.has(norm(sentence));
-}
-
-// An approved entry as the model may use it: a bare "Yes." or "No." it may drop when it uses
-// an opener of the same class, and the body it must keep word for word and complete.
+// An approved entry as the model may use it: a bare "Yes." or "No." first sentence that is
+// kept only on a plain question to the engine's pick, and the body it must keep word for word
+// and complete.
 export function entryParts(e: KnowledgeEntry): { opener: string | null; body: string[]; bodyNorm: string[] } {
   const sentences = splitSentences(approvedText(e));
   const first = norm(sentences[0] ?? "");
@@ -264,7 +255,8 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
     for (let i = rest.indexOf(" or "); i >= 0; i = rest.indexOf(" or ", i + 1)) {
       const a = pick(rest.slice(0, i).replace(/,$/, ""));
       const b = pick(rest.slice(i + 4).replace(/^about /, ""));
-      if (a && b && a.id !== b.id) return { kind: "clarify", answer: `Are you asking about "${a.question}" or "${b.question}"?`, followups };
+      // A clarification may narrow the engine's pick, never replace it with two other entries.
+      if (a && b && a.id !== b.id && (!preferred || a.id === preferred.id || b.id === preferred.id)) return { kind: "clarify", answer: `Are you asking about "${a.question}" or "${b.question}"?`, followups };
     }
     return null;
   }
@@ -299,22 +291,21 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
   const lastUser = [...input.history].reverse().find((t) => t.role === "user")?.content ?? "";
   const question = norm(input.question);
   const plain = PLAIN_QUESTION_RE.test(question) && !PREMISE_RE.test(`${question} ${norm(lastUser)}`);
-  const keepBare = plain && Boolean(preferred) && preferred!.id === primary.id;
+  const isPick = Boolean(preferred) && preferred!.id === primary.id;
   const served: string[] = [];
+  let opener: string | null = null;
   if (before.length) {
     const bare = main.opener && before[before.length - 1] === norm(main.opener) ? main.opener : null;
-    const listed = OPENERS_BY_NORM.get(before[0]);
-    if (before.length === 2) {
-      if (!bare || !listed) return null;
-      served.push(listed.text);
-    } else if (!bare) {
-      if (!listed) return null;
-      served.push(listed.text);
-    }
+    opener = OPENERS_BY_NORM.get(before[0]) ?? null;
+    if (before.length === 2 && (!bare || !opener)) return null;
+    if (before.length === 1 && !bare && !opener) return null;
+    if (opener) served.push(opener);
     // The entry's own bare Yes. or No. is kept only on a plain question to the engine's own
     // pick; anywhere else it would read as a verdict on the player's words, so the body speaks.
-    if (bare && keepBare) served.push(bare);
+    if (bare && plain && isPick) served.push(bare);
   }
+  // An entry other than the engine's pick answers its own question, so that question leads.
+  if (!isPick) served.push(primary.question);
   served.push(...main.body);
 
   if (after.length) {
@@ -329,7 +320,7 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
     }
     if (!secondary || secondary.id === primary.id || labelFor(secondary) !== labelFor(primary)) return null;
     served.push(secondary.question, approvedText(secondary));
-  }
+  } else if (opener === TWO_PARTS) return null;
 
   return { kind: "answer", entry: primary, answer: served.join(" "), label: labelFor(primary), followups, verbatim: false };
 }

@@ -5,11 +5,9 @@ import {
   buildUserMessage,
   composeWithModel,
   entryParts,
-  isFramingSentence,
   isModelEnabled,
   modelEligible,
   mustServeVerbatim,
-  openerClass,
   validateModelOutput,
   OPENERS,
   OUTPUT_SCHEMA,
@@ -69,8 +67,8 @@ test.describe("model output contract", () => {
   });
 
   test("the opener list never carries rule, status, League, number or month content", () => {
-    for (const [text] of OPENERS) {
-      expect(text, text).not.toMatch(/\d|league|nmjl|verified|pending|official|standard|joker|pair|tile|hand|pay|card|charleston|dead|call|discard|exposure/i);
+    for (const text of OPENERS) {
+      expect(text, text).not.toMatch(/\d|league|nmjl|verified|pending|official|standard|joker|pair|tile|hand|pay|card|charleston|dead|call|discard|exposure|\b(yes|no|not|never|right|wrong)\b/i);
       expect(text.length, text).toBeLessThan(45);
     }
   });
@@ -134,7 +132,7 @@ test.describe("the entry speaks, the model frames", () => {
   test("a second entry may only be appended whole, and an invented reason is rejected", () => {
     expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `No. ${PAIR_BODY}`, optional_explanation: "That is because a joker in a pair makes the whole hand dead." }), pairInput)).toBeNull();
     const cj = KNOWLEDGE_BY_ID.get("charleston-jokers")!;
-    const input = { ...inputFor("Can I use a joker in a pair? And can I pass one in the Charleston?"), candidates: [jokerPair, cj] };
+    const input = { ...inputFor("Can I use a joker in a pair? And can I pass one in the Charleston?"), candidates: [jokerPair, cj], preferred: "joker-in-pair" };
     const partial = approvedText(cj).split(/(?<=[.!?])\s+/)[1];
     expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair", "charleston-jokers"], conversational_answer: `Two parts to that. ${PAIR_BODY}`, optional_explanation: partial }), input)).toBeNull();
     const r = validateModelOutput(raw({ entry_ids: ["joker-in-pair", "charleston-jokers"], conversational_answer: `Two parts to that. ${PAIR_BODY}`, optional_explanation: approvedText(cj) }), input);
@@ -174,17 +172,9 @@ test.describe("the entry speaks, the model frames", () => {
 });
 
 test.describe("openers and polarity", () => {
-  test("opener classes come from the fixed list", () => {
-    expect(openerClass("No.")).toBe("no");
-    expect(openerClass("Yes.")).toBe("yes");
-    expect(openerClass("Good question.")).toBeNull();
-    expect(openerClass("Nope.")).toBeNull();
-    expect(openerClass("Right.")).toBeNull();
-    expect(openerClass("A joker can never be used in a pair.")).toBeNull();
-    expect(isFramingSentence("Good question.")).toBe(true);
-    expect(isFramingSentence("Two parts to that.")).toBe(true);
-    for (const s of ["No.", "Nope.", "Not quite.", "Yes.", "No, your friend has that backwards.", "Right.", "Not for a pair by itself.", "Your hand is dead.", "There are 8 jokers.", "The League allows it.", "This is the standard rule.", "The answer is yes.", "You can."]) expect(isFramingSentence(s), s).toBe(false);
-    for (const [text, cls] of OPENERS) expect(cls, text).toBeNull();
+  test("only the listed neutral openers are accepted, and never a verdict word", () => {
+    for (const opener of OPENERS) expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `${opener} ${PAIR_BODY}` }), pairInput)?.kind, opener).toBe(opener === "Two parts to that." ? undefined : "answer");
+    for (const s of ["Nope.", "Not quite.", "Right.", "No, your friend has that backwards.", "Not for a pair by itself.", "Your hand is dead.", "There are 8 jokers.", "The League allows it.", "This is the standard rule.", "The answer is yes.", "You can."]) expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `${s} ${PAIR_BODY}` }), pairInput), s).toBeNull();
   });
 
   test("the model never adds a verdict of its own; the entry's own bare word survives only on a plain question to the engine's pick", () => {
@@ -234,9 +224,32 @@ test.describe("openers and polarity", () => {
     expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Nope. ${PAIR_BODY}` }), input)).toBeNull();
     expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Here is the rule. ${PAIR_BODY}` }), input)?.kind).toBe("answer");
     const sibling = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: approvedText(jokerPair) }), input);
-    expect(sibling?.kind === "answer" && sibling.answer).toBe(PAIR_BODY);
+    expect(sibling?.kind === "answer" && sibling.answer).toBe(`${jokerPair.question} ${PAIR_BODY}`);
     const own = validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: approvedText(jokerPair) }), { ...input, preferred: "joker-in-pair" });
     expect(own?.kind === "answer" && own.answer).toBe(approvedText(jokerPair));
+  });
+
+  test("a sibling entry whose first sentence carries a verdict is introduced by its own question", () => {
+    const input = inputFor("do i have to look at the blind pass?");
+    expect(input.preferred).toBe("charleston-blind-pass");
+    const look = KNOWLEDGE_BY_ID.get("look-before-pass")!;
+    if (!input.candidates.some((c) => c.id === look.id)) input.candidates.push(look);
+    const r = validateModelOutput(raw({ entry_ids: ["look-before-pass"], conversational_answer: `Here is the rule. ${approvedText(look)}` }), input);
+    expect(r?.kind === "answer" && r.answer).toBe(`Here is the rule. ${look.question} ${approvedText(look)}`);
+  });
+
+  test("Two parts to that. is accepted only with a second part, and a second entry may drop its own bare word", () => {
+    expect(validateModelOutput(raw({ entry_ids: ["joker-in-pair"], conversational_answer: `Two parts to that. ${PAIR_BODY}` }), pairInput)).toBeNull();
+    const cj = KNOWLEDGE_BY_ID.get("charleston-jokers")!;
+    const input = { ...inputFor("Can I use a joker in a pair? And can I pass one in the Charleston?"), candidates: [jokerPair, cj], preferred: "joker-in-pair" };
+    const r = validateModelOutput(raw({ entry_ids: ["joker-in-pair", "charleston-jokers"], conversational_answer: `Two parts to that. ${PAIR_BODY}`, optional_explanation: approvedText(cj) }), input);
+    expect(r?.kind === "answer" && r.answer).toBe(`Two parts to that. ${PAIR_BODY} ${cj.question} ${approvedText(cj)}`);
+    const pays = KNOWLEDGE_BY_ID.get("dead-hand-pays")!;
+    const draws = KNOWLEDGE_BY_ID.get("dead-hand-draws")!;
+    expect(entryParts(pays).opener).toBeTruthy();
+    const both = { question: "does a dead hand keep drawing and does it still pay", history: [], candidates: [draws, pays], followupOptions: [], preferred: draws.id };
+    const minusBare = validateModelOutput(raw({ entry_ids: [draws.id, pays.id], conversational_answer: approvedText(draws), optional_explanation: entryParts(pays).body.join(" ") }), both);
+    expect(minusBare?.kind === "answer" && minusBare.answer).toBe(`${entryParts(draws).body.join(" ")} ${pays.question} ${approvedText(pays)}`);
   });
 
   test("pointing at an entry the engine did not retrieve is allowed only when it retrieved nothing", () => {
@@ -488,6 +501,9 @@ test.describe("conversation handling", () => {
     expect(ok?.kind).toBe("clarify");
     expect(ok?.kind === "clarify" && ok.answer).toBe(`Are you asking about "${exchange.question}" or "${jokerPair.question}"?`);
     expect(validateModelOutput(raw({ entry_ids: [], covered: false, clarification_question: `Do you mean "${jokerPair.question}", or about "${exchange.question}"?` }), input)?.kind).toBe("clarify");
+    const notThePick = { ...input, candidates: [exchange, jokerPair, KNOWLEDGE_BY_ID.get("jokers-basics")!], preferred: "jokers-basics" };
+    expect(validateModelOutput(raw({ entry_ids: [], covered: false, clarification_question: `Are you asking about "${exchange.question}" or "${jokerPair.question}"?` }), notThePick)).toBeNull();
+    expect(validateModelOutput(raw({ entry_ids: [], covered: false, clarification_question: `Are you asking about "How do jokers work?" or "${jokerPair.question}"?` }), notThePick)?.kind).toBe("clarify");
     const withPending = { ...input, candidates: [exchange, jokerPair, KNOWLEDGE_BY_ID.get("discarded-joker")!] };
     expect(validateModelOutput(raw({ entry_ids: [], covered: false, clarification_question: `Are you asking about "${exchange.question}" or "Can I pick up a discarded joker?"?` }), withPending)).toBeNull();
     expect(validateModelOutput(raw({ entry_ids: [], covered: false, clarification_question: `Are you asking about "${exchange.question}" or "${jokerPair.question}"?` }), withPending)?.kind).toBe("clarify");

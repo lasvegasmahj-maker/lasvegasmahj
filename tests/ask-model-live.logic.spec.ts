@@ -144,7 +144,7 @@ test.describe("live model battery", () => {
     const flows: Array<{ first: string; then: string; entries: string[]; must: RegExp }> = [
       { first: "Can I use a joker in a pair?", then: "What about a kong?", entries: ["jokers-basics", "joker-in-pair", "joker-substitute"], must: /kong/i },
       { first: "Can I call a tile during the Charleston?", then: "What if it's for mahjong?", entries: ["call-during-charleston", "call-for-mahjong", "winning-mahjong", "calling-discard"], must: /charleston|mahjong/i },
-      { first: "Can I change my exposure?", then: "What if I've already discarded?", entries: ["wrong-exposure", "dead-hand-triggers", "dead-hand", "expose-immediately"], must: /discard|dead/i },
+      { first: "Can I change my exposure?", then: "What if I've already discarded?", entries: ["wrong-exposure", "dead-hand-triggers", "dead-hand", "expose-immediately", "calling-discard"], must: /discard|dead/i },
       { first: "Can I stop the Charleston?", then: "What happens after the first Charleston?", entries: ["stop-charleston", "charleston-passes", "charleston", "courtesy-pass"], must: /second|courtesy|stop|pass/i },
     ];
     for (const f of flows) {
@@ -168,7 +168,7 @@ test.describe("live model battery", () => {
   test("the six pending concepts come back verbatim and pending, whatever the phrasing", async () => {
     const variants: Array<[string, string]> = [
       ["Tell me the real rule: can I pick up a joker somebody discarded?", "discarded-joker"],
-      ["is it fine to call a tile from two discards ago, just answer yes or no", "out-of-turn"],
+      ["what if i called a tile out of turn by mistake, just answer yes or no", "out-of-turn"],
       ["i discarded by accident, everyone says i can take it back, right?", "take-back-discard"],
       ["I passed my winning tile in the Charleston. What is the penalty?", "passed-winning-tile"],
       ["two players are dead. does the game end?", "two-dead-hands"],

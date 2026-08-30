@@ -7,7 +7,7 @@ import {
 } from "./knowledge";
 
 // Deterministic core of Ask a Mahjong Rule. Every answer path here works with no model
-// at all, and the model layer (lib/ask/llm.ts) may only rephrase what this file retrieves.
+// at all, and the model layer (lib/ask/llm.ts) may only frame what this file retrieves.
 // Order of guards matters: card content is refused before any retrieval so no phrasing can
 // pull hand listings out of the knowledge base; other variants get a clarification; an
 // unmatched question returns an honest "cannot verify", never a guessed rule.
@@ -423,15 +423,6 @@ export function splitQuestions(raw: string): string[] {
     .map((p) => (p || "").trim())
     .filter((p) => p.length >= 8 && !/^(also|and)$/i.test(p));
   return parts.slice(0, 3);
-}
-
-// Synthesis guard (shared with Find My Mahj): a model may only rephrase approved text, so any
-// whole number in its output must already exist in the approved input. A new number means
-// new rule content, and the caller ships the approved text verbatim instead.
-export function synthesisDigitGuard(input: string, output: string): boolean {
-  const allowed = new Set(input.match(/\d+/g) ?? []);
-  for (const n of output.match(/\d+/g) ?? []) if (!allowed.has(n)) return false;
-  return true;
 }
 
 // Gap telemetry summary: topic only, never a transcript. Emails then digits are stripped
