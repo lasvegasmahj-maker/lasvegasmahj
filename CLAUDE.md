@@ -203,6 +203,6 @@ Ask once, briefly. Then proceed with a reasonable default and tell me what you p
 
 - **checks**: `pnpm install --frozen-lockfile`, `pnpm typecheck`, `pnpm build`, then `pnpm test:logic` (the rules truth-layer tests in `tests/rules-truth.logic.spec.ts` plus every other logic-only spec; no browser, no server). This job protects the `/rules` pages and the Ask engine: a PR that breaks a mirror, promotes a pending entry without a page, or reintroduces a corrected wording fails here.
 - **browser**: builds, starts the production server, and runs the `desktop-chromium` and `mobile` Playwright projects against it (Chromium only; the phone project emulates an iPhone on Chromium because WebKit is not reliable on every machine).
-- **lint**: the full `pnpm lint` runs as an advisory step (`main` carries known pre-existing errors listed above; do not weaken rules to hide them), then `scripts/lint-regression.mjs` fails the job only if a file changed by the PR has more errors than it had at the base commit. That is how CI separates a new regression from a known condition.
+- **lint**: the full `pnpm lint` runs as an advisory step (`main` carries known pre-existing errors, visible in that step's output; do not weaken rules to hide them), then `scripts/lint-regression.mjs` fails the job only if a file changed by the PR has more errors than it had at the base commit. That is how CI separates a new regression from a known condition.
 
 The Find My Mahj drift check in `tests/ask-engine.logic.spec.ts` needs the sister repo on disk, so it runs locally and skips in CI.

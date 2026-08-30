@@ -17,10 +17,13 @@ Q&A carries `kind` (`standard` or `house`) and `evidence`:
 Ask entries that mirror a page read their answer from the module (`page_ref`), so the two
 cannot drift: change the page and Ask changes with it. Pending (`derived`) entries that mirror
 a corrected page also read the page text, but keep the "Pending instructor review" label and
-no "Read more" link until the owner approves them. Two pending entries (`out-of-turn`, `self-drawn-win`) and one approved stitched entry
-(`called-dead`) keep their own wording on purpose and are listed in `ALIGNMENT_EXCEPTIONS`
-with a reason; the test fails on any other divergence and on a stale exception. Standard-rule
-page answers with no source in our materials are listed in `OWNER_REVIEW` in the same test.
+no "Read more" link until the owner approves them. One pending entry (`self-drawn-win`) and one
+approved stitched entry (`called-dead`) keep their own wording on purpose and are listed in
+`ALIGNMENT_EXCEPTIONS` with a reason; the test fails on any other divergence and on a stale
+exception. Standard-rule page answers with no source in our materials are listed in
+`OWNER_REVIEW` in the same test (empty since 2026-08-29). The six entries the owner keeps
+pending are locked in `PENDING_BY_OWNER_DECISION`; the test fails if any other entry is
+`derived` or if one of the six is promoted without changing that list.
 
 `tests/rules-truth.logic.spec.ts` fails when: an Ask mirror differs from its page; a house rule
 is written as a League rule; a rule book claim is not on the owner's list; a pending entry is
@@ -61,33 +64,46 @@ They share content by copy plus a test:
 3. New LVM-only entries should be added here first. If they are general enough for Find My
    Mahj, copy them there with the same id and change the source here to `shared_approved`.
 
-## Approving a derived entry (after the 2026-08-26 cleanup)
+## Approving a pending entry
 
-Most pending entries already carry the corrected page text. To approve one, change its
-`source` to `"lvm_rules_page"` and set `source_url` to the page it mirrors (it will then show
-"Standard rule" or "Can vary by house rule" and link to the page); then remove it from the
-pending list in the owner report. If the wording should change, edit the
-page module in `content/rules/` so both surfaces move together.
+Only the owner approves. To approve one of the six pending entries: if it mirrors a page
+Q&A, change its `source` to `"lvm_rules_page"` and set `source_url` to that page (it then shows
+"Standard rule" or "Can vary by house rule" and links to the page); if no page carries the
+rule yet, use `"owner_approved"` with no `source_url` (verified label, no link) and add the
+page Q&A when ready. In both cases remove the id from `PENDING_BY_OWNER_DECISION` in
+`lib/ask/knowledge.ts`, or the truth test fails. If the wording should change, edit the page
+module in `content/rules/` so both surfaces move together.
 
-## Content decisions after the 2026-08-26 cleanup
+## Content decisions
 
 The `/rules` pages were reconciled with the rules panel printed on the owner's card and the
-owner's own handouts on 2026-08-26. Every clear correction was applied in `content/rules/`
-(both the page and its Ask mirror change together). The owner-review report filed in the CEO OS
-Drive lists each discrepancy with its old and new wording.
+owner's own handouts on 2026-08-26, and the owner ruled on every remaining item on
+2026-08-29 (both reports are filed in the CEO OS Drive, LVM / Operations). Every correction
+was applied in `content/rules/`, so the page and its Ask mirror changed together.
 
-Left for the owner (unchanged, marked `unverified` or `house` in the content modules):
+Payment conventions (discarder pays double, self-drawn payment, wall game payment) are not
+in the card, the handouts, or any approved entry. They are presented as house matters with
+neutral wording ("Payment conventions can vary by group. Confirm your table's payment rules
+before play.") and never as a League rule book or NMJL standard. The card's own multipliers
+(jokerless double, misnamed tile times four, mahjong in error) stay as card facts.
 
-| Page Q&A | Why it waits |
-|---|---|
-| `winning.self-drawn`, `scoring.self-drawn-pays` | Self-drawn payment is not in the card, the handouts, or any approved entry. Ask stays neutral. |
-| `scoring.discard-pays`, `scoring.wall-game` | Rule book claims ("discarder pays double", "no payment in a wall game") that our materials do not cover; listed by name in the truth test. |
-| `calling-tiles.out-of-turn` | "Typically results in a dead hand" is a house claim; the card supports only "cannot be claimed". |
-| `scoring.game-value`, `jokers.wall-game`, `charleston.wrong-count`, `winning.wall-game`, `etiquette.table-talk`, `etiquette.disputes` | House rules; presented as such. |
+Still pending (Ask serves them with "Pending instructor review" and no link):
 
-Find My Mahj entries that sit slightly off the card are documented in the same report and are
-never edited from this repo: `calling-discard` (house note on the calling window) and
-`courtesies-vs-rules` (courtesy pass used as an example of a table custom).
+| Ask entry | Page Q&A | Status |
+|---|---|---|
+| `discarded-joker` | none | Card rule (never callable for mahjong) stated first; claiming for an exposure is labelled common table practice. |
+| `out-of-turn` | `calling-tiles.out-of-turn` | Page now states only the card's rule (claim not allowed, void, play continues; dead only for wrong tile count or incorrect exposure). Any penalty is the owner's call. |
+| `take-back-discard` | `etiquette.take-back` | Page wording is card-supported (a tile cannot be claimed until correctly named); the owner has not ruled on the Ask entry. |
+| `passed-winning-tile` | `winning.passed-winning-tile` | "Nothing on the card penalizes it" was checked against the panel on 2026-08-29 (claim of absence). |
+| `two-dead-hands` | `dead-hands.two-dead` | Sit out and still pay: printed under Misnamed Tile. Remaining two continue: the panel only ends play at three dead hands (Mah Jongg in Error 3), stated on the page as that inference. |
+| `self-drawn-win` | `winning.self-drawn`, `scoring.self-drawn-pays` | Payment unresolved; both surfaces send players to their table. |
+
+`the-card.last-year` stays `house` / `unverified`: the sentence about casual groups using an
+older card has no source in our materials and makes no League claim.
+
+Find My Mahj shared entries `calling-discard` (house note) and `courtesies-vs-rules` were
+corrected in Find My Mahj on 2026-08-29 (FMG PR #13) and copied here verbatim; the drift test
+holds them together.
 
 ## Annual card
 

@@ -95,7 +95,7 @@ test("the corrected /rules pages no longer carry the old wording", async ({ requ
     ["/rules/calling-tiles", [/up until you discard/, /except a discarded joker/, /on top of their rack/, /names no penalty/], [/cannot call and then decide/, /any order of play/, /using the numbers 3, 4, 5, and 6/, /typically results in the hand being declared dead/]],
     ["/rules/dead-hands", [/too few or too many tiles/, /right up until you discard/], [/False mahjong also results in a dead hand/, /group may agree to correct it/]],
     ["/rules/winning", [/play continues with no penalty/, /It depends on whether you exposed/, /other than a joker/], [/set by house rules but typically/, /match what you declared/]],
-    ["/rules/scoring", [/4 times the value of the hand/, /The one exception is Singles and Pairs/, /Payment conventions can vary by group/], [/does not designate specific multipliers/, /standard NMJL payment structure/, /NMJL standard is that no money/]],
+    ["/rules/scoring", [/4 times the value of the hand/, /The one exception is Singles and Pairs/, /Payment conventions can vary by group/], [/does not designate specific multipliers/, /standard NMJL payment structure/, /NMJL standard is that no money/, /League rule book/]],
     ["/rules/etiquette", [/picked a tile from the wall and racked it/, /correctly named/], [/Once the next player has drawn/, /The moment a tile is set down/]],
     ["/learn-mahjong", [/key defines a Pair as 2 like tiles/], [/uses numbers to describe the structure/]],
   ];

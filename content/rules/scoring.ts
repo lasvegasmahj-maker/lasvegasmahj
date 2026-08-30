@@ -35,7 +35,7 @@ export const SCORING: RulesTopic = {
     {
       id: "extra",
       q: "Do any hands pay extra beyond joker-free?",
-      a: "Some groups play that certain named hands (like Singles and Pairs or Quint hands) pay double or triple by house agreement. Beyond joker-free doubling, the card itself names two more multipliers: a player who declared mahjong in error pays double the value of the incorrect hand when the game cannot continue, and a player who misnamed a tile that was then called for mahjong pays the claimant 4 times the value of the hand. Every hand's value is printed beside it on the card. Other multipliers, such as the discarder paying double, come from the League rule book or your table's agreement, not from the card itself.",
+      a: "Some groups play that certain named hands (like Singles and Pairs or Quint hands) pay double or triple by house agreement. Beyond joker-free doubling, the card itself names two more multipliers: a player who declared mahjong in error pays double the value of the incorrect hand when the game cannot continue, and a player who misnamed a tile that was then called for mahjong pays the claimant 4 times the value of the hand. Every hand's value is printed beside it on the card. Other multipliers, such as the discarder paying double, are not printed on the card. Payment conventions can vary by group. Confirm your table's payment rules before play.",
       kind: "standard",
       evidence: "card",
     },

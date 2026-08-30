@@ -792,7 +792,6 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     keywords: ["last year", "old", "card", "previous"],
     answer: pageAnswer("the-card.last-year"),
     varies_by_house: true,
-    house_note: "Casual groups sometimes agree to use an older card; official play always uses the current year's card.",
     confidence: "high",
     source: "lvm_rules_page",
     page_ref: ["the-card.last-year"],
@@ -836,7 +835,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     question: "Can I win on my own draw?",
     patterns: [/self draw/, /(own|my) draw/, /draw.{0,20}(win|last|final) tile/, /win.{0,20}(from|off) the wall/, /\bpay\b.{0,30}self draw/, /self draw.{0,30}\bpay\b/],
     keywords: ["self", "draw", "own", "win", "pay"],
-    answer: pageAnswer("winning.self-drawn"),
+    answer:
+      "A self-drawn win is drawing the tile you need from the wall to complete your hand; you declare mahjong the same way as on a called tile. Whether a self-drawn win pays more than a win on a discard is settled by your group; confirm your table's payment rules before play.",
     varies_by_house: false,
     confidence: "medium",
     source: "derived",
@@ -852,7 +852,6 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     keywords: ["wall game", "pay", "money"],
     answer: pageAnswer("scoring.wall-game"),
     varies_by_house: true,
-    house_note: "Wall game payments are a common house rule; the NMJL standard is no payment.",
     confidence: "high",
     source: "lvm_rules_page",
     page_ref: ["scoring.wall-game"],
@@ -1115,8 +1114,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/(pick up|call|take|claim|grab).{0,30}(discard|thrown).{0,15}joker/, /joker.{0,20}(discard|thrown|on the table).{0,40}(pick|call|take|claim|grab)/, /discard.{0,15}joker/, /joker.{0,15}discard/],
     keywords: ["joker", "discard", "pick up", "call"],
     answer:
-      "The card's joker rule says a discarded joker can never be called for mahjong. Whether a discarded joker can be claimed for an exposure is not printed on the card; common table practice treats a discarded joker as out of the hand entirely, so check with your table. The only way to take a joker from the table is a joker exchange from an exposed group on your own turn.",
-    varies_by_house: false,
+      "The card's joker rule says a discarded joker can never be called for mahjong. Whether a discarded joker can be claimed for an exposure is not printed on the card; common table practice treats a discarded joker as out of the hand entirely, so check with your table. Under that practice, the only way to take a joker from the table is a joker exchange from an exposed group on your own turn.",
+    varies_by_house: true,
     confidence: "high",
     source: "derived",
     related: ["joker-exchange", "calling-discard", "take-back-discard"],
@@ -1140,6 +1139,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
 // Entries that point at a /rules Q&A but deliberately keep their own wording. Each needs a
 // reason; the truth-layer test fails on any other divergence, and on a stale entry here.
 export const ALIGNMENT_EXCEPTIONS: Record<string, string> = {
+  "self-drawn-win":
+    "Same facts as winning.self-drawn, but that page answer opens with 'Yes', which reads wrong for the payment question this entry also answers.",
   "called-dead":
     "Stitched from one Find My Mahj sentence and two page sentences; every sentence is traced by the test.",
 };

@@ -1,7 +1,7 @@
 // Fails only when a file changed since the base commit has more ESLint errors than it had at the base.
 // Pre-existing errors on main stay visible in the advisory full-lint step; they do not block a PR.
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, symlinkSync } from "node:fs";
+import { existsSync, mkdtempSync, realpathSync, symlinkSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 
@@ -27,11 +27,11 @@ function errorsByFile(cwd, files) {
 }
 
 const head = errorsByFile(process.cwd(), changed);
-const baseDir = mkdtempSync(join(tmpdir(), "lint-base-"));
+const baseDir = realpathSync(mkdtempSync(join(tmpdir(), "lint-base-")));
 sh("git", ["worktree", "add", "--detach", baseDir, base]);
-symlinkSync(join(process.cwd(), "node_modules"), join(baseDir, "node_modules"));
 let before;
 try {
+  symlinkSync(join(process.cwd(), "node_modules"), join(baseDir, "node_modules"));
   before = errorsByFile(baseDir, changed.filter((f) => existsSync(join(baseDir, f))));
 } finally {
   spawnSync("git", ["worktree", "remove", "--force", baseDir]);

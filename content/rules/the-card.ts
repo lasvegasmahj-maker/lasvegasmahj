@@ -44,7 +44,7 @@ export const THE_CARD: RulesTopic = {
       q: "Can I play with last year's card?",
       a: "The League releases a new card every spring and the hands change, so play uses the current year's card. In casual home games, groups sometimes agree to use an older card; just make sure everyone is playing from the same card.",
       kind: "house",
-      evidence: "owner",
+      evidence: "unverified",
     },
   ],
 };

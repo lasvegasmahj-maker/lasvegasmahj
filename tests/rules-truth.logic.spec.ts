@@ -150,6 +150,25 @@ test.describe("Ask mirrors the pages", () => {
     expect(KNOWLEDGE_BY_ID.get("discarded-joker")!.answer).toMatch(/not printed on the card/);
   });
 
+  test("Ask text never claims League authority outside a sourced page", () => {
+    for (const e of RULES_KNOWLEDGE) {
+      if (e.source === "shared_approved") continue;
+      expect(e.house_note ?? "", `${e.id} house note`).not.toMatch(NMJL_CLAIM_RE);
+      if (!e.page_ref?.length) expect(e.answer, `${e.id} own text`).not.toMatch(NMJL_CLAIM_RE);
+    }
+    const served = [
+      "How does payment work in a wall game?",
+      "Can I use last year's card?",
+      "Who pays when someone wins on a discard?",
+      "Who pays on a self drawn win?",
+      "Do any hands pay extra beyond joker-free?",
+    ];
+    for (const q of served) {
+      const r = answerDeterministic(q);
+      expect(r.answer, q).not.toMatch(/NMJL standard|official play|League rule book|standard NMJL/i);
+    }
+  });
+
   test("a pending rule is never presented as verified", () => {
     for (const e of RULES_KNOWLEDGE) {
       if (e.source !== "derived") continue;
@@ -193,7 +212,7 @@ test.describe("card-verified corrections stay corrected", () => {
     ["dead-hands.triggers", [/too few or too many tiles/i, /no penalty/i], [/false mahjong also results/i, /house rules vary/i]],
     ["dead-hands.saved", [/up until you discard/i], [/group may agree/i]],
     ["calling-tiles.concealed", [/completes your mahjong/i], []],
-    ["scoring.extra", [/4 times/i, /mahjong in error/i], [/does not designate specific multipliers/i]],
+    ["scoring.extra", [/4 times/i, /mahjong in error/i, /not printed on the card/i, /Payment conventions can vary by group/], [/does not designate specific multipliers/i, /League rule book/i]],
     ["etiquette.take-back", [/correctly named/i], [/the moment a tile is set down/i]],
     ["winning.valid", [/anything you exposed must be part of it/i], [/match what you declared/i]],
     ["winning.discard-win", [/other than a joker/i], []],
@@ -202,6 +221,7 @@ test.describe("card-verified corrections stay corrected", () => {
     ["scoring.self-drawn-pays", [/Payment conventions can vary by group/], [/each pay the full amount/i]],
     ["winning.self-drawn", [/settled by your group/i], [/still pay the standard amount/i]],
     ["scoring.wall-game", [/Confirm your table/i], [/NMJL standard/i]],
+    ["dead-hands.two-dead", [/only stops play when three hands are dead/i], []],
     ["the-card.new-card", [/every spring/i], [/only valid card/i, /small annual fee/i, /retired/i]],
     ["the-card.last-year", [/current year's card/i], [/official or competitive/i]],
     ["winning.passed-winning-tile", [/Nothing on the card penalizes/i], [/There is no penalty/i]],

@@ -95,7 +95,7 @@ test.describe("knowledge base integrity", () => {
     // checked out or a half-edited working tree.
     const cwd = path.dirname(path.dirname(path.dirname(sibling)));
     let src: string | null = null;
-    for (const ref of ["main", "HEAD"]) {
+    for (const ref of ["origin/main", "main", "HEAD"]) {
       try {
         src = execSync(`git show ${ref}:lib/rules/knowledge.ts`, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
         break;
@@ -104,9 +104,9 @@ test.describe("knowledge base integrity", () => {
       }
     }
     src ??= fs.readFileSync(sibling, "utf8");
-    const re = /id:\s*"([^"]+)"[\s\S]*?approved_answer:\s*"((?:[^"\\]|\\.)*)"[\s\S]*?varies_by_house:\s*(true|false)/g;
-    const shared = new Map<string, { answer: string; varies: boolean }>();
-    for (const m of src.matchAll(re)) shared.set(m[1], { answer: JSON.parse(`"${m[2]}"`), varies: m[3] === "true" });
+    const re = /id:\s*"([^"]+)"[\s\S]*?approved_answer:\s*"((?:[^"\\]|\\.)*)"[\s\S]*?varies_by_house:\s*(true|false)(?:,\s*house_note:\s*"((?:[^"\\]|\\.)*)")?/g;
+    const shared = new Map<string, { answer: string; varies: boolean; note: string }>();
+    for (const m of src.matchAll(re)) shared.set(m[1], { answer: JSON.parse(`"${m[2]}"`), varies: m[3] === "true", note: m[4] ? JSON.parse(`"${m[4]}"`) : "" });
     expect(shared.size).toBeGreaterThanOrEqual(12);
     const ours = RULES_KNOWLEDGE.filter((e) => e.source === "shared_approved");
     const ourIds = new Set(ours.map((e) => e.id));
@@ -117,6 +117,7 @@ test.describe("knowledge base integrity", () => {
       expect(theirs, `missing in FMG: ${e.id}`).toBeTruthy();
       expect(e.answer, e.id).toBe(theirs!.answer);
       expect(e.varies_by_house, e.id).toBe(theirs!.varies);
+      expect(e.house_note ?? "", `${e.id} house note`).toBe(theirs!.note);
     }
   });
 });
