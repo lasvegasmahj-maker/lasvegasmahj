@@ -43,9 +43,9 @@ answer a rules question with text outside those files. Each Ask entry carries a 
 | `owner_approved`  | Approved by the owner (2026-08-29) with no matching `/rules` Q&A yet: `call-during-charleston`, `joker-in-news`, `call-for-pair`. No "Read more" link until a page carries the rule. | Standard rule / Can vary by house rule |
 | `derived`         | Composed only from approved statements, but the exact wording has not been reviewed by the instructor. | Pending instructor review    |
 
-The optional model layer (`lib/ask/llm.ts`) may rephrase retrieved entries, resolve a
-follow-up, ask one clarifying question, or route to another approved entry. It never decides a
-rule: see "Conversational layer" below.
+The optional model layer (`lib/ask/llm.ts`) may frame a retrieved entry with a fixed opener,
+resolve a follow-up, ask one clarifying question, or route to another approved entry. It never
+decides or rewords a rule: see "Conversational layer" below.
 
 ## How the two sites stay in sync
 
@@ -118,23 +118,27 @@ How a typed question is answered when a model key is present:
 1. The site's own engine (`lib/ask/engine.ts`) reads the question, picks the approved entry
    that answers it, and prepares the plain approved answer. This happens before any model call
    and is what visitors get when the model is off, slow, or wrong.
-2. The model is shown only the approved entries the engine picked, the recent conversation
-   (rebuilt from approved answers, never from the browser's text), and the follow-up questions
-   the engine allows. It may do five things: choose one opener from a fixed list ("Not quite.",
-   "No, your friend has that backwards.", "Two parts to that.", and so on; the full list is
-   `OPENERS` in `lib/ask/llm.ts`), keep or drop an entry's bare "Yes." or "No.", add a second
-   approved entry in full when the player asked two things, pick the follow-up chips, or ask
-   one clarifying question in the form "Are you asking about X, or about Y?". It may also say
-   "this is not covered" or point at a different approved entry, which is then served word for
-   word.
+2. The model is shown the approved entries the engine picked, the list of all entry questions
+   (so it can point at a better entry), the recent conversation (rebuilt from approved answers,
+   never from the browser's text), and the follow-up questions the engine allows. It may do
+   five things: choose one opener from a fixed list ("Not quite.", "Nope.", "Two parts to
+   that.", and so on; the full list is `OPENERS` in `lib/ask/llm.ts`), keep or drop an entry's
+   bare "Yes." or "No.", add a second approved entry in full when the player asked two things
+   (introduced by that entry's own question), pick the follow-up chips, or ask one clarifying
+   question that quotes two entries' own questions ("Are you asking about A or B?"). It may
+   also say "this is not covered" or point at a different approved entry, which is then served
+   word for word.
 3. Everything the model returns is checked in `validateModelOutput` (pure, tested without a
    network in `tests/ask-model.logic.spec.ts`). The approved sentences must appear word for
-   word, complete, and in order; the opener must be on the list and a Yes or No opener is
-   allowed only when the entry itself opens with that bare word; a second entry must be whole;
-   a clarification may only name topics (no numbers, no rule words, never the card year). The
-   text shown to the visitor is rebuilt from the approved strings, so nothing the model typed
-   reaches the page. Anything else, and the plain approved answer is served instead. A visitor
-   never sees an internal error.
+   word, complete, and in order; the opener must be on the list; "Yes." or "No." (and "Nope.",
+   "Not quite.") is allowed only when the entry itself opens with that bare word, only on the
+   entry the engine chose, and only when the question carries no opinion of its own ("so I
+   can't...", "my friend says...", "...right?" get a neutral opener at most); a second entry
+   must be whole and may not be a house-varying entry attached to a standard rule; a
+   clarification must quote two entries' own questions. The text shown to the visitor is
+   rebuilt from the approved strings, so nothing the model typed reaches the page. Anything
+   else, and the plain approved answer is served instead. A visitor never sees an internal
+   error.
 
 Why the model may not paraphrase: two independent review rounds showed that any free wording,
 even from harmless-looking words, can reverse a rule ("The answer is yes." before a No rule),

@@ -18,8 +18,8 @@ const EFFORT_SUPPORTED = /^claude-(opus|sonnet)-(5|4-[678])/.test(MODEL);
 export const MODEL_TIMEOUT_MS = 6_000;
 const MAX_OUTPUT_TOKENS = EFFORT_SUPPORTED ? 1_500 : 700;
 const MAX_HISTORY_TURNS = 6;
-const MAX_ANSWER_CHARS = 1_200;
-const MAX_CLARIFY_CHARS = 160;
+const MAX_ANSWER_CHARS = 1_600;
+const MAX_CLARIFY_CHARS = 240;
 
 const MONTH_RE = /\b(january|february|march|april|june|july|august|september|october|november|december)\b|\b(in|every|each|late|early|mid|by|around|before|after) may\b/i;
 const DASH_RE = /[‒-―−]/;
@@ -28,6 +28,9 @@ const MARKDOWN_RE = /\*\*|__|\[[^\]]+\]\(|^#+\s/m;
 const STATUS_RE = /\b(pending|unverified|verified|official(ly)?|standard|approved|instructor)\b/i;
 const LEAGUE_RE = /\b(nmjl|league)\b/i;
 const CARD_YEAR_ASK_RE = /\b(year|card)\b/i;
+// A question that carries its own verdict ("so jokers can't go in a pair, right?", "my friend
+// says...") gets no Yes or No from the model: those words would answer the premise, not the rule.
+const PREMISE_RE = /\b(can't|cannot|don't|doesn't|isn't|aren't|won't|not|never|no|friend|friends|says|said|told|right|correct|true|wrong)\b/;
 
 export function isModelEnabled(): boolean {
   return Boolean(process.env.ANTHROPIC_API_KEY) && process.env.ASK_MODEL_DISABLED !== "1";
@@ -94,15 +97,7 @@ export const OPENERS: ReadonlyArray<readonly [string, "yes" | "no" | null]> = [
   ["No.", "no"],
   ["Nope.", "no"],
   ["Not quite.", "no"],
-  ["No, your friend has that backwards.", "no"],
-  ["No, that is a common mix-up.", "no"],
-  ["No, and here is the rule.", "no"],
-  ["Not quite, here is the rule.", "no"],
   ["Yes.", "yes"],
-  ["Right.", "yes"],
-  ["Yes, your friend has it right.", "yes"],
-  ["Yes, and here is the rule.", "yes"],
-  ["Right, here is the rule.", "yes"],
   ["Good question.", null],
   ["Here is how that works.", null],
   ["Here is the rule.", null],
@@ -118,11 +113,11 @@ const SYSTEM_PROMPT = [
   "",
   "GROUND TRUTH. The APPROVED ENTRIES in the user message are the only source of rules. If no provided entry answers the question but the KNOWLEDGE INDEX lists one that would, return that id in entry_ids with covered true and leave conversational_answer empty. If nothing covers it, return covered false and leave the text fields empty; never answer from memory.",
   "",
-  "HOW TO ANSWER. conversational_answer is exactly: one opener copied from OPENERS below, or no opener, followed by the main entry's text copied word for word and complete. Nothing else: never paraphrase, shorten, reorder, or add a sentence of your own. If the entry starts with a bare \"Yes.\" or \"No.\" you may drop that word when you use an opener of the same class. Use a Yes-class opener only when the entry starts with \"Yes.\" and a No-class opener only when it starts with \"No.\"; otherwise use a neutral opener or none. When the player asks two things and a second entry covers the second part, cite both ids and put the second entry's full text, word for word, in optional_explanation.",
+  "HOW TO ANSWER. conversational_answer is exactly: one opener copied from OPENERS below, or no opener, followed by the main entry's text copied word for word and complete. Nothing else: never paraphrase, shorten, reorder, or add a sentence of your own. \"Yes.\", \"No.\", \"Nope.\" and \"Not quite.\" may be used only when the entry itself starts with that bare Yes. or No. and the player's question is a plain question with no opinion in it; then drop the entry's own bare word. If the question states a premise (\"so I can't...\", \"my friend says...\", \"...right?\"), use a neutral opener or none and keep the entry's own words. When the player asks two things and a second entry covers the second part, cite both ids and put the second entry's full text, word for word, in optional_explanation; entries marked money or pending are never combined.",
   "",
-  "OPENERS. No class: \"No.\" \"Nope.\" \"Not quite.\" \"No, your friend has that backwards.\" \"No, that is a common mix-up.\" \"No, and here is the rule.\" \"Not quite, here is the rule.\" Yes class: \"Yes.\" \"Right.\" \"Yes, your friend has it right.\" \"Yes, and here is the rule.\" \"Right, here is the rule.\" Neutral: \"Good question.\" \"Here is how that works.\" \"Here is the rule.\" \"Two parts to that.\" \"That comes up a lot.\" \"Here is what applies.\"",
+  "OPENERS. Verdict openers: \"No.\" \"Nope.\" \"Not quite.\" \"Yes.\" Neutral openers: \"Good question.\" \"Here is how that works.\" \"Here is the rule.\" \"Two parts to that.\" \"That comes up a lot.\" \"Here is what applies.\"",
   "",
-  "FOLLOW-UPS. Resolve short follow-ups such as \"what about a kong?\" against the previous topic in CONVERSATION SO FAR and pick the entry that answers it. Ask a clarifying question only when the entries could answer two different things and the difference changes the answer, in exactly this form: \"Are you asking about X, or about Y?\" where X and Y name the two topics in a few words. Never ask which year's card for a general rule.",
+  "FOLLOW-UPS. Resolve short follow-ups such as \"what about a kong?\" against the previous topic in CONVERSATION SO FAR and pick the entry that answers it. Ask a clarifying question only when two of the provided entries could each answer the question and the difference changes the answer, in exactly this form: \"Are you asking about <question of entry A> or <question of entry B>?\" using the two entries' own questions word for word. Never ask which year's card for a general rule.",
   "",
   `THE CARD. The League publishes a new card every spring; the current card is the ${CURRENT_CARD_YEAR} card. Never reproduce hands, categories, or values from any year's card.`,
   "",
@@ -133,7 +128,7 @@ const SYSTEM_PROMPT = [
 ].join("\n");
 
 function renderEntry(e: KnowledgeEntry): string {
-  const note = e.source === "derived" ? " [pending review: copy exactly, no opener]" : e.varies_by_house ? " [varies by house rule]" : "";
+  const note = e.source === "derived" ? " [pending review: copy exactly, no opener]" : e.category === "scoring" ? " [money: copy exactly, no opener]" : e.varies_by_house ? " [varies by house rule]" : "";
   return `[id=${e.id}] Q: ${e.question}\nA: ${approvedText(e)}${note}`;
 }
 
@@ -245,13 +240,8 @@ function styleOk(text: string): boolean {
   return !(LINK_RE.test(text) || DASH_RE.test(text) || MARKDOWN_RE.test(text));
 }
 
-// Words that only scaffold a question; a clarification's topics may not lean on them.
-const SCAFFOLD = new Set("can could may might should must do does did is are was were be been i we you it what when how who which where why if allowed allow ok okay fine right wrong legal never always not no yes".split(" "));
-const CLARIFY_FUNCTION = new Set("a an the your own another someone's player's in on from of with as to and for".split(" "));
-const CLARIFY_TOPIC = new Set("tile tiles hand hands exposure exposures discard discards discarded group groups mahjong pass passing passes call calling table".split(" "));
-
-function stemLite(w: string): string {
-  return w.replace(/'s$/, "").replace(/(ing|ed|es|s)$/, "").replace(/e$/, "");
+function stripQuestion(q: string): string {
+  return norm(q).replace(/^["']+|["'?]+$/g, "").trim();
 }
 
 // Every check that can reject a model answer, kept pure so tests can drive it without a
@@ -263,22 +253,23 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
   const answerText = [cleanText(raw.conversational_answer), cleanText(raw.optional_explanation)].filter(Boolean).join(" ");
   const followups = pickFollowups(raw.followups, input.followupOptions);
 
+  // The owner's pending and money answers stand whatever the model proposes, including a
+  // clarification or a different entry.
+  const preferred = input.preferred ? KNOWLEDGE_BY_ID.get(input.preferred) : undefined;
+  if (preferred && mustServeVerbatim(preferred)) {
+    return { kind: "answer", entry: preferred, answer: approvedText(preferred), label: labelFor(preferred), followups, verbatim: true };
+  }
+
   if (clarify) {
     const s = norm(clarify);
-    if (s.length > MAX_CLARIFY_CHARS || !styleOk(clarify) || /\d/.test(s) || STATUS_RE.test(s) || LEAGUE_RE.test(s) || MONTH_RE.test(s) || CARD_YEAR_ASK_RE.test(s)) return null;
-    const m = s.match(/^(are you asking about|do you mean|is this about) ([a-z' ]+?),? or (?:about )?([a-z' ]+)\?$/);
+    if (s.length > MAX_CLARIFY_CHARS || !styleOk(clarify) || input.candidates.some(mustServeVerbatim)) return null;
+    const m = s.match(/^(?:are you asking about|do you mean|is this about) (.+?),? or (?:about )?(.+?)\??$/);
     if (!m) return null;
-    const topic = new Set<string>([...CLARIFY_TOPIC].map(stemLite));
-    for (const c of input.candidates) {
-      if (mustServeVerbatim(c)) continue;
-      for (const w of `${c.question} ${c.keywords.join(" ")}`.toLowerCase().replace(/[^a-z' ]/g, " ").split(/\s+/).filter(Boolean)) if (!SCAFFOLD.has(w)) topic.add(stemLite(w));
-    }
-    for (const part of [m[2], m[3]]) {
-      const words = part.split(/\s+/).filter(Boolean);
-      if (!words.length || words.length > 7) return null;
-      if (!words.every((w) => CLARIFY_FUNCTION.has(w) || topic.has(stemLite(w)))) return null;
-    }
-    return { kind: "clarify", answer: clarify.charAt(0).toUpperCase() + clarify.slice(1), followups };
+    const pick = (text: string) => input.candidates.find((c) => stripQuestion(c.question) === stripQuestion(text));
+    const a = pick(m[1]);
+    const b = pick(m[2]);
+    if (!a || !b || a.id === b.id) return null;
+    return { kind: "clarify", answer: `Are you asking about "${a.question}" or "${b.question}"?`, followups };
   }
 
   if (!covered || !ids.length) return { kind: "unverified" };
@@ -286,11 +277,6 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
   const cited = ids.map((id) => KNOWLEDGE_BY_ID.get(id)).filter(Boolean) as KnowledgeEntry[];
   const primary = cited[0];
   if (!primary) return { kind: "unverified" };
-
-  const preferred = input.preferred ? KNOWLEDGE_BY_ID.get(input.preferred) : undefined;
-  if (preferred && mustServeVerbatim(preferred) && primary.id !== preferred.id) {
-    return { kind: "answer", entry: preferred, answer: approvedText(preferred), label: labelFor(preferred), followups, verbatim: true };
-  }
 
   const candidateIds = new Set(input.candidates.map((c) => c.id));
   const verbatim = { kind: "answer" as const, entry: primary, answer: approvedText(primary), label: labelFor(primary), followups, verbatim: true };
@@ -310,41 +296,46 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
 
   const before = sentences.slice(0, at);
   const after = sentences.slice(at + main.bodyNorm.length);
-  if (before.length > 1) return null;
+  if (before.length > 2) return null;
+  const lastUser = [...input.history].reverse().find((t) => t.role === "user")?.content ?? "";
+  const premise = PREMISE_RE.test(norm(`${input.question} ${lastUser}`));
+  const verdictAllowed = !premise && (!preferred || preferred.id === primary.id);
   const mainClass = main.opener ? openerClass(main.opener) : null;
   const served: string[] = [];
-  if (before.length === 1) {
-    if (main.opener && before[0] === norm(main.opener)) served.push(main.opener);
-    else {
-      const opener = OPENERS_BY_NORM.get(before[0]);
-      if (!opener || (opener.cls && opener.cls !== mainClass)) return null;
-      served.push(opener.text);
+  if (before.length) {
+    const bare = main.opener && before[before.length - 1] === norm(main.opener) ? main.opener : null;
+    const listed = OPENERS_BY_NORM.get(before[0]);
+    // On a premise question the entry's own bare Yes or No would answer the premise too.
+    if (bare && premise) return null;
+    if (before.length === 2) {
+      if (!bare || !listed || listed.cls) return null;
+      served.push(listed.text, bare);
+    } else if (bare) {
+      served.push(bare);
+    } else {
+      if (!listed) return null;
+      if (listed.cls && (!verdictAllowed || listed.cls !== mainClass)) return null;
+      served.push(listed.text);
     }
   }
   served.push(...main.body);
 
-  let secondary: KnowledgeEntry | null = null;
   if (after.length) {
+    let secondary: KnowledgeEntry | null = null;
     for (const e of cited.slice(1)) {
       const parts = entryParts(e);
       const full = splitSentences(norm(approvedText(e)));
-      if (sameSequence(after, full)) {
+      if (sameSequence(after, full) || (parts.opener && sameSequence(after, parts.bodyNorm))) {
         secondary = e;
-        served.push(approvedText(e));
-        break;
-      }
-      if (parts.opener && sameSequence(after, parts.bodyNorm)) {
-        secondary = e;
-        served.push(...parts.body);
         break;
       }
     }
-    if (!secondary) return null;
+    if (!secondary || secondary.id === primary.id) return null;
+    if (labelFor(secondary) === "house" && labelFor(primary) !== "house") return null;
+    served.push(secondary.question, approvedText(secondary));
   }
 
-  const used = secondary ? [primary, secondary] : [primary];
-  const label: AskLabel = used.some((e) => labelFor(e) === "house") ? "house" : labelFor(primary);
-  return { kind: "answer", entry: primary, answer: served.join(" "), label, followups, verbatim: false };
+  return { kind: "answer", entry: primary, answer: served.join(" "), label: labelFor(primary), followups, verbatim: false };
 }
 
 function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {

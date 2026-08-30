@@ -435,7 +435,7 @@ test.describe("model output validation", () => {
     expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Do you mean the card that comes out in March?" }), input)).toBeNull();
     expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Which year's card are you playing?" }), input)).toBeNull();
     expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Do you mean a group of 7 tiles?" }), input)).toBeNull();
-    expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Are you asking about a joker in a pair, or about a joker as a single tile?" }), input)?.kind).toBe("clarify");
+    expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Are you asking about a joker in a pair, or about a joker as a single tile?" }), input)).toBeNull();
   });
 
   test("rejects invented numbers, dashes, months, links, and unknown ids", () => {
