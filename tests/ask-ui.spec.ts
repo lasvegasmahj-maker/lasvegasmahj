@@ -194,3 +194,23 @@ test.describe("entry points", () => {
     }
   });
 });
+
+test.describe("model clarification rendering", () => {
+  test("a Quick check answer from the API renders with its label and chips, on desktop and phone", async ({ page, isMobile }) => {
+    await page.route("**/api/ask", (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ ok: true, answer: 'Are you asking about "When can I exchange a joker?" or "Can I use a joker in a pair?"', label: "clarify", kind: "clarify", followups: ["When can I exchange a joker?", "Can I use a joker in a pair?"], via: "model" }),
+      })
+    );
+    await page.goto("/ask");
+    await page.locator("#ask-input").fill("what can i do with a joker on the table");
+    await page.locator("#ask-input").press("Enter");
+    await expect(page.locator(".ask-label-clarify").last()).toHaveText("Quick check");
+    await expect(page.getByText("Are you asking about", { exact: false })).toBeVisible();
+    await expect(page.locator(".ask-chip", { hasText: "When can I exchange a joker?" })).toBeVisible();
+    await expect(page.locator("a", { hasText: /rules page/ })).toHaveCount(0);
+    if (isMobile) await expect(page.locator("#ask-input")).toBeInViewport();
+  });
+});

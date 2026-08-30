@@ -7,7 +7,7 @@ import {
 } from "./knowledge";
 
 // Deterministic core of Ask a Mahjong Rule. Every answer path here works with no model
-// at all, and the model layer (lib/ask/llm.ts) may only rephrase what this file retrieves.
+// at all, and the model layer (lib/ask/llm.ts) may only frame what this file retrieves.
 // Order of guards matters: card content is refused before any retrieval so no phrasing can
 // pull hand listings out of the knowledge base; other variants get a clarification; an
 // unmatched question returns an honest "cannot verify", never a guessed rule.
@@ -58,6 +58,7 @@ const CARD_CONTENT_RES: RegExp[] = [
   /\bcard\b.{0,25}(pdf|copy|image|photo|scan|picture|download)/,
   /(pdf|copy|image|photo|scan|picture|download).{0,25}\bcard\b/,
   /\bhand\b (on|for|from|in) (this|the|last|next|the current|the \d{4}) year/,
+  /\b(read|list|tell|show|give|send|text|type|write|scan|photo|print|share|post)( me)?( all)?( the| this| your)?( entire| whole| full| complete| new| current)?( year'?s?| \d{4})? card\b/,
   /(is|are) (there|a|an|any) .{0,40}\bhand\b.{0,20}(on|in) (the|this|the \d{4}|this year'?s?) card/,
   /(how many|what|which).{0,10}(point|value)\b.{0,40}\b(hand|line|card)\b/,
   /\b(\d{4}|this year'?s?|current|new) card\b.{0,30}\b(hand|line|category|section)\b/,
@@ -414,13 +415,14 @@ export function answerDeterministic(raw: string, history: Turn[] = []): EngineRe
   };
 }
 
-// Synthesis guard (shared with Find My Mahj): a model may only rephrase approved text, so any
-// whole number in its output must already exist in the approved input. A new number means
-// new rule content, and the caller ships the approved text verbatim instead.
-export function synthesisDigitGuard(input: string, output: string): boolean {
-  const allowed = new Set(input.match(/\d+/g) ?? []);
-  for (const n of output.match(/\d+/g) ?? []) if (!allowed.has(n)) return false;
-  return true;
+// A message that asks two things ("Can I use a joker in a pair? And in a kong?") is split so
+// each part is retrieved on its own; the model may then answer both from approved entries.
+export function splitQuestions(raw: string): string[] {
+  const parts = String(raw || "")
+    .split(/\?|;|\band (?:also|what about|how about)\b|\balso\b/i)
+    .map((p) => (p || "").trim())
+    .filter((p) => p.length >= 8 && !/^(also|and)$/i.test(p));
+  return parts.slice(0, 3);
 }
 
 // Gap telemetry summary: topic only, never a transcript. Emails then digits are stripped

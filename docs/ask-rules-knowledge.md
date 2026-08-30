@@ -43,10 +43,9 @@ answer a rules question with text outside those files. Each Ask entry carries a 
 | `owner_approved`  | Approved by the owner (2026-08-29) with no matching `/rules` Q&A yet: `call-during-charleston`, `joker-in-news`, `call-for-pair`. No "Read more" link until a page carries the rule. | Standard rule / Can vary by house rule |
 | `derived`         | Composed only from approved statements, but the exact wording has not been reviewed by the instructor. | Pending instructor review    |
 
-The optional model layer (`lib/ask/llm.ts`) may rephrase retrieved entries; it cannot add
-rule content. Every model answer is validated: cited entry ids must exist, numbers must
-already appear in the cited text, no dashes, no month names, no links. Any failure serves
-the approved text verbatim.
+The optional model layer (`lib/ask/llm.ts`) may frame a retrieved entry with a fixed opener,
+resolve a follow-up, ask one clarifying question, or route to another approved entry. It never
+decides or rewords a rule: see "Conversational layer" below.
 
 ## How the two sites stay in sync
 
@@ -112,19 +111,74 @@ Update it each spring when the new card releases; a logic test fails if it falls
 a year behind the calendar. No card hands or point values exist anywhere in the code; generic
 teaching terms such as "Singles and Pairs" and "Quint" appear because the live /rules pages use them.
 
-## Model configuration (Vercel environment variables)
+## Conversational layer (optional model)
+
+How a typed question is answered when a model key is present:
+
+1. The site's own engine (`lib/ask/engine.ts`) reads the question, picks the approved entry
+   that answers it, and prepares the plain approved answer. This happens before any model call
+   and is what visitors get when the model is off, slow, or wrong.
+2. The model is shown the approved entries the engine picked, the list of all entry questions
+   (so it can point at a better entry), the recent conversation (rebuilt from approved answers,
+   never from the browser's text), and the follow-up questions the engine allows. It may do
+   five things: choose one neutral opener from a fixed list ("Good question.", "Two parts to
+   that.", "Here is the rule.", and so on; the full list is `OPENERS` in `lib/ask/llm.ts`),
+   keep or drop an entry's bare "Yes." or "No.", add a second approved entry in full when the
+   player asked two things (introduced by that entry's own question), pick the follow-up chips,
+   or ask one clarifying question that quotes two entries' own questions ("Are you asking
+   about A or B?"). It may also say "this is not covered" or, when the engine found nothing,
+   point at an approved entry, which is then served word for word. It never adds a Yes or No of
+   its own.
+3. Everything the model returns is checked in `validateModelOutput` (pure, tested without a
+   network in `tests/ask-model.logic.spec.ts`). The approved sentences must appear word for
+   word, complete, and in order; the opener must be on the neutral list; the entry's own bare
+   "Yes." or "No." is kept only on a plain question (one that starts with can, is, do, what,
+   when, how and carries no opinion, report, negation, or inversion) about the entry the engine
+   chose, and is dropped everywhere else ("so I can't...", "my friend says...", "is a joker
+   prohibited...", "I thought..."); pointing at an entry the engine did not retrieve is allowed
+   only when it retrieved nothing; an entry other than the engine's pick is introduced by its
+   own question; a second entry must be whole, carry the same label as the first, and is the
+   only case where "Two parts to that." is allowed; a clarification must quote two retrieved
+   entries' own questions, one of them the engine's pick (never a pending or money entry). The text shown to the visitor is rebuilt from the approved strings, so nothing
+   the model typed reaches the page. Anything else, and the plain approved answer is served
+   instead. A visitor never sees an internal error.
+
+Why the model may not paraphrase or add a verdict: five independent review rounds showed that
+any model-chosen wording, even a bare "Not quite.", can contradict the player's phrasing ("Is a
+joker prohibited in a pair?") or reverse a rule, drop an exception, or hedge a League rule into
+table practice, and no word-level check can catch that. So the entry speaks and the model
+frames. The live battery
+(`tests/ask-model-live.logic.spec.ts`) confirms the behaviour with the real provider and a
+separate judge model whenever a key is present.
+
+The model is never consulted for: starter and follow-up chips (they match an entry's own
+wording and are served verbatim), card-content requests (refused before retrieval), off-topic
+and small-talk messages, other mahjong variants, or when the per-instance fuses are spent.
+
+Entries that are always served word for word, never framed, combined, or swapped for a
+neighbour: the six pending entries (`PENDING_BY_OWNER_DECISION`) and every `scoring` (money)
+entry. The model never returns a rule status, a source, a Read more destination, a payment
+rule, a card-year note, or a nudge; `labelFor()` and `readMoreUrl()` decide those from the
+entries actually used.
+
+Limits: 6 seconds per model call with no retries (the plain answer is already prepared, so a
+slow provider only costs the wait), 700 output tokens (1,500 on models that think first),
+300 character questions, the last 6 turns of context.
 
 | Variable            | Effect |
 |---------------------|--------|
-| `ANTHROPIC_API_KEY` | Turns on the conversational layer. Absent: fully deterministic, approved text only. |
-| `ASK_MODEL`         | Optional model id override (default `claude-opus-5`). |
-| `ASK_MODEL_DISABLED`| Set to `1` to switch the model off without removing the key. |
+| `ANTHROPIC_API_KEY` | Turns on the conversational layer. Absent: fully deterministic, approved text only. Server only; never `NEXT_PUBLIC_`. |
+| `ASK_MODEL`         | Optional model id override. Default: `claude-haiku-4-5` (`DEFAULT_MODEL` in `lib/ask/llm.ts`). |
+| `ASK_MODEL_DISABLED`| Set to `1` to switch the model off while Ask keeps working from approved text. |
 | `ASK_DISABLED`      | Set to `1` to switch the whole helper off: /ask shows a short notice and the API returns 503. Links stay in place. |
 
-Cost fuses: 30 questions per minute and 400 per day per IP (a venue's players share one IP); 40 model calls per minute and
-1,500 per day per warm instance (beyond that, answers fall back to approved text, never an
-error); 3,000 output tokens per call (this also covers the model's thinking on Opus 5); 300 character questions; last 6 turns of context.
-Tapping a starter or follow-up chip never calls the model.
+Cost fuses: 30 questions per minute and 400 per day per IP (a venue's players share one IP);
+40 model calls per minute and 1,500 per day per warm instance (beyond that, answers fall back
+to approved text, never an error). The system prompt is about 1,600 tokens and, on the default
+model, below the size the provider caches, so every call pays for it. Before changing the
+model or the prompt, run the live battery with a key:
+`ANTHROPIC_API_KEY=... ASK_MODEL=<id> pnpm test:logic -- tests/ask-model-live`. It prints
+calls, latency and token counts for the cost estimate.
 
 ## What is logged
 
