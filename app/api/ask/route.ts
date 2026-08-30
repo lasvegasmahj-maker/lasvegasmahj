@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
           }
         }
       }
-      const m = await composeWithModel({ question, history, candidates, followupOptions: options });
+      const m = await composeWithModel({ question, history, candidates, followupOptions: options, preferred: det.entry?.id });
       if (m?.kind === "answer") {
         response = {
           ...response,

@@ -26,8 +26,8 @@ async function serve(question: string, history: Turn[] = []): Promise<Served> {
   const options = det.entry ? buildFollowups(det.entry, askedEntryIds(history), 6) : det.followups;
   const candidates = [...det.candidates];
   const parts = splitQuestions(question);
-  if (parts.length > 1) for (const part of parts) for (const c of answerDeterministic(part, history).candidates.slice(0, 2)) if (!candidates.some((x) => x.id === c.id) && candidates.length < 6) candidates.push(c);
-  const input: ModelInput = { question, history, candidates, followupOptions: options };
+  if (parts.length > 1) for (const part of parts) for (const c of answerDeterministic(part, history).candidates.slice(0, 2)) if (c.source !== "derived" && c.category !== "scoring" && !candidates.some((x) => x.id === c.id) && candidates.length < 6) candidates.push(c);
+  const input: ModelInput = { question, history, candidates, followupOptions: options, preferred: det.entry?.id };
   const started = Date.now();
   const m = await composeWithModel(input);
   const ms = Date.now() - started;
@@ -66,10 +66,15 @@ test.describe("live model battery", () => {
   test.setTimeout(180_000);
 
   test.beforeAll(() => {
+    const originalError = console.error;
+    console.error = (...args: unknown[]) => {
+      const line = typeof args[0] === "string" ? args[0] : "";
+      if (line.includes('"event":"ask_model_error"')) modelErrors++;
+      originalError.apply(console, args as []);
+    };
     const original = console.info;
     console.info = (...args: unknown[]) => {
       const line = typeof args[0] === "string" ? args[0] : "";
-      if (line.includes('"event":"ask_model_error"')) modelErrors++;
       if (line.includes('"event":"ask_model"')) {
         try {
           const j = JSON.parse(line);

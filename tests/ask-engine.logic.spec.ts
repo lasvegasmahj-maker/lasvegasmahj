@@ -417,6 +417,7 @@ test.describe("model output validation", () => {
 
   test("accepts a framed verbatim answer and keeps chips from the option list", () => {
     const r = validateModelOutput(out({ conversational_answer: `Nope. ${body}`, followups: ["Made up question?", input.followupOptions[1]] }), input);
+    expect(r?.kind === "answer" && r.answer).toBe(`Nope. ${body}`);
     expect(r?.kind).toBe("answer");
     if (r?.kind !== "answer") return;
     expect(r.entry.id).toBe("joker-in-pair");
@@ -434,7 +435,7 @@ test.describe("model output validation", () => {
     expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Do you mean the card that comes out in March?" }), input)).toBeNull();
     expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Which year's card are you playing?" }), input)).toBeNull();
     expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Do you mean a group of 7 tiles?" }), input)).toBeNull();
-    expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Do you mean a joker in a pair, or a joker as a single tile?" }), input)?.kind).toBe("clarify");
+    expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Are you asking about a joker in a pair, or about a joker as a single tile?" }), input)?.kind).toBe("clarify");
   });
 
   test("rejects invented numbers, dashes, months, links, and unknown ids", () => {

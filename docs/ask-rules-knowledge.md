@@ -120,33 +120,38 @@ How a typed question is answered when a model key is present:
    and is what visitors get when the model is off, slow, or wrong.
 2. The model is shown only the approved entries the engine picked, the recent conversation
    (rebuilt from approved answers, never from the browser's text), and the follow-up questions
-   the engine allows. It may do four things: put one short opener in front of the approved
-   sentences ("Not quite.", "No, your friend has that backwards."), add the relevant sentences
-   of a second approved entry when the player asked two things, pick the follow-up chips, or
-   ask one short clarifying question. It may also say "this is not covered" or point at a
-   different approved entry, which is then served word for word.
+   the engine allows. It may do five things: choose one opener from a fixed list ("Not quite.",
+   "No, your friend has that backwards.", "Two parts to that.", and so on; the full list is
+   `OPENERS` in `lib/ask/llm.ts`), keep or drop an entry's bare "Yes." or "No.", add a second
+   approved entry in full when the player asked two things, pick the follow-up chips, or ask
+   one clarifying question in the form "Are you asking about X, or about Y?". It may also say
+   "this is not covered" or point at a different approved entry, which is then served word for
+   word.
 3. Everything the model returns is checked in `validateModelOutput` (pure, tested without a
    network in `tests/ask-model.logic.spec.ts`). The approved sentences must appear word for
-   word and complete; the opener may use only everyday words (no tile names, groups, numbers,
-   penalties, payments, League or status words); a Yes or No opener is allowed only when the
-   entry itself opens that way; a clarification must be one question built from the topic words
-   of the entries and may never ask which year's card. Anything else, and the plain approved
-   answer is served instead. A visitor never sees an internal error.
+   word, complete, and in order; the opener must be on the list and a Yes or No opener is
+   allowed only when the entry itself opens with that bare word; a second entry must be whole;
+   a clarification may only name topics (no numbers, no rule words, never the card year). The
+   text shown to the visitor is rebuilt from the approved strings, so nothing the model typed
+   reaches the page. Anything else, and the plain approved answer is served instead. A visitor
+   never sees an internal error.
 
-Why the model may not paraphrase: a word-level check cannot tell "a joker can never be used in
-a pair" from "a joker can be used in a pair" once the words are shuffled, and a second model
-judging the first would cost twice as much and still not be a guarantee. So the entry speaks
-and the model frames. The live battery (`tests/ask-model-live.logic.spec.ts`) confirms the
-behaviour with the real provider and a separate judge model whenever a key is present.
+Why the model may not paraphrase: two independent review rounds showed that any free wording,
+even from harmless-looking words, can reverse a rule ("The answer is yes." before a No rule),
+drop an exception, or hedge a League rule into table practice, and no word-level check can
+catch that. So the entry speaks and the model frames. The live battery
+(`tests/ask-model-live.logic.spec.ts`) confirms the behaviour with the real provider and a
+separate judge model whenever a key is present.
 
 The model is never consulted for: starter and follow-up chips (they match an entry's own
 wording and are served verbatim), card-content requests (refused before retrieval), off-topic
 and small-talk messages, other mahjong variants, or when the per-instance fuses are spent.
 
-Entries that are always served word for word, never framed or combined: the six pending
-entries (`PENDING_BY_OWNER_DECISION`) and every `scoring` (money) entry. The model never
-returns a rule status, a source, a Read more destination, a payment rule, a card-year note, or a
-nudge; `labelFor()` and `readMoreUrl()` decide those from the cited entry.
+Entries that are always served word for word, never framed, combined, or swapped for a
+neighbour: the six pending entries (`PENDING_BY_OWNER_DECISION`) and every `scoring` (money)
+entry. The model never returns a rule status, a source, a Read more destination, a payment
+rule, a card-year note, or a nudge; `labelFor()` and `readMoreUrl()` decide those from the
+entries actually used.
 
 Limits: 6 seconds per model call with no retries (the plain answer is already prepared, so a
 slow provider only costs the wait), 700 output tokens (1,500 on models that think first),
@@ -161,9 +166,11 @@ slow provider only costs the wait), 700 output tokens (1,500 on models that thin
 
 Cost fuses: 30 questions per minute and 400 per day per IP (a venue's players share one IP);
 40 model calls per minute and 1,500 per day per warm instance (beyond that, answers fall back
-to approved text, never an error). Before changing the model or the prompt, run the live
-battery with a key: `ANTHROPIC_API_KEY=... ASK_MODEL=<id> pnpm test:logic -- tests/ask-model-live`.
-It prints calls, latency and token counts for the cost estimate.
+to approved text, never an error). The system prompt is about 1,600 tokens and, on the default
+model, below the size the provider caches, so every call pays for it. Before changing the
+model or the prompt, run the live battery with a key:
+`ANTHROPIC_API_KEY=... ASK_MODEL=<id> pnpm test:logic -- tests/ask-model-live`. It prints
+calls, latency and token counts for the cost estimate.
 
 ## What is logged
 
