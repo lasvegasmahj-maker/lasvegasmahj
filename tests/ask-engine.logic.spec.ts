@@ -412,46 +412,53 @@ test.describe("rate limiter", () => {
 test.describe("model output validation", () => {
   const entry = KNOWLEDGE_BY_ID.get("joker-in-pair")!;
   const input = { question: "Can I use a joker in a pair?", history: [], candidates: [entry], followupOptions: buildFollowups(entry, new Set(), 6) };
+  const out = (o: Record<string, unknown>) => ({ entry_ids: ["joker-in-pair"], covered: true, conversational_answer: "", optional_explanation: "", clarification_question: "", followups: [], ...o });
 
   test("accepts a grounded rephrase and keeps chips from the option list", () => {
-    const r = validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No. A joker never fills a pair or a single; it only works in a Pung, Kong, Quint, or Sextet of 3 or more tiles.", followups: [input.followupOptions[1], "Made up question?"] }, input);
+    const r = validateModelOutput(out({ conversational_answer: "No. A joker never goes in a pair or stands as a single tile.", optional_explanation: "Jokers only work inside a Pung, Kong, Quint, or Sextet of 3 or more.", followups: ["Made up question?", input.followupOptions[1]] }), input);
     expect(r?.kind).toBe("answer");
     if (r?.kind !== "answer") return;
     expect(r.entry.id).toBe("joker-in-pair");
+    expect(r.verbatim).toBe(false);
     expect(r.followups[0]).toBe(input.followupOptions[1]);
     expect(r.followups).not.toContain("Made up question?");
     expect(r.followups.length).toBe(3);
   });
 
-  test("rejects letter set codes and markdown in model output", () => {
-    expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No. A joker works in a P, K, or Q only.", followups: [] }, input)).toBeNull();
-    expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "**No.** Never in a pair.", followups: [] }, input)).toBeNull();
-    expect(validateModelOutput({ entry_ids: [], label: "clarify", answer: "Do you mean [this](x)?", followups: [] }, input)).toBeNull();
-    expect(validateModelOutput({ entry_ids: [], label: "clarify", answer: "Do you mean the card that comes out in March?", followups: [] }, input)).toBeNull();
-    expect(validateModelOutput({ entry_ids: [], label: "clarify", answer: "Do you mean a group of 7 tiles?", followups: [] }, input)).toBeNull();
-    expect(validateModelOutput({ entry_ids: [], label: "clarify", answer: "Do you mean a pair or a single tile?", followups: [] }, input)?.kind).toBe("clarify");
+  test("rejects letter set codes, markdown, and card-year clarifications", () => {
+    expect(validateModelOutput(out({ conversational_answer: "No. A joker works in a P, K, or Q only." }), input)).toBeNull();
+    expect(validateModelOutput(out({ conversational_answer: "**No.** Never in a pair." }), input)).toBeNull();
+    expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Do you mean [this](x)?" }), input)).toBeNull();
+    expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Do you mean the card that comes out in March?" }), input)).toBeNull();
+    expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Which year's card are you playing?" }), input)).toBeNull();
+    expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Do you mean a group of 7 tiles?" }), input)).toBeNull();
+    expect(validateModelOutput(out({ entry_ids: [], covered: false, clarification_question: "Do you mean a pair or a single tile?" }), input)?.kind).toBe("clarify");
   });
 
   test("rejects invented numbers, dashes, months, links, and unknown ids", () => {
-    expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No, and you get 8 chances per hand.", followups: [] }, input)).toBeNull();
-    expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No \u2014 never in a pair.", followups: [] }, input)).toBeNull();
-    expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No. The card comes out in March.", followups: [] }, input)).toBeNull();
-    expect(validateModelOutput({ entry_ids: ["joker-in-pair"], label: "standard", answer: "No. See https://example.com", followups: [] }, input)).toBeNull();
-    expect(validateModelOutput({ entry_ids: ["not-a-real-id"], label: "standard", answer: "Sure thing.", followups: [] }, input)).toEqual({ kind: "unverified" });
+    expect(validateModelOutput(out({ conversational_answer: "No, and you get 8 chances per hand." }), input)).toBeNull();
+    expect(validateModelOutput(out({ conversational_answer: "No \u2014 never in a pair." }), input)).toBeNull();
+    expect(validateModelOutput(out({ conversational_answer: "No. The card comes out in March." }), input)).toBeNull();
+    expect(validateModelOutput(out({ conversational_answer: "No. See https://example.com" }), input)).toBeNull();
+    expect(validateModelOutput(out({ entry_ids: ["not-a-real-id"], conversational_answer: "Sure thing." }), input)).toEqual({ kind: "unverified" });
   });
 
   test("routing to an entry outside the candidates serves approved text verbatim", () => {
-    const r = validateModelOutput({ entry_ids: ["joker-exchange"], label: "routed", answer: "", followups: [] }, input);
+    const r = validateModelOutput(out({ entry_ids: ["joker-exchange"], conversational_answer: "" }), input);
     expect(r?.kind).toBe("answer");
     if (r?.kind !== "answer") return;
-    expect(r.routed).toBe(true);
+    expect(r.verbatim).toBe(true);
     expect(r.answer).toBe(KNOWLEDGE_BY_ID.get("joker-exchange")!.answer);
   });
 
-  test("derived entries keep the pending label even when the model says standard", () => {
+  test("a pending entry is served verbatim with the pending label whatever the model wrote", () => {
     const d = KNOWLEDGE_BY_ID.get("discarded-joker")!;
-    const r = validateModelOutput({ entry_ids: ["discarded-joker"], label: "standard", answer: "No. A discarded joker is out of play for the rest of the hand.", followups: [] }, { ...input, candidates: [d] });
-    expect(r?.kind === "answer" && r.label).toBe("pending");
+    const r = validateModelOutput(out({ entry_ids: ["discarded-joker"], conversational_answer: "No. A discarded joker is out of play for the rest of the hand." }), { ...input, candidates: [d] });
+    expect(r?.kind).toBe("answer");
+    if (r?.kind !== "answer") return;
+    expect(r.label).toBe("pending");
+    expect(r.verbatim).toBe(true);
+    expect(r.answer).toBe(d.answer);
   });
 
   test("composeWithModel falls back to null on a broken client and parses a good one", async () => {
@@ -461,7 +468,7 @@ test.describe("model output validation", () => {
       messages: {
         create: async () => ({
           id: "m", type: "message", role: "assistant", model: "x", stop_reason: "end_turn", stop_sequence: null,
-          content: [{ type: "text", text: '{"entry_ids":["joker-in-pair"],"label":"standard","answer":"No. Jokers never go in a pair.","followups":[]}', citations: null }],
+          content: [{ type: "text", text: '{"entry_ids":["joker-in-pair"],"covered":true,"conversational_answer":"No. Jokers never go in a pair.","optional_explanation":"","clarification_question":"","followups":[]}', citations: null }],
           usage: { input_tokens: 1, output_tokens: 1 },
         }) as never,
       },

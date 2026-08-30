@@ -4,16 +4,14 @@ import {
   answerDeterministic,
   buildFollowups,
   askedEntryIds,
-  canonicalEntryFor,
-  isRulesQuestion,
-  normalizeQuestion,
   readMoreUrl,
+  splitQuestions,
   summarizeGap,
   MAX_QUESTION_CHARS,
   type Turn,
 } from "@/lib/ask/engine";
 import { KNOWLEDGE_BY_ID } from "@/lib/ask/knowledge";
-import { composeWithModel, isModelEnabled } from "@/lib/ask/llm";
+import { composeWithModel, isModelEnabled, modelEligible } from "@/lib/ask/llm";
 import { pickNudge, type Nudge } from "@/lib/ask/nudges";
 import { ipOf, modelPerDay, modelPerMinute, perDay, perMinute } from "@/lib/ask/rate-limit";
 
@@ -102,17 +100,20 @@ export async function POST(req: NextRequest) {
       via: "rules",
     };
 
-    const exactChip = Boolean(canonicalEntryFor(question));
-    const modelEligible =
-      isModelEnabled() &&
-      !exactChip &&
-      (det.kind === "answer" || (det.kind === "unverified" && isRulesQuestion(normalizeQuestion(question)))) &&
-      modelPerMinute.check("global") &&
-      modelPerDay.check("global");
+    const consultModel = isModelEnabled() && modelEligible(det, question) && modelPerMinute.check("global") && modelPerDay.check("global");
 
-    if (modelEligible) {
+    if (consultModel) {
       const options = det.entry ? buildFollowups(det.entry, askedEntryIds(history), 6) : det.followups;
-      const m = await composeWithModel({ question, history, candidates: det.candidates, followupOptions: options });
+      const candidates = [...det.candidates];
+      const parts = splitQuestions(question);
+      if (parts.length > 1) {
+        for (const part of parts) {
+          for (const c of answerDeterministic(part, history).candidates.slice(0, 2)) {
+            if (!candidates.some((x) => x.id === c.id) && candidates.length < 6) candidates.push(c);
+          }
+        }
+      }
+      const m = await composeWithModel({ question, history, candidates, followupOptions: options });
       if (m?.kind === "answer") {
         response = {
           ...response,

@@ -43,10 +43,9 @@ answer a rules question with text outside those files. Each Ask entry carries a 
 | `owner_approved`  | Approved by the owner (2026-08-29) with no matching `/rules` Q&A yet: `call-during-charleston`, `joker-in-news`, `call-for-pair`. No "Read more" link until a page carries the rule. | Standard rule / Can vary by house rule |
 | `derived`         | Composed only from approved statements, but the exact wording has not been reviewed by the instructor. | Pending instructor review    |
 
-The optional model layer (`lib/ask/llm.ts`) may rephrase retrieved entries; it cannot add
-rule content. Every model answer is validated: cited entry ids must exist, numbers must
-already appear in the cited text, no dashes, no month names, no links. Any failure serves
-the approved text verbatim.
+The optional model layer (`lib/ask/llm.ts`) may rephrase retrieved entries, resolve a
+follow-up, ask one clarifying question, or route to another approved entry. It never decides a
+rule: see "Conversational layer" below.
 
 ## How the two sites stay in sync
 
@@ -112,19 +111,54 @@ Update it each spring when the new card releases; a logic test fails if it falls
 a year behind the calendar. No card hands or point values exist anywhere in the code; generic
 teaching terms such as "Singles and Pairs" and "Quint" appear because the live /rules pages use them.
 
-## Model configuration (Vercel environment variables)
+## Conversational layer (optional model)
+
+Flow for a typed question: deterministic normalization and retrieval (`engine.ts`) pick the
+approved entries and the fallback answer first. Only then, and only when a key is present, the
+model is asked to render those entries conversationally. The model output is validated and any
+failure serves the deterministic answer, so a visitor never sees an internal error.
+
+The model is never consulted for: starter and follow-up chips (they match an entry's own
+wording and are served verbatim), card-content requests (refused before retrieval), off-topic
+and small-talk messages, other mahjong variants, or when the per-instance fuses are spent.
+
+Output contract (`OUTPUT_SCHEMA`, enforced by structured output and re-validated in
+`validateModelOutput`): `entry_ids`, `covered`, `conversational_answer`, `optional_explanation`,
+`clarification_question`, `followups`. The model never returns a rule status, a source, a
+Read more destination, a payment rule, a card-year note, or a nudge; `labelFor()` and
+`readMoreUrl()` decide those from the cited entry, and follow-ups are only accepted verbatim
+from the options the engine offered.
+
+Guards on a rephrase (all pure, all tested in `tests/ask-model.logic.spec.ts`):
+
+| Guard | Effect |
+|---|---|
+| verbatim-only entries | Pending entries (`derived`) and every `scoring` entry are served word for word, whatever the model wrote. |
+| routing | An entry outside the retrieved candidates is served verbatim. |
+| polarity | If the approved answer opens with Yes or No, the rephrase must open the same way. |
+| vocabulary | Rule words that appear in neither the cited entries, the player's words, nor a list of connective words are limited to 3 and 20% of content words. |
+| numbers, style | No new numbers; no links, markup, dashes, month names, or letter set codes. |
+| status words | The rephrase may not call a rule verified, pending, official, or standard. |
+| League | The rephrase may not mention the League unless the cited entry does. |
+| house cue | A house-varying entry's rephrase must keep a "your table / house rule" clause. |
+| clarification | Must be one grounded question and may never ask which year's card. |
+
+Limits: `MODEL_TIMEOUT_MS` 6 s with no retries (the deterministic answer is already computed,
+so a slow provider costs nothing but the wait), 600 output tokens, 300 character questions,
+last 6 turns of context re-rendered from approved entries (never from client text).
 
 | Variable            | Effect |
 |---------------------|--------|
-| `ANTHROPIC_API_KEY` | Turns on the conversational layer. Absent: fully deterministic, approved text only. |
-| `ASK_MODEL`         | Optional model id override (default `claude-opus-5`). |
-| `ASK_MODEL_DISABLED`| Set to `1` to switch the model off without removing the key. |
+| `ANTHROPIC_API_KEY` | Turns on the conversational layer. Absent: fully deterministic, approved text only. Server only; never `NEXT_PUBLIC_`. |
+| `ASK_MODEL`         | Optional model id override (default `DEFAULT_MODEL` in `lib/ask/llm.ts`). |
+| `ASK_MODEL_DISABLED`| Set to `1` to switch the model off while Ask keeps working from approved text. |
 | `ASK_DISABLED`      | Set to `1` to switch the whole helper off: /ask shows a short notice and the API returns 503. Links stay in place. |
 
-Cost fuses: 30 questions per minute and 400 per day per IP (a venue's players share one IP); 40 model calls per minute and
-1,500 per day per warm instance (beyond that, answers fall back to approved text, never an
-error); 3,000 output tokens per call (this also covers the model's thinking on Opus 5); 300 character questions; last 6 turns of context.
-Tapping a starter or follow-up chip never calls the model.
+Cost fuses: 30 questions per minute and 400 per day per IP (a venue's players share one IP);
+40 model calls per minute and 1,500 per day per warm instance (beyond that, answers fall back
+to approved text, never an error). The live battery (`tests/ask-model-live.logic.spec.ts`,
+runs only with a key) prints tokens and latency per run; use it before changing the model or
+the prompt: `ANTHROPIC_API_KEY=... ASK_MODEL=<id> pnpm test:logic -- tests/ask-model-live`.
 
 ## What is logged
 

@@ -58,6 +58,7 @@ const CARD_CONTENT_RES: RegExp[] = [
   /\bcard\b.{0,25}(pdf|copy|image|photo|scan|picture|download)/,
   /(pdf|copy|image|photo|scan|picture|download).{0,25}\bcard\b/,
   /\bhand\b (on|for|from|in) (this|the|last|next|the current|the \d{4}) year/,
+  /\b(read|list|tell|show|give|send|text|type|write|scan|photo|print|share|post)( me)?( all)?( the| this| your)?( entire| whole| full| complete| new| current)?( year'?s?| \d{4})? card\b/,
   /(is|are) (there|a|an|any) .{0,40}\bhand\b.{0,20}(on|in) (the|this|the \d{4}|this year'?s?) card/,
   /(how many|what|which).{0,10}(point|value)\b.{0,40}\b(hand|line|card)\b/,
   /\b(\d{4}|this year'?s?|current|new) card\b.{0,30}\b(hand|line|category|section)\b/,
@@ -412,6 +413,16 @@ export function answerDeterministic(raw: string, history: Turn[] = []): EngineRe
     elliptical,
     catch_all_only: !candidates[0].patternHit,
   };
+}
+
+// A message that asks two things ("Can I use a joker in a pair? And in a kong?") is split so
+// each part is retrieved on its own; the model may then answer both from approved entries.
+export function splitQuestions(raw: string): string[] {
+  const parts = String(raw || "")
+    .split(/\?|;|\band (?:also|what about|how about)\b|\balso\b/i)
+    .map((p) => (p || "").trim())
+    .filter((p) => p.length >= 8 && !/^(also|and)$/i.test(p));
+  return parts.slice(0, 3);
 }
 
 // Synthesis guard (shared with Find My Mahj): a model may only rephrase approved text, so any
