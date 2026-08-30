@@ -1077,7 +1077,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     related: ["expose-immediately", "dead-hand-triggers", "called-dead"],
   },
 
-  // ── Derived from approved statements; wording pending instructor review ────
+  // ── Own-text entries: owner-approved on 2026-08-29, or pending instructor review ──
   {
     id: "call-during-charleston",
     category: "charleston",
