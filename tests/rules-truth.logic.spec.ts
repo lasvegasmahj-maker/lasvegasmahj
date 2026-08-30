@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 import { RULES_TOPICS, getQA, type RuleQA } from "../content/rules";
-import { ALIGNMENT_EXCEPTIONS, KNOWLEDGE_BY_ID, RULES_KNOWLEDGE } from "../lib/ask/knowledge";
+import { ALIGNMENT_EXCEPTIONS, KNOWLEDGE_BY_ID, PENDING_BY_OWNER_DECISION, RULES_KNOWLEDGE } from "../lib/ask/knowledge";
 import { answerDeterministic, labelFor, readMoreUrl } from "../lib/ask/engine";
 
 // The rules truth layer: /rules pages, the Ask knowledge base, and the learn page must never
@@ -17,10 +17,10 @@ const NMJL_CLAIM_RE = /\b(standard NMJL|NMJL standard|official (NMJL |League )?r
 
 // League rule book claims the site makes that our materials (card panel, owner handouts) do
 // not cover. New ones cannot be added silently: list them here with the owner's eyes on them.
-const RULEBOOK_CLAIMS = ["scoring.discard-pays", "scoring.wall-game"];
+const RULEBOOK_CLAIMS: string[] = [];
 // Standard-rule answers with no source in our materials, awaiting the owner's confirmation.
 // The same rule: a new one must be listed here, not slipped in.
-const OWNER_REVIEW = ["winning.passed-winning-tile", "the-card.new-card", "dead-hands.two-dead"];
+const OWNER_REVIEW: string[] = [];
 
 test.describe("rules content modules", () => {
   test("every topic has unique ids, kinds, evidence, and clean copy", () => {
@@ -135,6 +135,40 @@ test.describe("Ask mirrors the pages", () => {
     for (const sentence of e.answer.split(/(?<=\.)\s+/)) expect(pool, `untraced sentence: ${sentence}`).toContain(sentence);
   });
 
+  test("exactly the owner's six entries are pending, and owner-approved entries are verified", () => {
+    const pending = RULES_KNOWLEDGE.filter((e) => e.source === "derived").map((e) => e.id).sort();
+    expect(pending).toEqual([...PENDING_BY_OWNER_DECISION].sort());
+    for (const e of RULES_KNOWLEDGE) {
+      if (e.source === "owner_approved") {
+        expect(labelFor(e), e.id).not.toBe("pending");
+        expect(e.source_url, `${e.id} has no page yet, so it must not link`).toBeUndefined();
+      }
+      if (e.source === "lvm_rules_page") expect(e.source_url, `${e.id} is a verified mirror and should link to its page`).toBeTruthy();
+    }
+    // A pending answer built on table practice must say so.
+    expect(KNOWLEDGE_BY_ID.get("discarded-joker")!.answer).toMatch(/common table practice/);
+    expect(KNOWLEDGE_BY_ID.get("discarded-joker")!.answer).toMatch(/not printed on the card/);
+  });
+
+  test("Ask text never claims League authority outside a sourced page", () => {
+    for (const e of RULES_KNOWLEDGE) {
+      if (e.source === "shared_approved") continue;
+      expect(e.house_note ?? "", `${e.id} house note`).not.toMatch(NMJL_CLAIM_RE);
+      if (!e.page_ref?.length || e.id in ALIGNMENT_EXCEPTIONS) expect(e.answer, `${e.id} own text`).not.toMatch(NMJL_CLAIM_RE);
+    }
+    const served = [
+      "How does payment work in a wall game?",
+      "Can I use last year's card?",
+      "Who pays when someone wins on a discard?",
+      "Who pays on a self drawn win?",
+      "Do any hands pay extra beyond joker-free?",
+    ];
+    for (const q of served) {
+      const r = answerDeterministic(q);
+      expect(r.answer, q).not.toMatch(/NMJL standard|official play|League rule book|standard NMJL/i);
+    }
+  });
+
   test("a pending rule is never presented as verified", () => {
     for (const e of RULES_KNOWLEDGE) {
       if (e.source !== "derived") continue;
@@ -178,10 +212,19 @@ test.describe("card-verified corrections stay corrected", () => {
     ["dead-hands.triggers", [/too few or too many tiles/i, /no penalty/i], [/false mahjong also results/i, /house rules vary/i]],
     ["dead-hands.saved", [/up until you discard/i], [/group may agree/i]],
     ["calling-tiles.concealed", [/completes your mahjong/i], []],
-    ["scoring.extra", [/4 times/i, /mahjong in error/i], [/does not designate specific multipliers/i]],
+    ["scoring.extra", [/4 times/i, /mahjong in error/i, /not printed on the card/i, /Payment conventions can vary by group/], [/does not designate specific multipliers/i, /League rule book/i]],
     ["etiquette.take-back", [/correctly named/i], [/the moment a tile is set down/i]],
     ["winning.valid", [/anything you exposed must be part of it/i], [/match what you declared/i]],
     ["winning.discard-win", [/other than a joker/i], []],
+    ["calling-tiles.out-of-turn", [/may not be claimed, so the call does not stand/i, /names no penalty/i, /cannot be claimed until it has been correctly named/i], [/typically results in the hand being declared dead/i, /varies by house rules/i, /calling a tile before it has been correctly named/i]],
+    ["scoring.discard-pays", [/Payment conventions can vary by group/], [/standard NMJL payment structure/i, /League rule book describes/i]],
+    ["scoring.self-drawn-pays", [/Payment conventions can vary by group/], [/each pay the full amount/i]],
+    ["winning.self-drawn", [/settled by your group/i], [/still pay the standard amount/i]],
+    ["scoring.wall-game", [/Confirm your table/i], [/NMJL standard/i]],
+    ["dead-hands.two-dead", [/stops play for dead hands only when three are dead/i], []],
+    ["the-card.new-card", [/every spring/i], [/only valid card/i, /small annual fee/i, /retired/i]],
+    ["the-card.last-year", [/current year's card/i], [/official or competitive/i]],
+    ["winning.passed-winning-tile", [/Nothing on the card penalizes/i], [/There is no penalty/i]],
   ];
   for (const [ref, must, mustNot] of cases) {
     test(ref, () => {
@@ -214,6 +257,9 @@ test.describe("card-verified corrections stay corrected", () => {
       ["What is a false mahjong?", /no penalty/i],
       ["What do the numbers on the card mean?", /tile's number/i],
       ["How fast do I have to call a discard?", /racked/i],
+      ["What is calling out of turn?", /names no penalty/i],
+      ["Who pays when someone wins on a discard?", /Payment conventions can vary by group/],
+      ["How does payment work in a wall game?", /Confirm your table/i],
     ];
     for (const [q, re] of probes) expect(answerDeterministic(q).answer, q).toMatch(re);
   });

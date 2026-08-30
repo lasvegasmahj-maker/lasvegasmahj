@@ -95,7 +95,7 @@ test.describe("knowledge base integrity", () => {
     // checked out or a half-edited working tree.
     const cwd = path.dirname(path.dirname(path.dirname(sibling)));
     let src: string | null = null;
-    for (const ref of ["main", "HEAD"]) {
+    for (const ref of ["origin/main", "main", "HEAD"]) {
       try {
         src = execSync(`git show ${ref}:lib/rules/knowledge.ts`, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
         break;
@@ -104,9 +104,9 @@ test.describe("knowledge base integrity", () => {
       }
     }
     src ??= fs.readFileSync(sibling, "utf8");
-    const re = /id:\s*"([^"]+)"[\s\S]*?approved_answer:\s*"((?:[^"\\]|\\.)*)"[\s\S]*?varies_by_house:\s*(true|false)/g;
-    const shared = new Map<string, { answer: string; varies: boolean }>();
-    for (const m of src.matchAll(re)) shared.set(m[1], { answer: JSON.parse(`"${m[2]}"`), varies: m[3] === "true" });
+    const re = /id:\s*"([^"]+)"[\s\S]*?approved_answer:\s*"((?:[^"\\]|\\.)*)"[\s\S]*?varies_by_house:\s*(true|false)(?:,\s*house_note:\s*"((?:[^"\\]|\\.)*)")?/g;
+    const shared = new Map<string, { answer: string; varies: boolean; note: string }>();
+    for (const m of src.matchAll(re)) shared.set(m[1], { answer: JSON.parse(`"${m[2]}"`), varies: m[3] === "true", note: m[4] ? JSON.parse(`"${m[4]}"`) : "" });
     expect(shared.size).toBeGreaterThanOrEqual(12);
     const ours = RULES_KNOWLEDGE.filter((e) => e.source === "shared_approved");
     const ourIds = new Set(ours.map((e) => e.id));
@@ -117,6 +117,7 @@ test.describe("knowledge base integrity", () => {
       expect(theirs, `missing in FMG: ${e.id}`).toBeTruthy();
       expect(e.answer, e.id).toBe(theirs!.answer);
       expect(e.varies_by_house, e.id).toBe(theirs!.varies);
+      expect(e.house_note ?? "", `${e.id} house note`).toBe(theirs!.note);
     }
   });
 });
@@ -307,7 +308,7 @@ test.describe("guards", () => {
   });
 
   test("pending entries carry no Read more link", () => {
-    const disagree = ["passed-winning-tile", "two-dead-hands", "self-drawn-win", "joker-call-complete", "joker-free", "pung-vs-kong", "card-numbers", "false-mahjong", "expose-immediately", "wrong-exposure", "call-window", "call-for-mahjong", "dead-hand-triggers", "courtesy-pass", "same-tile-two-calls", "change-mind-mahjong", "call-concealed", "out-of-turn", "extra-payments", "take-back-discard", "look-before-pass"];
+    const disagree = ["passed-winning-tile", "two-dead-hands", "self-drawn-win", "out-of-turn", "take-back-discard", "discarded-joker"];
     for (const id of disagree) expect(KNOWLEDGE_BY_ID.get(id)?.source_url, id).toBeUndefined();
     expect(KNOWLEDGE_BY_ID.get("joker-in-pair")?.source_url).toContain("/rules/jokers");
     for (const e of RULES_KNOWLEDGE) {
@@ -318,6 +319,11 @@ test.describe("guards", () => {
     }
     expect(answerDeterministic("Can I use a joker in a pair?").source_url).toContain("/rules/jokers");
     expect(answerDeterministic("What is a blind pass?").source_url).toContain("/rules/charleston");
+    expect(answerDeterministic("Can I stop the Charleston?").source_url).toContain("/rules/charleston");
+    expect(answerDeterministic("Can I stop the Charleston?").label).toBe("standard");
+    expect(answerDeterministic("What is a false mahjong?").label).toBe("standard");
+    expect(answerDeterministic("Can I use a joker in NEWS?").label).toBe("standard");
+    expect(answerDeterministic("Can I use a joker in NEWS?").source_url).toBeUndefined();
   });
 
   test("derived entries carry the pending label; approved ones do not", () => {

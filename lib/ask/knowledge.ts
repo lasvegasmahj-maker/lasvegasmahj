@@ -9,6 +9,7 @@
 //                    compares the two files whenever the sister repo is checked out beside
 //                    this one, so the two sites cannot drift apart silently.
 //   lvm_rules_page   verbatim text from a lasvegasmahj.com/rules page (source_url).
+//   owner_approved   approved by the owner on 2026-08-29 without a matching /rules Q&A yet.
 //   derived          composed only from approved statements above, but the exact wording
 //                    has not yet been reviewed by the instructor. The UI labels these
 //                    "Pending instructor review" until the owner flips the source.
@@ -29,7 +30,7 @@ export type AskCategory =
   | "etiquette"
   | "basics";
 
-export type AskSource = "shared_approved" | "lvm_rules_page" | "derived";
+export type AskSource = "shared_approved" | "lvm_rules_page" | "owner_approved" | "derived";
 
 export type AskLevel = "foundational" | "core" | "advanced";
 
@@ -226,7 +227,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("charleston.stop"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/charleston`,
     page_ref: ["charleston.stop"],
     related: ["charleston-passes", "courtesy-pass", "charleston"],
   },
@@ -304,7 +306,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
       "You may call the most recent discard when you can use it right away in an exposed group of 3 or more identical tiles, with jokers allowed to fill in, or when it completes your mahjong. When you call for a group, you must place that group face up on your rack. A call for mahjong beats a call for an exposure.",
     varies_by_house: true,
     house_note:
-      "Tables differ on exactly when the calling window closes after the next player draws, so agree on it before you start.",
+      "The card closes the calling window once the player next in turn has picked and racked, or discarded; some tables police that moment loosely, so confirm your table follows the card.",
     confidence: "high",
     source: "shared_approved",
     source_url: `${RULES}/calling-tiles`,
@@ -394,7 +396,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/(table|house) rule/, /\bcourtes(y|ies)\b(?! pass)/, /\betiquette\b/, /rule (vs|versus|or) (courtes|custom)/, /official rule/],
     keywords: ["etiquette", "courtesy", "house", "official"],
     answer:
-      "It helps to separate official rules from table courtesies. Official rules come from the National Mah Jongg League and apply everywhere, such as the tile count and how calling works. Courtesies are local customs a table agrees on, such as whether to make the courtesy pass in the Charleston or how strictly discards are announced. Agree on courtesies before the first hand so no one is surprised.",
+      "It helps to separate official rules from table courtesies. Official rules come from the National Mah Jongg League and apply everywhere, such as the tile count, how calling works, and the courtesy pass, which is an optional League rule any player may decline. Courtesies are local customs a table agrees on, such as how a wall game is paid or whether the same dealer deals again. Agree on courtesies before the first hand so no one is surprised.",
     varies_by_house: true,
     house_note: "Courtesies differ from table to table by design.",
     confidence: "high",
@@ -476,7 +478,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("jokers.joker-free"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/jokers`,
     page_ref: ["jokers.joker-free"],
     related: ["pay-discard-win", "self-drawn-win", "extra-payments"],
   },
@@ -490,7 +493,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("jokers.call-with-joker"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/jokers`,
     page_ref: ["jokers.call-with-joker"],
     related: ["calling-discard", "joker-exchange", "expose-immediately"],
   },
@@ -535,7 +539,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("charleston.courtesy-pass"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/charleston`,
     page_ref: ["charleston.courtesy-pass"],
     related: ["charleston-passes", "charleston", "look-before-pass"],
   },
@@ -549,7 +554,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("charleston.look"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/charleston`,
     page_ref: ["charleston.look"],
     related: ["charleston-blind-pass", "charleston-passes", "courtesy-pass"],
   },
@@ -579,7 +585,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("calling-tiles.pung-vs-kong"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/calling-tiles`,
     page_ref: ["calling-tiles.pung-vs-kong"],
     related: ["card-numbers", "jokers-basics", "calling-discard"],
   },
@@ -608,7 +615,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("calling-tiles.two-callers"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/calling-tiles`,
     page_ref: ["calling-tiles.two-callers"],
     related: ["call-for-mahjong", "calling-discard", "call-window"],
   },
@@ -622,7 +630,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("calling-tiles.call-for-mahjong"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/calling-tiles`,
     page_ref: ["calling-tiles.call-for-mahjong"],
     related: ["same-tile-two-calls", "discard-win", "false-mahjong"],
   },
@@ -633,8 +642,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     question: "What is calling out of turn?",
     patterns: [/out of turn/, /call.{0,20}(before|too early|too soon)/, /wrong turn/],
     keywords: ["out of turn", "turn", "early"],
-    answer:
-      "A tile that is no longer the most recent discard, or a discard the next player has already picked and racked after, cannot be claimed; the call is void and play continues. Your hand becomes dead only if the mistaken call leaves you with an incorrect exposure or the wrong number of tiles.",
+    answer: pageAnswer("calling-tiles.out-of-turn"),
     varies_by_house: false,
     confidence: "high",
     source: "derived",
@@ -651,7 +659,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("calling-tiles.concealed"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/calling-tiles`,
     page_ref: ["calling-tiles.concealed"],
     related: ["closed-hand-final-tile", "expose-immediately", "open-vs-closed"],
   },
@@ -665,7 +674,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("calling-tiles.expose"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/calling-tiles`,
     page_ref: ["calling-tiles.expose"],
     related: ["wrong-exposure", "call-concealed", "joker-call-complete"],
   },
@@ -679,7 +689,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("dead-hands.triggers"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/dead-hands`,
     page_ref: ["dead-hands.triggers"],
     related: ["wrong-exposure", "called-dead", "dead-hand-pays"],
   },
@@ -737,7 +748,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("the-card.numbers"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/the-card`,
     page_ref: ["the-card.numbers"],
     related: ["any-like-number", "consecutive-numbers", "pung-vs-kong"],
   },
@@ -780,7 +792,6 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     keywords: ["last year", "old", "card", "previous"],
     answer: pageAnswer("the-card.last-year"),
     varies_by_house: true,
-    house_note: "Casual groups sometimes agree to use an older card; official play always uses the current year's card.",
     confidence: "high",
     source: "lvm_rules_page",
     page_ref: ["the-card.last-year"],
@@ -825,8 +836,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/self draw/, /(own|my) draw/, /draw.{0,20}(win|last|final) tile/, /win.{0,20}(from|off) the wall/, /\bpay\b.{0,30}self draw/, /self draw.{0,30}\bpay\b/],
     keywords: ["self", "draw", "own", "win", "pay"],
     answer:
-      "A self-drawn win is drawing the tile you need from the wall to complete your hand; you declare mahjong the same way as on a called tile. Whether a self-drawn win pays more than a win on a discard is a point our instructor is reviewing, so settle it at your table for now.",
-    varies_by_house: false,
+      "A self-drawn win is drawing the tile you need from the wall to complete your hand; you declare mahjong the same way as on a called tile. Whether a self-drawn win pays more than a win on a discard is settled by your group; confirm your table's payment rules before play.",
+    varies_by_house: true,
     confidence: "medium",
     source: "derived",
     page_ref: ["winning.self-drawn"],
@@ -841,7 +852,6 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     keywords: ["wall game", "pay", "money"],
     answer: pageAnswer("scoring.wall-game"),
     varies_by_house: true,
-    house_note: "Wall game payments are a common house rule; the NMJL standard is no payment.",
     confidence: "high",
     source: "lvm_rules_page",
     page_ref: ["scoring.wall-game"],
@@ -858,7 +868,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("winning.false-mahjong"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/winning`,
     page_ref: ["winning.false-mahjong"],
     related: ["change-mind-mahjong", "valid-mahjong", "dead-hand-triggers"],
   },
@@ -872,7 +883,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("winning.change-mind"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/winning`,
     page_ref: ["winning.change-mind"],
     related: ["false-mahjong", "valid-mahjong", "take-back-discard"],
   },
@@ -899,7 +911,6 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     keywords: ["pay", "discard", "double", "who"],
     answer: pageAnswer("scoring.discard-pays"),
     varies_by_house: true,
-    house_note: "Some groups play 'all pay'; confirm your table's payment rule.",
     confidence: "high",
     source: "lvm_rules_page",
     page_ref: ["scoring.discard-pays"],
@@ -933,7 +944,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("scoring.extra"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/scoring`,
     page_ref: ["scoring.extra"],
     related: ["joker-free", "game-value", "pay-discard-win"],
   },
@@ -977,7 +989,8 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("etiquette.call-window"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/etiquette`,
     page_ref: ["etiquette.call-window"],
     related: ["most-recent-discard", "calling-discard", "take-back-discard"],
   },
@@ -1058,12 +1071,13 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     answer: pageAnswer("dead-hands.saved"),
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
+    source: "lvm_rules_page",
+    source_url: `${RULES}/dead-hands`,
     page_ref: ["dead-hands.saved"],
     related: ["expose-immediately", "dead-hand-triggers", "called-dead"],
   },
 
-  // ── Derived from approved statements; wording pending instructor review ────
+  // ── Own-text entries: owner-approved on 2026-08-29, or pending instructor review ──
   {
     id: "call-during-charleston",
     category: "charleston",
@@ -1075,8 +1089,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
       "No. The Charleston is the tile passing that happens before play begins, and the first discard only happens after the Charleston, when East opens play. There are no discards during the Charleston, so there is nothing to call.",
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
-    source_url: `${RULES}/charleston`,
+    source: "owner_approved",
     related: ["charleston", "calling-discard", "dealing"],
   },
   {
@@ -1090,8 +1103,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
       "No. NEWS is made up of four different tiles (North, East, West, and South), so each one counts as a single tile, and a joker can never be used as a single. Jokers only work inside groups of 3 or more identical tiles: a Pung, Kong, Quint, or Sextet.",
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
-    source_url: `${RULES}/jokers`,
+    source: "owner_approved",
     related: ["joker-in-pair", "joker-single", "winds"],
   },
   {
@@ -1102,11 +1114,10 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
     patterns: [/(pick up|call|take|claim|grab).{0,30}(discard|thrown).{0,15}joker/, /joker.{0,20}(discard|thrown|on the table).{0,40}(pick|call|take|claim|grab)/, /discard.{0,15}joker/, /joker.{0,15}discard/],
     keywords: ["joker", "discard", "pick up", "call"],
     answer:
-      "No. The card's joker rule says a discarded joker can never be called for mahjong, and standard play treats a discarded joker as out of the hand entirely. The only way to take a joker from the table is a joker exchange from an exposed group on your own turn.",
-    varies_by_house: false,
+      "The card's joker rule says a discarded joker can never be called for mahjong. Whether a discarded joker can be claimed for an exposure is not printed on the card; common table practice treats a discarded joker as out of the hand entirely, so check with your table. Under that practice, the only way to take a joker from the table is a joker exchange from an exposed group on your own turn.",
+    varies_by_house: true,
     confidence: "high",
     source: "derived",
-    source_url: `${RULES}/jokers`,
     related: ["joker-exchange", "calling-discard", "take-back-discard"],
   },
   {
@@ -1120,8 +1131,7 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
       "No. You may only call a discard for an exposed group of 3 or more identical tiles (a Pung, Kong, Quint, or Sextet), or when that tile completes your mahjong. A pair by itself cannot be called; the exception is when the pair is the last thing your hand needs, because then the call is for mahjong.",
     varies_by_house: false,
     confidence: "high",
-    source: "derived",
-    source_url: `${RULES}/calling-tiles`,
+    source: "owner_approved",
     related: ["calling-discard", "call-for-mahjong", "joker-in-pair"],
   },
 ];
@@ -1129,13 +1139,14 @@ export const RULES_KNOWLEDGE: KnowledgeEntry[] = [
 // Entries that point at a /rules Q&A but deliberately keep their own wording. Each needs a
 // reason; the truth-layer test fails on any other divergence, and on a stale entry here.
 export const ALIGNMENT_EXCEPTIONS: Record<string, string> = {
-  "out-of-turn":
-    "Page answer is a house-rule claim awaiting owner review; Ask states only what the card supports.",
   "self-drawn-win":
-    "Page payment claim is unverified in our materials; Ask stays neutral until the owner rules.",
+    "Same facts as winning.self-drawn, but that page answer opens with 'Yes', which reads wrong for the payment question this entry also answers.",
   "called-dead":
     "Stitched from one Find My Mahj sentence and two page sentences; every sentence is traced by the test.",
 };
+
+// The owner's 2026-08-29 decision: these six stay pending until she rules on each.
+export const PENDING_BY_OWNER_DECISION = ["discarded-joker", "out-of-turn", "take-back-discard", "passed-winning-tile", "two-dead-hands", "self-drawn-win"];
 
 export const KNOWLEDGE_BY_ID: ReadonlyMap<string, KnowledgeEntry> = new Map(
   RULES_KNOWLEDGE.map((e) => [e.id, e])

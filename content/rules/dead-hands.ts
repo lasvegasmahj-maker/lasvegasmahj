@@ -35,9 +35,9 @@ export const DEAD_HANDS: RulesTopic = {
     {
       id: "two-dead",
       q: "What happens if two players have dead hands?",
-      a: "Both sit out. The remaining two players continue, and both dead-hand players still pay if one of the active players wins.",
+      a: "Both sit out and still pay if one of the two active players wins. The card does not stop play at two dead hands (it stops play for dead hands only when three are dead), so the remaining two players continue.",
       kind: "standard",
-      evidence: "unverified",
+      evidence: "card",
     },
   ],
 };

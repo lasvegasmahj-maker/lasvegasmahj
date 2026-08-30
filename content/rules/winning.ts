@@ -28,7 +28,7 @@ export const WINNING: RulesTopic = {
     {
       id: "self-drawn",
       q: "Can I win on my own draw?",
-      a: "Yes. Drawing the tile you need from the wall to complete your hand is called a 'self-drawn win.' Self-drawn wins still pay the standard amount, though some groups play that self-drawn pays double; confirm your group's house rules.",
+      a: "Yes. Drawing the tile you need from the wall to complete your hand is called a 'self-drawn win,' and you declare mahjong the same way as on a called tile. Whether a self-drawn win pays more than a win on a discard is settled by your group; confirm your table's payment rules before play.",
       kind: "house",
       evidence: "unverified",
     },
@@ -56,9 +56,9 @@ export const WINNING: RulesTopic = {
     {
       id: "passed-winning-tile",
       q: "What happens if a player passes on their winning tile during the charleston?",
-      a: "This happens! If you accidentally pass a tile you could have used to win, you can simply continue play. There is no penalty; you just do not have that tile anymore.",
+      a: "This happens! If you accidentally pass a tile you could have used to win, you simply continue play. Nothing on the card penalizes it; you just do not have that tile anymore.",
       kind: "standard",
-      evidence: "unverified",
+      evidence: "card",
     },
   ],
 };
