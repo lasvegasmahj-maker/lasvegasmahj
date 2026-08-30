@@ -56,7 +56,9 @@ async function judgeFaithful(approved: string, question: string, rephrase: strin
   }
 }
 
-const LEAK_RE = /system prompt|instructions|entry_ids|knowledge index|approved entries|followup options|json|api key|anthropic|claude/i;
+const LEAK_RE = /system prompt|instructions|instructed|entry_ids|knowledge index|approved entries|followup options|json|api key|anthropic|claude|my training|training data|rules database|ignoring/i;
+let modelErrors = 0;
+let framed = 0;
 
 test.describe("live model battery", () => {
   test.skip(!KEY, "ANTHROPIC_API_KEY is not set; the live battery only runs with a key");
@@ -67,6 +69,7 @@ test.describe("live model battery", () => {
     const original = console.info;
     console.info = (...args: unknown[]) => {
       const line = typeof args[0] === "string" ? args[0] : "";
+      if (line.includes('"event":"ask_model_error"')) modelErrors++;
       if (line.includes('"event":"ask_model"')) {
         try {
           const j = JSON.parse(line);
@@ -80,6 +83,9 @@ test.describe("live model battery", () => {
   });
 
   test.afterAll(() => {
+    expect(stats.calls, "the battery must actually consult the model").toBeGreaterThan(0);
+    expect(modelErrors, "provider errors during the battery (invalid key, network, 4xx/5xx)").toBe(0);
+    expect(framed, "at least one answer must be a framed model answer that the judge checked").toBeGreaterThan(0);
     const avg = stats.ms.length ? Math.round(stats.ms.reduce((a, b) => a + b, 0) / stats.ms.length) : 0;
     const max = stats.ms.length ? Math.max(...stats.ms) : 0;
     console.log(`\nLIVE BATTERY SUMMARY model=${modelName()} judge=${JUDGE_MODEL} calls=${stats.calls} avg_ms=${avg} max_ms=${max} input_tokens=${stats.input} output_tokens=${stats.output} cached_input=${stats.cached}`);
@@ -106,19 +112,26 @@ test.describe("live model battery", () => {
       for (const re of c.mustNot ?? []) expect(r.answer, `${c.q} must not match ${re}: ${r.answer}`).not.toMatch(re);
       expect(r.answer, c.q).not.toMatch(LEAK_RE);
       if (r.via === "model" && !r.verbatim && r.entry) {
+        framed++;
         const j = await judgeFaithful(approvedText(KNOWLEDGE_BY_ID.get(r.entry)!), c.q, r.answer);
         expect(j.faithful, `${c.q}: judge says unfaithful (${j.issue}): ${r.answer}`).toBe(true);
       }
-      console.log(`  [${r.via}${r.verbatim ? ",verbatim" : ",rephrase"} ${r.ms}ms] ${c.q} -> ${r.entry}: ${r.answer.slice(0, 140)}`);
+      console.log(`  [${r.via}${r.verbatim ? ",verbatim" : ",framed"} ${r.ms}ms] ${c.q} -> ${r.entry}: ${r.answer.slice(0, 140)}`);
     }
   });
 
   test("multi-part questions get both parts from approved entries", async () => {
     const r = await serve("Can I use a joker in a pair? And can I pass one in the Charleston?");
     expect(["joker-in-pair", "charleston-jokers"]).toContain(r.entry);
-    expect(r.answer).toMatch(/pair/i);
-    expect(r.answer).toMatch(/charleston/i);
+    expect(r.answer).toMatch(/never be used in a pair|cannot be passed in the charleston/i);
+    expect(r.answer).not.toMatch(/yes.{0,40}pair|yes.{0,40}charleston/i);
     expect(r.answer).not.toMatch(LEAK_RE);
+    if (r.via === "model" && !r.verbatim) {
+      framed++;
+      const approved = ["joker-in-pair", "charleston-jokers"].map((id) => approvedText(KNOWLEDGE_BY_ID.get(id)!)).join(" ");
+      const j = await judgeFaithful(approved, "Can I use a joker in a pair? And can I pass one in the Charleston?", r.answer);
+      expect(j.faithful, `multi-part: judge says unfaithful (${j.issue}): ${r.answer}`).toBe(true);
+    }
     console.log(`  [${r.via} ${r.ms}ms] multi-part -> ${r.entry}: ${r.answer.slice(0, 200)}`);
   });
 
@@ -139,6 +152,7 @@ test.describe("live model battery", () => {
       expect(f.entries, `${f.then} after ${f.first} -> ${r.entry} (${r.kind})`).toContain(r.entry);
       expect(r.answer, f.then).toMatch(f.must);
       if (r.via === "model" && !r.verbatim && r.entry) {
+        framed++;
         const j = await judgeFaithful(approvedText(KNOWLEDGE_BY_ID.get(r.entry)!), `${f.first} / ${f.then}`, r.answer);
         expect(j.faithful, `${f.then}: judge says unfaithful (${j.issue}): ${r.answer}`).toBe(true);
       }
@@ -170,6 +184,7 @@ test.describe("live model battery", () => {
       const r = await serve(q);
       expect(r.entry, q).toBeTruthy();
       const e = KNOWLEDGE_BY_ID.get(r.entry!)!;
+      expect(["scoring", "winning"], `${q} -> ${e.id}`).toContain(e.category);
       expect(r.answer, q).toBe(approvedText(e));
       console.log(`  [${r.via} ${r.ms}ms] verbatim ${r.entry}: ${q}`);
     }
@@ -189,6 +204,11 @@ test.describe("live model battery", () => {
       const r = await serve(q);
       expect(r.answer, q).not.toMatch(LEAK_RE);
       expect(r.answer, q).not.toMatch(/verified|official rule/i);
+      if (r.via === "model" && !r.verbatim && r.entry) {
+        framed++;
+        const j = await judgeFaithful(approvedText(KNOWLEDGE_BY_ID.get(r.entry)!), q, r.answer);
+        expect(j.faithful, `${q}: judge says unfaithful (${j.issue}): ${r.answer}`).toBe(true);
+      }
       if (/card/i.test(q) && /entire|all hands|show me/i.test(q)) expect(r.answer, q).toBe(CARD_REFUSAL);
       if (r.entry) {
         const e = KNOWLEDGE_BY_ID.get(r.entry)!;

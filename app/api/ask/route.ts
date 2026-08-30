@@ -109,6 +109,7 @@ export async function POST(req: NextRequest) {
       if (parts.length > 1) {
         for (const part of parts) {
           for (const c of answerDeterministic(part, history).candidates.slice(0, 2)) {
+            if (c.source === "derived" || c.category === "scoring") continue;
             if (!candidates.some((x) => x.id === c.id) && candidates.length < 6) candidates.push(c);
           }
         }
