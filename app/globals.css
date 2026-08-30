@@ -1556,9 +1556,9 @@ footer {
 /* Eight links plus the CTA need one row: tighten first, then hand tablets the menu button
    rather than letting the links wrap into a second or third line. */
 @media (max-width: 1280px) {
-  nav { padding: 1rem 2rem; }
-  .nav-links { gap: 1.2rem; }
-  .nav-links a { font-size: 0.72rem; letter-spacing: 0.08em; }
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { gap: 1rem; }
+  .nav-links a { font-size: 0.72rem; letter-spacing: 0.06em; }
 }
 
 @media (max-width: 1024px) {
