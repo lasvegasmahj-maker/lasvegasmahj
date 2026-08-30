@@ -7,9 +7,9 @@ export const THE_CARD: RulesTopic = {
     {
       id: "new-card",
       q: "When does the new NMJL card come out each year?",
-      a: "The National Mah Jongg League releases a new card every spring. The new card is the only valid card for that year's play; the previous year's card is retired. You can order the new card at the NMJL website (nationalmahjonggleague.org) for a small annual fee.",
+      a: "The National Mah Jongg League releases a new card every spring, and the hands change every year, so players buy the new card each season directly from the League. You can order it at the NMJL website (nationalmahjonggleague.org).",
       kind: "standard",
-      evidence: "unverified",
+      evidence: "owner",
     },
     {
       id: "numbers",
@@ -42,9 +42,9 @@ export const THE_CARD: RulesTopic = {
     {
       id: "last-year",
       q: "Can I play with last year's card?",
-      a: "Not in official or competitive play. The NMJL releases a new card each year and play should use the current year's card. However, in casual home games, groups sometimes agree to use any card they have; just make sure everyone is playing from the same card.",
+      a: "The League releases a new card every spring and the hands change, so play uses the current year's card. In casual home games, groups sometimes agree to use an older card; just make sure everyone is playing from the same card.",
       kind: "house",
-      evidence: "unverified",
+      evidence: "owner",
     },
   ],
 };

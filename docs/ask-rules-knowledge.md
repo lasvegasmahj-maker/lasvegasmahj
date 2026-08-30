@@ -37,6 +37,7 @@ answer a rules question with text outside those files. Each Ask entry carries a 
 |-------------------|------------------------------------------------------------------------------------------|------------------------------|
 | `shared_approved` | Verbatim copy of an owner-approved entry from Find My Mahj (`lib/rules/knowledge.ts`), same id, same text. | Standard rule / Can vary by house rule |
 | `lvm_rules_page`  | Verbatim text from a `/rules/*` page on this site (`source_url`). One entry, `called-dead`, stitches one Find My Mahj sentence with two page sentences. | Standard rule / Can vary by house rule |
+| `owner_approved`  | Approved by the owner (2026-08-29) with no matching `/rules` Q&A yet: `call-during-charleston`, `joker-in-news`, `call-for-pair`. No "Read more" link until a page carries the rule. | Standard rule / Can vary by house rule |
 | `derived`         | Composed only from approved statements, but the exact wording has not been reviewed by the instructor. | Pending instructor review    |
 
 The optional model layer (`lib/ask/llm.ts`) may rephrase retrieved entries; it cannot add

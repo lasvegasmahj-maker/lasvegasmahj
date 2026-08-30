@@ -37,7 +37,7 @@ export const DEAD_HANDS: RulesTopic = {
       q: "What happens if two players have dead hands?",
       a: "Both sit out. The remaining two players continue, and both dead-hand players still pay if one of the active players wins.",
       kind: "standard",
-      evidence: "unverified",
+      evidence: "card",
     },
   ],
 };

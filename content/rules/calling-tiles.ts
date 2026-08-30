@@ -35,9 +35,9 @@ export const CALLING_TILES: RulesTopic = {
     {
       id: "out-of-turn",
       q: "What is calling out of turn and what are the consequences?",
-      a: "Calling a tile that is not the most recent discard, or calling before the discard is complete, is an out-of-turn call. The penalty varies by house rules but typically results in the hand being declared dead. At minimum, the call is void and play continues.",
-      kind: "house",
-      evidence: "unverified",
+      a: "Calling a tile that is not the most recent discard, or calling after the player next in turn has already picked and racked or discarded, is an out-of-turn call. Under the card the claim is simply not allowed: the call is void and play continues. The card names no penalty for the attempt itself; a hand is dead only if it ends up with too few or too many tiles or an incorrect exposure. Any further penalty is not printed on the card.",
+      kind: "standard",
+      evidence: "card",
     },
     {
       id: "concealed",
