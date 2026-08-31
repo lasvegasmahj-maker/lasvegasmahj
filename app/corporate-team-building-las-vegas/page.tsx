@@ -6,7 +6,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Corporate Team Building Las Vegas",
   description:
-    "Corporate team building in Las Vegas that teams actually remember. Strategic, social mahjong for any group size. We bring everything to your office, hotel, or venue. Get a quote.",
+    "Corporate team building in Las Vegas that teams actually remember. Strategic, social mahjong for any group size, delivered to your office, hotel, or venue.",
   alternates: { canonical: "https://www.lasvegasmahj.com/corporate-team-building-las-vegas" },
   openGraph: {
     ...ogBase,
