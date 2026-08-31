@@ -21,7 +21,7 @@ const MANIFEST = "lib/ask/fmg-manifest.json";
 const argPath = process.argv.indexOf("--path");
 const repo = resolve(argPath > -1 ? process.argv[argPath + 1] : "../findmymahjgame");
 
-type ManifestEntry = { id: string; topic: string | null; classification: string | null; provenance: string | null; varies_by_house: boolean; fingerprint: string; disposition: string; note?: string };
+type ManifestEntry = { id: string; topic: string | null; classification: string | null; provenance: string | null; fmg_source: string | null; fmg_review_pending: boolean; varies_by_house: boolean; fingerprint: string; disposition: string; note?: string };
 
 function readSisterKnowledge(): string {
   if (!existsSync(repo)) throw new Error(`Find My Mahj repo not found at ${repo}. Clone it beside this one or pass --path.`);
@@ -47,6 +47,8 @@ const entries: ManifestEntry[] = sister
       topic: e.topic,
       classification: e.classification,
       provenance: e.provenance,
+      fmg_source: e.source,
+      fmg_review_pending: e.review_pending,
       varies_by_house: e.varies_by_house,
       fingerprint: fingerprint(e),
       disposition: before?.disposition ?? "unreviewed",

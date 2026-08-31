@@ -51,23 +51,31 @@ decides or rewords a rule: see "Conversational layer" below.
 
 Find My Mahj and Las Vegas Mahjong do not share code at runtime (no cross-site dependency).
 They share approved rule text by copy, recorded in `lib/ask/fmg-manifest.json`. That manifest
-lists every entry Find My Mahj had approved when we last looked, a fingerprint of its exact
-wording, and what we did with it:
+lists every entry in Find My Mahj's rules knowledge, a fingerprint of its exact wording,
+**their own approval status**, and what we did with it:
 
 | disposition | meaning |
 |---|---|
-| `copied` | the same rule, word for word, lives here as a `shared_approved` entry with the same id |
-| `mapped:<id>` | the same rule already exists here under that id, so copying would duplicate it |
-| `excluded` | not an approved rule to copy (Find My Mahj marks it unresolved, or it is strategy, or its wording names that site) |
-| `owner-review` | approved there, but it conflicts with a decision the owner made here; only she can reconcile the two |
+| `copied` | Find My Mahj's owner has approved it and the same text lives here as a `shared_approved` entry with the same id |
+| `awaiting-approval` | a rule we do not answer yet, but their instructor has not signed it off; copy it once their review clears |
+| `mapped:<id>` | we already answer this question under that id, so copying would duplicate it |
+| `excluded` | not a rule to copy (they mark it an open question, or it is strategy, or its wording names their site) |
+| `owner-review` | it conflicts with a decision the owner made here; only she can reconcile the two |
 
 Every entry other than `copied` carries a `note` saying why.
 
-`tests/fmg-sync.logic.spec.ts` runs in CI with no sister repository: it checks the manifest is
-well formed, that every `copied` entry is present here word for word and still `shared_approved`,
-that nothing claims to be shared without being in the manifest, that entries we did not copy are
-not quietly present anyway, that the six pending rules are untouched, and that nothing copied
-introduces League payment attribution or card hand content.
+`fmg_source` and `fmg_review_pending` record what Find My Mahj says about its own entry.
+Their `researched()` and `ownerQuestion()` helpers set `owner_review_required`, and only
+`OWNER` provenance means their instructor has signed the wording off. **A disposition of
+`copied` is legal only for an entry whose `fmg_source` is `owner_approved` and whose review is
+not pending**, and a test enforces that: text they are still reviewing must never become a
+"Standard rule" here.
+
+`tests/fmg-sync.logic.spec.ts` runs in CI with no sister repository and no network: manifest
+well formed, nothing copied that they have not approved, every copied entry present here word
+for word and still `shared_approved`, nothing claiming to be shared without being recorded,
+nothing awaiting approval leaking into the corpus, the six pending rules untouched, and no
+copied entry introducing League payment attribution or card hand content.
 
 `tests/ask-engine.logic.spec.ts` adds the other half when the sister repo is checked out beside
 this one: it re-reads Find My Mahj's `main` and fails if they approved a new entry we have never
@@ -76,12 +84,15 @@ exists.
 
 To take in a new or changed Find My Mahj rule:
 
-1. `npx tsx scripts/sync-fmg-manifest.ts` (reads `../findmymahjgame`, keeps existing dispositions,
-   marks anything new as `unreviewed`).
+1. `npx tsx scripts/sync-fmg-manifest.ts` (reads `../findmymahjgame`, keeps existing
+   dispositions, marks anything new as `unreviewed`).
 2. Give each new entry a disposition and a note. Anything left `unreviewed` fails the tests.
-3. For a `copied` entry, paste their approved wording into `lib/ask/knowledge.ts` as
-   `shared_approved` and give it the routing fields this site needs (question, patterns,
-   keywords, category, level, related). Never edit the wording of a shared entry here; change it
+3. Only for an entry their owner has approved: paste their wording into `lib/ask/knowledge.ts`
+   as `shared_approved` and add the routing fields this site needs (question, patterns,
+   keywords, category, level, related). Write patterns against the engine's normalized text
+   (`normalizeQuestion` folds plurals, so "exposure" becomes "expose"), never let a bare topic
+   word into `patterns`, and check the new entry does not take questions from an existing rule
+   or from one of the six pending ones. Never edit the wording of a shared entry here; change it
    in Find My Mahj first, then re-run the script.
 
 ## Approving a pending entry

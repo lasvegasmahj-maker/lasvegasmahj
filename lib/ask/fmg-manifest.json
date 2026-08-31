@@ -7,6 +7,8 @@
       "topic": "The annual NMJL card",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "e3d180299d0f6354",
       "disposition": "copied"
@@ -15,16 +17,21 @@
       "id": "blank-tiles",
       "topic": "Blank tiles",
       "classification": "house_optional_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": true,
       "fingerprint": "5ef16cf5946490cb",
-      "disposition": "copied"
+      "disposition": "awaiting-approval",
+      "note": "No entry covers blank tiles. Copy once approved there."
     },
     {
       "id": "calling-discard",
       "topic": "Calling a discard",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": true,
       "fingerprint": "1a751e67f888ac4a",
       "disposition": "copied"
@@ -33,17 +40,21 @@
       "id": "calling-for-exposure",
       "topic": "Calling a discard for an exposure",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "10ec7660d1498297",
       "disposition": "mapped:calling-discard",
-      "note": "Covered by calling-discard, with call-concealed and wrong-exposure for the concealed and fix-it clauses."
+      "note": "Covered by calling-discard, with call-concealed and wrong-exposure for the concealed and fix-it clauses. Their extra clause about a joker exchange locking an exposure is not in our card-evidence text."
     },
     {
       "id": "calling-for-mahjong",
       "topic": "Calling a discard for mahjong",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "f7dbc60f029d529a",
       "disposition": "mapped:call-for-mahjong",
@@ -53,17 +64,21 @@
       "id": "calling-for-pair",
       "topic": "Calling a discard for a pair",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "b20a316762695de5",
       "disposition": "mapped:call-for-pair",
-      "note": "Same rule, same mahjong exception."
+      "note": "Same rule and same mahjong exception, in our own approved wording."
     },
     {
       "id": "calling-quints-sextets",
       "topic": "Calling a discard for a quint or sextet",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "9b582f50f450a370",
       "disposition": "mapped:calling-discard",
@@ -73,16 +88,21 @@
       "id": "card-notation",
       "topic": "Reading the card (colors and letters)",
       "classification": "nmjl_clarification",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "726c78f835071871",
-      "disposition": "copied"
+      "disposition": "awaiting-approval",
+      "note": "card-numbers covers digits only; colors, the C and X markings and the Soap-as-zero rule are uncovered here. Copy once approved there."
     },
     {
       "id": "charleston",
       "topic": "The Charleston",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "c1e10f949f094caa",
       "disposition": "copied"
@@ -92,6 +112,8 @@
       "topic": "Charleston blind pass",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "f46c3181b1083ec1",
       "disposition": "copied"
@@ -100,17 +122,21 @@
       "id": "charleston-stop",
       "topic": "Stopping the Charleston",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "0a7a5873468c9aa2",
       "disposition": "mapped:stop-charleston",
-      "note": "Same rule in our own page wording."
+      "note": "We answer this question already. Their version adds that a courtesy pass can still be offered after a stop."
     },
     {
       "id": "closed-hand-final-tile",
       "topic": "Closed hand final tile",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "5f207f79d2eb24ea",
       "disposition": "copied"
@@ -120,6 +146,8 @@
       "topic": "Rules versus table courtesies",
       "classification": "etiquette",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": true,
       "fingerprint": "86bfd798e52ab4af",
       "disposition": "copied"
@@ -128,17 +156,21 @@
       "id": "courtesy-pass",
       "topic": "The courtesy pass",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "23f92111ba69caf5",
       "disposition": "mapped:courtesy-pass",
-      "note": "Same rule; our page text allows 0 as well, which is the same as declining."
+      "note": "We answer this question already. Their version adds that no jokers may be passed and that the smaller number wins, neither of which we state; both are pending their owner's review."
     },
     {
       "id": "dead-hand",
       "topic": "Dead hands",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": true,
       "fingerprint": "3079166662bd3af6",
       "disposition": "copied"
@@ -147,27 +179,33 @@
       "id": "dead-hand-details",
       "topic": "What makes a hand dead",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": true,
       "fingerprint": "63c6b4cceb7c5491",
       "disposition": "mapped:dead-hand",
-      "note": "Covered across dead-hand, dead-hand-triggers, dead-hand-draws, dead-hand-pays and called-dead."
+      "note": "Covered across dead-hand, dead-hand-triggers, dead-hand-draws, dead-hand-pays and called-dead. Their version adds that you do not declare your own hand dead and that a wrong count cannot be fixed after East's first discard."
     },
     {
       "id": "dead-hand-jokers",
       "topic": "Jokers in a dead hand's exposures",
       "classification": "nmjl_clarification",
-      "provenance": null,
+      "provenance": "ownerQuestion",
+      "fmg_source": "owner_question",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "6614387df4e78c26",
       "disposition": "excluded",
-      "note": "Find My Mahj marks this unresolved pending its instructor review."
+      "note": "Find My Mahj marks this an open question pending its instructor's ruling."
     },
     {
       "id": "dealing",
       "topic": "Dealing",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "a8c2c0bb35ce30a0",
       "disposition": "copied"
@@ -177,6 +215,8 @@
       "topic": "Dragons",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "bd3b01a98c0e2722",
       "disposition": "copied"
@@ -185,16 +225,21 @@
       "id": "exposures-basics",
       "topic": "Exposures",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "0f30074619a1ff8b",
-      "disposition": "copied"
+      "disposition": "awaiting-approval",
+      "note": "No entry defines an exposure. Their text also locks an exposure on a joker exchange, which our card-evidence pages do not say, so that clause needs the owner's eye before it is copied."
     },
     {
       "id": "flowers",
       "topic": "Flowers",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "daca2b55a95e095d",
       "disposition": "copied"
@@ -203,7 +248,9 @@
       "id": "hand-choice-strategy",
       "topic": "Choosing a hand (strategy)",
       "classification": "strategy",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "d58039d324cc63c2",
       "disposition": "excluded",
@@ -213,26 +260,33 @@
       "id": "hand-size",
       "topic": "How many tiles you hold",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "38dc3267454f8d2b",
-      "disposition": "copied"
+      "disposition": "awaiting-approval",
+      "note": "We answer the starting count (dealing) but not how many tiles you hold during play. Copy once approved there."
     },
     {
       "id": "joker-discarded",
       "topic": "Discarded jokers",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "d732bfc5d635aa5a",
       "disposition": "owner-review",
-      "note": "Resolves for an exposure what discarded-joker deliberately keeps pending here. Copying it would promote a pending concept without the owner saying so."
+      "note": "Resolves for an exposure what discarded-joker deliberately keeps pending here."
     },
     {
       "id": "joker-exchange",
       "topic": "Joker exchange",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "4ad1fd484748ab96",
       "disposition": "copied"
@@ -241,26 +295,33 @@
       "id": "joker-exchange-timing",
       "topic": "When a joker exchange is allowed",
       "classification": "nmjl_clarification",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "e92f03a33e412f2c",
       "disposition": "mapped:joker-exchange",
-      "note": "Same rule as joker-exchange; a second entry would duplicate that routing."
+      "note": "We answer when a joker exchange is allowed. Their version adds the precise window (after you draw or call, before you discard) and that you may redeem from your own exposure."
     },
     {
       "id": "joker-in-mixed-groups",
       "topic": "Jokers in runs, years, and NEWS",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "bb9d30a1dade3221",
-      "disposition": "copied"
+      "disposition": "awaiting-approval",
+      "note": "joker-in-news covers NEWS only; runs and years are uncovered here. Copy once approved there."
     },
     {
       "id": "joker-in-pair",
       "topic": "Jokers in pairs and singles",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "99a8cbfba981a88a",
       "disposition": "copied"
@@ -270,6 +331,8 @@
       "topic": "Jokers",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "d5a0948df749e555",
       "disposition": "copied"
@@ -278,46 +341,57 @@
       "id": "last-tile-of-wall",
       "topic": "The last tiles of the wall",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "c7a01485418bf89b",
       "disposition": "owner-review",
-      "note": "States that a wall game pays nothing, which conflicts with the neutral wall game payment wording the owner approved here."
+      "note": "States that a wall game pays nothing, which conflicts with the neutral wall game payment wording approved here, and its end-of-wall detail is uncovered."
     },
     {
       "id": "mahjong-in-error",
       "topic": "Mahjong declared in error",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "ownerQuestion",
+      "fmg_source": "owner_question",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "eebc38b0088a30ba",
       "disposition": "excluded",
-      "note": "Find My Mahj marks this unresolved; our false-mahjong answer is already card verified, so copying would replace a verified answer with a placeholder."
+      "note": "Find My Mahj marks this an open question. Our false-mahjong answer is card verified, so copying would replace a verified answer with a placeholder."
     },
     {
       "id": "misnamed-discard",
       "topic": "Misnamed discards",
       "classification": "nmjl_clarification",
-      "provenance": null,
+      "provenance": "ownerQuestion",
+      "fmg_source": "owner_question",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "efc087f1ee9cce7a",
       "disposition": "excluded",
-      "note": "Find My Mahj marks this unresolved pending its instructor review, so there is nothing approved to copy."
+      "note": "Find My Mahj marks this an open question pending its instructor's ruling. Our card-evidence pages already cover misnamed tiles."
     },
     {
       "id": "naming-discards",
       "topic": "Naming a discard",
       "classification": "nmjl_clarification",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "65af0ef7e14a0afc",
-      "disposition": "copied"
+      "disposition": "awaiting-approval",
+      "note": "No entry covers naming a discard aloud. The second sentence attributes acceptance of 'same' to a League bulletin found by secondary research, so it needs the owner's confirmation."
     },
     {
       "id": "open-vs-closed",
       "topic": "Open and closed hands",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "35d616f084298445",
       "disposition": "copied"
@@ -326,54 +400,69 @@
       "id": "order-of-play",
       "topic": "Order of play",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "41d7250b547eb929",
-      "disposition": "copied"
+      "disposition": "awaiting-approval",
+      "note": "No entry here covers turn order. Copy once approved there."
     },
     {
       "id": "own-discard",
       "topic": "Calling your own discard",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "f318237f8569c157",
       "disposition": "owner-review",
-      "note": "Approved rule about calling your own discard, but its wording ('never call back a tile you just discarded') would capture take-back questions, which route to the pending take-back-discard entry."
+      "note": "Its wording ('never call back a tile you just discarded') would capture take-back questions, which belong to the pending take-back-discard entry."
     },
     {
       "id": "passing-on-a-discard",
       "topic": "Passing on a discard",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "a36ee13d650edb06",
-      "disposition": "copied"
+      "disposition": "awaiting-approval",
+      "note": "No entry says a call is optional. Copy once approved there."
     },
     {
       "id": "payments-basics",
       "topic": "Payments after a win",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": true,
       "fingerprint": "00597713d9ed7578",
       "disposition": "owner-review",
-      "note": "Attributes payment amounts to the League rulebook and states that a wall game pays nothing. The owner's 2026-08-29 decision removed exactly that attribution from this site and made payment wording neutral, and a truth-layer test enforces it."
+      "note": "Attributes payment amounts to the League rulebook and states a wall game pays nothing. The owner's 2026-08-29 decision removed that attribution here and made payment wording neutral, and a truth-layer test enforces it."
     },
     {
       "id": "picking-ahead",
       "topic": "Picking ahead",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "c67df89b40755610",
-      "disposition": "copied"
+      "disposition": "awaiting-approval",
+      "note": "No entry covers drawing before the player ahead of you discards. Copy once approved there."
     },
     {
       "id": "players-count",
       "topic": "Number of players",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": true,
       "fingerprint": "d0acc33535f74277",
       "disposition": "copied"
@@ -383,25 +472,32 @@
       "topic": "Quints and sextets",
       "classification": "standard_nmjl_rule",
       "provenance": "ARITHMETIC",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "955ec581468d8706",
-      "disposition": "copied"
+      "disposition": "awaiting-approval",
+      "note": "pung-vs-kong already defines a quint and a sextet; their version adds the joker requirement and the flower exception. Copy only if the owner wants that detail as its own entry."
     },
     {
       "id": "rules-source",
       "topic": "Where the official rules come from",
       "classification": "nmjl_clarification",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "ee2384cef3264ce9",
       "disposition": "mapped:house-vs-nmjl",
-      "note": "Substance covered by house-vs-nmjl and annual-card; the Find My Mahj wording names that site, so it cannot be copied verbatim here."
+      "note": "Substance covered by house-vs-nmjl and annual-card. Their wording names their own site, so it could not be copied verbatim in any case."
     },
     {
       "id": "suits",
       "topic": "Suits",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "159e789626c36b53",
       "disposition": "copied"
@@ -411,6 +507,8 @@
       "topic": "The wall",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "6015e67ca9321147",
       "disposition": "copied"
@@ -420,6 +518,8 @@
       "topic": "Tile count",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "ac4420f7020d4ba4",
       "disposition": "copied"
@@ -428,16 +528,21 @@
       "id": "tournament-rules",
       "topic": "Tournament rules versus standard play",
       "classification": "tournament_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "a5211d937923685a",
-      "disposition": "copied"
+      "disposition": "awaiting-approval",
+      "note": "No entry covers tournament play. Copy once approved there."
     },
     {
       "id": "two-players-same-tile",
       "topic": "Two players want the same discard",
       "classification": "standard_nmjl_rule",
-      "provenance": null,
+      "provenance": "researched",
+      "fmg_source": "research_verified",
+      "fmg_review_pending": true,
       "varies_by_house": false,
       "fingerprint": "8a2d3bdd2232b958",
       "disposition": "mapped:same-tile-two-calls",
@@ -448,6 +553,8 @@
       "topic": "Wall game (no winner)",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": true,
       "fingerprint": "7a31605043d77699",
       "disposition": "copied"
@@ -457,6 +564,8 @@
       "topic": "Winds",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "1e200f9d6c24fa3d",
       "disposition": "copied"
@@ -466,6 +575,8 @@
       "topic": "Winning (declaring mahjong)",
       "classification": "standard_nmjl_rule",
       "provenance": "OWNER",
+      "fmg_source": "owner_approved",
+      "fmg_review_pending": false,
       "varies_by_house": false,
       "fingerprint": "9015064f94faa739",
       "disposition": "copied"
