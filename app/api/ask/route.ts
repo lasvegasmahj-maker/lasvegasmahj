@@ -150,6 +150,13 @@ export async function POST(req: NextRequest) {
         category: response.category ?? null,
         label: response.label,
         via: response.via,
+        // Non-secret gate diagnostics: whether the model layer can run at all, and which
+        // Vercel environment this function is in. Booleans and an environment name only;
+        // no key, no length, no substring, no variable value.
+        key_present: Boolean(process.env.ANTHROPIC_API_KEY),
+        model_disabled: process.env.ASK_MODEL_DISABLED === "1",
+        model_enabled: isModelEnabled(),
+        vercel_env: process.env.VERCEL_ENV ?? null,
         turn: Math.floor(history.length / 2) + 1,
         ms: Date.now() - started,
         gap: response.kind === "unverified" ? summarizeGap(question) : undefined,
