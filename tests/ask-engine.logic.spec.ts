@@ -19,6 +19,8 @@ import {
 import { pickNudge } from "../lib/ask/nudges";
 import { SlidingWindow, ipOf } from "../lib/ask/rate-limit";
 import { validateModelOutput, composeWithModel, type ModelClient } from "../lib/ask/llm";
+import manifest from "../lib/ask/fmg-manifest.json";
+import { fingerprint, parseSister } from "../scripts/sync-fmg-manifest.mjs";
 
 // The knowledge base ships approved text only, so these checks encode the hard mahjong facts
 // from CLAUDE.md as assertions. Pure logic, no browser, no network.
@@ -87,11 +89,12 @@ test.describe("knowledge base integrity", () => {
     for (const q of STARTER_QUESTIONS) expect(canonicalEntryFor(q), q).toBeTruthy();
   });
 
-  test("shared entries match Find My Mahj verbatim when the sister repo is present", () => {
+  test("the Find My Mahj manifest still matches the sister repo when it is checked out", () => {
     const sibling = path.resolve(__dirname, "../../findmymahjgame/lib/rules/knowledge.ts");
     test.skip(!fs.existsSync(sibling), "sister repo not checked out beside this one");
     // Compare against the sister repo's merged main branch, not whichever branch happens to be
-    // checked out or a half-edited working tree.
+    // checked out or a half-edited working tree. CI has no sister repo, so this check runs on a
+    // developer's machine; tests/fmg-sync.logic.spec.ts covers our side of the copy in CI.
     const cwd = path.dirname(path.dirname(path.dirname(sibling)));
     let src: string | null = null;
     for (const ref of ["origin/main", "main", "HEAD"]) {
@@ -103,20 +106,26 @@ test.describe("knowledge base integrity", () => {
       }
     }
     src ??= fs.readFileSync(sibling, "utf8");
-    const re = /id:\s*"([^"]+)"[\s\S]*?approved_answer:\s*"((?:[^"\\]|\\.)*)"[\s\S]*?varies_by_house:\s*(true|false)(?:,\s*house_note:\s*"((?:[^"\\]|\\.)*)")?/g;
-    const shared = new Map<string, { answer: string; varies: boolean; note: string }>();
-    for (const m of src.matchAll(re)) shared.set(m[1], { answer: JSON.parse(`"${m[2]}"`), varies: m[3] === "true", note: m[4] ? JSON.parse(`"${m[4]}"`) : "" });
-    expect(shared.size).toBeGreaterThanOrEqual(12);
-    const ours = RULES_KNOWLEDGE.filter((e) => e.source === "shared_approved");
-    const ourIds = new Set(ours.map((e) => e.id));
-    const missingHere = [...shared.keys()].filter((id) => !ourIds.has(id));
-    expect(missingHere, `Find My Mahj has approved entries not copied here: ${missingHere.join(", ")}`).toEqual([]);
-    for (const e of ours) {
-      const theirs = shared.get(e.id);
-      expect(theirs, `missing in FMG: ${e.id}`).toBeTruthy();
-      expect(e.answer, e.id).toBe(theirs!.answer);
-      expect(e.varies_by_house, e.id).toBe(theirs!.varies);
-      expect(e.house_note ?? "", `${e.id} house note`).toBe(theirs!.note);
+    const theirs = parseSister(src);
+    expect(theirs.length).toBeGreaterThanOrEqual(12);
+
+    const recorded = new Map((manifest.entries as { id: string; fingerprint: string; disposition: string }[]).map((e) => [e.id, e]));
+    const added = theirs.filter((e) => !recorded.has(e.id)).map((e) => e.id);
+    expect(added, `Find My Mahj has approved entries this repo has never triaged: ${added.join(", ")}. Run node scripts/sync-fmg-manifest.mjs, then give each one a disposition.`).toEqual([]);
+
+    const reworded = theirs.filter((e) => recorded.get(e.id)!.fingerprint !== fingerprint(e)).map((e) => e.id);
+    expect(reworded, `Find My Mahj reworded approved entries: ${reworded.join(", ")}. Run node scripts/sync-fmg-manifest.mjs and copy the new wording for any entry marked copied.`).toEqual([]);
+
+    const dropped = [...recorded.keys()].filter((id) => !theirs.some((e) => e.id === id));
+    expect(dropped, `entries in our manifest that Find My Mahj no longer has: ${dropped.join(", ")}. Run node scripts/sync-fmg-manifest.mjs.`).toEqual([]);
+
+    // The manifest fingerprints are only trustworthy if our copies really are their text.
+    for (const e of theirs.filter((x) => recorded.get(x.id)!.disposition === "copied")) {
+      const mine = RULES_KNOWLEDGE.find((x) => x.id === e.id);
+      expect(mine, `copied entry missing here: ${e.id}`).toBeTruthy();
+      expect(mine!.answer, e.id).toBe(e.answer);
+      expect(mine!.varies_by_house, e.id).toBe(e.varies_by_house);
+      expect(mine!.house_note ?? "", `${e.id} house note`).toBe(e.house_note ?? "");
     }
   });
 });

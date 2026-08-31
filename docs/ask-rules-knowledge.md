@@ -50,18 +50,39 @@ decides or rewords a rule: see "Conversational layer" below.
 ## How the two sites stay in sync
 
 Find My Mahj and Las Vegas Mahjong do not share code at runtime (no cross-site dependency).
-They share content by copy plus a test:
+They share approved rule text by copy, recorded in `lib/ask/fmg-manifest.json`. That manifest
+lists every entry Find My Mahj had approved when we last looked, a fingerprint of its exact
+wording, and what we did with it:
 
-1. `tests/ask-engine.logic.spec.ts` ("shared entries match Find My Mahj verbatim") reads
-   `lib/rules/knowledge.ts` from the sister repo's `origin/main` (then `main`, then HEAD, then
-   the working file) when the repo is checked out beside this one, and fails if any
-   `shared_approved` entry's answer, `varies_by_house`, or `house_note` differs, or if Find My
-   Mahj main has approved entries not copied here. Entries on unmerged Find My Mahj branches are not
-   shared yet; copy them as `derived` if needed and flip to `shared_approved` after the merge.
-2. Rule of thumb: edit a shared rule in Find My Mahj first (it has the owner-approval
-   metadata), then copy the new text here in the same sitting. The test catches a miss.
-3. New LVM-only entries should be added here first. If they are general enough for Find My
-   Mahj, copy them there with the same id and change the source here to `shared_approved`.
+| disposition | meaning |
+|---|---|
+| `copied` | the same rule, word for word, lives here as a `shared_approved` entry with the same id |
+| `mapped:<id>` | the same rule already exists here under that id, so copying would duplicate it |
+| `excluded` | not an approved rule to copy (Find My Mahj marks it unresolved, or it is strategy, or its wording names that site) |
+| `owner-review` | approved there, but it conflicts with a decision the owner made here; only she can reconcile the two |
+
+Every entry other than `copied` carries a `note` saying why.
+
+`tests/fmg-sync.logic.spec.ts` runs in CI with no sister repository: it checks the manifest is
+well formed, that every `copied` entry is present here word for word and still `shared_approved`,
+that nothing claims to be shared without being in the manifest, that entries we did not copy are
+not quietly present anyway, that the six pending rules are untouched, and that nothing copied
+introduces League payment attribution or card hand content.
+
+`tests/ask-engine.logic.spec.ts` adds the other half when the sister repo is checked out beside
+this one: it re-reads Find My Mahj's `main` and fails if they approved a new entry we have never
+triaged, reworded an entry, or dropped one. That check skips in CI, which is why the manifest
+exists.
+
+To take in a new or changed Find My Mahj rule:
+
+1. `node scripts/sync-fmg-manifest.mjs` (reads `../findmymahjgame`, keeps existing dispositions,
+   marks anything new as `unreviewed`).
+2. Give each new entry a disposition and a note. Anything left `unreviewed` fails the tests.
+3. For a `copied` entry, paste their approved wording into `lib/ask/knowledge.ts` as
+   `shared_approved` and give it the routing fields this site needs (question, patterns,
+   keywords, category, level, related). Never edit the wording of a shared entry here; change it
+   in Find My Mahj first, then re-run the script.
 
 ## Approving a pending entry
 
