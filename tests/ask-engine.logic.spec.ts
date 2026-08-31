@@ -20,7 +20,7 @@ import { pickNudge } from "../lib/ask/nudges";
 import { SlidingWindow, ipOf } from "../lib/ask/rate-limit";
 import { validateModelOutput, composeWithModel, type ModelClient } from "../lib/ask/llm";
 import manifest from "../lib/ask/fmg-manifest.json";
-import { fingerprint, parseSister } from "../scripts/sync-fmg-manifest.mjs";
+import { fingerprint, parseSister } from "../lib/ask/fmg-parse";
 
 // The knowledge base ships approved text only, so these checks encode the hard mahjong facts
 // from CLAUDE.md as assertions. Pure logic, no browser, no network.
@@ -111,13 +111,13 @@ test.describe("knowledge base integrity", () => {
 
     const recorded = new Map((manifest.entries as { id: string; fingerprint: string; disposition: string }[]).map((e) => [e.id, e]));
     const added = theirs.filter((e) => !recorded.has(e.id)).map((e) => e.id);
-    expect(added, `Find My Mahj has approved entries this repo has never triaged: ${added.join(", ")}. Run node scripts/sync-fmg-manifest.mjs, then give each one a disposition.`).toEqual([]);
+    expect(added, `Find My Mahj has approved entries this repo has never triaged: ${added.join(", ")}. Run npx tsx scripts/sync-fmg-manifest.ts, then give each one a disposition.`).toEqual([]);
 
     const reworded = theirs.filter((e) => recorded.get(e.id)!.fingerprint !== fingerprint(e)).map((e) => e.id);
-    expect(reworded, `Find My Mahj reworded approved entries: ${reworded.join(", ")}. Run node scripts/sync-fmg-manifest.mjs and copy the new wording for any entry marked copied.`).toEqual([]);
+    expect(reworded, `Find My Mahj reworded approved entries: ${reworded.join(", ")}. Run npx tsx scripts/sync-fmg-manifest.ts and copy the new wording for any entry marked copied.`).toEqual([]);
 
     const dropped = [...recorded.keys()].filter((id) => !theirs.some((e) => e.id === id));
-    expect(dropped, `entries in our manifest that Find My Mahj no longer has: ${dropped.join(", ")}. Run node scripts/sync-fmg-manifest.mjs.`).toEqual([]);
+    expect(dropped, `entries in our manifest that Find My Mahj no longer has: ${dropped.join(", ")}. Run npx tsx scripts/sync-fmg-manifest.ts.`).toEqual([]);
 
     // The manifest fingerprints are only trustworthy if our copies really are their text.
     for (const e of theirs.filter((x) => recorded.get(x.id)!.disposition === "copied")) {

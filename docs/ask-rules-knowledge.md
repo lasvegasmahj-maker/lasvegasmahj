@@ -76,7 +76,7 @@ exists.
 
 To take in a new or changed Find My Mahj rule:
 
-1. `node scripts/sync-fmg-manifest.mjs` (reads `../findmymahjgame`, keeps existing dispositions,
+1. `npx tsx scripts/sync-fmg-manifest.ts` (reads `../findmymahjgame`, keeps existing dispositions,
    marks anything new as `unreviewed`).
 2. Give each new entry a disposition and a note. Anything left `unreviewed` fails the tests.
 3. For a `copied` entry, paste their approved wording into `lib/ask/knowledge.ts` as

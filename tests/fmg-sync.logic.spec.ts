@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { createHash } from "node:crypto";
+import { fingerprint } from "../lib/ask/fmg-parse";
 import { answerDeterministic } from "../lib/ask/engine";
 import { KNOWLEDGE_BY_ID, RULES_KNOWLEDGE } from "../lib/ask/knowledge";
 import manifest from "../lib/ask/fmg-manifest.json";
@@ -11,15 +11,11 @@ import manifest from "../lib/ask/fmg-manifest.json";
 // check in tests/ask-engine.logic.spec.ts compares the manifest against the real Find My Mahj
 // repo when it is checked out beside this one, and that is what catches drift on their side.
 //
-// To take in a new or changed Find My Mahj rule: node scripts/sync-fmg-manifest.mjs, then give
+// To take in a new or changed Find My Mahj rule: npx tsx scripts/sync-fmg-manifest.ts, then give
 // each new entry a disposition and copy the ones that belong here.
 
 type Disposition = { id: string; topic: string | null; classification: string | null; provenance: string | null; varies_by_house: boolean; fingerprint: string; disposition: string; note?: string };
 const entries = manifest.entries as Disposition[];
-
-function fingerprint(answer: string, houseNote: string | undefined, varies: boolean): string {
-  return createHash("sha256").update(JSON.stringify([answer, houseNote ?? "", varies])).digest("hex").slice(0, 16);
-}
 
 test.describe("Find My Mahj approved rules manifest", () => {
   test("the manifest is well formed and every disposition is a real decision", () => {
@@ -31,7 +27,7 @@ test.describe("Find My Mahj approved rules manifest", () => {
       expect(e.fingerprint, e.id).toMatch(/^[0-9a-f]{16}$/);
       expect(
         /^(copied|mapped:[a-z0-9-]+|excluded|owner-review)$/.test(e.disposition),
-        `${e.id} has disposition "${e.disposition}". Run node scripts/sync-fmg-manifest.mjs, then decide: copied, mapped:<our-id>, excluded, or owner-review.`
+        `${e.id} has disposition "${e.disposition}". Run npx tsx scripts/sync-fmg-manifest.ts, then decide: copied, mapped:<our-id>, excluded, or owner-review.`
       ).toBe(true);
       if (e.disposition !== "copied") {
         expect(e.note, `${e.id} is ${e.disposition} and needs a note saying why`).toBeTruthy();
@@ -51,8 +47,8 @@ test.describe("Find My Mahj approved rules manifest", () => {
       expect(ours.source, `${e.id} is copied from Find My Mahj, so it must stay shared_approved`).toBe("shared_approved");
       expect(ours.varies_by_house, `${e.id} varies_by_house drifted from Find My Mahj`).toBe(e.varies_by_house);
       expect(
-        fingerprint(ours.answer, ours.house_note, ours.varies_by_house),
-        `${e.id} wording no longer matches the approved Find My Mahj text. Do not edit shared entries here; change them in Find My Mahj, then run node scripts/sync-fmg-manifest.mjs and copy the new wording.`
+        fingerprint({ answer: ours.answer, house_note: ours.house_note, varies_by_house: ours.varies_by_house }),
+        `${e.id} wording no longer matches the approved Find My Mahj text. Do not edit shared entries here; change them in Find My Mahj, then run npx tsx scripts/sync-fmg-manifest.ts and copy the new wording.`
       ).toBe(e.fingerprint);
     }
   });
