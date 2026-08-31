@@ -16,6 +16,7 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
 const MANIFEST = "lib/ask/fmg-manifest.json";
 const argPath = process.argv.indexOf("--path");
@@ -64,34 +65,40 @@ export function fingerprint(entry) {
   return createHash("sha256").update(JSON.stringify([entry.answer, entry.house_note ?? "", entry.varies_by_house])).digest("hex").slice(0, 16);
 }
 
-const previous = existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, "utf8")) : { entries: [] };
-const kept = new Map(previous.entries.map((e) => [e.id, e]));
-const sister = parseSister(readSisterKnowledge());
+// Importing this file must stay free of side effects: tests/ask-engine.logic.spec.ts reuses the
+// parser above, and CI has no sister repo to read.
+function main() {
+  const previous = existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, "utf8")) : { entries: [] };
+  const kept = new Map(previous.entries.map((e) => [e.id, e]));
+  const sister = parseSister(readSisterKnowledge());
 
-const entries = sister
-  .map((e) => {
-    const before = kept.get(e.id);
-    return {
-      id: e.id,
-      topic: e.topic,
-      classification: e.classification,
-      provenance: e.provenance,
-      varies_by_house: e.varies_by_house,
-      fingerprint: fingerprint(e),
-      disposition: before?.disposition ?? "unreviewed",
-      ...(before?.note ? { note: before.note } : {}),
-    };
-  })
-  .sort((a, b) => a.id.localeCompare(b.id));
+  const entries = sister
+    .map((e) => {
+      const before = kept.get(e.id);
+      return {
+        id: e.id,
+        topic: e.topic,
+        classification: e.classification,
+        provenance: e.provenance,
+        varies_by_house: e.varies_by_house,
+        fingerprint: fingerprint(e),
+        disposition: before?.disposition ?? "unreviewed",
+        ...(before?.note ? { note: before.note } : {}),
+      };
+    })
+    .sort((a, b) => a.id.localeCompare(b.id));
 
-const gone = previous.entries.filter((e) => !sister.some((s) => s.id === e.id)).map((e) => e.id);
-const changed = entries.filter((e) => kept.get(e.id) && kept.get(e.id).fingerprint !== e.fingerprint).map((e) => e.id);
-const added = entries.filter((e) => !kept.has(e.id)).map((e) => e.id);
+  const gone = previous.entries.filter((e) => !sister.some((s) => s.id === e.id)).map((e) => e.id);
+  const changed = entries.filter((e) => kept.get(e.id) && kept.get(e.id).fingerprint !== e.fingerprint).map((e) => e.id);
+  const added = entries.filter((e) => !kept.has(e.id)).map((e) => e.id);
 
-writeFileSync(MANIFEST, JSON.stringify({ source: "find my mahj lib/rules/knowledge.ts", generated_from: repo.replace(process.env.HOME ?? "", "~"), entries }, null, 2) + "\n");
+  writeFileSync(MANIFEST, JSON.stringify({ source: "find my mahj lib/rules/knowledge.ts", generated_from: repo.replace(process.env.HOME ?? "", "~"), entries }, null, 2) + "\n");
 
-console.log(`Wrote ${MANIFEST}: ${entries.length} Find My Mahj entries.`);
-if (added.length) console.log(`  new (marked unreviewed): ${added.join(", ")}`);
-if (changed.length) console.log(`  wording changed: ${changed.join(", ")}`);
-if (gone.length) console.log(`  no longer in Find My Mahj: ${gone.join(", ")}`);
-if (!added.length && !changed.length && !gone.length) console.log("  no changes.");
+  console.log(`Wrote ${MANIFEST}: ${entries.length} Find My Mahj entries.`);
+  if (added.length) console.log(`  new (marked unreviewed): ${added.join(", ")}`);
+  if (changed.length) console.log(`  wording changed: ${changed.join(", ")}`);
+  if (gone.length) console.log(`  no longer in Find My Mahj: ${gone.join(", ")}`);
+  if (!added.length && !changed.length && !gone.length) console.log("  no changes.");
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
