@@ -3,7 +3,7 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Bachelorette Party Ideas Las Vegas 2026 | Beyond the Basics",
+  title: "Bachelorette Party Ideas Las Vegas 2026",
   description:
     "The best bachelorette party ideas in Las Vegas for 2026. Mahjong parties, pool days, private dinners, and experiences that actually bond the group.",
   alternates: { canonical: "https://www.lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas" },
