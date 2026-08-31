@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isModelEnabled } from "@/lib/ask/llm";
+import { isModelEnabled, modelName } from "@/lib/ask/llm";
 
 // TEMPORARY, added 2026-08-31. The project's log UI returns no request logs, so the gate
 // booleans on the ask log event cannot be read. This endpoint reports the same booleans and
@@ -14,6 +14,7 @@ export async function GET() {
       key_present: Boolean(process.env.ANTHROPIC_API_KEY),
       model_disabled: process.env.ASK_MODEL_DISABLED === "1",
       model_enabled: isModelEnabled(),
+      model: modelName(),
       vercel_env: process.env.VERCEL_ENV ?? null,
       commit: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? null,
     },
