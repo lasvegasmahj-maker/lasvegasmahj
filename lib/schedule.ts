@@ -1,4 +1,4 @@
-import { PARTNER_EVENTS, type PartnerEventInput } from "@/lib/partner-events";
+import { PARTNER_EVENTS, type PartnerEventInput } from "./partner-events";
 
 export type Tone = "pink" | "green" | "gold";
 
@@ -15,6 +15,10 @@ export interface ScheduleEvent {
   url: string;
   bookLabel: string;
   description: string;
+  startIso?: string;
+  endIso?: string;
+  venueKind: "studio" | "partner" | "unknown";
+  venueName: string;
 }
 
 const FEED_URL =
@@ -25,6 +29,42 @@ const MONTHS = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ];
+
+const PACIFIC_PARTS = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/Los_Angeles",
+  year: "numeric", month: "2-digit", day: "2-digit",
+  hour: "2-digit", minute: "2-digit", second: "2-digit",
+  hour12: false,
+});
+
+function offsetMinutesAt(instantMs: number): number {
+  const p = Object.fromEntries(
+    PACIFIC_PARTS.formatToParts(new Date(instantMs)).map((x) => [x.type, x.value]),
+  );
+  const wallAsUtc = Date.UTC(
+    Number(p.year), Number(p.month) - 1, Number(p.day),
+    Number(p.hour) % 24, Number(p.minute), Number(p.second),
+  );
+  return Math.round((wallAsUtc - instantMs) / 60000);
+}
+
+const pad = (n: number, w = 2) => String(Math.abs(n)).padStart(w, "0");
+
+// Two passes: the instant implied by the first guess can land on the far side of a DST
+// transition, which picks the wrong offset for the wall clock the feed actually gave us.
+export function pacificIso(y: number, mo: number, d: number, h: number, mi: number): string {
+  const wallAsUtc = Date.UTC(y, mo - 1, d, h, mi);
+  const first = offsetMinutesAt(wallAsUtc);
+  const off = offsetMinutesAt(wallAsUtc - first * 60000);
+  const label = `${off < 0 ? "-" : "+"}${pad(Math.trunc(off / 60))}:${pad(off % 60)}`;
+  return `${pad(y, 4)}-${pad(mo)}-${pad(d)}T${pad(h)}:${pad(mi)}:00${label}`;
+}
+
+// Normalised so "West" vs "W." and "Avenue" vs "Ave." cannot break the match.
+export function isStudioAddress(location: string): boolean {
+  const n = location.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return n.includes("8687") && n.includes("sahara") && n.includes("suite200");
+}
 
 function unfold(text: string): string {
   return text.replace(/\r\n[ \t]/g, "").replace(/\n[ \t]/g, "");
@@ -96,8 +136,10 @@ export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
         if (!cur) continue;
         const colon = line.indexOf(":");
         if (colon === -1) continue;
-        const key = line.slice(0, colon).split(";")[0];
+        const head = line.slice(0, colon);
+        const key = head.split(";")[0];
         cur[key] = line.slice(colon + 1);
+        cur[`${key}__params`] = head.slice(key.length);
       }
     }
   } catch {
@@ -130,6 +172,12 @@ function buildPartnerEvent(p: PartnerEventInput): ScheduleEvent {
     url: p.url,
     bookLabel: p.bookLabel,
     description: p.description,
+    startIso: pacificIso(p.year, p.month, p.day, p.startHour, p.startMinute),
+    endIso: p.endHour !== undefined
+      ? pacificIso(p.year, p.month, p.day, p.endHour, p.endMinute ?? 0)
+      : undefined,
+    venueKind: "partner",
+    venueName: p.venue,
   };
 }
 
@@ -153,7 +201,13 @@ function buildEvent(fields: Record<string, string>): ScheduleEvent | null {
 
   const title = unescapeText(summary).trim();
   const { tone, room } = classify(title);
-  const venue = unescapeText(fields["LOCATION"] || "").split(",")[0].trim();
+  const locationRaw = unescapeText(fields["LOCATION"] || "");
+  const venue = locationRaw.split(",")[0].trim();
+  const atStudio = isStudioAddress(locationRaw);
+
+  // Only a TZID-qualified Pacific wall time can be turned into a correct offset here.
+  const pacificLocal = (params: string, value: string) =>
+    /TZID=America\/Los_Angeles/i.test(params) && !/Z$/.test(value);
   const weekday = DOW[new Date(Date.UTC(y, mo - 1, d)).getUTCDay()];
 
   let description = unescapeText(fields["DESCRIPTION"] || "");
@@ -174,5 +228,13 @@ function buildEvent(fields: Record<string, string>): ScheduleEvent | null {
     url: fields["URL"] || "https://bookwhen.com/lasvegasmahjong",
     bookLabel: "Book",
     description,
+    startIso: pacificLocal(fields["DTSTART__params"] ?? "", start)
+      ? pacificIso(y, mo, d, h, mi)
+      : undefined,
+    endIso: em && pacificLocal(fields["DTEND__params"] ?? "", end ?? "")
+      ? pacificIso(Number(em[1]), Number(em[2]), Number(em[3]), Number(em[4]), Number(em[5]))
+      : undefined,
+    venueKind: atStudio ? "studio" : "unknown",
+    venueName: atStudio ? "Lucky Hare" : (venue || "Lucky Hare"),
   };
 }

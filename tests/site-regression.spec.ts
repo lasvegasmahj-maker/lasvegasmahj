@@ -4,7 +4,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("site regression", () => {
   test("key routes still return 200", async ({ request }) => {
-    for (const path of ["/", "/ask", "/rules", "/rules/jokers", "/rules/charleston", "/schedule", "/mahjong-lessons-las-vegas", "/learn-mahjong", "/mahjong-open-play-las-vegas", "/about", "/blog"]) {
+    for (const path of ["/", "/ask", "/rules", "/rules/jokers", "/rules/charleston", "/schedule", "/mahjong-lessons-las-vegas", "/learn-mahjong", "/mahjong-open-play-las-vegas", "/about", "/blog", "/contact", "/private-mahjong-lessons-las-vegas"]) {
       const res = await request.get(path);
       expect(res.status(), path).toBe(200);
     }

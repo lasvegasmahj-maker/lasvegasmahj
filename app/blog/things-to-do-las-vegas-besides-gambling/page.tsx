@@ -56,7 +56,7 @@ const activities = [
     items: [
       {
         title: "Mahjong Party or Lesson",
-        desc: "One of the best-kept secrets in Las Vegas: you can book a private mahjong party, bachelorette event, or group lesson with a certified instructor. Strategy, laughs, and something genuinely different from every other group activity in the city. No experience needed.",
+        desc: "One of the best-kept secrets in Las Vegas: you can book a private mahjong party, birthday celebration, or group lesson with a certified instructor. Strategy, laughs, and something genuinely different from every other group activity in the city. No experience needed.",
         link: "/mahjong-parties-las-vegas",
         linkText: "Book a mahjong party",
         tag: "Local Favorite",
@@ -211,7 +211,7 @@ export default function ThingsToDoLasVegas() {
             <p className="section-label">Planning a Group Trip?</p>
             <h2 className="section-title">Mahjong Is the <span className="accent-pink">Move</span></h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
-              If you&rsquo;re planning a bachelorette weekend, girls&rsquo; trip, team outing, or any kind of group experience in Las Vegas, a private mahjong party is one of the most memorable things you can do. You don&rsquo;t need experience. We bring all the equipment. You get to play, laugh, and learn something you&rsquo;ll actually use again after you leave.
+              If you&rsquo;re planning a birthday weekend, girls&rsquo; trip, team outing, or any kind of group experience in Las Vegas, a private mahjong party is one of the most memorable things you can do. You don&rsquo;t need experience. We bring all the equipment. You get to play, laugh, and learn something you&rsquo;ll actually use again after you leave.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2rem" }}>
               Groups of 4 to 40 welcome. <a href="/mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>Mahjong lessons</a> are also available if you want to learn at a slower pace. And if you&rsquo;re local, we run <a href="/mahjong-open-play-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>open play events</a> around the valley.

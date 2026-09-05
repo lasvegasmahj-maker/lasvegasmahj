@@ -8,7 +8,7 @@
  *   }
  *
  * The component is intentionally a Server Component (no "use client").
- * Interactive bits (contact modal) are handled by SubpageNav.
+ * Interactive bits are handled by SubpageNav.
  */
 
 import type { Metadata } from "next";

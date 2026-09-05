@@ -30,7 +30,6 @@ const jsonLd = {
     "@id": "https://www.lasvegasmahj.com/#business",
     name: "Las Vegas Mahjong",
     url: "https://www.lasvegasmahj.com",
-    address: { "@type": "PostalAddress", addressLocality: "Las Vegas", addressRegion: "NV" },
   },
   offers: [
     { "@type": "Offer", name: "Group Lesson", price: "60.00", priceCurrency: "USD" },
@@ -48,7 +47,7 @@ const jsonLd = {
 const faqs = [
   { q: "How much do mahjong lessons cost in Las Vegas?", a: "Group lessons are $60 per person. Private lessons and events are available upon request; contact us for pricing." },
   { q: "Do I need experience to take mahjong lessons?", a: "No experience needed at all. MAHJ101 starts completely from scratch: we cover everything from sorting the tiles to playing your first hand." },
-  { q: "Where are mahjong lessons held in Las Vegas?", a: "Group lessons and open play are held at our studio inside Lucky Hare at 8687 W. Sahara Ave., Suite 200, Las Vegas. For private lessons, we can also come to your home or preferred venue across the Valley for an added travel fee." },
+  { q: "Where are mahjong lessons held in Las Vegas?", a: "Group lessons and open play are held at our studio inside Lucky Hare at 8687 W. Sahara Ave., Suite 200, Las Vegas. Private lessons are held at the studio, with in-home available by request." },
   { q: "What is the difference between MAHJ101 and MAHJ102?", a: "MAHJ101 is for complete beginners; we start from zero. MAHJ102 builds on that foundation with more hands, strategy, and game time. We recommend taking 101 first." },
   { q: "What version of mahjong do you teach?", a: "We teach American Mahjong using the National Mah Jongg League (NMJL) card, the most popular version played across the US." },
 ];
@@ -89,7 +88,7 @@ export default function MahjongLessonsLasVegas() {
                 { num: "MAHJ101", title: "Absolute Beginners", price: "$60 per lesson", items: ["Sorting and identifying tiles", "Reading the NMJL card", "Understanding how a hand works", "Playing your first full game", "Tips for your first open play event"] },
                 { num: "MAHJ102", title: "Beyond the Basics", price: "$60 per lesson", items: ["Quick MAHJ101 recap", "More complex hands and patterns", "Strategy and decision-making", "Speed and confidence at the table", "Preparing for open play and leagues"] },
                 { num: "MAHJ103", title: "Confident Play", price: "$60 per lesson", items: ["The Charleston and smart passing", "Defensive play and reading the table", "Using jokers and exchanges wisely", "Knowing all the rules cold", "Playing confidently on your own"] },
-                { num: "Private", title: "1-on-1 Lessons", price: "Contact for pricing", items: ["Fully customized to your pace", "At the studio, or your place for a travel fee", "Any skill level welcome", "Great for busy schedules", "Zoom option available"] },
+                { num: "Private", title: "1-on-1 Lessons", price: "Contact for pricing", items: ["Fully customized to your pace", "At the studio, with in-home by request", "Any skill level welcome", "Great for busy schedules", "Zoom option available"] },
               ].map(tier => (
                 <div key={tier.num} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "2rem" }}>
                   <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.4rem", color: "var(--pink)", marginBottom: "0.3rem" }}>{tier.num}</div>
@@ -147,7 +146,7 @@ export default function MahjongLessonsLasVegas() {
                 My teaching style is patient, clear, and beginner-obsessed. I break the game into simple, logical steps so you&rsquo;re not overwhelmed, and you&rsquo;ll play a game in your first lesson.
               </p>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "2rem" }}>
-                My studio inside <strong>Lucky Hare</strong> in Las Vegas is home base for group lessons and open play. For private lessons, I can also come to your home across Summerlin, Henderson, and the Valley for an added travel fee, or teach virtually via Zoom.
+                My studio inside <strong>Lucky Hare</strong> in Las Vegas is home base for group lessons and open play. If you would rather learn one on one, at your own pace, I also teach <a href="/private-mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>private mahjong lessons at the studio</a>.
               </p>
               <a href="/#classes" className="btn-primary">Book Your Lesson</a>
             </div>

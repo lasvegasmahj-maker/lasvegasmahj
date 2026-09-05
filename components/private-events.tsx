@@ -75,7 +75,7 @@ export default function PrivateEvents({ onInquiryOpen }: PrivateEventsProps) {
               marginBottom: "2.5rem",
             }}
           >
-            Private parties such as birthday, bachelorette, holiday, or special
+            Private parties such as birthday, corporate, holiday, or special
             events. We bring the tiles, the teaching, and the energy. You bring
             the crew. Every event is fully customized to your group.
           </p>

@@ -6,14 +6,14 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: { absolute: "Mahjong Blog | Las Vegas Mahjong" },
   description:
-    "Mahjong tips, Las Vegas activity guides, bachelorette party ideas, and group event inspiration from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
+    "Mahjong tips, Las Vegas activity guides, private party ideas, and group event inspiration from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
   alternates: {
     canonical: "https://www.lasvegasmahj.com/blog",
   },
   openGraph: {
     title: "Mahjong Blog | Las Vegas Mahjong",
     description:
-      "Mahjong tips, Las Vegas activity guides, bachelorette party ideas, and group event inspiration from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
+      "Mahjong tips, Las Vegas activity guides, private party ideas, and group event inspiration from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
     url: "https://www.lasvegasmahj.com/blog",
     type: "website",
     siteName: "Las Vegas Mahjong",
@@ -30,14 +30,6 @@ const posts = [
       "20+ activities in Las Vegas that have nothing to do with slot machines. From mahjong parties to hiking and live music.",
     tag: "Las Vegas Guide",
     tagColor: "accent-green",
-  },
-  {
-    href: "/blog/bachelorette-party-ideas-las-vegas",
-    title: "Bachelorette Party Ideas Las Vegas 2026",
-    description:
-      "The best bachelorette activities in Las Vegas, from private mahjong parties to pool days and private dinners.",
-    tag: "Bachelorette",
-    tagColor: "accent-pink",
   },
 ];
 
