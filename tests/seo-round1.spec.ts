@@ -79,9 +79,12 @@ test.describe("404 head", () => {
 
     expect(html).toContain("<title>Page Not Found | Las Vegas Mahjong</title>");
     expect(html).not.toContain('rel="canonical"');
-    expect(html).toMatch(/<meta name="robots" content="noindex"\/?>/);
-    // The old bug shipped two contradicting robots tags.
-    expect(html).not.toMatch(/content="index, follow"/);
+    // Exactly one indexing directive, and it says noindex. The old bug shipped two that
+    // contradicted each other.
+    const indexing = [...html.matchAll(/<meta name="(?:robots|googlebot)" content="([^"]*)"/g)]
+      .map((m) => m[1])
+      .filter((c) => /\b(no)?index\b/.test(c));
+    expect(indexing).toEqual(["noindex"]);
   });
 
   test("real pages still carry their own canonical and are indexable", async ({ request }) => {
@@ -93,6 +96,8 @@ test.describe("404 head", () => {
       const html = await (await request.get(path)).text();
       expect(html, path).toContain(`<link rel="canonical" href="${canonical}"/>`);
       expect(html, path).not.toMatch(/<meta name="robots"[^>]*noindex/i);
+      // The rich-preview directives are a pre-existing SEO asset and must survive the fix.
+      expect(html, path).toContain('content="max-video-preview:-1, max-image-preview:large, max-snippet:-1"');
     }
   });
 });

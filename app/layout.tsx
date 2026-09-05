@@ -62,6 +62,15 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
+  // Preview directives only. An index/follow value here would land on 404s too, where Next
+  // injects its own noindex, and the two would contradict each other.
+  robots: {
+    googleBot: {
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   category: "entertainment",
   verification: {
     google: "-NE1c8pIzgalnYk06tWpFLNGdN0tiezaECY2vyCo9BE",
