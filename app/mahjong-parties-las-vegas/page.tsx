@@ -7,19 +7,19 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Parties Las Vegas",
   description:
-    "Host a mahjong party in Las Vegas. Bachelorettes, corporate teams, birthdays, and girls nights. Certified instructor, all equipment provided. Get a quote.",
+    "Host a mahjong party in Las Vegas. Birthdays, corporate teams, girls nights, and holiday parties. Certified instructor, all equipment provided. Get a quote.",
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas" },
   openGraph: {
     ...ogBase,
-    title: "Mahjong Party Las Vegas | Bachelorette, Corporate & Private Events",
-    description: "Skip the same old party. Book a private mahjong experience in Las Vegas -- bachelorette parties, corporate events, birthdays and more. Certified instructor, any size group. Custom quote.",
+    title: "Mahjong Party Las Vegas | Birthday, Corporate & Group Events",
+    description: "Skip the same old party. Book a private mahjong experience in Las Vegas for birthdays, corporate events, and girls nights. Certified instructor, any size group. Custom quote.",
     url: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mahjong Party Las Vegas | Bachelorette, Corporate & Private Events",
-    description: "Book a private mahjong experience in Las Vegas. Bachelorette parties, corporate events, birthdays, and group activities. Certified instructor, any size group. Custom quote.",
+    title: "Mahjong Party Las Vegas | Birthday, Corporate & Group Events",
+    description: "Book a private mahjong experience in Las Vegas. Birthday parties, corporate events, girls nights, and group activities. Certified instructor, any size group. Custom quote.",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
@@ -30,7 +30,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Private Mahjong Events Las Vegas",
-  description: "Fully hosted private mahjong parties and events in Las Vegas for bachelorette parties, corporate team building, birthdays, charity events, and more.",
+  description: "Fully hosted private mahjong parties and events in Las Vegas for birthdays, corporate team building, girls nights, charity events, and more.",
   provider: { "@type": "LocalBusiness", "@id": "https://www.lasvegasmahj.com/#business", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
   areaServed: [{ "@type": "City", name: "Las Vegas" }, { "@type": "City", name: "Henderson" }, { "@type": "City", name: "Summerlin" }],
   offers: { "@type": "Offer", availability: "https://schema.org/InStock", url: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas" },
@@ -66,7 +66,7 @@ export default function MahjongPartiesLasVegas() {
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
-            <p className="section-label">Birthday · Bachelorette · Holiday · Special Events</p>
+            <p className="section-label">Birthday · Corporate · Holiday · Special Events</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
               Mahjong <span className="accent-pink">Parties</span> in Las Vegas
             </h1>

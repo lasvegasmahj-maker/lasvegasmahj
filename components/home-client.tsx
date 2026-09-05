@@ -14,16 +14,14 @@ import Shop from "@/components/shop";
 import Instagram from "@/components/instagram";
 import Newsletter from "@/components/newsletter";
 import Footer from "@/components/footer";
-import ContactModal from "@/components/contact-modal";
 import InquiryModal from "@/components/inquiry-modal";
 
 export default function HomeClient() {
-  const [contactOpen, setContactOpen] = useState(false);
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
   return (
     <>
-      <Nav onContactOpen={() => setContactOpen(true)} />
+      <Nav />
       <Hero />
       <WhySection />
       <Teacher />
@@ -35,11 +33,7 @@ export default function HomeClient() {
       <Shop />
       <Instagram />
       <Newsletter />
-      <Footer onContactOpen={() => setContactOpen(true)} />
-      <ContactModal
-        isOpen={contactOpen}
-        onClose={() => setContactOpen(false)}
-      />
+      <Footer />
       <InquiryModal
         isOpen={inquiryOpen}
         onClose={() => setInquiryOpen(false)}

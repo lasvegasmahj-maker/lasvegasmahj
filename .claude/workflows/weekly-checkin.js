@@ -69,7 +69,7 @@ const [deploy, sitemap, affiliate, schema, localSeo, content, cwv] = await paral
     { label: 'schema', phase: 'Probe', schema: PROBE_SCHEMA }
   ),
   () => agent(
-    `Read-only local SEO check for lasvegasmahj. The target queries are: mahjong lessons henderson, mahjong lessons summerlin, mahjong lessons las vegas, bachelorette party las vegas, corporate team building las vegas. ` +
+    `Read-only local SEO check for lasvegasmahj. The target queries are: mahjong lessons henderson, mahjong lessons summerlin, mahjong lessons las vegas, private mahjong lessons las vegas, corporate team building las vegas. ` +
     `Real rank data needs Google Search Console, which is NOT wired in yet (it needs a one-time OAuth setup). Do not invent rank numbers. ` +
     `Instead confirm the page that targets each query exists, returns 200, is indexable (no noindex), and has a correct title and canonical. List which target pages are healthy and which are missing or weak. ` +
     `Note in findings that GSC clicks, impressions, and real rank movement are not available until OAuth is set up. Also note Google Business Profile freshness should be checked manually (last post date).`,
@@ -77,7 +77,7 @@ const [deploy, sitemap, affiliate, schema, localSeo, content, cwv] = await paral
   ),
   () => agent(
     `Read-only content opportunities for lasvegasmahj. The run date is provided by the system. ` +
-    `Flag two recurring content opportunities: (1) the NMJL card releases every spring, so near spring flag a content update about the new card; never name a specific month. (2) upcoming seasonal or holiday events (for example summer girls trips, bachelorette season, holiday parties) that could become a blog post or event page. ` +
+    `Never propose bachelorette content: the owner removed it from the site on 2026-09-05 and it is not to return. Flag two recurring content opportunities: (1) the NMJL card releases every spring, so near spring flag a content update about the new card; never name a specific month. (2) upcoming seasonal or holiday events (for example summer girls trips, corporate offsite season, holiday parties) that could become a blog post or event page. ` +
     `Also scan ${REPO}/app for any event page whose date has passed and suggest refreshing it. ` +
     `Return suggestions as findings. Mark proposedFixes safe:false for new content (content stays draft for Shauna to approve), and safe:true only for a stale past-date that should be corrected.`,
     { label: 'content', phase: 'Probe', schema: PROBE_SCHEMA }

@@ -3,11 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useMailchimpSubscribe } from "@/lib/use-mailchimp";
 
-interface FooterProps {
-  onContactOpen?: () => void;
-}
-
-export default function Footer({ onContactOpen }: FooterProps) {
+export default function Footer() {
   const [email, setEmail] = useState("");
   const { status, message, subscribe } = useMailchimpSubscribe();
 
@@ -109,6 +105,7 @@ export default function Footer({ onContactOpen }: FooterProps) {
           <h5>Lessons</h5>
           <ul>
             <li><a href="/mahjong-lessons-las-vegas">Las Vegas</a></li>
+            <li><a href="/private-mahjong-lessons-las-vegas">Private Lessons</a></li>
             <li><a href="/mahjong-lessons-summerlin">Summerlin</a></li>
             <li><a href="/mahjong-lessons-henderson">Henderson</a></li>
             <li><a href="/learn-mahjong">How to Learn Mahjong</a></li>
@@ -120,19 +117,8 @@ export default function Footer({ onContactOpen }: FooterProps) {
           <h5>More</h5>
           <ul>
             <li><a href="/about">About Shauna</a></li>
-            <li><a href="/blog/bachelorette-party-ideas-las-vegas">Bachelorette Ideas</a></li>
-            <li><a href="/blog/things-to-do-las-vegas-besides-gambling">Things To Do in LV</a></li>
-            <li>
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onContactOpen?.();
-                }}
-              >
-                Contact
-              </a>
-            </li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/contact">Contact</a></li>
           </ul>
         </div>
 
