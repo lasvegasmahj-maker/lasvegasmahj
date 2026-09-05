@@ -1,12 +1,12 @@
 # Handoff: Las Vegas Mahjong competitive SEO, round 1
 
 **Date:** 2026-09-05
-**Branch:** `seo/competitive-round-1`
-**Commit:** `e378bcc` (on top of `c87b45a`, both on top of `origin/main` at `58b6999`)
-**PR:** [#97](https://github.com/lasvegasmahj-maker/lasvegasmahj/pull/97) - **OPEN, not merged**, mergeable
-**CI:** all green on `e378bcc` (checks, browser, lint, both Vercel previews)
-**Production deploy:** **NOT deployed.** Nothing in this work is live yet. Merging to `main` auto-deploys.
-**Working tree:** clean. Everything is committed and pushed. No unfinished code at risk.
+**Branch:** `seo/retire-things-to-do`
+**PR #97 (round 1 core): MERGED and LIVE on production.** Squashed to `02b36eb` on `main`.
+**PR #98 (Things To Do retirement): open on `seo/retire-things-to-do`.**
+**Production:** `https://www.lasvegasmahj.com` is serving PR #97 and was verified live
+(see "Production verification" below). PR #98 is not deployed yet.
+**Working tree:** clean, everything committed.
 
 ---
 
@@ -158,8 +158,8 @@ fetch only the WebP, never the jpg.
 |---|---|
 | `/blog/bachelorette-party-ideas-las-vegas` | **Deleted, 301 to `/mahjong-parties-las-vegas`**, removed from sitemap and footer |
 | `/mahjong-parties-las-vegas` | Redirect destination. Bachelorette wording removed, stays a general parties page |
-| `/blog/things-to-do-las-vegas-besides-gambling` | Still live/indexable on this branch. Footer link removed, kept on blog index. **Removal now approved, not yet done** |
-| `/blog` | Bachelorette card removed, meta description corrected, now linked from the footer |
+| `/blog/things-to-do-las-vegas-besides-gambling` | **Retired in PR #98**: deleted, 301 to `/mahjong-parties-las-vegas`, out of the sitemap |
+| `/blog` | Now empty: route kept, `noindex` while empty, out of the sitemap, off the footer |
 | `/contact` | **New**, in sitemap at priority 0.7 |
 | `/private-mahjong-lessons-las-vegas` | **New**, in sitemap at priority 0.85 |
 | `/mahjong-lessons-las-vegas` | Minimal edits only: one handoff link, travel-fee wording removed from copy and FAQ schema. **Do not rewrite** |
@@ -189,25 +189,48 @@ fetch only the WebP, never the jpg.
 
 ---
 
+## Production verification of PR #97 (done, 2026-09-05)
+
+Checked against `https://www.lasvegasmahj.com` after the merge deployed:
+
+- `/contact` 200, `/private-mahjong-lessons-las-vegas` 200, `/schedule` 200, `/` 200.
+- `/blog/bachelorette-party-ideas-las-vegas` returns **301** to `/mahjong-parties-las-vegas`.
+- **Zero** occurrences of "bachelorette" across all 28 sitemap URLs.
+- `/tile-texture-v2.webp` serves 100,270 bytes with `public, max-age=31536000, immutable`.
+- 404 head: distinct title `Page Not Found | Las Vegas Mahjong`, single `noindex`, **no canonical**.
+- `/schedule` emits **37** Event objects, first `startDate` `2026-09-08T10:30:00-07:00`,
+  `streetAddress` correct, and no `offers` / `performer` / `aggregateRating`.
+- No phone number in `/contact` visible copy.
+- Ask a Rule verified working (`/api/ask` returns correct answers, 152 tiles etc.).
+
 ## What remains
 
-1. **Merge PR #97.** It is green and mergeable. Merging auto-deploys to `lasvegasmahj-h1iz`.
-2. **Post-merge production verification** on `https://www.lasvegasmahj.com`: `/contact` live,
-   no phone number, private lesson page live and studio-first, bachelorette URL 301s, no
-   bachelorette wording anywhere, Event schema on `/schedule`, 404 head corrected, texture
-   serving as WebP with immutable caching, Ask a Rule still working, sitemap and redirects
-   correct, no broken internal links.
-3. **Remove the Things To Do content (APPROVED but NOT implemented).** GSC shows 0 clicks and
-   0 impressions over 3 months and the owner approved removal. Deciding the mechanism is the
-   first real task. Note the constraint discovered this session: it is currently the **only
-   remaining blog post**, so deleting it leaves `/blog` an empty index page with an empty
-   `CollectionPage` / `ItemList` JSON-LD. Either retire `/blog` alongside it, or ship a
-   replacement post first. Whichever way, remove it from `app/sitemap.ts` and add a redirect
-   or a 410 in `next.config.ts`, and update `tests/seo-round1.logic.spec.ts`, which currently
-   asserts the opposite (that the post stays live, indexable, and listed on the blog index).
-4. **Adversarial verification of PR #97 did not finish.** A six-lens review workflow was
-   started and stopped early for credits. The branch is covered by CI and 62 new tests, but a
-   hostile review has not been completed.
+1. **Merge PR #98** (this branch) once CI is green, then re-verify on production: the
+   Things To Do 301, `/blog` noindexed and out of the sitemap, and no `things-to-do` links.
+2. **`/blog` is empty and noindexed on purpose.** Shauna has an unmerged
+   `blog-corporate-holiday` branch in the main checkout (`~/Projects/lasvegasmahj`) with a
+   holiday party post. When a post lands, delete the `robots: { index: false }` line in
+   `app/blog/page.tsx`, put `/blog` back in `app/sitemap.ts`, restore the footer link, and
+   update the assertions in `tests/seo-round1.logic.spec.ts`.
+3. **Adversarial verification never completed.** A six-lens review workflow was started and
+   stopped for credits. See the warning immediately below, which came out of that.
+
+## WARNING: stopped review agents edited this worktree
+
+The review workflow was told not to edit files and edited them anyway, and writes kept
+landing after the workflow was stopped. Those edits were caught, saved to
+`/tmp/.../scratchpad/stray-agent-edits.diff`, and then judged individually rather than
+accepted or discarded wholesale. Adopted deliberately: the `/about` Person `@id`, the
+studio Place `@id`, first-party `Event.url`, dropping `suite200` from `isStudioAddress`,
+referencing `#business` by `@id` from `/contact`, removing the redundant `location` Place,
+the FAQ travel-fee correction, and Open Graph on the 404. **Rejected:** an edit that
+re-added a street-less `PostalAddress` onto the `#business` `@id` on
+`/mahjong-lessons-las-vegas`, which is the exact NAP dilution round 1 removed, along with
+the test that had been written to enforce it.
+
+**Lesson for a future session:** if you run review subagents against a live worktree, diff
+the tree against the branch tip before trusting `git status`, and never commit their edits
+without reading every hunk.
 
 ## Open owner questions (flagged, not decided)
 
