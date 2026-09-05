@@ -215,22 +215,31 @@ Checked against `https://www.lasvegasmahj.com` after the merge deployed:
 3. **Adversarial verification never completed.** A six-lens review workflow was started and
    stopped for credits. See the warning immediately below, which came out of that.
 
-## WARNING: stopped review agents edited this worktree
+## A parallel Claude session was working in the same worktree
 
-The review workflow was told not to edit files and edited them anyway, and writes kept
-landing after the workflow was stopped. Those edits were caught, saved to
-`/tmp/.../scratchpad/stray-agent-edits.diff`, and then judged individually rather than
-accepted or discarded wholesale. Adopted deliberately: the `/about` Person `@id`, the
-studio Place `@id`, first-party `Event.url`, dropping `suite200` from `isStudioAddress`,
-referencing `#business` by `@id` from `/contact`, removing the redundant `location` Place,
-the FAQ travel-fee correction, and Open Graph on the 404. **Rejected:** an edit that
-re-added a street-less `PostalAddress` onto the `#business` `@id` on
-`/mahjong-lessons-las-vegas`, which is the exact NAP dilution round 1 removed, along with
-the test that had been written to enforce it.
+Another session (`shaunabruckman-b6`) was running the same round in parallel and writing to
+`~/Projects/lasvegasmahj-seo-round1` at the same time. That, not a misbehaving subagent, is
+where the unexplained edits in the working tree came from. It has since stood down and handed
+its findings over. Every edit was diffed and judged individually rather than accepted or
+discarded wholesale; the diff is preserved at `scratchpad/stray-agent-edits.diff`.
 
-**Lesson for a future session:** if you run review subagents against a live worktree, diff
-the tree against the branch tip before trusting `git status`, and never commit their edits
-without reading every hunk.
+Adopted from that session: the `/about` Person `@id`, the studio Place `@id`, first-party
+`Event.url`, dropping `suite200` from `isStudioAddress`, referencing `#business` by `@id`
+from `/contact`, removing the redundant `location` Place, the FAQ travel-fee correction,
+Open Graph on the 404, and moving the `image-set()` into an `@supports` block so the
+minifier stops eating the plain `url()` fallback (verified in the compiled chunk).
+
+**Declined, deliberately:** its request to restore
+`address: { "@type": "PostalAddress", addressLocality: "Las Vegas", addressRegion: "NV" }`
+to the Course `provider` on `/mahjong-lessons-las-vegas`. That address has no
+`streetAddress`, and because the provider shares the `#business` `@id` with the layout node
+that DOES have one, the two merge into one entity carrying two different addresses. Round 1
+removed it for exactly that reason. The provider keeps `@id`, `name` and `url`, so
+`provider.name` that Course rich results require is still present. A test now guards it.
+
+**Lesson for a future session:** if another session may be live in the same worktree, diff
+the tree against the branch tip before trusting `git status`, and never commit edits you did
+not write without reading every hunk.
 
 ## Open owner questions (flagged, not decided)
 
