@@ -33,21 +33,7 @@ const contactPage = {
   "@type": "ContactPage",
   name: "Contact Las Vegas Mahjong",
   url: "https://www.lasvegasmahj.com/contact",
-  mainEntity: {
-    "@type": "LocalBusiness",
-    "@id": "https://www.lasvegasmahj.com/#business",
-    name: "Las Vegas Mahjong",
-    url: "https://www.lasvegasmahj.com",
-    email: "lasvegasmahj@gmail.com",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "8687 W. Sahara Ave., Suite 200",
-      addressLocality: "Las Vegas",
-      addressRegion: "NV",
-      postalCode: "89117",
-      addressCountry: "US",
-    },
-  },
+  mainEntity: { "@id": "https://www.lasvegasmahj.com/#business" },
 };
 
 const routes = [

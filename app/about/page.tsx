@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": "https://www.lasvegasmahj.com/about#shauna",
   name: "Shauna",
   jobTitle: "Certified Mahjong Instructor",
   description: "A certified Oh My Mahjong instructor with 18 years of American Mahjong playing experience.",

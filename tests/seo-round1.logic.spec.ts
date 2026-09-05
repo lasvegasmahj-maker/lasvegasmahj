@@ -51,8 +51,9 @@ test.describe("sitemap", () => {
     expect(urls).not.toContain("https://www.lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas");
   });
 
-  test("keeps Things To Do live and indexable", () => {
-    expect(urls).toContain("https://www.lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling");
+  test("drops the retired Things To Do post and the now-empty blog index", () => {
+    expect(urls).not.toContain("https://www.lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling");
+    expect(urls).not.toContain("https://www.lasvegasmahj.com/blog");
   });
 
   test("lists the new pages", () => {
@@ -71,24 +72,31 @@ test.describe("sitemap", () => {
   });
 });
 
-test.describe("Things To Do is buried, not orphaned", () => {
+test.describe("Things To Do is retired", () => {
   const footer = fs.readFileSync(path.join(ROOT, "components/footer.tsx"), "utf8");
   const nav = fs.readFileSync(path.join(ROOT, "components/nav.tsx"), "utf8");
   const blogIndex = fs.readFileSync(path.join(ROOT, "app/blog/page.tsx"), "utf8");
 
-  test("no footer or nav link points at it", () => {
-    expect(footer).not.toContain("things-to-do-las-vegas-besides-gambling");
-    expect(nav).not.toContain("things-to-do-las-vegas-besides-gambling");
+  test("the post is gone", () => {
+    expect(fs.existsSync(path.join(ROOT, "app/blog/things-to-do-las-vegas-besides-gambling"))).toBe(false);
   });
 
-  test("it stays listed on the blog index so Search Console can measure it", () => {
-    expect(blogIndex).toContain("/blog/things-to-do-las-vegas-besides-gambling");
+  test("nothing links to it any more", () => {
+    for (const [name, src] of [["footer", footer], ["nav", nav], ["blog index", blogIndex]] as const) {
+      expect(src, name).not.toContain("things-to-do-las-vegas-besides-gambling");
+    }
   });
 
-  test("the page itself is not noindexed and was not rewritten away", () => {
-    const post = fs.readFileSync(path.join(ROOT, "app/blog/things-to-do-las-vegas-besides-gambling/page.tsx"), "utf8");
-    expect(post).not.toMatch(/index:\s*false|noindex/i);
-    expect(post).toContain('canonical: "https://www.lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling"');
+  test("it 301s rather than 404s, so inbound links still land somewhere", () => {
+    const cfg = fs.readFileSync(path.join(ROOT, "next.config.ts"), "utf8");
+    expect(cfg).toContain('source: "/blog/things-to-do-las-vegas-besides-gambling"');
+    expect(cfg).toContain("statusCode: 301");
+  });
+
+  test("the empty blog index is noindexed and claims no collection", () => {
+    expect(blogIndex).toMatch(/robots:\s*\{\s*index:\s*false/);
+    expect(blogIndex).toContain("posts.length > 0 &&");
+    expect(blogIndex).toMatch(/const posts:\s*Post\[\]\s*=\s*\[\]/);
   });
 });
 
@@ -219,6 +227,8 @@ test.describe("pacific ISO conversion", () => {
   test("the studio address matcher survives abbreviation differences", () => {
     expect(isStudioAddress("Lucky Hare, 8687 West Sahara Avenue, Suite 200, Las Vegas Nevada 89117")).toBe(true);
     expect(isStudioAddress("Inside Lucky Hare, 8687 W. Sahara Ave., Suite 200, Las Vegas, NV 89117")).toBe(true);
+    expect(isStudioAddress("Inside Lucky Hare, 8687 W. Sahara Ave., Ste. 200, Las Vegas, NV")).toBe(true);
+    expect(isStudioAddress("8687 W Sahara Ave #200, Las Vegas NV 89117")).toBe(true);
     expect(isStudioAddress("Honey Salt, Las Vegas")).toBe(false);
     expect(isStudioAddress("")).toBe(false);
   });
@@ -262,5 +272,79 @@ test.describe("schedule Event schema", () => {
 
   test("an empty schedule emits nothing", () => {
     expect(buildScheduleEventSchema([])).toEqual([]);
+  });
+});
+
+test.describe("entity schema is single-sourced", () => {
+  const layout = fs.readFileSync(path.join(ROOT, "app/layout.tsx"), "utf8");
+  const about = fs.readFileSync(path.join(ROOT, "app/about/page.tsx"), "utf8");
+  const contact = fs.readFileSync(path.join(ROOT, "app/contact/page.tsx"), "utf8");
+
+  test("the founder @id the business points at is actually defined on /about", () => {
+    expect(layout).toContain('"@id": "https://www.lasvegasmahj.com/about#shauna"');
+    expect(about).toContain('"@id": "https://www.lasvegasmahj.com/about#shauna"');
+  });
+
+  test("the business node is described once, not restated with fewer fields", () => {
+    expect(contact).toContain('mainEntity: { "@id": "https://www.lasvegasmahj.com/#business" }');
+    expect(contact).not.toMatch(/mainEntity:\s*\{[^}]*"@type":\s*"LocalBusiness"/);
+  });
+
+  test("the business carries one address, not a duplicate anonymous Place", () => {
+    const body = layout.slice(
+      layout.indexOf("const localBusinessSchema"),
+      layout.indexOf("const courseSchema"),
+    );
+    expect(body).not.toContain("location:");
+    expect((body.match(/"@type": "PostalAddress"/g) ?? []).length).toBe(1);
+  });
+
+  test("the studio Place is addressable so events share one entity", () => {
+    const schema = fs.readFileSync(path.join(ROOT, "lib/schema.ts"), "utf8");
+    expect(schema).toContain('"@id": "https://www.lasvegasmahj.com/#studio"');
+  });
+});
+
+test.describe("owner content rules hold sitewide", () => {
+  const files = walk(path.join(ROOT, "app")).concat(walk(path.join(ROOT, "components")));
+
+  test("no travel fee is published anywhere", () => {
+    for (const f of files) {
+      expect(fs.readFileSync(f, "utf8"), f).not.toMatch(/travel fee/i);
+    }
+  });
+
+  test("no page restates the business node with a partial address", () => {
+    for (const f of files) {
+      const src = fs.readFileSync(f, "utf8");
+      if (!src.includes('"@id": "https://www.lasvegasmahj.com/#business"')) continue;
+      const partial = /"@id": "https:\/\/www\.lasvegasmahj\.com\/#business"[\s\S]{0,400}?"@type": "PostalAddress"(?![\s\S]{0,120}streetAddress)/;
+      expect(src, f).not.toMatch(partial);
+    }
+  });
+
+  test("the 404 does not advertise itself as the homepage", () => {
+    const nf = fs.readFileSync(path.join(ROOT, "app/not-found.tsx"), "utf8");
+    expect(nf).toMatch(/openGraph:\s*\{/);
+    expect(nf).not.toContain('url: "https://www.lasvegasmahj.com"');
+  });
+});
+
+test.describe("event schema points at the site, not the booking host", () => {
+  test("every emitted Event url is first-party", () => {
+    const events = buildScheduleEventSchema([
+      {
+        title: "Mahj 101",
+        description: "Beginner class.",
+        url: "https://bookwhen.com/lasvegasmahjong/e/ev-test",
+        startIso: "2026-09-08T10:30:00-07:00",
+        endIso: "2026-09-08T13:00:00-07:00",
+        venueKind: "studio",
+      },
+    ]);
+    for (const ev of events) {
+      expect(ev.url).toBe("https://www.lasvegasmahj.com/schedule");
+      expect(ev.url).not.toContain("bookwhen.com");
+    }
   });
 });

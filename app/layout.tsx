@@ -116,18 +116,6 @@ const localBusinessSchema = {
     postalCode: "89117",
     addressCountry: "US",
   },
-  location: {
-    "@type": "Place",
-    name: "Las Vegas Mahjong Studio, inside Lucky Hare",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "8687 W. Sahara Ave., Suite 200",
-      addressLocality: "Las Vegas",
-      addressRegion: "NV",
-      postalCode: "89117",
-      addressCountry: "US",
-    },
-  },
   areaServed: [
     { "@type": "City", name: "Las Vegas" },
     { "@type": "City", name: "Henderson" },

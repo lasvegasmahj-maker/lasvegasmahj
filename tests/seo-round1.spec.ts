@@ -45,29 +45,35 @@ test.describe("bachelorette removal", () => {
   });
 });
 
-test.describe("things to do stays live but unpromoted", () => {
+test.describe("things to do is retired", () => {
   const POST = "/blog/things-to-do-las-vegas-besides-gambling";
 
-  test("still 200 and still indexable", async ({ request }) => {
-    const res = await request.get(POST);
+  test("301s to the parties page", async ({ request }) => {
+    const res = await request.get(POST, { maxRedirects: 0 });
+    expect(res.status()).toBe(301);
+    expect(new URL(res.headers()["location"], "http://localhost").pathname)
+      .toBe("/mahjong-parties-las-vegas");
+  });
+
+  test("is out of the sitemap, along with the now-empty blog index", async ({ request }) => {
+    const xml = await (await request.get("/sitemap.xml")).text();
+    expect(xml).not.toContain("things-to-do");
+    expect(xml).not.toContain("<loc>https://www.lasvegasmahj.com/blog</loc>");
+  });
+
+  test("nothing on the site links to it", async ({ request }) => {
+    for (const p of await sitemapPaths(request)) {
+      expect(await (await request.get(p)).text(), p).not.toContain("things-to-do");
+    }
+  });
+
+  test("the empty blog index stays reachable but noindexed", async ({ request }) => {
+    const res = await request.get("/blog");
     expect(res.status()).toBe(200);
     const html = await res.text();
-    expect(html).not.toMatch(/<meta name="robots"[^>]*noindex/i);
-    expect(html).toContain(`<link rel="canonical" href="https://www.lasvegasmahj.com${POST}"/>`);
-  });
-
-  test("still in the sitemap", async ({ request }) => {
-    expect(await (await request.get("/sitemap.xml")).text()).toContain(POST);
-  });
-
-  test("no longer linked from the sitewide footer", async ({ request }) => {
-    const home = await (await request.get("/")).text();
-    const footer = home.slice(home.lastIndexOf("<footer"));
-    expect(footer).not.toContain(POST);
-  });
-
-  test("still reachable from the blog index so it can gather Search Console data", async ({ request }) => {
-    expect(await (await request.get("/blog")).text()).toContain(POST);
+    expect(html).toMatch(/<meta name="robots"[^>]*noindex/i);
+    expect(html).not.toContain('"@type":"CollectionPage"');
+    expect(html).toContain("New guides are in the works");
   });
 });
 

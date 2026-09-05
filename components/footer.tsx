@@ -117,7 +117,6 @@ export default function Footer() {
           <h5>More</h5>
           <ul>
             <li><a href="/about">About Shauna</a></li>
-            <li><a href="/blog">Blog</a></li>
             <li><a href="/contact">Contact</a></li>
           </ul>
         </div>

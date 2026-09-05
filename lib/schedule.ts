@@ -60,10 +60,13 @@ export function pacificIso(y: number, mo: number, d: number, h: number, mi: numb
   return `${pad(y, 4)}-${pad(mo)}-${pad(d)}T${pad(h)}:${pad(mi)}:00${label}`;
 }
 
-// Normalised so "West" vs "W." and "Avenue" vs "Ave." cannot break the match.
+// Normalised so "West" vs "W." and "Avenue" vs "Ave." cannot break the match. The suite is
+// deliberately not part of the test: street number plus street name already identifies the
+// studio, and matching "suite200" too meant a Bookwhen edit to "Ste. 200" would silently
+// drop every session from the Event schema with no error.
 export function isStudioAddress(location: string): boolean {
   const n = location.toLowerCase().replace(/[^a-z0-9]/g, "");
-  return n.includes("8687") && n.includes("sahara") && n.includes("suite200");
+  return n.includes("8687") && n.includes("sahara");
 }
 
 function unfold(text: string): string {
