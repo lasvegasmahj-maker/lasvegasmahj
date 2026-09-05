@@ -7,6 +7,11 @@ export const metadata: Metadata = {
   title: { absolute: "Page Not Found | Las Vegas Mahjong" },
   description:
     "That page does not exist. Find mahjong lessons, open play, and events at the Las Vegas Mahjong studio instead.",
+  openGraph: {
+    title: "Page Not Found | Las Vegas Mahjong",
+    description: "That page does not exist.",
+    url: "https://www.lasvegasmahj.com/404",
+  },
 };
 
 export default function NotFound() {

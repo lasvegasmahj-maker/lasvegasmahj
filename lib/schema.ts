@@ -107,6 +107,7 @@ export function buildBreadcrumbSchema(items: BreadcrumbItem[]) {
 // address, and inventing one for a partner venue would be a factual claim we cannot make.
 const STUDIO_PLACE = {
   "@type": "Place",
+  "@id": "https://www.lasvegasmahj.com/#studio",
   name: "Lucky Hare",
   address: {
     "@type": "PostalAddress",
@@ -143,7 +144,10 @@ export function buildScheduleEventSchema(events: ScheduleEventInput[]) {
       location: STUDIO_PLACE,
       ...(e.description ? { description: e.description } : {}),
       image: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
-      url: e.url,
+      // The first-party page that describes these sessions. Pointing this at the Bookwhen
+      // booking host would hand the rich result's link to a third party; the booking link
+      // stays where it always was, on the visible card.
+      url: "https://www.lasvegasmahj.com/schedule",
       organizer: {
         "@type": "Organization",
         "@id": "https://www.lasvegasmahj.com/#business",
