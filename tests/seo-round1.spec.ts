@@ -259,7 +259,7 @@ test.describe("no broken internal links", () => {
     const targets = new Set<string>();
     for (const p of paths) {
       const html = await (await request.get(p)).text();
-      for (const m of html.matchAll(/href="(\/[^"#?]*)"/g)) targets.add(m[1]);
+      for (const m of html.matchAll(/href="(\/[^"#]*)"/g)) targets.add(m[1]);
     }
     expect(targets.size).toBeGreaterThan(10);
 

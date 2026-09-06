@@ -17,20 +17,25 @@ function read(rel: string) {
 }
 
 /**
- * Every button-styled anchor in a file, as {href, text}. Attribute order is not fixed by
+ * Every button-styled anchor in a file, as {href, path, query, text}. Round 3 tags the
+ * inquiry CTAs with `?source=<slug>`, so `path` is what the destination assertions compare
+ * and `query` carries the attribution marker. Comparing raw `href` would fail on every
+ * tagged CTA; comparing only `path` would let a malformed query ship, so
+ * tests/round3-contact.logic.spec.ts checks `query` against the allowlist. Attribute order is not fixed by
  * anything, so the tag is matched first and href/className are pulled out of it separately;
  * keying on `<a href=` first would make `<a className=... href=...>` invisible and silently
  * void every negative assertion below.
  */
 function ctas(rel: string) {
   const src = read(rel);
-  const out: { href: string; text: string }[] = [];
+  const out: { href: string; path: string; query: string; text: string }[] = [];
   for (const m of src.matchAll(/<a\s([^>]*)>([\s\S]*?)<\/a>/g)) {
     const attrs = m[1];
     if (!/className="[^"]*\bbtn-/.test(attrs)) continue;
     const href = attrs.match(/href="([^"]*)"/);
     if (!href) continue;
-    out.push({ href: href[1], text: m[2].replace(/<[^>]*>/g, "").trim() });
+    const [hrefPath, query = ""] = href[1].split("?");
+    out.push({ href: href[1], path: hrefPath, query, text: m[2].replace(/<[^>]*>/g, "").trim() });
   }
   return out;
 }
@@ -50,6 +55,19 @@ test("the CTA parser sees a button whichever order its attributes are written in
   expect(parse('<a className="btn-primary" href="/contact">Go</a>')).toEqual(["/contact"]);
   expect(parse('<a className="btn-primary" style={{}} href="/contact">Go</a>')).toEqual(["/contact"]);
   expect(parse('<a href="/contact">plain link</a>')).toEqual([]);
+});
+
+test("the CTA parser splits a source-tagged href into path and query", () => {
+  // Round 3 tags inquiry CTAs with ?source=. If this split regresses, every destination
+  // assertion below compares the wrong half of the href and stops meaning anything.
+  const tagged = ctas("app/mahjong-corporate-las-vegas/page.tsx");
+  expect(tagged.length).toBeGreaterThan(0);
+  for (const c of tagged) {
+    expect(c.path, c.href).not.toContain("?");
+    expect(c.query, c.href).not.toContain("?");
+    expect(c.href).toBe(c.query ? `${c.path}?${c.query}` : c.path);
+  }
+  expect(tagged.some((c) => c.query !== "")).toBe(true);
 });
 
 // The five commercially important inquiry pages, and the CTA text on each that is a
@@ -74,13 +92,13 @@ test.describe("inquiry CTAs reach /contact", () => {
       for (const label of labels) {
         const matches = found.filter((c) => c.text === label);
         expect(matches.length, `${file} should still have a CTA labelled "${label}"`).toBeGreaterThan(0);
-        for (const m of matches) expect(m.href, `"${label}" on ${file}`).toBe("/contact");
+        for (const m of matches) expect(m.path, `"${label}" on ${file}`).toBe("/contact");
       }
-      expect(found.filter((c) => c.href === "/contact").length, `${file} CTA count`).toBe(count);
+      expect(found.filter((c) => c.path === "/contact").length, `${file} CTA count`).toBe(count);
     });
 
     test(`${file}: no CTA bounces to a homepage anchor`, () => {
-      const anchors = ctas(file).filter((c) => c.href === "/" || c.href.startsWith("/#") || c.href === "#");
+      const anchors = ctas(file).filter((c) => c.path === "/" || c.path.startsWith("/#") || c.path === "#");
       expect(anchors, `${file} still sends a CTA back to the homepage`).toEqual([]);
     });
   }
@@ -88,7 +106,7 @@ test.describe("inquiry CTAs reach /contact", () => {
   test("the inquiry pages carry exactly twelve /contact CTAs between them", () => {
     const total = Object.keys(INQUIRY_PAGES)
       .flatMap((f) => ctas(f))
-      .filter((c) => c.href === "/contact").length;
+      .filter((c) => c.path === "/contact").length;
     expect(total).toBe(12);
   });
 });
@@ -111,14 +129,14 @@ test.describe("no over-correction: booking and lesson CTAs are left alone", () =
     });
 
     test(`${file} did not gain a /contact CTA`, () => {
-      expect(ctas(file).filter((c) => c.href === "/contact")).toEqual([]);
+      expect(ctas(file).filter((c) => c.path === "/contact")).toEqual([]);
     });
   }
 
   test("the homepage lessons section still books through /schedule", () => {
     const src = read("components/classes.tsx");
     expect(src).toContain('href="/schedule"');
-    expect(src).not.toContain('href="/contact"');
+    expect(src).not.toMatch(/href="\/contact[?"]/);
   });
 
   test("the homepage private events section still opens the inquiry modal", () => {
@@ -138,7 +156,7 @@ test.describe("no over-correction: booking and lesson CTAs are left alone", () =
   test("event ticket CTAs still go to the ticket URL, never to /contact", () => {
     const src = read("components/event-page.tsx");
     expect(src).toContain("href={ticketUrl}");
-    expect(src).not.toContain('href="/contact"');
+    expect(src).not.toMatch(/href="\/contact[?"]/);
   });
 });
 

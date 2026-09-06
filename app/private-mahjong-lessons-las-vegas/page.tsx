@@ -88,7 +88,7 @@ export default function PrivateMahjongLessons() {
               Just you at the table, or you and the people you choose. A certified Oh My Mahjong instructor teaches at your pace, in a quiet room, with no class to keep up with and no one watching.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-              <a href="/contact" className="btn-primary">Ask About a Private Lesson</a>
+              <a href="/contact?source=private-lessons" className="btn-primary">Ask About a Private Lesson</a>
               <a href="/mahjong-lessons-las-vegas" className="btn-outline">See Group Classes</a>
             </div>
           </div>
@@ -173,7 +173,7 @@ export default function PrivateMahjongLessons() {
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.7, marginBottom: "2rem" }}>
               Private lessons are priced per session, and what you need shapes what it costs. Tell me what you are hoping to get out of it and I will send you the details. I answer within 24 hours.
             </p>
-            <a href="/contact" className="btn-primary">Ask About a Private Lesson</a>
+            <a href="/contact?source=private-lessons" className="btn-primary">Ask About a Private Lesson</a>
           </div>
         </section>
 
@@ -205,7 +205,7 @@ export default function PrivateMahjongLessons() {
               Send a note with what you are looking for and roughly when you are free. No experience needed, and no wrong place to start.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-              <a href="/contact" className="btn-primary">Ask About a Private Lesson</a>
+              <a href="/contact?source=private-lessons" className="btn-primary">Ask About a Private Lesson</a>
               <a href="/schedule" className="btn-outline">See the Class Schedule</a>
             </div>
           </div>
