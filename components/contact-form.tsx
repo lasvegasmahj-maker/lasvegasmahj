@@ -19,6 +19,17 @@ const SOURCES: Record<string, { label: string; inquiry: string }> = {
 
 const GENERAL_SOURCE = "General (nav, footer or direct)";
 
+// A half typed date leaves the control in badInput, which fails constraint validation and
+// blocks the whole submit before onSubmit can fire, so an optional field silently holds the
+// lead hostage. A year below the current one is the other reachable case: typing 111426
+// resolves to 0026-11-14, which is valid to the browser and useless in an inbox. Both are
+// cleared rather than corrected, because the visitor can always retype a date they meant.
+function discardUnusableDate(el: HTMLInputElement) {
+  if (el.validity.badInput || (el.value && Number(el.value.slice(0, 4)) < new Date().getFullYear())) {
+    el.value = "";
+  }
+}
+
 const INQUIRY_TYPES = [
   "Private Lesson",
   "Group Lesson or Class",
@@ -125,7 +136,14 @@ export default function ContactForm() {
           <label htmlFor="contact-date">Preferred Date</label>
           {/* Scoped to this control: a scheme on <html> would repaint UA form controls
               and scrollbars across the whole site. */}
-          <input type="date" id="contact-date" name="preferred_date" style={{ colorScheme: "dark" }} />
+          <input
+            type="date"
+            id="contact-date"
+            name="preferred_date"
+            style={{ colorScheme: "dark" }}
+            onBlur={(e) => discardUnusableDate(e.currentTarget)}
+            onInvalid={(e) => discardUnusableDate(e.currentTarget)}
+          />
         </div>
       </div>
       <div className="form-group" style={{ marginBottom: "1.5rem" }}>

@@ -161,7 +161,9 @@ test.describe("round 1 behaviour still holds", () => {
       expect((html.match(/<h1[\s>]/g) || []).length, `${page.path} h1 count`).toBe(1);
       expect(html.toLowerCase(), page.path).not.toContain("noindex");
       // This diff never touched these files; a button-styled /contact CTA here would mean it did.
-      expect(html, page.path).not.toMatch(/<a[^>]*class="btn-[^"]*"[^>]*href="\/contact"|<a[^>]*href="\/contact"[^>]*class="btn-/);
+      // The character class after /contact is what keeps this guard alive now that round 3
+      // tags CTAs: matching only href="/contact" would let href="/contact?source=x" through.
+      expect(html, page.path).not.toMatch(/<a[^>]*class="btn-[^"]*"[^>]*href="\/contact[?"]|<a[^>]*href="\/contact[?"][^>]*class="btn-/);
     }
   });
 
