@@ -15,7 +15,28 @@ const INQUIRY_PAGES = [
   },
 ];
 
-const PROTECTED = ["/", "/mahjong-lessons-las-vegas"];
+// Pinned to the values live on production at 55c5d04. These two pages rank at roughly
+// position 1.2 and 2.3 for "mahjong lessons las vegas", so the guard asserts the actual
+// strings, not merely that a title and a canonical exist.
+const PROTECTED = [
+  {
+    path: "/",
+    title: "Las Vegas Mahjong | Lessons, Events &amp; Open Play",
+    canonical: "https://www.lasvegasmahj.com",
+    h1: "Las VegasMahjong",
+  },
+  {
+    path: "/mahjong-lessons-las-vegas",
+    title: "Mahjong Lessons in Las Vegas | Las Vegas Mahjong",
+    canonical: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas",
+    h1: "Mahjong Lessons in Las Vegas",
+  },
+];
+
+function h1Text(html: string) {
+  const m = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/);
+  return m ? m[1].replace(/<[^>]*>/g, "").replace(/&amp;/g, "&").trim() : null;
+}
 
 async function sitemapPaths(request: import("@playwright/test").APIRequestContext) {
   const xml = await (await request.get("/sitemap.xml")).text();
@@ -84,18 +105,23 @@ test.describe("/contact works end to end", () => {
     expect(html).not.toContain('"telephone"');
   });
 
-  test("is reachable from the nav on this viewport", async ({ page }) => {
+  test("Contact is reachable from the site nav on this viewport", async ({ page }) => {
     await page.goto("/mahjong-corporate-las-vegas");
-    const navContact = page.locator('nav a[href="/contact"], header a[href="/contact"]').first();
-    if (await navContact.count()) {
-      // Mobile hides the links behind the menu toggle; open it first if there is one.
-      if (!(await navContact.isVisible())) {
-        const toggle = page.locator(".nav-toggle, [aria-label*='enu']").first();
-        if (await toggle.count()) await toggle.click();
-      }
+    const navContact = page.locator('nav a[href="/contact"]').first();
+    await expect(navContact, "the nav must carry a Contact link").toHaveCount(1);
+
+    if (!(await navContact.isVisible())) {
+      // On a phone the links sit behind the menu toggle; opening it must reveal Contact.
+      const toggle = page.locator(".nav-toggle, .menu-toggle, [aria-label*='enu']").first();
+      await expect(toggle, "a hidden nav link needs a toggle that reveals it").toHaveCount(1);
+      await toggle.click();
     }
-    // Whatever the nav does, the footer link is always in the DOM and must resolve.
-    const footerContact = page.locator('footer a[href="/contact"]').first();
+    await expect(navContact, "Contact must be visible after opening the menu").toBeVisible();
+    await navContact.click();
+    await page.waitForURL("**/contact");
+    expect(new URL(page.url()).pathname).toBe("/contact");
+
+    const footerContact = page.locator('footer a[href="/contact"]');
     await expect(footerContact).toHaveCount(1);
   });
 });
@@ -125,19 +151,21 @@ test.describe("round 1 behaviour still holds", () => {
     expect(res.headers()["x-robots-tag"] || "").toContain("noindex");
   });
 
-  test("protected pages keep their title, H1 and canonical", async ({ request }) => {
-    for (const p of PROTECTED) {
-      const html = await (await request.get(p)).text();
-      expect(html, p).toMatch(/<title>[^<]+<\/title>/);
-      expect(html, p).toContain('rel="canonical"');
-      expect(html.toLowerCase(), p).not.toContain("noindex");
-      // The change set never touched these files; a stray /contact CTA here would mean it did.
-      expect(html, p).not.toMatch(/<a[^>]*href="\/contact"[^>]*class="btn-primary"/);
+  test("protected pages keep their exact title, H1 and canonical", async ({ request }) => {
+    for (const page of PROTECTED) {
+      const html = await (await request.get(page.path)).text();
+      expect(html, page.path).toContain(`<title>${page.title}</title>`);
+      expect(html, page.path).toContain(`rel="canonical" href="${page.canonical}"`);
+      expect(h1Text(html), page.path).toBe(page.h1.replace(/&amp;/g, "&"));
+      expect((html.match(/<h1[\s>]/g) || []).length, `${page.path} h1 count`).toBe(1);
+      expect(html.toLowerCase(), page.path).not.toContain("noindex");
+      // This diff never touched these files; a button-styled /contact CTA here would mean it did.
+      expect(html, page.path).not.toMatch(/<a[^>]*class="btn-[^"]*"[^>]*href="\/contact"|<a[^>]*href="\/contact"[^>]*class="btn-/);
     }
   });
 
   test("no commercial page is noindexed", async ({ request }) => {
-    const commercial = [...INQUIRY_PAGES.map((p) => p.path), "/contact", "/private-mahjong-lessons-las-vegas", ...PROTECTED];
+    const commercial = [...INQUIRY_PAGES.map((p) => p.path), "/contact", "/private-mahjong-lessons-las-vegas", ...PROTECTED.map((p) => p.path)];
     for (const p of commercial) {
       const html = await (await request.get(p)).text();
       expect(html.toLowerCase(), p).not.toContain("noindex");

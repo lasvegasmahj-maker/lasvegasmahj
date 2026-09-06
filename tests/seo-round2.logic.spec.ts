@@ -16,33 +16,59 @@ function read(rel: string) {
   return fs.readFileSync(path.join(ROOT, rel), "utf8");
 }
 
-/** Every `<a href="X" className="btn-...">TEXT</a>` in a file, as {href, text}. */
+/**
+ * Every button-styled anchor in a file, as {href, text}. Attribute order is not fixed by
+ * anything, so the tag is matched first and href/className are pulled out of it separately;
+ * keying on `<a href=` first would make `<a className=... href=...>` invisible and silently
+ * void every negative assertion below.
+ */
 function ctas(rel: string) {
   const src = read(rel);
   const out: { href: string; text: string }[] = [];
-  for (const m of src.matchAll(/<a\s+href="([^"]+)"[^>]*className="(btn-[^"]*)"[^>]*>([^<]*)<\/a>/g)) {
-    out.push({ href: m[1], text: m[3].trim() });
+  for (const m of src.matchAll(/<a\s([^>]*)>([\s\S]*?)<\/a>/g)) {
+    const attrs = m[1];
+    if (!/className="[^"]*\bbtn-/.test(attrs)) continue;
+    const href = attrs.match(/href="([^"]*)"/);
+    if (!href) continue;
+    out.push({ href: href[1], text: m[2].replace(/<[^>]*>/g, "").trim() });
   }
   return out;
 }
 
+test("the CTA parser sees a button whichever order its attributes are written in", () => {
+  // Guards the helper itself: if this regresses, every assertion built on it goes vacuous.
+  const parse = (src: string) => {
+    const out: string[] = [];
+    for (const m of src.matchAll(/<a\s([^>]*)>([\s\S]*?)<\/a>/g)) {
+      if (!/className="[^"]*\bbtn-/.test(m[1])) continue;
+      const h = m[1].match(/href="([^"]*)"/);
+      if (h) out.push(h[1]);
+    }
+    return out;
+  };
+  expect(parse('<a href="/contact" className="btn-primary">Go</a>')).toEqual(["/contact"]);
+  expect(parse('<a className="btn-primary" href="/contact">Go</a>')).toEqual(["/contact"]);
+  expect(parse('<a className="btn-primary" style={{}} href="/contact">Go</a>')).toEqual(["/contact"]);
+  expect(parse('<a href="/contact">plain link</a>')).toEqual([]);
+});
+
 // The five commercially important inquiry pages, and the CTA text on each that is a
 // genuine "talk to a human about an event" action rather than a booking.
-const INQUIRY_PAGES: Record<string, string[]> = {
-  "app/mahjong-corporate-las-vegas/page.tsx": ["Request a Quote", "Request a Corporate Quote"],
-  "app/corporate-team-building-las-vegas/page.tsx": ["Request a Quote", "Request a Quote"],
-  "app/conference-activities-las-vegas/page.tsx": ["Request a Quote", "Request a Quote"],
-  "app/convention-activities-las-vegas/page.tsx": ["Request a Convention Quote", "Request a Quote"],
-  "app/mahjong-parties-las-vegas/page.tsx": [
-    "Plan Your Event",
-    "Book a Birthday Party",
-    "Get a Quote",
-    "Book Your Event",
-  ],
+// `count` is how many /contact CTAs the page must have, so a page that loses one fails even
+// when its remaining CTA still carries a listed label.
+const INQUIRY_PAGES: Record<string, { labels: string[]; count: number }> = {
+  "app/mahjong-corporate-las-vegas/page.tsx": { labels: ["Request a Quote", "Request a Corporate Quote"], count: 2 },
+  "app/corporate-team-building-las-vegas/page.tsx": { labels: ["Request a Quote"], count: 2 },
+  "app/conference-activities-las-vegas/page.tsx": { labels: ["Request a Quote"], count: 2 },
+  "app/convention-activities-las-vegas/page.tsx": { labels: ["Request a Quote", "Request a Convention Quote"], count: 2 },
+  "app/mahjong-parties-las-vegas/page.tsx": {
+    labels: ["Plan Your Event", "Book a Birthday Party", "Get a Quote", "Book Your Event"],
+    count: 4,
+  },
 };
 
 test.describe("inquiry CTAs reach /contact", () => {
-  for (const [file, labels] of Object.entries(INQUIRY_PAGES)) {
+  for (const [file, { labels, count }] of Object.entries(INQUIRY_PAGES)) {
     test(`${file}: every quote/event CTA points at /contact`, () => {
       const found = ctas(file);
       for (const label of labels) {
@@ -50,6 +76,7 @@ test.describe("inquiry CTAs reach /contact", () => {
         expect(matches.length, `${file} should still have a CTA labelled "${label}"`).toBeGreaterThan(0);
         for (const m of matches) expect(m.href, `"${label}" on ${file}`).toBe("/contact");
       }
+      expect(found.filter((c) => c.href === "/contact").length, `${file} CTA count`).toBe(count);
     });
 
     test(`${file}: no CTA bounces to a homepage anchor`, () => {
@@ -133,8 +160,21 @@ test.describe("round 1 behaviour that round 2 must not disturb", () => {
   // structured data, or a tel: link. The `(702) 555-0123` in the inquiry modal is a
   // placeholder in a field asking the VISITOR for their number and is not a business
   // number; it predates this round and is deliberately not caught here.
+  // `[^0-9a-z]{0,4}` and not `[.\s-]?`: the single-separator form misses "(847) 609-3112",
+  // which is how anyone would actually type it, so it would pass a real leak straight through.
+  const BUSINESS_PHONE = /847[^0-9a-z]{0,4}609[^0-9a-z]{0,4}3112/i;
+
+  test("the phone guard matches the number however it is formatted", () => {
+    for (const s of ["847-609-3112", "(847) 609-3112", "847.609.3112", "847 609 3112", "8476093112", "+1 (847) 609-3112"]) {
+      expect(BUSINESS_PHONE.test(s), s).toBe(true);
+    }
+    for (const s of ["(702) 555-0123", "8687 W. Sahara Ave", "$60 per person", "152 tiles"]) {
+      expect(BUSINESS_PHONE.test(s), s).toBe(false);
+    }
+  });
+
   test("no shipped file publishes the business phone number", () => {
-    const phone = /847[.\s-]?609[.\s-]?3112|\btelephone\b|tel:/i;
+    const phone = new RegExp(`${BUSINESS_PHONE.source}|\\btelephone\\b|tel:`, "i");
     const hits = shipped.filter((f) => phone.test(fs.readFileSync(f, "utf8")));
     expect(hits.map((f) => path.relative(ROOT, f))).toEqual([]);
   });
