@@ -200,7 +200,7 @@ Checked against `https://www.lasvegasmahj.com` after the merge deployed:
 - 404 head: distinct title `Page Not Found | Las Vegas Mahjong`, single `noindex`, **no canonical**.
 - `/schedule` emits **37** Event objects, first `startDate` `2026-09-08T10:30:00-07:00`,
   `streetAddress` correct, and no `offers` / `performer` / `aggregateRating`.
-- No phone number in `/contact` visible copy.
+- No phone number in `/contact` visible copy. (`telephone` was later removed from the sitewide LocalBusiness JSON-LD as well.)
 - Ask a Rule verified working (`/api/ask` returns correct answers, 152 tiles etc.).
 
 ## What remains
@@ -264,10 +264,12 @@ so a human who lands there is not staring at a bare error.
 
 ## Open owner questions (flagged, not decided)
 
-- **The personal phone number 847-609-3112 is still in the sitewide `LocalBusiness`
-  `telephone` field** in `app/layout.tsx`. It predates this work and matches the Google
-  Business Profile NAP, so removing it breaks NAP consistency. Nothing new exposes it and a
-  test pins it to that one field. One-line removal whenever the owner decides.
+- **RESOLVED 2026-09-05: the phone number is out.** `telephone` was removed from the sitewide
+  `LocalBusiness` JSON-LD at the owner's direction. Her reasoning overrode the NAP argument:
+  JSON-LD is not visibly rendered but it is still publicly exposed structured data, and she
+  does not want a public number yet. Do not add one back and do not substitute a forwarding
+  number. Tests now assert no shipped file declares a `telephone` and no page publishes the
+  number in copy or structured data.
 - **The founder's surname was deliberately NOT added** to structured data: it appears nowhere
   in visible copy, so it did not meet the "already verified" bar. Owner call.
 - `paymentAccepted: "Cash, Credit Card, Venmo"` in the LocalBusiness schema is unsourced; only

@@ -108,11 +108,14 @@ test.describe("Things To Do is retired", () => {
 });
 
 test.describe("no public phone number", () => {
-  test("the personal number appears in no visible copy", () => {
-    const offenders = shippedFiles.filter((f) => {
-      if (f.endsWith("app/layout.tsx")) return false; // schema telephone, pre-existing NAP field
-      return /847[.\s-]?609[.\s-]?3112|tel:/i.test(fs.readFileSync(f, "utf8"));
-    });
+  test("the personal number appears nowhere that ships, copy or structured data", () => {
+    const offenders = shippedFiles.filter((f) =>
+      /847[.\s-]?609[.\s-]?3112|tel:/i.test(fs.readFileSync(f, "utf8")));
+    expect(offenders.map((f) => path.relative(ROOT, f))).toEqual([]);
+  });
+
+  test("no shipped structured data declares a telephone at all", () => {
+    const offenders = shippedFiles.filter((f) => /\btelephone\b/.test(fs.readFileSync(f, "utf8")));
     expect(offenders.map((f) => path.relative(ROOT, f))).toEqual([]);
   });
 
