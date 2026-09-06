@@ -83,7 +83,7 @@ export default function ConferenceActivitiesLasVegas() {
               Give your attendees a break that they actually remember. A mahjong break-out is a memorable networking activity that runs right in your hotel meeting room, scales from one table to 100+, and needs zero experience to enjoy.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-              <a href="/contact" className="btn-primary">Request a Quote</a>
+              <a href="/contact?source=conference" className="btn-primary">Request a Quote</a>
               <a href="/corporate-team-building-las-vegas" className="btn-outline">Corporate Team Building</a>
             </div>
           </div>
@@ -160,7 +160,7 @@ export default function ConferenceActivitiesLasVegas() {
               Tell us your group size, dates, and the time slot you want to fill. We will send a custom proposal within 24 hours. Planning a broader program? Start with{" "}
               <a href="/corporate-team-building-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>corporate team building</a>.
             </p>
-            <a href="/contact" className="btn-primary">Request a Quote</a>
+            <a href="/contact?source=conference" className="btn-primary">Request a Quote</a>
           </div>
         </section>
       </main>

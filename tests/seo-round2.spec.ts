@@ -51,7 +51,7 @@ test.describe("quote CTAs land on /contact", () => {
         const re = new RegExp(`<a[^>]*href="([^"]+)"[^>]*class="btn-primary"[^>]*>${label}</a>`, "g");
         const found = [...html.matchAll(re)];
         expect(found.length, `${label} missing from ${page.path}`).toBeGreaterThan(0);
-        for (const m of found) expect(m[1], `${label} on ${page.path}`).toBe("/contact");
+        for (const m of found) expect(m[1].split("?")[0], `${label} on ${page.path}`).toBe("/contact");
       }
     });
 
@@ -60,7 +60,7 @@ test.describe("quote CTAs land on /contact", () => {
       const cta = p.getByRole("link", { name: page.ctas[0], exact: true }).first();
       await expect(cta).toBeVisible();
       await cta.click();
-      await p.waitForURL("**/contact");
+      await p.waitForURL(/\/contact(\?|$)/);
       expect(new URL(p.url()).pathname).toBe("/contact");
       await expect(p.getByRole("heading", { level: 1 })).toContainText("Contact");
       await expect(p.locator("#contact-name")).toBeVisible();
@@ -94,6 +94,7 @@ test.describe("/contact works end to end", () => {
     await page.goto("/contact");
     await page.fill("#contact-name", "Test Planner");
     await page.fill("#contact-email", "planner@example.com");
+    await page.selectOption("#contact-inquiry", "Corporate or Team Building");
     await page.fill("#contact-message", "Corporate offsite for 40 people in November.");
     await page.getByRole("button", { name: "Send Message" }).click();
     await expect(page.getByText("Message Sent!")).toBeVisible();
@@ -179,7 +180,7 @@ test.describe("internal links resolve", () => {
     const targets = new Set<string>();
     for (const p of paths) {
       const html = await (await request.get(p)).text();
-      for (const m of html.matchAll(/href="(\/[^"#?]*)"/g)) targets.add(m[1] || "/");
+      for (const m of html.matchAll(/href="(\/[^"#]*)"/g)) targets.add(m[1] || "/");
     }
     expect(targets.size).toBeGreaterThan(10);
     for (const t of targets) {

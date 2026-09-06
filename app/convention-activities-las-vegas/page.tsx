@@ -83,7 +83,7 @@ export default function ConventionActivitiesLasVegas() {
               Las Vegas is the top convention city in the country, which means your attendees have seen every standard activity. Give them something different: a social, hands-on mahjong experience that gets people sitting down, talking, and remembering your event.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-              <a href="/contact" className="btn-primary">Request a Quote</a>
+              <a href="/contact?source=convention" className="btn-primary">Request a Quote</a>
               <a href="/corporate-team-building-las-vegas" className="btn-outline">Corporate Team Building</a>
             </div>
           </div>
@@ -158,7 +158,7 @@ export default function ConventionActivitiesLasVegas() {
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "520px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
               Tell us your dates, expected headcount, and what you have in mind, whether it is a booth draw, an attendee session, or group downtime. We will send a custom quote within 24 hours.
             </p>
-            <a href="/contact" className="btn-primary">Request a Convention Quote</a>
+            <a href="/contact?source=convention" className="btn-primary">Request a Convention Quote</a>
           </div>
         </section>
       </main>
