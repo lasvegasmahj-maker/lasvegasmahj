@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import { trackEvent } from "@/lib/analytics";
-import { LABEL_TEXT, type AskLabel } from "@/lib/ask/labels";
+import { LABEL_TEXT, PENDING_NOTE, type AskLabel } from "@/lib/ask/labels";
 import { STARTER_QUESTIONS } from "@/lib/ask/starters";
 
 type Nudge = { key: string; text: string; cta: string; href: string };
+type Clarify = { id: string; prompt: string; question: string; options: Array<{ key: string; label: string }> };
+type Suggestion = { label: string; href: string };
 
 type AnswerTurn = {
   role: "assistant";
@@ -14,10 +16,13 @@ type AnswerTurn = {
   kind: string;
   entry_id?: string;
   category?: string;
+  evidence?: string;
   source_url?: string;
   followups: string[];
+  clarify?: Clarify;
   nudge?: Nudge;
   year_note?: string;
+  suggestions?: Suggestion[];
   via?: string;
   failed?: boolean;
 };
@@ -28,15 +33,19 @@ type ThreadTurn = UserTurn | AnswerTurn;
 type AskApiResponse = {
   ok?: boolean;
   error?: string;
+  fallback?: string;
   answer?: string;
   label?: string;
   kind?: string;
   entry_id?: string;
   category?: string;
+  evidence?: string;
   source_url?: string;
   followups?: string[];
+  clarify?: Clarify;
   nudge?: Nudge;
   year_note?: string;
+  suggestions?: Suggestion[];
   via?: string;
 };
 
@@ -46,17 +55,23 @@ const MAX_CHARS = 300;
 const FAILED_MESSAGE =
   "The rules helper is taking a break. The written rules guide still works, and you can try again in a moment.";
 
+const LABELS: ReadonlySet<string> = new Set(Object.keys(LABEL_TEXT));
+
 function isTurn(x: unknown): x is ThreadTurn {
   if (!x || typeof x !== "object") return false;
   const t = x as Record<string, unknown>;
   if (typeof t.content !== "string") return false;
   if (t.role === "user") return true;
-  if (t.role !== "assistant" || typeof t.label !== "string") return false;
+  if (t.role !== "assistant" || typeof t.label !== "string" || !LABELS.has(t.label)) return false;
   if (!Array.isArray(t.followups) || !t.followups.every((f) => typeof f === "string")) return false;
-  for (const k of ["source_url", "year_note", "entry_id", "category"]) if (t[k] !== undefined && typeof t[k] !== "string") return false;
+  for (const k of ["source_url", "year_note", "entry_id", "category", "evidence", "kind", "via"]) if (t[k] !== undefined && typeof t[k] !== "string") return false;
   if (t.nudge !== undefined) {
     const n = t.nudge as Record<string, unknown> | null;
     if (!n || typeof n !== "object" || typeof n.href !== "string" || typeof n.text !== "string" || typeof n.cta !== "string" || typeof n.key !== "string") return false;
+  }
+  if (t.clarify !== undefined) {
+    const c = t.clarify as Record<string, unknown> | null;
+    if (!c || typeof c !== "object" || typeof c.id !== "string" || typeof c.question !== "string" || !Array.isArray(c.options)) return false;
   }
   return true;
 }
@@ -94,11 +109,56 @@ function sourceLabel(url: string): string {
   return names[slug] ?? "Rules";
 }
 
+// Long owner answers read as one block on a phone. Break at sentence boundaries into short
+// paragraphs; never clip, because half of a penalty rule reads as the whole rule.
+const LONG = 400;
+const BREAK_CUE = /^(Two separate things|One limit applies|One more thing|Amounts:|Who pays:|Jokerless:|Settlement follows|Commitment decides|Put those together|One timing point|Keep this separate|After East|If any player|Anything beyond this|Play then|One thing this is not|Two points to settle)/;
+const LABEL_CUE = /^[A-Z][A-Za-z ]{2,20}:/;
+
+export function splitIntoParagraphs(text: string): string[] {
+  const sentences: string[] = [];
+  let buf = "";
+  for (const part of text.split(/(\s+)/)) {
+    buf += part;
+    if (/[.!?]["')\]]?\s*$/.test(part)) {
+      sentences.push(buf.trim());
+      buf = "";
+    }
+  }
+  if (buf.trim()) sentences.push(buf.trim());
+  const paras: string[] = [];
+  let current: string[] = [];
+  const flush = () => {
+    if (!current.length) return;
+    const group = current.join(" ");
+    if (current.length === 1 && paras.length && !LABEL_CUE.test(group)) paras[paras.length - 1] += ` ${group}`;
+    else paras.push(group);
+    current = [];
+  };
+  for (const s of sentences) {
+    if (current.length >= 3 || LABEL_CUE.test(s) || (current.length >= 2 && BREAK_CUE.test(s))) flush();
+    current.push(s);
+  }
+  flush();
+  return paras;
+}
+
+function AnswerText({ text }: { text: string }) {
+  if (text.length <= LONG) return <p className="ask-answer-text">{text}</p>;
+  return (
+    <div className="ask-answer-text ask-answer-long">
+      {splitIntoParagraphs(text).map((p, i) => (
+        <p key={i}>{p}</p>
+      ))}
+    </div>
+  );
+}
+
 const noop = () => () => {};
 
-// The thread lives in sessionStorage, which the server cannot read. The server renders a
-// static shell; the live thread mounts only after hydration, so its lazy initial state can
-// read storage with no hydration mismatch and no setState inside an effect.
+// The thread lives in sessionStorage, which the server cannot read. The server renders a static
+// shell; the live thread mounts only after hydration, so its lazy initial state can read storage
+// with no hydration mismatch and no setState inside an effect.
 export default function AskClient() {
   const hydrated = useSyncExternalStore(noop, () => true, () => false);
   if (!hydrated) return <AskShell />;
@@ -119,7 +179,7 @@ function AskShell() {
           <p className="ask-starters-label">Try one of these</p>
           <div className="ask-followups">
             {STARTER_QUESTIONS.map((q) => (
-              <button key={q} type="button" className="ask-chip">{q}</button>
+              <button key={q} type="button" className="ask-chip" disabled>{q}</button>
             ))}
           </div>
         </div>
@@ -140,14 +200,17 @@ function AskThread() {
     saveThread(thread);
   }, [thread]);
 
-  async function ask(raw: string, origin: "typed" | "starter" | "followup") {
+  const lastAnswer = [...thread].reverse().find((t): t is AnswerTurn => t.role === "assistant");
+  const pending = lastAnswer?.clarify;
+
+  async function ask(raw: string, origin: "typed" | "starter" | "followup" | "option", clarify: Clarify | null = pending ?? null) {
     const q = raw.trim().slice(0, MAX_CHARS);
     if (!q || busy) return;
-    const history = thread.slice(-10).map((t) =>
-      t.role === "user"
-        ? { role: "user" as const, content: t.content }
-        : { role: "assistant" as const, content: t.content, entry_id: t.entry_id, nudge_key: t.nudge?.key }
-    );
+    // Failed turns carry no entry and would only pad the context the server reads.
+    const history = thread
+      .filter((t) => t.role === "user" || !t.failed)
+      .slice(-10)
+      .map((t) => (t.role === "user" ? { role: "user" as const, content: t.content } : { role: "assistant" as const, content: t.content, entry_id: t.entry_id, nudge_key: t.nudge?.key }));
     const turnNumber = thread.filter((t) => t.role === "user").length + 1;
     setThread((prev) => [...prev, { role: "user", content: q }]);
     setQuestion("");
@@ -159,35 +222,34 @@ function AskThread() {
       const res = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q, history, nudged: thread.some((t) => t.role === "assistant" && Boolean(t.nudge)) }),
+        body: JSON.stringify({ question: q, history, clarify: clarify ? { id: clarify.id, question: clarify.question } : undefined, nudged: thread.some((t) => t.role === "assistant" && Boolean(t.nudge)) }),
       });
       const data = (await res.json().catch(() => null)) as AskApiResponse | null;
       if (res.ok && data?.ok) {
         answer = {
           role: "assistant",
           content: data.answer ?? "",
-          label: (data.label as AskLabel) ?? "unverified",
+          label: (LABELS.has(data.label ?? "") ? (data.label as AskLabel) : "unverified"),
           kind: data.kind ?? "answer",
           entry_id: data.entry_id,
           category: data.category,
+          evidence: data.evidence,
           source_url: data.source_url,
           followups: Array.isArray(data.followups) ? data.followups.slice(0, 3) : [],
+          clarify: data.clarify && Array.isArray(data.clarify.options) ? data.clarify : undefined,
           nudge: data.nudge,
           year_note: data.year_note,
+          suggestions: Array.isArray(data.suggestions) ? data.suggestions.filter((s) => typeof s?.href === "string" && s.href.startsWith("/")).slice(0, 3) : undefined,
           via: data.via,
         };
       } else {
-        answer = {
-          role: "assistant",
-          content: res.status === 429 && data?.error ? data.error : FAILED_MESSAGE,
-          label: "unverified",
-          kind: "error",
-          followups: [],
-          failed: true,
-        };
+        // A rate limit or a kill switch explains itself; anything else gets the generic note.
+        // A pending clarification survives the failure so the player is not stranded.
+        const explained = (res.status === 429 || res.status === 503) && data?.error ? data.error : FAILED_MESSAGE;
+        answer = { role: "assistant", content: explained, label: "chat", kind: "error", followups: [], clarify: clarify ?? undefined, failed: true };
       }
     } catch {
-      answer = { role: "assistant", content: FAILED_MESSAGE, label: "unverified", kind: "error", followups: [], failed: true };
+      answer = { role: "assistant", content: FAILED_MESSAGE, label: "chat", kind: "error", followups: [], clarify: clarify ?? undefined, failed: true };
     }
 
     setThread((prev) => [...prev, answer]);
@@ -201,7 +263,7 @@ function AskThread() {
       matched: Boolean(answer.entry_id),
       via: answer.via ?? "none",
     });
-    if (!answer.entry_id && !answer.failed) trackEvent("ask_unverified", { kind: answer.kind, turn: turnNumber });
+    if (answer.kind === "gap" || answer.kind === "clarify") trackEvent("ask_unverified", { kind: answer.kind, turn: turnNumber });
     if (answer.nudge) trackEvent("ask_nudge_shown", { target: answer.nudge.key });
   }
 
@@ -213,9 +275,10 @@ function AskThread() {
     }
     if (!thread.length) return;
     const last = thread[thread.length - 1];
+    const behavior: ScrollBehavior = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
     // Scroll the question, not the answer, so both clear the fixed nav together.
-    if (last.role === "assistant") lastQuestionRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
-    else endRef.current?.scrollIntoView({ block: "end", behavior: "smooth" });
+    if (last.role === "assistant") lastQuestionRef.current?.scrollIntoView({ block: "start", behavior });
+    else endRef.current?.scrollIntoView({ block: "end", behavior });
   }, [thread]);
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -230,13 +293,20 @@ function AskThread() {
     inputRef.current?.focus();
   }
 
+  function neverMind() {
+    // Drops the pending clarification locally; the server would say the same.
+    setThread((prev) => [...prev, { role: "user", content: "Never mind" }, { role: "assistant", content: "No problem. Ask another rule any time.", label: "chat", kind: "cancelled", followups: [] }]);
+    setQuestion("");
+    inputRef.current?.focus();
+  }
+
   const lastAnswerIndex = thread.map((t) => t.role).lastIndexOf("assistant");
   const lastQuestionIndex = thread.map((t) => t.role).lastIndexOf("user");
 
   return (
     <section className="ask-shell" aria-label="Ask a Mahjong Rule">
       <div className="container ask-container">
-        <div className="ask-thread" aria-live="polite" aria-busy={busy}>
+        <div className="ask-thread" role="log" aria-live="polite" aria-busy={busy}>
           {thread.map((t, i) =>
             t.role === "user" ? (
               <div key={i} className="ask-turn ask-turn-user" ref={i === lastQuestionIndex ? lastQuestionRef : undefined}>
@@ -251,7 +321,8 @@ function AskThread() {
                     <span className={`ask-label ask-label-${t.label}`}>{LABEL_TEXT[t.label]}</span>
                   ) : null}
                 </div>
-                <p className="ask-answer-text">{t.content}</p>
+                <AnswerText text={t.content} />
+                {t.evidence === "owner_review_pending" ? <p className="ask-note ask-pending-note">{PENDING_NOTE}</p> : null}
                 {t.year_note ? <p className="ask-note">{t.year_note}</p> : null}
                 {t.failed ? (
                   <p className="ask-note">
@@ -266,24 +337,45 @@ function AskThread() {
                     </a>
                   </p>
                 ) : null}
-                {t.kind === "unverified" ? (
+                {t.kind === "gap" ? (
                   <p className="ask-note">
-                    Browse the <a href="/rules" onClick={() => trackEvent("ask_link_click", { target: "rules", reason: "unverified" })}>written rules guide</a> for related topics.
+                    Browse the <a href="/rules" onClick={() => trackEvent("ask_link_click", { target: "rules", reason: "gap" })}>written rules guide</a> for related topics.
                   </p>
                 ) : null}
-                {i === lastAnswerIndex && t.followups.length > 0 ? (
+                {i === lastAnswerIndex && t.clarify && t.clarify.options.length > 0 ? (
+                  <div className="ask-followups ask-clarify" role="group" aria-label={t.clarify.prompt || "Pick one"} data-testid="ask-clarify">
+                    {t.clarify.options.map((o) => (
+                      <button key={o.key} type="button" className="ask-chip" disabled={busy} onClick={() => void ask(o.label, "option", t.clarify!)}>
+                        {o.label}
+                      </button>
+                    ))}
+                    <button type="button" className="ask-chip ask-chip-quiet" disabled={busy} onClick={neverMind}>
+                      Never mind
+                    </button>
+                  </div>
+                ) : null}
+                {i === lastAnswerIndex && !t.clarify && t.followups.length > 0 ? (
                   <div className="ask-followups" aria-label="Suggested follow-up questions">
                     {t.followups.map((f) => (
-                      <button key={f} type="button" className="ask-chip" disabled={busy} onClick={() => { trackEvent("ask_followup_click", { category: t.category ?? "none" }); void ask(f, "followup"); }}>
+                      <button key={f} type="button" className="ask-chip" disabled={busy} onClick={() => { trackEvent("ask_followup_click", { category: t.category ?? "none" }); void ask(f, "followup", null); }}>
                         {f}
                       </button>
+                    ))}
+                  </div>
+                ) : null}
+                {t.suggestions && t.suggestions.length > 0 ? (
+                  <div className="ask-followups" aria-label="Around the studio">
+                    {t.suggestions.map((s) => (
+                      <a key={s.href + s.label} href={s.href} className="ask-chip ask-chip-link" onClick={() => trackEvent("ask_link_click", { target: s.href })}>
+                        {s.label}
+                      </a>
                     ))}
                   </div>
                 ) : null}
                 {t.nudge ? (
                   <div className="ask-nudge">
                     <p>{t.nudge.text}</p>
-                    <a href={t.nudge.href} className="btn-outline ask-nudge-cta" onClick={() => trackEvent("ask_nudge_click", { target: t.nudge!.key })}>
+                    <a href={t.nudge.href.startsWith("/") ? t.nudge.href : "/"} className="btn-outline ask-nudge-cta" onClick={() => trackEvent("ask_nudge_click", { target: t.nudge!.key })}>
                       {t.nudge.cta}
                     </a>
                   </div>
@@ -292,7 +384,7 @@ function AskThread() {
             )
           )}
           {busy ? (
-            <div className="ask-turn ask-turn-answer ask-thinking">
+            <div className="ask-turn ask-turn-answer ask-thinking" role="status">
               <span className="ask-turn-who">Las Vegas Mahjong</span>
               <p>Checking the rules...</p>
             </div>
@@ -309,16 +401,15 @@ function AskThread() {
             className="ask-input"
             value={question}
             onChange={(e) => setQuestion(e.target.value.slice(0, MAX_CHARS))}
-            placeholder={thread.length ? "Ask a follow-up or a new question" : "Ask your question..."}
+            placeholder={pending ? "Type your answer, or pick one above" : thread.length ? "Ask a follow-up or a new question" : "Ask your question..."}
             autoComplete="off"
             autoCapitalize="sentences"
             enterKeyHint="send"
             maxLength={MAX_CHARS}
-            disabled={busy}
             aria-describedby="ask-hint"
           />
           <button type="submit" className="btn-primary ask-submit" disabled={busy || !question.trim()}>
-            Ask
+            {pending ? "Reply" : "Ask"}
           </button>
         </form>
         <p id="ask-hint" className="ask-hint">
@@ -337,7 +428,7 @@ function AskThread() {
             <p className="ask-starters-label">Try one of these</p>
             <div className="ask-followups">
               {STARTER_QUESTIONS.map((q) => (
-                <button key={q} type="button" className="ask-chip" onClick={() => { trackEvent("ask_starter_click"); void ask(q, "starter"); }}>
+                <button key={q} type="button" className="ask-chip" onClick={() => { trackEvent("ask_starter_click"); void ask(q, "starter", null); }}>
                   {q}
                 </button>
               ))}
