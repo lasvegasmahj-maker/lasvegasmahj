@@ -48,11 +48,17 @@ test.describe("bachelorette removal", () => {
 test.describe("things to do is retired", () => {
   const POST = "/blog/things-to-do-las-vegas-besides-gambling";
 
-  test("301s to the parties page", async ({ request }) => {
+  test("returns 410 Gone, noindex, and no redirect", async ({ request }) => {
     const res = await request.get(POST, { maxRedirects: 0 });
+    expect(res.status()).toBe(410);
+    expect(res.headers()["x-robots-tag"]).toContain("noindex");
+    expect(res.headers()["location"]).toBeUndefined();
+    expect(await res.text()).toContain("This guide has been removed");
+  });
+
+  test("the bachelorette URL still redirects, because that one has a real destination", async ({ request }) => {
+    const res = await request.get("/blog/bachelorette-party-ideas-las-vegas", { maxRedirects: 0 });
     expect(res.status()).toBe(301);
-    expect(new URL(res.headers()["location"], "http://localhost").pathname)
-      .toBe("/mahjong-parties-las-vegas");
   });
 
   test("is out of the sitemap, along with the now-empty blog index", async ({ request }) => {
@@ -142,24 +148,14 @@ test.describe("/contact", () => {
   });
 });
 
-test("the personal phone number appears only in the LocalBusiness telephone field", async ({ request }) => {
-  const paths = await sitemapPaths(request);
+test("no page publishes a phone number, in copy or in structured data", async ({ request }) => {
   const PHONE = /847[.\s-]?609[.\s-]?3112/;
-  const visible: string[] = [];
-  for (const p of paths) {
+  const offenders: string[] = [];
+  for (const p of await sitemapPaths(request)) {
     const html = await (await request.get(p)).text();
-    if (PHONE.test(withoutScripts(html))) visible.push(p);
-    const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
-      .map((m) => JSON.parse(m[1].replace(/\\u003c/g, "<")));
-    const carriers = blocks.flatMap((b) => (Array.isArray(b) ? b : [b]))
-      .filter((b) => PHONE.test(JSON.stringify(b)));
-    for (const c of carriers) {
-      expect(c["@id"], `${p}: unexpected schema node carries the phone`)
-        .toBe("https://www.lasvegasmahj.com/#business");
-      expect(PHONE.test(c.telephone ?? ""), `${p}: phone is outside the telephone field`).toBe(true);
-    }
+    if (PHONE.test(html) || /"telephone"/.test(html) || /href="tel:/.test(html)) offenders.push(p);
   }
-  expect(visible, "phone number surfaced in visible copy").toEqual([]);
+  expect(offenders).toEqual([]);
 });
 
 test.describe("/private-mahjong-lessons-las-vegas", () => {
