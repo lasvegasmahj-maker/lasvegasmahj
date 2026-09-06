@@ -1,7 +1,124 @@
 # Handoff: Las Vegas Mahjong competitive SEO
 
-Rounds 1 and 2 are both CLOSED, MERGED and LIVE. Their records are preserved below and
+Rounds 1, 2 and 3 are all CLOSED, MERGED and LIVE. Their records are preserved below and
 must not be edited or re-litigated. There is no active round.
+
+---
+
+# ROUND 3: contact form quality and source attribution (CLOSED, MERGED, LIVE)
+
+**Date closed:** 2026-09-06
+**Branches:** `conversion/round3-contact-quality`, then `conversion/round3-date-followup` (both merged, deleted)
+**Merged as:** squash commits **`fd70083`** ([#102](https://github.com/lasvegasmahj-maker/lasvegasmahj/pull/102)) and **`dcbc17e`** ([#104](https://github.com/lasvegasmahj-maker/lasvegasmahj/pull/104)) on `main`
+**Base:** `origin/main` at `044ca5d`
+**Production:** **LIVE** on `www.lasvegasmahj.com` via `lasvegasmahj-6104s-projects / lasvegasmahj-h1iz`.
+**CI on both PRs:** green (checks, browser, lint).
+
+## What shipped
+
+The form asks six visible questions instead of three. Only Name, Email and Inquiry Type are
+required; Group Size, Preferred Date and Message are optional, because most people inquire
+before a date is fixed and a guessed date is worse data than a blank one.
+
+| Field | Name attribute | Required |
+|---|---|---|
+| Your Name | `name` | yes (unchanged) |
+| Email Address | `email` | yes (unchanged) |
+| What Can We Help With? | `inquiry_type` | **yes** (new) |
+| Group Size | `group_size` | no (new) |
+| Preferred Date | `preferred_date` | no (new) |
+| Tell Us More | `message` | no (relabelled from "Your Question") |
+| (hidden) | `source` | n/a (new) |
+
+Inquiry Type options: Private Lesson, Group Lesson or Class, Private Party or Celebration,
+Corporate or Team Building, Conference or Convention, Charity or Fundraiser, Something Else.
+
+Group Size options: Not sure yet, Just me, 2-3, 4-8, 9-20, 21-50, 50+ people.
+
+## Source attribution
+
+A first-party query parameter. No analytics, no third party. **15** CTAs across **6** pages
+carry `?source=<slug>`; the form maps the slug to a readable label sent as the hidden `source`
+field, and pre-selects the Inquiry Type the source implies, which is what lets that field be
+required without adding friction to the tagged paths.
+
+| Slug | Page | Arrives in the inbox as | CTAs |
+|---|---|---|---|
+| `corporate` | `/mahjong-corporate-las-vegas` | Corporate Events page | 2 |
+| `team-building` | `/corporate-team-building-las-vegas` | Corporate Team Building page | 2 |
+| `conference` | `/conference-activities-las-vegas` | Conference Activities page | 2 |
+| `convention` | `/convention-activities-las-vegas` | Convention Activities page | 2 |
+| `parties` | `/mahjong-parties-las-vegas` | Private Parties page | 4 |
+| `private-lessons` | `/private-mahjong-lessons-las-vegas` | Private Lessons page | 3 |
+| (none) | nav, footer, direct, organic | General (nav, footer or direct) | n/a |
+
+**The nav and footer links are bare on purpose.** They are one shared component each, rendered
+on every page, so a slug there could only ever be a single sitewide constant. They fall back to
+the General bucket, which is also where direct and search traffic lands. Do not "finish" them.
+
+An unrecognised, empty or hostile slug falls back to General rather than forwarding raw query
+text into an inbox a human reads. Verified live with a script tag payload.
+
+## Two implementation facts a later session must not undo
+
+1. **The query string is read with `useSyncExternalStore` over `window.location.search`, never
+   with `useSearchParams`.** Three real builds settled this. Without a Suspense boundary,
+   `useSearchParams` fails `pnpm build` outright. With one, the build passes but the entire
+   form is replaced by a `BAILOUT_TO_CLIENT_SIDE_RENDERING` marker in the prerendered
+   `/contact` document, so the form disappears from the static HTML. `/contact` is `○` static
+   and the form is in the served bytes; a test asserts both.
+2. **No underscore-prefixed Formspree field is used.** Formspree consumes `_subject`, `_gotcha`
+   and friends as directives instead of forwarding them, and a `_gotcha` honeypot answers 200
+   for a submission it discards, which would show "Message Sent!" for a lead that vanished.
+
+## Delivery
+
+Unchanged: the same `https://formspree.io/f/mwvrnjrb`, the same POST, the same `FormData`.
+A 200 carrying an `{"errors":[...]}` body is now treated as a failure instead of a success,
+because Formspree can answer 200 for a submission it drops.
+
+## The follow-up fix (`dcbc17e`)
+
+Adversarial verification against live production found one defect Round 3 itself introduced: a
+**half typed Preferred Date** left the control in `badInput`, which fails constraint validation,
+so the browser blocked the submit and `onSubmit` never fired. An optional field was silently
+losing the lead. Typing `111426` also resolved to `0026-11-14` and reached the inbox as year 26.
+Both are now cleared on blur and on invalid. The two regression specs fail against the build
+that preceded the fix, which is how the defect was proven rather than assumed.
+
+Two guards that could never fail were also fixed: the protected-page CTA check matched the
+literal `href="/contact"` and so could not see a tagged CTA, and the Round 3 homepage guard read
+`app/page.tsx`, an eleven line shell with zero anchors.
+
+## Verification
+
+25-agent independent verification against live production across 6 dimensions, every verdict
+attacked by 3 adversarial refuters on distinct lenses, plus a completeness critic. 0 agent
+errors. **Critic verdict: GO.** Plus the shipped suites run against production directly:
+171 passed, 0 failed, desktop and iPhone viewport.
+
+## Owner actions still open after Round 3
+
+1. **Send one real inquiry** from `/contact?source=corporate` and confirm the email shows
+   `source`, `inquiry_type`, `group_size` and `preferred_date` legibly. No automated check is
+   allowed to submit the form, so this is the one unproven link in the chain.
+2. **The homepage inquiry modal has a REQUIRED phone field.** `components/inquiry-modal.tsx`
+   renders `<input id="inquiry-phone" required type="tel" name="phone">` labelled
+   "Phone Number *". It is **pre-existing**, predates Round 1, and asks the visitor for their
+   number rather than publishing the owner's, which is why the phone guards deliberately allow
+   it. But it contradicts the "no phone field" instruction and is a conversion barrier on the
+   highest-traffic page. Needs an owner decision, not a silent change.
+3. **A no-JS or pre-hydration submit delivers nothing.** The form has no `action`, so
+   submission is React-only; before hydration the browser does a GET back to `/contact` with
+   the visitor's name and email in the URL. Pre-existing from Round 1. The fix is two
+   attributes (`action` and `method`), but it lands the visitor on Formspree's own page, so it
+   is an owner call.
+4. **The homepage modal posts to the same endpoint with a different schema** (`interest`,
+   different group-size buckets, no `source`) and still lacks the `hasErrors` guard. Two
+   incompatible lead shapes reach one inbox.
+5. **Neither select renders a dropdown arrow.** `globals.css` sets `appearance: none` with no
+   caret, so the required Inquiry Type looks like a filled text box. Pre-existing CSS, but
+   Round 3 is what put selects on this page. Fixing it is a deliberate CSS change.
 
 ---
 
@@ -197,12 +314,11 @@ not change the 8 preserved booking CTAs.
 These are real and were deliberately left to the owner. None of them blocks round 2, and none
 is a defect introduced by it.
 
-1. **Formspree deliverability is unproven.** `/contact` posts client-side to
-   `https://formspree.io/f/mwvrnjrb`. No agent may submit the form, so nobody has confirmed the
-   endpoint is active, under its monthly cap, and actually delivering. Round 2 pointed all 12
-   commercial CTAs at this one destination, so this is now the single highest-consequence
-   unknown. **Shauna should send one real test message through the live form and confirm it
-   arrives.**
+1. ~~**Formspree deliverability is unproven.**~~ **RESOLVED before Round 3 opened.** The owner
+   manually submitted the live `/contact` form and confirmed the email arrived. The endpoint is
+   active and delivering. Round 3 did not change the endpoint, the method or the payload
+   mechanism, but it did add fields, so the owner should confirm once more that the NEW fields
+   render legibly in the email (see Round 3's owner actions above).
 2. **Click one changed CTA in a real browser**, desktop and phone. Every automated check read
    raw HTML; no button was ever actually clicked.
 3. **There is no analytics on production.** No GA4, GTM, Plausible, PostHog or Vercel Insights;
