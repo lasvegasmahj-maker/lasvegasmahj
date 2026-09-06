@@ -103,9 +103,12 @@ export default function Classes() {
               Book Now
             </a>
             <p style={{ fontSize: "0.85rem", lineHeight: 1.7, marginTop: "1.25rem", marginBottom: 0 }}>
-              Want a private lesson for a group of 4-8 at a time that is not on
-              the schedule? We can also come to you across the valley
-              (Henderson, Summerlin, and beyond) for an added fee. Email{" "}
+              Want a private lesson at a time that is not on the schedule? See
+              how{" "}
+              <a href="/private-mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>
+                private lessons
+              </a>{" "}
+              work, or email{" "}
               <a href="mailto:lasvegasmahj@gmail.com" style={{ color: "var(--green)", fontWeight: 600 }}>
                 lasvegasmahj@gmail.com
               </a>

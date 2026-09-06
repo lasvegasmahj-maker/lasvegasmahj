@@ -59,6 +59,7 @@ export function buildEventSchema(event: EventSchemaInput) {
     },
     organizer: {
       "@type": "Organization",
+      "@id": "https://www.lasvegasmahj.com/#business",
       name: "Las Vegas Mahjong",
       url: "https://www.lasvegasmahj.com",
       email: "lasvegasmahj@gmail.com",
@@ -97,4 +98,61 @@ export function buildBreadcrumbSchema(items: BreadcrumbItem[]) {
       })),
     ],
   };
+}
+
+/* ── SCHEDULE EVENT SCHEMA ── */
+
+// Only the studio address is verified, so an event anywhere else is skipped rather than
+// given an address we cannot source. Google requires location.address to be a real street
+// address, and inventing one for a partner venue would be a factual claim we cannot make.
+const STUDIO_PLACE = {
+  "@type": "Place",
+  "@id": "https://www.lasvegasmahj.com/#studio",
+  name: "Lucky Hare",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "8687 W. Sahara Ave., Suite 200",
+    addressLocality: "Las Vegas",
+    addressRegion: "NV",
+    postalCode: "89117",
+    addressCountry: "US",
+  },
+};
+
+export interface ScheduleEventInput {
+  title: string;
+  description: string;
+  url: string;
+  startIso?: string;
+  endIso?: string;
+  venueKind: "studio" | "partner" | "unknown";
+}
+
+// No offers: Bookwhen gives us a booking URL but no price, and an Offer without price and
+// priceCurrency adds no eligibility while inviting validator warnings.
+export function buildScheduleEventSchema(events: ScheduleEventInput[]) {
+  return events
+    .filter((e) => e.startIso && e.venueKind === "studio")
+    .map((e) => ({
+      "@context": "https://schema.org",
+      "@type": "Event",
+      name: e.title,
+      startDate: e.startIso,
+      ...(e.endIso ? { endDate: e.endIso } : {}),
+      eventStatus: "https://schema.org/EventScheduled",
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      location: STUDIO_PLACE,
+      ...(e.description ? { description: e.description } : {}),
+      image: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+      // The first-party page that describes these sessions. Pointing this at the Bookwhen
+      // booking host would hand the rich result's link to a third party; the booking link
+      // stays where it always was, on the visible card.
+      url: "https://www.lasvegasmahj.com/schedule",
+      organizer: {
+        "@type": "Organization",
+        "@id": "https://www.lasvegasmahj.com/#business",
+        name: "Las Vegas Mahjong",
+        url: "https://www.lasvegasmahj.com",
+      },
+    }));
 }

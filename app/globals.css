@@ -1135,12 +1135,22 @@ footer {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('/tile-texture.jpg');
+  /* Versioned filename so the asset can be cached immutably; see headers() in next.config.ts. */
+  background-image: url('/tile-texture-v2.jpg');
   background-size: cover;
   background-position: center;
   opacity: 0.08;
   pointer-events: none;
   z-index: 0;
+}
+
+@supports (background-image: image-set(url('/tile-texture-v2.webp') type('image/webp'))) {
+  .tile-bg::before {
+    background-image: image-set(
+      url('/tile-texture-v2.webp') type('image/webp'),
+      url('/tile-texture-v2.jpg') type('image/jpeg')
+    );
+  }
 }
 
 .tile-bg > * {

@@ -3,6 +3,7 @@ import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import { getScheduleEvents } from "@/lib/schedule";
+import { buildScheduleEventSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Schedule & Booking",
@@ -45,9 +46,18 @@ export default async function Schedule() {
     (acc[e.monthLabel] ||= []).push(e);
     return acc;
   }, {});
+  const eventSchema = buildScheduleEventSchema(events);
 
   return (
     <>
+      {eventSchema.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(eventSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+      )}
       <SubpageNav />
 
       <main style={{ paddingTop: "80px" }}>

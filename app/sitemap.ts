@@ -21,6 +21,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: "https://www.lasvegasmahj.com/private-mahjong-lessons-las-vegas",
+      lastModified: new Date("2026-09-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
       url: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas",
       lastModified: new Date("2026-05-23"),
       changeFrequency: "monthly",
@@ -61,6 +67,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date("2026-05-23"),
       changeFrequency: "monthly",
       priority: 0.8,
+    },
+    {
+      url: "https://www.lasvegasmahj.com/contact",
+      lastModified: new Date("2026-09-05"),
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
     {
       url: "https://www.lasvegasmahj.com/mahjong-lessons-summerlin",
@@ -153,23 +165,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     //   changeFrequency: "weekly",
     //   priority: 0.75,
     // },
-    {
-      url: "https://www.lasvegasmahj.com/blog",
-      lastModified: new Date("2026-05-23"),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    {
-      url: "https://www.lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling",
-      lastModified: new Date("2026-05-23"),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: "https://www.lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas",
-      lastModified: new Date("2026-05-23"),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
   ];
 }

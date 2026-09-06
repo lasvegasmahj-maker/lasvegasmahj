@@ -6,14 +6,17 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: { absolute: "Mahjong Blog | Las Vegas Mahjong" },
   description:
-    "Mahjong tips, Las Vegas activity guides, bachelorette party ideas, and group event inspiration from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
+    "Mahjong tips and ideas for players in Las Vegas from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
   alternates: {
     canonical: "https://www.lasvegasmahj.com/blog",
   },
+  // Empty while the only guide is retired. Drop this and re-add the sitemap entry the moment
+  // a post lands in the array below.
+  robots: { index: false, follow: true },
   openGraph: {
     title: "Mahjong Blog | Las Vegas Mahjong",
     description:
-      "Mahjong tips, Las Vegas activity guides, bachelorette party ideas, and group event inspiration from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
+      "Mahjong tips and ideas for players in Las Vegas from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
     url: "https://www.lasvegasmahj.com/blog",
     type: "website",
     siteName: "Las Vegas Mahjong",
@@ -22,30 +25,25 @@ export const metadata: Metadata = {
   },
 };
 
-const posts = [
-  {
-    href: "/blog/things-to-do-las-vegas-besides-gambling",
-    title: "Things to Do in Las Vegas Besides Gambling",
-    description:
-      "20+ activities in Las Vegas that have nothing to do with slot machines. From mahjong parties to hiking and live music.",
-    tag: "Las Vegas Guide",
-    tagColor: "accent-green",
-  },
-  {
-    href: "/blog/bachelorette-party-ideas-las-vegas",
-    title: "Bachelorette Party Ideas Las Vegas 2026",
-    description:
-      "The best bachelorette activities in Las Vegas, from private mahjong parties to pool days and private dinners.",
-    tag: "Bachelorette",
-    tagColor: "accent-pink",
-  },
-];
+type Post = {
+  href: string;
+  title: string;
+  description: string;
+  tag: string;
+  tagColor: string;
+};
+
+// The one guide that lived here was retired by the owner: Search Console showed 0 clicks and
+// 0 impressions over 90 days. Add a post here and it renders again.
+const posts: Post[] = [];
 
 export default function BlogPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.lasvegasmahj.com/blog" }] }).replace(/</g, "\\u003c") }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "Mahjong Blog", url: "https://www.lasvegasmahj.com/blog", hasPart: posts.map(p => ({ "@type": "Article", headline: p.title, url: `https://www.lasvegasmahj.com${p.href}` })), mainEntity: { "@type": "ItemList", itemListElement: posts.map((p, i) => ({ "@type": "ListItem", position: i + 1, url: `https://www.lasvegasmahj.com${p.href}` })) } }).replace(/</g, "\\u003c") }} />
+      {posts.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "Mahjong Blog", url: "https://www.lasvegasmahj.com/blog", hasPart: posts.map(p => ({ "@type": "Article", headline: p.title, url: `https://www.lasvegasmahj.com${p.href}` })), mainEntity: { "@type": "ItemList", itemListElement: posts.map((p, i) => ({ "@type": "ListItem", position: i + 1, url: `https://www.lasvegasmahj.com${p.href}` })) } }).replace(/</g, "\\u003c") }} />
+      )}
       <SubpageNav />
 
       <main>
@@ -93,6 +91,28 @@ export default function BlogPage() {
               margin: "0 auto",
             }}
           >
+            {posts.length === 0 && (
+              <p
+                style={{
+                  fontFamily: "var(--font-nav)",
+                  color: "#bbb",
+                  fontSize: "1rem",
+                  lineHeight: 1.7,
+                  textAlign: "center",
+                  margin: 0,
+                }}
+              >
+                New guides are in the works. In the meantime, the{" "}
+                <Link href="/rules" className="accent-green" style={{ textDecoration: "none", fontWeight: 600 }}>
+                  rules guide
+                </Link>{" "}
+                and{" "}
+                <Link href="/ask" className="accent-green" style={{ textDecoration: "none", fontWeight: 600 }}>
+                  Ask a Rule
+                </Link>{" "}
+                answer most questions straight away.
+              </p>
+            )}
             {posts.map((post) => (
               <article
                 key={post.href}

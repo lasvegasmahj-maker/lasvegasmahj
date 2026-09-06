@@ -33,9 +33,6 @@ export const metadata: Metadata = {
   },
   description:
     "Certified mahjong lessons, open play, and private parties across Las Vegas, Summerlin, and Henderson. Taught by a certified Oh My Mahjong instructor.",
-  alternates: {
-    canonical: "https://www.lasvegasmahj.com",
-  },
   openGraph: {
     title:
       "Las Vegas Mahjong | Lessons, Events & Open Play Across the Valley",
@@ -65,12 +62,10 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
+  // Preview directives only. An index/follow value here would land on 404s too, where Next
+  // injects its own noindex, and the two would contradict each other.
   robots: {
-    index: true,
-    follow: true,
     googleBot: {
-      index: true,
-      follow: true,
       "max-video-preview": -1,
       "max-image-preview": "large",
       "max-snippet": -1,
@@ -94,15 +89,13 @@ const localBusinessSchema = {
     "Las Vegas's premier mahjong instruction and community. Certified Oh My Mahjong instructor offering beginner lessons, open play events, private parties, corporate team building, leagues, and tournaments across the Las Vegas Valley.",
   url: "https://www.lasvegasmahj.com",
   email: "lasvegasmahj@gmail.com",
-  telephone: "+1-847-609-3112",
   image: [
     "https://www.lasvegasmahj.com/hero-bg.jpg",
     "https://www.lasvegasmahj.com/shauna.jpg",
   ],
-  priceRange: "$60+",
   currenciesAccepted: "USD",
   paymentAccepted: "Cash, Credit Card, Venmo",
-  foundingDate: "2025-09",
+  foundingDate: "2025",
   knowsAbout: [
     "American Mahjong",
     "NMJL",
@@ -116,6 +109,7 @@ const localBusinessSchema = {
   ],
   address: {
     "@type": "PostalAddress",
+    streetAddress: "8687 W. Sahara Ave., Suite 200",
     addressLocality: "Las Vegas",
     addressRegion: "NV",
     postalCode: "89117",
@@ -124,20 +118,29 @@ const localBusinessSchema = {
   areaServed: [
     { "@type": "City", name: "Las Vegas" },
     { "@type": "City", name: "Henderson" },
-    { "@type": "City", name: "Summerlin" },
+    { "@type": "Place", name: "Summerlin" },
     { "@type": "Place", name: "Green Valley" },
     { "@type": "Place", name: "Anthem" },
     { "@type": "Place", name: "Las Vegas Valley" },
   ],
   founder: {
     "@type": "Person",
+    "@id": "https://www.lasvegasmahj.com/about#shauna",
     name: "Shauna",
     jobTitle: "Certified Mahjong Instructor",
     description:
-      "Certified Oh My Mahjong instructor with 18 years of mahjong experience, teaching across the Las Vegas Valley.",
+      "Certified Oh My Mahjong instructor with nearly 18 years of mahjong experience, teaching across the Las Vegas Valley.",
+    url: "https://www.lasvegasmahj.com/about",
+    image: "https://www.lasvegasmahj.com/shauna.jpg",
+    hasCredential: {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: "certification",
+      name: "Certified Oh My Mahjong Instructor",
+      recognizedBy: { "@type": "Organization", name: "Oh My Mahjong" },
+    },
   },
+  hasMap: "https://maps.app.goo.gl/dGeHMfMDjuXjDFPs5",
   sameAs: [
-    "https://maps.app.goo.gl/dGeHMfMDjuXjDFPs5",
     "https://www.facebook.com/lasvegasmahjong",
     "https://www.instagram.com/lasvegasmahjong",
     "https://www.tiktok.com/@lasvegasmahjong",
@@ -173,6 +176,29 @@ const localBusinessSchema = {
         },
         price: "60.00",
         priceCurrency: "USD",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "60.00",
+          priceCurrency: "USD",
+          unitText: "person",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "MAHJ103 - Confident Play",
+          description:
+            "Advanced mahjong lessons covering the Charleston, defensive play, joker exchanges, and playing confidently on your own.",
+        },
+        price: "60.00",
+        priceCurrency: "USD",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "60.00",
+          priceCurrency: "USD",
+          unitText: "person",
+        },
       },
       {
         "@type": "Offer",
@@ -180,7 +206,7 @@ const localBusinessSchema = {
           "@type": "Service",
           name: "Private Mahjong Lessons",
           description:
-            "One-on-one or small group private mahjong instruction at your preferred location. Contact for pricing.",
+            "One-on-one or small group private mahjong instruction at the Las Vegas Mahjong studio, with in-home lessons available on request. Contact for pricing.",
         },
       },
       {
@@ -189,7 +215,7 @@ const localBusinessSchema = {
           "@type": "Service",
           name: "Corporate & Private Event Mahjong",
           description:
-            "Custom mahjong experiences for bachelorette parties, corporate team building, birthdays, charity events, and more.",
+            "Custom mahjong experiences for birthday parties, corporate team building, girls nights, charity events, and more.",
         },
       },
     ],
@@ -327,10 +353,6 @@ export default function RootLayout({
       className={`${bebasNeue.variable} ${montserrat.variable} ${dmSans.variable}`}
     >
       <head>
-        <meta name="geo.region" content="US-NV" />
-        <meta name="geo.placename" content="Las Vegas" />
-        <meta name="geo.position" content="36.1699;-115.1398" />
-        <meta name="ICBM" content="36.1699, -115.1398" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

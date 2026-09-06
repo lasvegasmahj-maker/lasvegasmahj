@@ -1,6 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+
+export const metadata: Metadata = {
+  title: { absolute: "Page Not Found | Las Vegas Mahjong" },
+  description:
+    "That page does not exist. Find mahjong lessons, open play, and events at the Las Vegas Mahjong studio instead.",
+  openGraph: {
+    title: "Page Not Found | Las Vegas Mahjong",
+    description: "That page does not exist.",
+    url: "https://www.lasvegasmahj.com/404",
+  },
+};
 
 export default function NotFound() {
   return (

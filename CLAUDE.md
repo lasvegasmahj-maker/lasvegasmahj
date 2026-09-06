@@ -25,6 +25,17 @@ Non-negotiable. When any other instruction conflicts with this section, this sec
 - Set sizes are written as numbers: 2 = Pair, 3 = Pung, 4 = Kong, 5 = Quint, 6 = Sextet. Never use letter codes (no P, K, N).
 - Open hands can call discards to build exposed sets. Closed hands must be built from your own draws, with no calling to build groups; the one exception, printed on the card, is the single discard that completes mahjong, which any hand may claim (never a joker).
 
+### Content rules the owner set (2026-09-05)
+- **No bachelorette content anywhere on the site.** The old post is deleted and 301s to `/mahjong-parties-las-vegas`. A test fails the build if the word reappears in shipped source.
+- **Do NOT substantially rewrite the homepage or `/mahjong-lessons-las-vegas`.** Search Console shows them at roughly position 1.2 and 2.3 for "mahjong lessons las vegas". Surgical edits only.
+- **Private lessons are studio-first.** In-home is an option available by request, never a mobile or traveling-instructor business.
+- **No public phone number anywhere, including structured data.** The owner had `telephone` removed from the sitewide `LocalBusiness` JSON-LD on 2026-09-05: it is not visibly rendered, but it is still publicly exposed. Do not add a number back, and do not substitute a forwarding number. Tests fail the build if one appears.
+
+### Deploys and Search Console
+- **`www.lasvegasmahj.com` is served by the Vercel project `lasvegasmahj-h1iz`** (team `lasvegasmahj-6104s-projects`). A same-team project also named `lasvegasmahj` builds every commit but does NOT hold the domain. Deploy by merging to `main`; do not use the Vercel CLI, and do not add `.vercel/project.json` to a worktree.
+- **Google Search Console is already connected and working.** The token ships in `app/layout.tsx` under `metadata.verification.google`. Never ask the owner to reconnect or re-verify.
+- Current SEO state and open questions: `docs/handoffs/lvm-seo-current.md`.
+
 ### Pricing
 - Group lessons: $60 per person. Group size is 4-8 people. Show this on lesson pages only.
 - Private lessons, parties, and corporate events: say "contact for pricing." Never show a dollar amount for these.

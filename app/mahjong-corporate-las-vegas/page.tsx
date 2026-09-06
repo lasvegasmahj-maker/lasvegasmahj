@@ -74,7 +74,7 @@ export default function MahjongCorporateLasVegas() {
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "640px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
               Your team has done happy hours and escape rooms. Give them something that actually builds real connections: a strategic, social, genuinely memorable mahjong experience.
             </p>
-            <a href="/#classes" className="btn-primary">Request a Quote</a>
+            <a href="/contact?source=corporate" className="btn-primary">Request a Quote</a>
           </div>
         </section>
 
@@ -159,7 +159,7 @@ export default function MahjongCorporateLasVegas() {
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "500px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
               Tell us your group size, date, and what you&rsquo;re looking for. We&rsquo;ll send you a custom quote within 24 hours.
             </p>
-            <a href="/#classes" className="btn-primary">Request a Corporate Quote</a>
+            <a href="/contact?source=corporate" className="btn-primary">Request a Corporate Quote</a>
           </div>
         </section>
       </main>

@@ -23,7 +23,7 @@ const jsonLd = {
   headline: "How to Learn American Mahjong: A Complete Beginner's Guide",
   description: "The complete beginner's guide to learning American Mahjong: tiles, the NMJL card, how to play, and how to find lessons near you.",
   author: { "@type": "Person", name: "Shauna", jobTitle: "Certified Oh My Mahjong Instructor" },
-  publisher: { "@type": "Organization", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
+  publisher: { "@type": "Organization", "@id": "https://www.lasvegasmahj.com/#business", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
   mainEntityOfPage: "https://www.lasvegasmahj.com/learn-mahjong",
 };
 

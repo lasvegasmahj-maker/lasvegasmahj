@@ -2,11 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-interface NavProps {
-  onContactOpen: () => void;
-}
-
-export default function Nav({ onContactOpen }: NavProps) {
+export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -75,14 +71,7 @@ export default function Nav({ onContactOpen }: NavProps) {
           </a>
         </li>
         <li>
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              handleLinkClick();
-              onContactOpen();
-            }}
-          >
+          <a href="/contact" onClick={handleLinkClick}>
             Contact
           </a>
         </li>
