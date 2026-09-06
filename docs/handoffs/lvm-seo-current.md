@@ -1,19 +1,58 @@
 # Handoff: Las Vegas Mahjong competitive SEO
 
-Round 2 is the active round. Round 1 is CLOSED and live; its full record is preserved
-below and must not be edited or re-litigated.
+Rounds 1 and 2 are both CLOSED, MERGED and LIVE. Their records are preserved below and
+must not be edited or re-litigated. There is no active round.
 
 ---
 
-# ROUND 2: conversion CTA cleanup (ACTIVE, PAUSED FOR CREDITS)
+# ROUND 2: conversion CTA cleanup (CLOSED, MERGED, LIVE)
 
-**Date paused:** 2026-09-05
-**Branch:** `seo/round2-contact-ctas`
-**HEAD:** `992773c`
-**Base:** `origin/main` at `55c5d04` (unchanged, nothing merged this round)
-**PR:** [#100](https://github.com/lasvegasmahj-maker/lasvegasmahj/pull/100), **OPEN**, mergeable
-**Working tree:** clean, everything committed and pushed
-**Production:** NOT deployed. `www.lasvegasmahj.com` still serves `55c5d04` with the old CTAs.
+**Date closed:** 2026-09-06
+**Branch:** `seo/round2-contact-ctas` (merged, may be deleted)
+**Merged as:** squash commit **`dbd5517`** on `main`
+**Base:** `origin/main` at `55c5d04`
+**PR:** [#100](https://github.com/lasvegasmahj-maker/lasvegasmahj/pull/100), **MERGED** 2026-09-06 04:53 UTC
+**Working tree:** clean
+**Production:** **LIVE.** `www.lasvegasmahj.com` serves `dbd5517` via Vercel project
+`lasvegasmahj-6104s-projects / lasvegasmahj-h1iz` (GitHub auto-deploy on merge to `main`).
+**CI on `main` at `dbd5517`:** green — 234 logic passed, 168 browser passed, lint clean.
+
+## Production verification (DONE, 2026-09-06)
+
+A 74-agent verification ran against live production across 13 dimensions, with every claim
+judged by 3 independent refuters on distinct angles (does-it-reproduce, is-it-caused-by-round2,
+is-it-harmful-and-in-scope), plus a completeness critic. **0 agent errors. All 13 dimensions
+PASS. 20 claims raised, 18 refuted, 2 survived — and both survivors are pre-existing, neither
+caused by Round 2. Critic verdict: GO.**
+
+| Verified on live production | Result |
+|---|---|
+| All 12 quote/event CTAs reach `/contact` | PASS — 2/2/2/2/4 across the five pages, 0 homepage anchors left |
+| CTA text, class and layout unchanged | PASS — anchor text byte-identical to the pre-merge baseline |
+| 8 preserved booking CTAs still on `/#classes` | PASS — 3 lessons-LV, 2 Summerlin, 2 Henderson, 1 blog index |
+| Homepage materially unchanged | PASS — title, H1, canonical identical; byte-for-byte equal after normalizing build fingerprints |
+| `/mahjong-lessons-las-vegas` materially unchanged | PASS — same normalization proof |
+| `/contact` | PASS — 200, one H1, real server-rendered form, self-canonical, indexable, no phone |
+| No public phone, no `telephone` in schema | PASS — swept all 28 routes with a permissive multi-format regex |
+| Things To Do | PASS — 410 Gone, no `Location`, absent from sitemap |
+| Bachelorette URL | PASS — single-hop **301** to `/mahjong-parties-las-vegas`, destination 200, no bachelorette wording |
+| Ask a Rule | PASS — `/ask` unchanged by Round 2 **and** verified answering live (`via: model`) |
+| Broken links | PASS — 66 unique internal links, no unexpected non-200 |
+| Redirect loops / 5xx | PASS — none; no chain longer than one hop |
+| Accidental noindex on commercial pages | PASS — none; every commercial page self-canonical on www |
+| Diff scope | PASS — every changed line in `app/` is an href value; 0 lines in `app/page.tsx`, `app/layout.tsx`, `app/mahjong-lessons-las-vegas/`, `components/` |
+
+### The two surviving findings (both PRE-EXISTING, not caused by Round 2)
+
+1. **`lasvegasmahj.vercel.app` serves an indexable, stale duplicate** of the commercial pages
+   with `<meta name="robots" content="index, follow">` and no `X-Robots-Tag: noindex`. Its
+   `/contact` 404s, so any crawler landing there sees the new funnel broken. Mitigated by
+   correct cross-domain canonicals pointing at www. This is the sibling Vercel project, a
+   known pre-existing condition — see the Vercel project mapping section below.
+2. **`/schedule` loses the `max-image-preview:large` / `max-snippet:-1` grants.** Setting a
+   page-level `robots` in Next.js metadata replaces the root object rather than merging, so
+   the `googleBot` grants are dropped on that one route. Still fully indexable; cosmetic in
+   SERP presentation only.
 
 ## Current task
 
@@ -62,9 +101,15 @@ Only the `href` attribute on those 12 anchors.
 
 ### Deliberately NOT changed, and why
 
-- **"Book a Lesson" / "Book Now" on `/mahjong-lessons-las-vegas`, `-summerlin`, `-henderson`
-  (10 links) stay on `/#classes`.** They are booking CTAs, and `#classes` is a real lessons
-  destination whose own Book Now goes to `/schedule`.
+- **The preserved homepage-anchor links are 8, not 10.** An earlier draft of this handoff said
+  10; the repo and live production both prove 8. The arithmetic, verified at `55c5d04` and at
+  `dbd5517`: 16 `href="/#classes"` + 4 `href="/#private-events"` = 20 before; 12 changed
+  (8 `/#classes` on the four corporate pages + all 4 `/#private-events` on the parties page);
+  **8 `/#classes` remain.** Those 8 are 3 "Book a Lesson" / "Book Your Lesson" / "Book a Lesson"
+  on `/mahjong-lessons-las-vegas`, 2 "Book a Lesson" / "Book Now" on `-summerlin`, 2 on
+  `-henderson`, and 1 `btn-outline` "View Classes" on the blog index. They are booking CTAs and
+  `#classes` is a real lessons destination whose own Book Now goes to `/schedule`.
+  **Do not "finish" them.** Leaving them on `/#classes` is the correct, deliberate outcome.
 - Bookwhen ticket links, `/schedule`, `/ask`, `/rules`, shop, open play, homepage
   informational links, nav and footer: untouched.
 - The homepage `#private-events` section still opens the inquiry modal. Nothing links to
@@ -135,40 +180,41 @@ lasvegasmahj, Vercel lasvegasmahj-h1iz).
 
 **PR #100 is green end to end and mergeable. Nothing is blocking the merge.**
 
-## Production verification: NOT DONE
+## Production verification: DONE and PASSED
 
-Nothing merged, so nothing deployed. A baseline of production HTML before the change was
-captured and confirms all 12 old hrefs are still live:
-`/#classes` on the four corporate pages, `/#private-events` on the parties page.
+See the verification table at the top of this round 2 record. Merged `dbd5517` is live on
+`www.lasvegasmahj.com` and every check passed. The pre-merge production baseline that the
+comparison was made against was captured live before the merge and confirmed all 12 old hrefs
+were still serving at that point.
 
-## Is it safe to merge?
+## Round 2 is closed
 
-**Yes.** CI is green on both commits, the product change is 12 href attributes, and the
-protected pages are not touched by the diff (`git diff origin/main -- app/page.tsx
-app/mahjong-lessons-las-vegas/` is empty). The merge was left to the owner only because this
-session paused for credits, not because anything is unresolved.
+Nothing about round 2 remains to do. Do not reopen it, do not re-audit the CTA counts, and do
+not change the 8 preserved booking CTAs.
 
-## Next exact step for a fresh session
+## Owner actions that verification could NOT cover
 
-```bash
-cd /Users/shaunabruckman/Projects/lvm-seo-round2
-git status                      # expect clean, HEAD 992773c
-gh pr checks 100 --repo lasvegasmahj-maker/lasvegasmahj   # was green at pause, re-confirm
-gh pr merge 100 --repo lasvegasmahj-maker/lasvegasmahj --squash
-# wait ~90s for the lasvegasmahj-h1iz deploy, then verify production:
-for p in /mahjong-corporate-las-vegas /corporate-team-building-las-vegas \
-         /conference-activities-las-vegas /convention-activities-las-vegas \
-         /mahjong-parties-las-vegas; do
-  echo "--- $p"
-  curl -s "https://www.lasvegasmahj.com$p" | grep -o '<a[^>]*class="btn-primary"[^>]*>[^<]*</a>'
-done
-curl -s -o /dev/null -w '/contact %{http_code}\n' https://www.lasvegasmahj.com/contact
-curl -s -o /dev/null -w 'things-to-do %{http_code}\n' https://www.lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling
-curl -s -o /dev/null -w 'bachelorette %{http_code} -> %{redirect_url}\n' https://www.lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas
-```
+These are real and were deliberately left to the owner. None of them blocks round 2, and none
+is a defect introduced by it.
 
-Expect: all 12 CTAs showing `href="/contact"`, `/contact` 200, Things To Do 410,
-bachelorette 301 to `/mahjong-parties-las-vegas`.
+1. **Formspree deliverability is unproven.** `/contact` posts client-side to
+   `https://formspree.io/f/mwvrnjrb`. No agent may submit the form, so nobody has confirmed the
+   endpoint is active, under its monthly cap, and actually delivering. Round 2 pointed all 12
+   commercial CTAs at this one destination, so this is now the single highest-consequence
+   unknown. **Shauna should send one real test message through the live form and confirm it
+   arrives.**
+2. **Click one changed CTA in a real browser**, desktop and phone. Every automated check read
+   raw HTML; no button was ever actually clicked.
+3. **There is no analytics on production.** No GA4, GTM, Plausible, PostHog or Vercel Insights;
+   `trackEvent` is a no-op because `window.gtag` / `dataLayer` / `fbq` are never defined. Round 2
+   therefore has no baseline and no way to detect a *drop* in inquiries. Note the standing owner
+   decision was "do not enable GA4 or GTM", so this is a decision to revisit, not a bug to fix.
+4. **The contact form has no `action` attribute.** It is `<form>` with submission only in the
+   React `onSubmit`. If that chunk fails to hydrate, the browser does a default GET back to
+   `/contact` and the lead is lost silently. Pre-existing from round 1; round 2 widened its
+   blast radius.
+5. **Google Search Console was not consulted** for a before/after snapshot. It is already
+   connected and is the cheapest safety net for the ranking risk this project exists to protect.
 
 ## Known issues, not fixed (all dismissed as out of scope for round 2)
 
@@ -204,13 +250,23 @@ H1, an `example.com` canonical in `app/page.tsx`). **They are gone; the tree was
 `~/Projects/lvm-seo-round2` off `origin/main` specifically to avoid the shared-checkout collision.
 Keep doing that, and diff the tree before trusting `git status`.
 
-## Recommended next actions (NOT implemented, owner's call)
+## Recommended next actions (NOT implemented, OWNER DECISION REQUIRED, do not start)
+
+These are candidate round 3 work. **None of them has been started, and none should be started
+until Shauna decides.** Adding fields to `/contact` in particular is explicitly an owner
+decision, not an engineering call.
 
 1. Add group size, event date and event type fields to `/contact`, plus a hidden source field
-   so leads are triageable and attributable. Highest conversion value.
+   so leads are triageable and attributable. Highest conversion value. Independently confirmed
+   during round 2 production verification: all 12 changed hrefs are bare `/contact` with no
+   `?source=`, so "Request a Corporate Quote" and "Book a Birthday Party" now arrive in the
+   inbox indistinguishable from each other.
 2. Give `.btn-primary` `display: inline-block` so long CTA labels stop breaking on phones.
 3. Point the quote CTAs at `/contact#send` and give the form section that id, so mobile
    visitors land on the form.
+4. Decide whether to keep the "no analytics" stance. Round 2's value is currently unmeasurable
+   and a drop in inquiries would be invisible.
+5. Deal with the indexable stale duplicate on `lasvegasmahj.vercel.app` (see surviving finding 1).
 
 ---
 
