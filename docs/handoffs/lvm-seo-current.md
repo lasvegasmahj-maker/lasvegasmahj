@@ -1,4 +1,247 @@
-# Handoff: Las Vegas Mahjong competitive SEO, round 1
+# Handoff: Las Vegas Mahjong competitive SEO
+
+Round 2 is the active round. Round 1 is CLOSED and live; its full record is preserved
+below and must not be edited or re-litigated.
+
+---
+
+# ROUND 2: conversion CTA cleanup (ACTIVE, PAUSED FOR CREDITS)
+
+**Date paused:** 2026-09-05
+**Branch:** `seo/round2-contact-ctas`
+**HEAD:** `992773c`
+**Base:** `origin/main` at `55c5d04` (unchanged, nothing merged this round)
+**PR:** [#100](https://github.com/lasvegasmahj-maker/lasvegasmahj/pull/100), **OPEN**, mergeable
+**Working tree:** clean, everything committed and pushed
+**Production:** NOT deployed. `www.lasvegasmahj.com` still serves `55c5d04` with the old CTAs.
+
+## Current task
+
+Fix high-intent conversion CTAs on the commercial pages that pointed at homepage anchors
+instead of the real `/contact` page that round 1 created.
+
+## Owner goal
+
+A corporate, conference, convention or party buyer who clicks a quote CTA should reach the
+inquiry form, not be thrown back to the homepage.
+
+## The audit result (this is the real number, keep it)
+
+The brief said "approximately 22" CTAs. That number is too high. Every CTA-styled element on
+the site was enumerated: **83 audited, 12 changed.**
+
+The 22 came from counting all 16 `/#classes` links plus the 4 `/#private-events` links plus
+strays. Ten of the `/#classes` links are **"Book a Lesson" / "Book Now" on the lessons pages,
+which are booking CTAs and were deliberately left alone.**
+
+### Changed (12), href only
+
+| Page | CTA text | Was | Now |
+|---|---|---|---|
+| `/mahjong-corporate-las-vegas` | Request a Quote | `/#classes` | `/contact` |
+| `/mahjong-corporate-las-vegas` | Request a Corporate Quote | `/#classes` | `/contact` |
+| `/corporate-team-building-las-vegas` | Request a Quote (x2) | `/#classes` | `/contact` |
+| `/conference-activities-las-vegas` | Request a Quote (x2) | `/#classes` | `/contact` |
+| `/convention-activities-las-vegas` | Request a Quote | `/#classes` | `/contact` |
+| `/convention-activities-las-vegas` | Request a Convention Quote | `/#classes` | `/contact` |
+| `/mahjong-parties-las-vegas` | Plan Your Event | `/#private-events` | `/contact` |
+| `/mahjong-parties-las-vegas` | Book a Birthday Party | `/#private-events` | `/contact` |
+| `/mahjong-parties-las-vegas` | Get a Quote | `/#private-events` | `/contact` |
+| `/mahjong-parties-las-vegas` | Book Your Event | `/#private-events` | `/contact` |
+
+**No visible CTA text was changed. No styling, spacing, placement or layout was changed.**
+Only the `href` attribute on those 12 anchors.
+
+### Why those two anchors were wrong
+
+- `/#classes` is the homepage **lessons** section. It quotes $60 per person for a group class
+  and its own button goes to `/schedule`. A corporate buyer clicking "Request a Corporate
+  Quote" landed on consumer lesson pricing.
+- `/#private-events` is a homepage section whose only CTA is a **button** that opens a
+  client-side modal. Reaching a form took a second click after the page change.
+
+### Deliberately NOT changed, and why
+
+- **"Book a Lesson" / "Book Now" on `/mahjong-lessons-las-vegas`, `-summerlin`, `-henderson`
+  (10 links) stay on `/#classes`.** They are booking CTAs, and `#classes` is a real lessons
+  destination whose own Book Now goes to `/schedule`.
+- Bookwhen ticket links, `/schedule`, `/ask`, `/rules`, shop, open play, homepage
+  informational links, nav and footer: untouched.
+- The homepage `#private-events` section still opens the inquiry modal. Nothing links to
+  `/#private-events` any more; the section is still reachable by scrolling. Not a bug.
+- `components/teacher.tsx` uses relative `#classes`; teacher/classes/private-events render on
+  the homepage only, so that anchor is correct.
+
+## Completed in this session
+
+1. **Full CTA audit.** 83 CTA-styled elements enumerated, 12 identified and changed.
+2. **The 12 href changes** (commit `228ed97`).
+3. **Two new spec files**, `tests/seo-round2.logic.spec.ts` and `tests/seo-round2.spec.ts`,
+   covering the 12 CTAs, real clicks through to a working form on desktop and mobile, the
+   no-over-correction guards, and the round 1 behaviours underneath.
+4. **Focused adversarial review** (6 hostile lenses, 42 agents, all completed). See below.
+5. **Test hardening** (commit `992773c`) fixing five ways the new specs passed vacuously,
+   each proven by mutation.
+
+## Adversarial review: COMPLETED, not interrupted
+
+Six lenses (cta-correctness, protected-pages, owner-rules, links-and-status, mobile-ux,
+test-quality). 12 claims raised, each judged by 3 independent refuters on distinct angles
+(does-it-reproduce, is-it-in-scope, is-it-actually-harmful). 42 agents, 0 errors.
+
+**All 5 test-quality findings were real and are FIXED in `992773c`:**
+
+| Defect | Why it mattered |
+|---|---|
+| CTA parser required `href` to be the first attribute | `<a className="btn-primary" href="/contact">` was invisible, so every no-over-correction assertion passed trivially |
+| Phone guard `[.\s-]?` allows one separator | never matched `(847) 609-3112`, the format anyone would type |
+| "protected pages keep their title, H1 and canonical" | asserted a title existed, a canonical tag existed, and nothing about the H1 |
+| "is reachable from the nav" | contained no assertion about the nav |
+| Duplicate label entry | made one per-CTA check a no-op |
+
+The guards now pin the exact production title, canonical and H1 for `/` and
+`/mahjong-lessons-las-vegas`, and assert per-page CTA counts.
+
+**Verified by mutation (each fails the intended test):** reverting a CTA to `/#classes`,
+renaming a CTA, deleting a CTA, adding a class-first `/contact` CTA to a lessons page,
+marking a page noindex, adding `(847) 609-3112`, rewriting the homepage title.
+
+**All 7 site findings were dismissed 3/3** as pre-existing or out of scope. They are real
+observations about the site but not caused by this diff. They are listed under "Known issues,
+not fixed" below so they are not lost.
+
+## Tests run and results
+
+| Check | Result |
+|---|---|
+| `npx tsc --noEmit` | clean |
+| `pnpm build` | clean, 36 routes |
+| `pnpm test:logic` | **234 passed**, 7 skipped, 1 failed |
+| Browser `desktop-chromium` + `mobile` | **168 passed**, 0 failed, 2 skipped |
+| `scripts/lint-regression.mjs origin/main` | no new lint errors in 7 changed files |
+| Mutation testing | 7 mutations, all caught |
+
+The one logic failure is the **Find My Mahj drift check** in `tests/ask-engine.logic.spec.ts`.
+Verified this session by stashing all changes and re-running at clean `origin/main`: it fails
+identically there. Pre-existing, skips in CI, **not a regression, do not "fix" it.**
+
+## CI status
+
+`228ed97`: all six checks green (checks, browser, lint, Vercel Preview Comments, Vercel
+lasvegasmahj, Vercel lasvegasmahj-h1iz).
+
+`992773c` (test hardening): **all six checks green**, confirmed before this session paused
+(run 34002463798: checks 37s, browser 1m14s, lint 24s, both Vercel deploys completed).
+
+**PR #100 is green end to end and mergeable. Nothing is blocking the merge.**
+
+## Production verification: NOT DONE
+
+Nothing merged, so nothing deployed. A baseline of production HTML before the change was
+captured and confirms all 12 old hrefs are still live:
+`/#classes` on the four corporate pages, `/#private-events` on the parties page.
+
+## Is it safe to merge?
+
+**Yes.** CI is green on both commits, the product change is 12 href attributes, and the
+protected pages are not touched by the diff (`git diff origin/main -- app/page.tsx
+app/mahjong-lessons-las-vegas/` is empty). The merge was left to the owner only because this
+session paused for credits, not because anything is unresolved.
+
+## Next exact step for a fresh session
+
+```bash
+cd /Users/shaunabruckman/Projects/lvm-seo-round2
+git status                      # expect clean, HEAD 992773c
+gh pr checks 100 --repo lasvegasmahj-maker/lasvegasmahj   # was green at pause, re-confirm
+gh pr merge 100 --repo lasvegasmahj-maker/lasvegasmahj --squash
+# wait ~90s for the lasvegasmahj-h1iz deploy, then verify production:
+for p in /mahjong-corporate-las-vegas /corporate-team-building-las-vegas \
+         /conference-activities-las-vegas /convention-activities-las-vegas \
+         /mahjong-parties-las-vegas; do
+  echo "--- $p"
+  curl -s "https://www.lasvegasmahj.com$p" | grep -o '<a[^>]*class="btn-primary"[^>]*>[^<]*</a>'
+done
+curl -s -o /dev/null -w '/contact %{http_code}\n' https://www.lasvegasmahj.com/contact
+curl -s -o /dev/null -w 'things-to-do %{http_code}\n' https://www.lasvegasmahj.com/blog/things-to-do-las-vegas-besides-gambling
+curl -s -o /dev/null -w 'bachelorette %{http_code} -> %{redirect_url}\n' https://www.lasvegasmahj.com/blog/bachelorette-party-ideas-las-vegas
+```
+
+Expect: all 12 CTAs showing `href="/contact"`, `/contact` 200, Things To Do 410,
+bachelorette 301 to `/mahjong-parties-las-vegas`.
+
+## Known issues, not fixed (all dismissed as out of scope for round 2)
+
+These are real but were NOT caused by this diff. The brief said not to change the contact
+page design unless fixing a functional defect, so they were reported rather than implemented.
+
+1. **The contact form collects less than the old inquiry modal.** `components/inquiry-modal.tsx`
+   collects name, email, a required phone, interest, a required group size and dates, and fires
+   `trackEvent("lesson_inquiry")`. `components/contact-form.tsx` collects name, email and an
+   **optional** message. The corporate and convention pages promise "a custom quote within 24
+   hours" and ask for group size and dates in the copy directly above the button, but the form
+   does not collect them. **This is the highest-value remaining conversion issue.**
+2. **No source or intent marker on the lead.** Both forms post to the same Formspree endpoint
+   `mwvrnjrb`. A quote request is now indistinguishable from a rules question in the inbox, and
+   there is no way to tell which of the five landing pages converts. One hidden input would fix it.
+3. **CTAs land at the top of `/contact`;** on an iPhone viewport the first form field is roughly
+   1.5 screens below the fold. A `#send` fragment plus a matching id would close the gap.
+4. **`.btn-primary` in `app/globals.css:238` sets no `display`,** so on a 390px viewport the
+   three longest labels wrap into overlapping inline fragments. Pre-existing CSS, affects
+   several pages, not just these.
+5. **The birthday section on `/mahjong-parties-las-vegas:102`** uses an inline
+   `gridTemplateColumns: "1fr 1fr"` that no media query can override, so it never stacks on
+   mobile. Pre-existing.
+6. **`/contact`'s closing CTA** offers "See the Calendar" and "View Lessons" and no event path,
+   and its "Planning an event?" card links back to the pages the visitor just came from.
+
+## Parallel sessions: a real hazard, again
+
+Six peer Claude sessions were live during this session. A reviewer observed another session
+writing scratch mutations into this worktree mid-review (`app/layout.tsx` title, `components/hero.tsx`
+H1, an `example.com` canonical in `app/page.tsx`). **They are gone; the tree was verified clean at
+`992773c` and none of it is in the diff.** This round was built in a dedicated worktree at
+`~/Projects/lvm-seo-round2` off `origin/main` specifically to avoid the shared-checkout collision.
+Keep doing that, and diff the tree before trusting `git status`.
+
+## Recommended next actions (NOT implemented, owner's call)
+
+1. Add group size, event date and event type fields to `/contact`, plus a hidden source field
+   so leads are triageable and attributable. Highest conversion value.
+2. Give `.btn-primary` `display: inline-block` so long CTA labels stop breaking on phones.
+3. Point the quote CTAs at `/contact#send` and give the form section that id, so mobile
+   visitors land on the form.
+
+---
+
+# ROUND 1: CLOSED, MERGED AND LIVE
+
+Everything below is the round 1 record, preserved as written. `main` reached `55c5d04` via
+PR #97, #98 and #99 and all of it is live on production. Its owner decisions remain in force.
+**Do not reopen or re-litigate round 1 unless an objective regression is found.**
+
+## Round 1 production baseline (verified live)
+
+- `/contact` is live and crawlable
+- private lesson coverage is live and studio-first; in-home is by request only
+- private pricing stays "Contact for Pricing"
+- no public phone number anywhere, and no `telephone` in structured data
+- the founder surname is not published
+- `/blog/bachelorette-party-ideas-las-vegas` 301s to `/mahjong-parties-las-vegas`
+- no visible bachelorette content anywhere
+- `/blog/things-to-do-las-vegas-besides-gambling` returns 410 Gone with noindex, no Location
+- Event structured data is live on `/schedule`
+- LocalBusiness / entity cleanup is live
+- the 404 SEO fix is live
+- tile texture optimization is live
+- www canonical consistency verified
+- the homepage and `/mahjong-lessons-las-vegas` were deliberately protected from rewriting
+- Google Search Console is ALREADY connected and working; never ask to reconnect it
+- GSC evidence: "mahjong lessons las vegas" averages roughly position 1.2 sitewide, the
+  homepage is the primary ranking page for it, and `/mahjong-lessons-las-vegas` also ranks
+  strongly at roughly position 2.3
+
+# Handoff: Las Vegas Mahjong competitive SEO, round 1 (historical record)
 
 **Date:** 2026-09-05
 **Branch:** `seo/retire-things-to-do`
