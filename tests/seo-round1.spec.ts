@@ -48,11 +48,17 @@ test.describe("bachelorette removal", () => {
 test.describe("things to do is retired", () => {
   const POST = "/blog/things-to-do-las-vegas-besides-gambling";
 
-  test("301s to the parties page", async ({ request }) => {
+  test("returns 410 Gone, noindex, and no redirect", async ({ request }) => {
     const res = await request.get(POST, { maxRedirects: 0 });
+    expect(res.status()).toBe(410);
+    expect(res.headers()["x-robots-tag"]).toContain("noindex");
+    expect(res.headers()["location"]).toBeUndefined();
+    expect(await res.text()).toContain("This guide has been removed");
+  });
+
+  test("the bachelorette URL still redirects, because that one has a real destination", async ({ request }) => {
+    const res = await request.get("/blog/bachelorette-party-ideas-las-vegas", { maxRedirects: 0 });
     expect(res.status()).toBe(301);
-    expect(new URL(res.headers()["location"], "http://localhost").pathname)
-      .toBe("/mahjong-parties-las-vegas");
   });
 
   test("is out of the sitemap, along with the now-empty blog index", async ({ request }) => {

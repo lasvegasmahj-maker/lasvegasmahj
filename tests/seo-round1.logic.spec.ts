@@ -77,20 +77,27 @@ test.describe("Things To Do is retired", () => {
   const nav = fs.readFileSync(path.join(ROOT, "components/nav.tsx"), "utf8");
   const blogIndex = fs.readFileSync(path.join(ROOT, "app/blog/page.tsx"), "utf8");
 
-  test("the post is gone", () => {
-    expect(fs.existsSync(path.join(ROOT, "app/blog/things-to-do-las-vegas-besides-gambling"))).toBe(false);
-  });
-
   test("nothing links to it any more", () => {
     for (const [name, src] of [["footer", footer], ["nav", nav], ["blog index", blogIndex]] as const) {
       expect(src, name).not.toContain("things-to-do-las-vegas-besides-gambling");
     }
   });
 
-  test("it 301s rather than 404s, so inbound links still land somewhere", () => {
+  test("it is gone cleanly, not redirected somewhere irrelevant", () => {
     const cfg = fs.readFileSync(path.join(ROOT, "next.config.ts"), "utf8");
-    expect(cfg).toContain('source: "/blog/things-to-do-las-vegas-besides-gambling"');
-    expect(cfg).toContain("statusCode: 301");
+    // The owner asked for a clean removal here, not a redirect: with no impressions there is
+    // no equity to carry, and a general Vegas guide pointed at a mahjong page reads as a
+    // soft 404. The bachelorette URL is the one that legitimately redirects.
+    expect(cfg).not.toContain("things-to-do-las-vegas-besides-gambling");
+    const route = fs.readFileSync(
+      path.join(ROOT, "app/blog/things-to-do-las-vegas-besides-gambling/route.ts"), "utf8");
+    expect(route).toContain("status: 410");
+    expect(route).toContain('"x-robots-tag": "noindex"');
+  });
+
+  test("the page component is gone, so the route handler can own the segment", () => {
+    expect(fs.existsSync(
+      path.join(ROOT, "app/blog/things-to-do-las-vegas-besides-gambling/page.tsx"))).toBe(false);
   });
 
   test("the empty blog index is noindexed and claims no collection", () => {

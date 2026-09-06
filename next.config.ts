@@ -7,11 +7,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/blog/things-to-do-las-vegas-besides-gambling",
-        destination: "/mahjong-parties-las-vegas",
-        statusCode: 301,
-      },
-      {
         source: "/blog/bachelorette-party-ideas-las-vegas",
         destination: "/mahjong-parties-las-vegas",
         // 301, not the 308 that permanent:true emits: the owner asked for a 301 and every

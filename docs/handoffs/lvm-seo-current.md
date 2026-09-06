@@ -158,7 +158,7 @@ fetch only the WebP, never the jpg.
 |---|---|
 | `/blog/bachelorette-party-ideas-las-vegas` | **Deleted, 301 to `/mahjong-parties-las-vegas`**, removed from sitemap and footer |
 | `/mahjong-parties-las-vegas` | Redirect destination. Bachelorette wording removed, stays a general parties page |
-| `/blog/things-to-do-las-vegas-besides-gambling` | **Retired in PR #98**: deleted, 301 to `/mahjong-parties-las-vegas`, out of the sitemap |
+| `/blog/things-to-do-las-vegas-besides-gambling` | **Retired**: returns **410 Gone** with `x-robots-tag: noindex`, out of the sitemap. Deliberately NOT redirected |
 | `/blog` | Now empty: route kept, `noindex` while empty, out of the sitemap, off the footer |
 | `/contact` | **New**, in sitemap at priority 0.7 |
 | `/private-mahjong-lessons-las-vegas` | **New**, in sitemap at priority 0.85 |
@@ -240,6 +240,27 @@ removed it for exactly that reason. The provider keeps `@id`, `name` and `url`, 
 **Lesson for a future session:** if another session may be live in the same worktree, diff
 the tree against the branch tip before trusting `git status`, and never commit edits you did
 not write without reading every hunk.
+
+## Why Things To Do is a 410 and bachelorette is a 301
+
+These two retirements deliberately differ, and a future session should not "fix" the
+inconsistency.
+
+- **Bachelorette: 301** to `/mahjong-parties-las-vegas`. The post was topically about booking
+  a private mahjong party, so the destination is a genuine equivalent and the redirect is not
+  a soft 404 risk.
+- **Things To Do: 410 Gone.** The owner asked for a clean removal here, not a redirect. It
+  also happens to be the right technical call: Search Console recorded 0 clicks and 0
+  impressions over 90 days, so there is no equity for a redirect to carry, and pointing a
+  general "things to do in Las Vegas" guide at a mahjong parties page is exactly the kind of
+  irrelevant redirect Google tends to treat as a soft 404. A 410 gets the URL dropped fastest.
+
+Implementation note: a route handler and a page cannot share a route segment, so deleting
+`page.tsx` is what frees the segment for
+`app/blog/things-to-do-las-vegas-besides-gambling/route.ts`. Next will not prerender a
+non-200 route handler, so it stays dynamic; the response is a constant, so that costs nothing.
+The 410 body is a small styled page pointing at `/schedule` and `/mahjong-parties-las-vegas`,
+so a human who lands there is not staring at a bare error.
 
 ## Open owner questions (flagged, not decided)
 
