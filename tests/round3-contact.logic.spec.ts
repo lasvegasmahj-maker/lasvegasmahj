@@ -50,6 +50,23 @@ function sourceSlugsInForm() {
   return [...block.matchAll(/^\s*"?([a-z-]+)"?:\s*\{\s*label:/gm)].map((m) => m[1]);
 }
 
+/** Button-styled anchors pointing at /contact, tagged or not. Plain text links do not count. */
+function contactButtonCtas(rel: string) {
+  const out: string[] = [];
+  for (const m of read(rel).matchAll(/<a\s([^>]*)>/g)) {
+    if (!/className="[^"]*\bbtn-/.test(m[1])) continue;
+    const href = m[1].match(/href="(\/contact[^"]*)"/);
+    if (href) out.push(href[1]);
+  }
+  return out;
+}
+
+/** The components the homepage actually renders, from home-client's own import list. */
+function homeClientImports() {
+  const src = read("components/home-client.tsx");
+  return [...src.matchAll(/from "@\/(components\/[a-z-]+)"/g)].map((m) => `${m[1]}.tsx`);
+}
+
 function contactHrefs(rel: string) {
   return [...read(rel).matchAll(/href="(\/contact[^"]*)"/g)].map((m) => m[1]);
 }
@@ -274,8 +291,16 @@ test.describe("protected pages and SEO are untouched", () => {
   });
 
   test("the homepage and the main lessons page gained no /contact CTA", () => {
-    for (const file of ["app/page.tsx", "app/mahjong-lessons-las-vegas/page.tsx"]) {
-      expect(contactHrefs(file), `${file} must stay out of this round`).toEqual([]);
+    // app/page.tsx is an eleven line shell that renders <HomeClient />, so asserting against
+    // it would pass no matter what shipped. Walk what the homepage actually renders instead.
+    // Nav and footer are shared chrome and link to /contact on every page by design, so the
+    // question here is whether a BUTTON CTA appeared, which is what round 3 actually adds.
+    const homepage = ["components/home-client.tsx", ...homeClientImports()];
+    for (const file of [...homepage, "app/mahjong-lessons-las-vegas/page.tsx"]) {
+      expect(contactButtonCtas(file), `${file} must stay out of this round`).toEqual([]);
     }
+    // Guards the guard: if the import scrape ever returns nothing, the loop above goes empty.
+    expect(homepage.length).toBeGreaterThan(10);
+    expect(homepage).toContain("components/private-events.tsx");
   });
 });

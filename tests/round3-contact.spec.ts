@@ -142,6 +142,41 @@ test.describe("validation asks for only what is needed", () => {
   });
 });
 
+test.describe("an optional date can never hold the form hostage", () => {
+  test("a half typed date does not block the submit", async ({ page }) => {
+    // A partially typed date leaves the control in badInput. Constraint validation fails on
+    // it, the browser blocks the submit, and onSubmit never fires, so the lead is lost on an
+    // OPTIONAL field. This is the regression guard for that.
+    const sent = await submit(page, "/contact?source=corporate", async (p) => {
+      await p.locator("#contact-date").click();
+      await p.keyboard.type("1114");
+      expect(await p.locator("#contact-date").evaluate((el: HTMLInputElement) => el.validity.badInput)).toBe(true);
+    });
+    expect(sent.source).toBe("Corporate Events page");
+    expect(sent.preferred_date ?? "").toBe("");
+  });
+
+  test("a mistyped year is dropped instead of reaching the inbox", async ({ page }) => {
+    // Typing 111426 resolves to 0026-11-14, which the browser considers perfectly valid.
+    const sent = await submit(page, "/contact?source=parties", async (p) => {
+      await p.locator("#contact-date").click();
+      await p.keyboard.type("111426");
+      await p.locator("#contact-name").click();
+      await expect(p.locator("#contact-date")).toHaveValue("");
+    });
+    expect(sent.preferred_date ?? "").toBe("");
+  });
+
+  test("a real future date still comes through untouched", async ({ page }) => {
+    const sent = await submit(page, "/contact", async (p) => {
+      await p.selectOption("#contact-inquiry", "Private Lesson");
+      await p.fill("#contact-date", "2027-11-14");
+      await p.locator("#contact-name").click();
+    });
+    expect(sent.preferred_date).toBe("2027-11-14");
+  });
+});
+
 test.describe("source attribution rides along with the submission", () => {
   for (const s of SOURCES) {
     test(`?source=${s.slug} arrives as "${s.label}" and prefills the inquiry type`, async ({ page }) => {
