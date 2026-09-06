@@ -83,7 +83,7 @@ export default function CorporateTeamBuildingLasVegas() {
               Your team has done the happy hours and the escape rooms. Give them something genuinely different: a strategic, social mahjong experience that builds communication and real connection. Any group size, and we bring everything to you.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-              <a href="/#classes" className="btn-primary">Request a Quote</a>
+              <a href="/contact" className="btn-primary">Request a Quote</a>
               <a href="/mahjong-corporate-las-vegas" className="btn-outline">See Corporate Details</a>
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function CorporateTeamBuildingLasVegas() {
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "520px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
               Tell us your group size, date, and what you are looking for, and we will send a custom quote within 24 hours.
             </p>
-            <a href="/#classes" className="btn-primary">Request a Quote</a>
+            <a href="/contact" className="btn-primary">Request a Quote</a>
           </div>
         </section>
       </main>
