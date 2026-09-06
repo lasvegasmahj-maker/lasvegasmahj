@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   MAX_QUESTION_CHARS,
+  replyStaysReply,
   askedEntryIds,
   buildFollowups,
   cancelPhrase,
@@ -19,7 +20,7 @@ import {
   type Turn,
 } from "@/lib/ask-core/index.ts";
 import { anthropicClient, isModelEnabled, modelName } from "@/lib/ask/model-client";
-import { LOCAL_ANSWER, LOCAL_SUGGESTIONS, LVM_SITE, RULES_FALLBACK } from "@/lib/ask/site";
+import { LOCAL_ANSWER, LOCAL_BUSINESS_RE, LOCAL_SUGGESTIONS, LVM_SITE, RULES_FALLBACK } from "@/lib/ask/site";
 import { pickNudge, type Nudge } from "@/lib/ask/nudges";
 
 // Stateless by design: the browser sends the recent thread with every request and nothing is
@@ -134,21 +135,27 @@ export async function POST(req: NextRequest) {
 
   try {
     const opts = { exclude: EXCLUDE };
-    const topic = clarify ? "rules" : classifyTopic(question, { discoverySignal: LVM_SITE.discoverySignal });
+    let live = clarify;
+    if (live && question) {
+      const keep = replyStaysReply(live, question, (q) => LOCAL_BUSINESS_RE.test(q), EXCLUDE);
+      if (!keep && classifyTopic(question, { discoverySignal: LVM_SITE.discoverySignal }) === "other") live = null;
+    }
+    const topic = live ? "rules" : classifyTopic(question, { discoverySignal: LVM_SITE.discoverySignal });
     let response: AskResponse;
+    let det: LookupResult | null = null;
 
     if (topic === "other" && !isSmallTalk(question) && !cancelPhrase(question).cancelled) {
       // Lessons, open play, the studio: never a rule, always a pointer into the site.
       response = { ok: true, answer: LOCAL_ANSWER, label: "chat", kind: "offtopic", followups: [], suggestions: LOCAL_SUGGESTIONS, via: "rules" };
     } else {
-      const det = lookup({ question, history, clarify }, opts);
+      det = lookup({ question, history, clarify: live }, opts);
       response = fromLookup(det, "rules");
 
       const consultModel = isModelEnabled() && modelEligible(det, question) && limits.modelPerMinute.check("global") && limits.modelPerDay.check("global");
       if (consultModel) {
         const options = det.entry ? buildFollowups(det.entry, askedEntryIds(history), 6, opts) : det.followups;
         const m = await composeWithModel(
-          { question, history, candidates: det.candidates, followupOptions: options, preferred: det.entry?.id },
+          { question, history, candidates: det.candidates, followupOptions: options, preferred: det.entry?.id, exclude: EXCLUDE },
           { client: anthropicClient, site: { helperName: LVM_SITE.helperName, siteHost: LVM_SITE.siteHost }, model: modelName(), log: (e) => console.info(JSON.stringify(e)) },
         );
         if (m?.kind === "answer") {
@@ -196,7 +203,7 @@ export async function POST(req: NextRequest) {
         via: response.via,
         turn: Math.floor(history.length / 2) + 1,
         ms: Date.now() - started,
-        gap: response.kind === "gap" ? summarizeForEscalation(question) : undefined,
+        gap: response.kind === "gap" ? (det?.escalation?.summary ?? summarizeForEscalation(live?.question ?? question)) : undefined,
       }),
     );
 

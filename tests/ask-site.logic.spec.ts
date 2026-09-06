@@ -56,6 +56,10 @@ test.describe("studio questions never become rules", () => {
     "the form has a blank field",
     "what should I call my new mahjong group",
     "my phone is dead",
+    // Only a phase noun beside lessons wording: the lessons pointer answers, not the rule.
+    "do you teach the charleston in your lessons",
+    "What does MAHJ101 cover, the charleston and jokers?",
+    "How many people can the studio hold for a party?",
   ];
   for (const q of local) {
     test(`other: ${q}`, () => {
@@ -64,7 +68,7 @@ test.describe("studio questions never become rules", () => {
   }
 
   test("a rules question with a studio word is mixed, and the rule still answers", () => {
-    for (const q of ["can I use a joker in a pair at open play", "do you teach the charleston in your lessons"]) {
+    for (const q of ["can I use a joker in a pair at open play", "at open play can I call a discard to make a pung"]) {
       expect(classifyTopic(q, { discoverySignal: LVM_SITE.discoverySignal }), q).toBe("mixed");
       expect(lookup({ question: q }).kind, q).toBe("answer");
     }

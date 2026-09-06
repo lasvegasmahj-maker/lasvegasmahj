@@ -47,7 +47,7 @@ export function readMoreUrl(e: CanonicalRule): string | undefined {
 // "mixed" (rule answered, studio link offered); with only an everyday-word rules signal it is
 // about the studio, not the table.
 export const LOCAL_BUSINESS_RE =
-  /\b(lessons?|class|classes|studio|open play|book(ing)?|schedule|hours|address|parking|price|pricing|cost|costs|party|parties|corporate|events?|sign ?up|register|reservation|reserve|contact|phone|email|location|directions|where (is|are) you|when (is|are|do you)|do you (offer|have|run|teach|host)|gift cards?|shop|store|newsletter|instructor|teacher|private (lesson|event)|birthday|bachelorette|team building|las vegas|henderson|summerlin)\b/i;
+  /\b(lessons?|class|classes|studio|open play|book(ing)?|schedule|hours|address|parking|price|pricing|cost|costs|party|parties|corporate|events?|sign ?up|register|reservation|reserve|contact|phone|email|location|directions|where (is|are) you|when (is|are|do you)|do you (offer|have|run|teach|host)|gift cards?|shop|store|newsletter|instructor|teacher|private (lesson|event)|birthday|bachelorette|team building|las vegas|henderson|summerlin|mahj ?\d{3}|do you teach|what do you teach)\b/i;
 
 export const LVM_SITE: SiteConfig = {
   site: "lvm",
