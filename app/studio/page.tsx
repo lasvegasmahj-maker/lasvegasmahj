@@ -113,7 +113,7 @@ export default function Studio() {
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "center" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "3rem", alignItems: "center" }}>
               <div>
                 <span className="studio-open-badge">Now Open</span>
                 <p className="section-label">Inside Lucky Hare &middot; West Sahara</p>
@@ -137,7 +137,7 @@ export default function Studio() {
                 width={1350}
                 height={1800}
                 priority
-                sizes="(max-width: 900px) 100vw, 480px"
+                sizes="(max-width: 711px) 100vw, (max-width: 1164px) 46vw, 526px"
                 style={{ width: "100%", height: "auto", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.1)", display: "block" }}
               />
             </div>
@@ -170,7 +170,7 @@ export default function Studio() {
             <p className="section-label">The Rooms</p>
             <h2 className="section-title">Lucky Wishbone &amp; Lucky <span className="accent-green">Sevens</span></h2>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem", marginTop: "2.5rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "2rem", marginTop: "2.5rem" }}>
               <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(233,30,140,0.25)", borderRadius: "10px", padding: "2rem" }}>
                 <h3 className="section-title" style={{ fontSize: "1.6rem", marginBottom: "1rem", textAlign: "left" }}>
                   <span className="accent-pink">Lucky Wishbone</span>
@@ -220,7 +220,7 @@ export default function Studio() {
                 sizes="(max-width: 900px) 100vw, 820px"
                 style={{ width: "100%", height: "auto", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.1)", display: "block" }}
               />
-              <figcaption style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.85rem", textAlign: "center", marginTop: "0.85rem" }}>
+              <figcaption style={{ color: "rgba(255,255,255,0.62)", fontSize: "0.85rem", textAlign: "center", marginTop: "0.85rem" }}>
                 A session in progress at the studio.
               </figcaption>
             </figure>
@@ -317,6 +317,10 @@ export default function Studio() {
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/schedule" className="btn-primary">See What Is On</a>
+              {/* Deliberately untagged. The six ?source= slugs and their inquiry prefills are
+                  the owner's, and she asked for the contact form left alone in this change,
+                  so this falls back to the same General bucket the nav and footer use.
+                  Adding a "studio" slug is a one line follow up if she wants the attribution. */}
               <a href="/contact" className="btn-outline">Plan Something Private</a>
             </div>
           </div>

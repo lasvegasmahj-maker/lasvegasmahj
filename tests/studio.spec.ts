@@ -307,6 +307,32 @@ test.describe("navigation", () => {
   });
 });
 
+test.describe("narrow phones", () => {
+  test("nothing on /studio is clipped off the right edge at 320px", async ({ page, isMobile }) => {
+    test.skip(!isMobile, "phone project only");
+    // body sets overflow-x: hidden, so anything past the right edge is unreachable rather
+    // than scrollable. An auto-fit track with a hard 300px minimum used to do exactly that.
+    await page.setViewportSize({ width: 320, height: 700 });
+    await page.goto("/studio");
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    expect(overflow, "page is wider than the viewport").toBeLessThanOrEqual(0);
+    const past = await page.evaluate(() =>
+      [...document.querySelectorAll("main *")]
+        .filter((el) => el.getBoundingClientRect().right > window.innerWidth + 1)
+        .map((el) => el.tagName + "." + (el.className || "").toString().slice(0, 30)),
+    );
+    expect(past, `elements past the right edge: ${past.join(", ")}`).toEqual([]);
+  });
+
+  test("the homepage studio section fits a 320px screen too", async ({ page, isMobile }) => {
+    test.skip(!isMobile, "phone project only");
+    await page.setViewportSize({ width: 320, height: 700 });
+    await page.goto("/");
+    const right = await page.locator("#studio").evaluate((el) => el.getBoundingClientRect().right);
+    expect(right).toBeLessThanOrEqual(321);
+  });
+});
+
 test.describe("routing and links", () => {
   test("the descriptive slug redirects to /studio with a 301", async ({ request }) => {
     const res = await request.get("/mahjong-studio-las-vegas", { maxRedirects: 0 });

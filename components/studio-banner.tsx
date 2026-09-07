@@ -45,7 +45,7 @@ export default function StudioBanner() {
               alt="Players at tables inside the Las Vegas Mahjong studio at Lucky Hare"
               width={1350}
               height={1800}
-              sizes="(max-width: 900px) 100vw, 460px"
+              sizes="(max-width: 768px) 100vw, (max-width: 1164px) 43vw, 445px"
               style={{ width: "100%", height: "auto", display: "block" }}
             />
           </div>
