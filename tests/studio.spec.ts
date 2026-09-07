@@ -59,14 +59,27 @@ test.describe("/studio", () => {
     expect(desc).toContain("Lucky Sevens");
   });
 
-  test("Open Graph points at the studio, with a real studio photo", async ({ page }) => {
+  test("Open Graph points at the studio and shares no unverified picture of it", async ({ page }) => {
     await page.goto("/studio");
     await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
       "content",
       "https://www.lasvegasmahj.com/studio",
     );
-    const img = await page.locator('meta[property="og:image"]').first().getAttribute("content");
-    expect(img).toContain("/lvm-openplay-room.jpg");
+    // Falls back to the sitewide tiles image. The open play photos must never be the card.
+    for (const el of await page.locator('meta[property="og:image"]').all()) {
+      const img = (await el.getAttribute("content")) ?? "";
+      expect(img, "an open play photo is being shared as the studio").not.toContain("lvm-openplay");
+    }
+  });
+
+  test("the page renders no photograph while none is verified", async ({ page }) => {
+    await page.goto("/studio");
+    const srcs = await page.locator("main img").evaluateAll((els) =>
+      els.map((e) => (e as HTMLImageElement).currentSrc || e.getAttribute("src") || ""),
+    );
+    expect(srcs, "an unverified image is being shown as the studio").toEqual([]);
+    const html = await page.content();
+    expect(html, "an open play photo is referenced on the studio page").not.toContain("lvm-openplay");
   });
 
   test("both rooms are described by name", async ({ page }) => {
@@ -127,6 +140,13 @@ test.describe("/studio", () => {
 });
 
 test.describe("/studio structured data", () => {
+  test("the Place claims no photograph of itself", async ({ page }) => {
+    await page.goto("/studio");
+    const nodes = await parsedLd(page);
+    const place = nodes.find((n) => n["@id"] === "https://www.lasvegasmahj.com/#studio")!;
+    expect(place.photo, "schema.org photo asserts an image depicts this Place").toBeUndefined();
+  });
+
   test("reuses the studio Place already used by the schedule", async ({ page }) => {
     await page.goto("/studio");
     const nodes = await parsedLd(page);
@@ -237,14 +257,11 @@ test.describe("the homepage studio section", () => {
     await expect(page.locator("h1")).toContainText("Our Mahjong Studio");
   });
 
-  test("the section image loads and carries alt text", async ({ page }) => {
+  test("it shows no picture of a studio nobody has photographed yet", async ({ page }) => {
     await page.goto("/");
-    const img = page.locator("#studio img").first();
-    await img.scrollIntoViewIfNeeded();
-    await expect(img).toBeVisible();
-    expect(await img.getAttribute("alt")).toBeTruthy();
-    const natural = await img.evaluate((el: HTMLImageElement) => el.naturalWidth);
-    expect(natural, "the image actually decoded").toBeGreaterThan(0);
+    await expect(page.locator("#studio img")).toHaveCount(0);
+    const section = await page.locator("#studio").innerHTML();
+    expect(section, "an open play photo is being shown as the studio").not.toContain("lvm-openplay");
   });
 });
 
@@ -344,10 +361,28 @@ test.describe("narrow phones", () => {
 });
 
 test.describe("routing and links", () => {
-  test("the descriptive slug redirects to /studio with a 301", async ({ request }) => {
-    const res = await request.get("/mahjong-studio-las-vegas", { maxRedirects: 0 });
-    expect(res.status()).toBe(301);
-    expect(res.headers()["location"]).toContain("/studio");
+  for (const alias of ["/mahjong-studio-las-vegas", "/lucky-hare"]) {
+    test(`${alias} reaches /studio in one 301 hop`, async ({ request }) => {
+      const res = await request.get(alias, { maxRedirects: 0 });
+      expect(res.status(), `${alias} status`).toBe(301);
+      const location = res.headers()["location"];
+      expect(location, `${alias} destination`).toContain("/studio");
+
+      // One hop only: whatever it points at must answer 200 itself, not redirect again.
+      const next = await request.get(location.replace("https://www.lasvegasmahj.com", ""), { maxRedirects: 0 });
+      expect(next.status(), `${alias} redirects into a chain`).toBe(200);
+    });
+  }
+
+  test("/studio is its own canonical, and the aliases are not pages", async ({ page, request }) => {
+    await page.goto("/studio");
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      "https://www.lasvegasmahj.com/studio",
+    );
+    const xml = await (await request.get("/sitemap.xml")).text();
+    expect(xml, "an alias should never be listed as a page").not.toContain("/lucky-hare");
+    expect(xml).not.toContain("/mahjong-studio-las-vegas");
   });
 
   test("the sitemap lists the studio", async ({ request }) => {

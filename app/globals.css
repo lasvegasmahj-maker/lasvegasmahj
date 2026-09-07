@@ -378,11 +378,10 @@ section {
   border-bottom: 1px solid rgba(57,230,57,0.2);
 }
 
-.studio-banner-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 3.5rem;
-  align-items: center;
+.studio-banner-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .studio-open-badge {
@@ -406,48 +405,45 @@ section {
   margin-top: 0.5rem;
 }
 
-.studio-rooms {
-  list-style: none;
+.studio-room-cards {
   display: grid;
-  gap: 0.9rem;
-  margin: 1.6rem 0 2rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 2rem 0;
+  text-align: left;
 }
 
-.studio-rooms li {
-  position: relative;
-  padding-left: 1.5rem;
-  font-size: 0.98rem;
-  line-height: 1.7;
-  color: rgba(255,255,255,0.7);
+.studio-room-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-left-width: 3px;
+  border-radius: 8px;
+  padding: 1.4rem 1.5rem;
 }
 
-.studio-rooms li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.6rem;
-  width: 8px;
-  height: 8px;
-  border-radius: 2px;
-  background: var(--pink);
-}
+.studio-room-card-teach { border-left-color: var(--pink); }
+.studio-room-card-play  { border-left-color: var(--green); }
 
-.studio-rooms li:nth-child(2)::before { background: var(--green); }
-
-.studio-rooms strong {
-  color: var(--white);
+.studio-room-card h3 {
+  font-family: var(--font-nav);
+  font-size: 1rem;
   font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.4rem;
+}
+
+.studio-room-card p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.65);
+  margin: 0;
 }
 
 .studio-banner-btns {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-}
-
-.studio-banner-photo img {
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.1);
+  justify-content: center;
 }
 
 /* ── WHY / MISSION ── */
@@ -1705,7 +1701,7 @@ footer {
   .why-grid,
   .classes-layout,
   .community-inner,
-  .studio-banner-grid,
+  .studio-room-cards,
   .about-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
 
   .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
