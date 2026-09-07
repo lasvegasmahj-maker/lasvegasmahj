@@ -109,8 +109,8 @@ export default function Classes() {
                 private lessons
               </a>{" "}
               work, or email{" "}
-              <a href="mailto:lasvegasmahj@gmail.com" style={{ color: "var(--green)", fontWeight: 600 }}>
-                lasvegasmahj@gmail.com
+              <a href="mailto:hello@lasvegasmahj.com" style={{ color: "var(--green)", fontWeight: 600 }}>
+                hello@lasvegasmahj.com
               </a>
               .
             </p>

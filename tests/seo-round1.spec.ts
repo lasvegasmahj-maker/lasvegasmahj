@@ -123,7 +123,7 @@ test.describe("/contact", () => {
     expect(html).toMatch(/<meta name="description" content="Contact Las Vegas Mahjong about[^"]{60,}"/);
     expect(html).toContain('<link rel="canonical" href="https://www.lasvegasmahj.com/contact"/>');
     expect(html).toContain("8687 W. Sahara Ave., Suite 200");
-    expect(html).toContain("lasvegasmahj@gmail.com");
+    expect(html).toContain("hello@lasvegasmahj.com");
   });
 
   test("has exactly one H1 and a working form", async ({ page }) => {

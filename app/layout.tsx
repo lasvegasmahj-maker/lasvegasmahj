@@ -88,7 +88,7 @@ const localBusinessSchema = {
   description:
     "Las Vegas's premier mahjong instruction and community. Certified Oh My Mahjong instructor offering beginner lessons, open play events, private parties, corporate team building, leagues, and tournaments across the Las Vegas Valley.",
   url: "https://www.lasvegasmahj.com",
-  email: "lasvegasmahj@gmail.com",
+  email: "hello@lasvegasmahj.com",
   image: [
     "https://www.lasvegasmahj.com/hero-bg.jpg",
     "https://www.lasvegasmahj.com/shauna.jpg",
@@ -310,7 +310,7 @@ const cafeLolaEventSchema = {
     "@type": "Organization",
     name: "Las Vegas Mahjong",
     url: "https://www.lasvegasmahj.com",
-    email: "lasvegasmahj@gmail.com",
+    email: "hello@lasvegasmahj.com",
   },
   image: [
     "https://www.lasvegasmahj.com/hero-bg.jpg",
