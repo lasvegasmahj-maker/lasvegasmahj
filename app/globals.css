@@ -378,10 +378,16 @@ section {
   border-bottom: 1px solid rgba(57,230,57,0.2);
 }
 
-.studio-banner-inner {
-  max-width: 760px;
-  margin: 0 auto;
-  text-align: center;
+.studio-banner-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.studio-banner-photo img {
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .studio-open-badge {
@@ -407,10 +413,8 @@ section {
 
 .studio-room-cards {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-  margin: 2rem 0;
-  text-align: left;
+  gap: 1rem;
+  margin: 1.75rem 0 2rem;
 }
 
 .studio-room-card {
@@ -443,7 +447,6 @@ section {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 /* ── WHY / MISSION ── */
@@ -1701,7 +1704,7 @@ footer {
   .why-grid,
   .classes-layout,
   .community-inner,
-  .studio-room-cards,
+  .studio-banner-grid,
   .about-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
 
   .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }

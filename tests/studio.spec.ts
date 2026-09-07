@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
+import { STUDIO_PHOTOS, WISHBONE_ROOM } from "../lib/studio-photos";
 import { STUDIO_MEDIA } from "../lib/studio-media";
 
 // Runs against a real production build. Covers the studio page itself, the homepage section
@@ -14,6 +15,16 @@ function navBreakpoint(): number {
   const m = css.match(/NAV_BREAKPOINT \*\/\s*@media \(max-width:\s*(\d+)px\)/);
   if (!m) throw new Error("the NAV_BREAKPOINT marker is gone from app/globals.css");
   return Number(m[1]);
+}
+
+/** Scroll an image into view and wait until it has actually decoded before measuring it. */
+async function settled(el: import("@playwright/test").Locator) {
+  await el.scrollIntoViewIfNeeded();
+  await expect
+    .poll(() => el.evaluate((n: HTMLImageElement) => n.complete && n.naturalWidth > 0), {
+      timeout: 15_000,
+    })
+    .toBe(true);
 }
 
 function jsonLd(page: Page) {
@@ -72,19 +83,40 @@ test.describe("/studio", () => {
     await expect(cards, "/studio has no share image at all").not.toHaveCount(0);
     for (const el of await cards.all()) {
       const img = (await el.getAttribute("content")) ?? "";
-      expect(img, "an open play photo is being shared as the studio").not.toContain("lvm-openplay");
+      expect(img, "a removed photo is being shared").not.toContain("lvm-openplay");
       expect(img, "the share image should be a real asset").toMatch(/^https:\/\/www\.lasvegasmahj\.com\//);
     }
+    expect((await cards.first().getAttribute("content")) ?? "").toContain(WISHBONE_ROOM.src);
   });
 
-  test("the page renders no photograph while none is verified", async ({ page }) => {
+  test("every photograph on the page is a verified one, and it decodes", async ({ page }) => {
     await page.goto("/studio");
-    const srcs = await page.locator("main img").evaluateAll((els) =>
-      els.map((e) => (e as HTMLImageElement).currentSrc || e.getAttribute("src") || ""),
-    );
-    expect(srcs, "an unverified image is being shown as the studio").toEqual([]);
-    const html = await page.content();
-    expect(html, "an open play photo is referenced on the studio page").not.toContain("lvm-openplay");
+    const imgs = page.locator("main img");
+    await expect(imgs, "the studio page should show the studio").not.toHaveCount(0);
+    for (const el of await imgs.all()) {
+      await settled(el);
+      const src = decodeURIComponent((await el.getAttribute("src")) ?? "");
+      expect(
+        STUDIO_PHOTOS.some((p) => src.includes(p.src)),
+        `an image outside the verified manifest is on /studio: ${src}`,
+      ).toBe(true);
+      expect((await el.getAttribute("alt")) ?? "", `${src} has no alt text`).not.toBe("");
+      expect(await el.evaluate((n: HTMLImageElement) => n.naturalWidth), `${src} did not decode`).toBeGreaterThan(0);
+    }
+    expect(await page.content(), "a removed photo is referenced").not.toContain("lvm-openplay");
+  });
+
+  test("no photograph is stretched or squashed", async ({ page }) => {
+    await page.goto("/studio");
+    for (const el of await page.locator("main img").all()) {
+      await settled(el);
+      const r = await el.evaluate((n: HTMLImageElement) => ({
+        natural: n.naturalWidth / n.naturalHeight,
+        rendered: n.getBoundingClientRect().width / n.getBoundingClientRect().height,
+        src: n.currentSrc,
+      }));
+      expect(Math.abs(r.natural - r.rendered), `${r.src} is distorted`).toBeLessThan(0.02);
+    }
   });
 
   test("both rooms are described by name", async ({ page }) => {
@@ -145,11 +177,16 @@ test.describe("/studio", () => {
 });
 
 test.describe("/studio structured data", () => {
-  test("the Place claims no photograph of itself", async ({ page }) => {
+  test("the Place carries its two verified room photographs", async ({ page }) => {
     await page.goto("/studio");
     const nodes = await parsedLd(page);
     const place = nodes.find((n) => n["@id"] === "https://www.lasvegasmahj.com/#studio")!;
-    expect(place.photo, "schema.org photo asserts an image depicts this Place").toBeUndefined();
+    const photos = (place.photo as string[]) ?? [];
+    expect(photos).toHaveLength(2);
+    for (const url of photos) {
+      expect(STUDIO_PHOTOS.some((p) => url.endsWith(p.src)), url).toBe(true);
+      expect((await (await fetch(url.replace("https://www.lasvegasmahj.com", "http://localhost:3000"))).status)).toBe(200);
+    }
   });
 
   test("reuses the studio Place already used by the schedule", async ({ page }) => {
@@ -262,11 +299,21 @@ test.describe("the homepage studio section", () => {
     await expect(page.locator("h1")).toContainText("Our Mahjong Studio");
   });
 
-  test("it shows no picture of a studio nobody has photographed yet", async ({ page }) => {
+  test("it shows the verified Lucky Wishbone room, undistorted", async ({ page }) => {
     await page.goto("/");
-    await expect(page.locator("#studio img")).toHaveCount(0);
-    const section = await page.locator("#studio").innerHTML();
-    expect(section, "an open play photo is being shown as the studio").not.toContain("lvm-openplay");
+    const img = page.locator("#studio img").first();
+    await settled(img);
+    await expect(img).toBeVisible();
+    const r = await img.evaluate((n: HTMLImageElement) => ({
+      src: decodeURIComponent(n.getAttribute("src") ?? ""),
+      alt: n.getAttribute("alt") ?? "",
+      natural: n.naturalWidth / n.naturalHeight,
+      rendered: n.getBoundingClientRect().width / n.getBoundingClientRect().height,
+    }));
+    expect(r.src).toContain(WISHBONE_ROOM.src);
+    expect(r.alt).toBe(WISHBONE_ROOM.alt);
+    expect(Math.abs(r.natural - r.rendered), "the room photo is distorted").toBeLessThan(0.02);
+    expect(await page.content(), "a removed photo is referenced").not.toContain("lvm-openplay");
   });
 });
 
@@ -346,6 +393,10 @@ test.describe("narrow phones", () => {
     // than scrollable. An auto-fit track with a hard 300px minimum used to do exactly that.
     await page.setViewportSize({ width: 320, height: 700 });
     await page.goto("/studio");
+    // Photographs reserve their box from width/height, but the measurement still has to wait
+    // for layout to settle or a loading image can read as a transient overflow under load.
+    for (const el of await page.locator("main img").all()) await settled(el);
+    await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(overflow, "page is wider than the viewport").toBeLessThanOrEqual(0);
     const past = await page.evaluate(() =>

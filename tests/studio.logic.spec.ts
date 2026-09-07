@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 import { STUDIO_MEDIA } from "../lib/studio-media";
+import { STUDIO_PHOTOS } from "../lib/studio-photos";
 
 // The studio is a physical place, so the risk here is not a broken build, it is shipping a
 // claim nobody can source. These tests hold the honesty line: no hours, no phone, no price,
@@ -19,6 +20,18 @@ const readCode = (rel: string) =>
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
     .replace(/\/\*[\s\S]*?\*\//g, "")
     .replace(/^\s*\/\/.*$/gm, "");
+
+/**
+ * Visible prose only: imports and JSX expressions are stripped, so an identifier like
+ * OPEN_PLAY_SNACKS or a file path cannot be mistaken for a claim the page makes. The
+ * amenity and hours rules below are about what a reader is told, not what a symbol is
+ * called.
+ */
+const prose = (rel: string) =>
+  readCode(rel)
+    .replace(/^import[\s\S]*?;$/gm, "")
+    .replace(/\{[^{}]*\}/g, " ")
+    .replace(/\b[A-Z][A-Z0-9_]{2,}\b/g, " ");
 
 const STUDIO_PAGE = "app/studio/page.tsx";
 const BANNER = "components/studio-banner.tsx";
@@ -85,8 +98,8 @@ test.describe("nothing unsourceable ships", () => {
   });
 
   test("no operating hours are implied", () => {
-    const src = readCode(STUDIO_PAGE) + readCode(BANNER);
-    expect(src).not.toMatch(/openingHours/i);
+    expect(readCode(STUDIO_PAGE)).not.toMatch(/openingHours/i);
+    const src = prose(STUDIO_PAGE) + prose(BANNER);
     for (const phrase of [
       "walk in",
       "walk-in",
@@ -100,7 +113,7 @@ test.describe("nothing unsourceable ships", () => {
   });
 
   test("no amenity, capacity or superlative is claimed", () => {
-    const src = (readCode(STUDIO_PAGE) + readCode(BANNER)).toLowerCase();
+    const src = (prose(STUDIO_PAGE) + prose(BANNER)).toLowerCase();
     for (const phrase of [
       "free parking",
       "ample parking",
@@ -118,55 +131,113 @@ test.describe("nothing unsourceable ships", () => {
     }
   });
 
-  test("no photo is captioned as a named room, now or when one arrives", () => {
-    // No image on disk is identifiably Lucky Wishbone or Lucky Sevens, so no alt text or
-    // caption may assert which room a picture shows.
-    for (const file of [STUDIO_PAGE, BANNER]) {
-      for (const m of read(file).matchAll(/alt="([^"]*)"/g)) {
-        expect(m[1], `alt text names a room: ${m[1]}`).not.toMatch(/Lucky (Wishbone|Sevens)/);
-      }
-      for (const m of read(file).matchAll(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/g)) {
-        expect(m[1], "caption names a room").not.toMatch(/Lucky (Wishbone|Sevens)/);
+  test("alt text describes what is in frame without promising an amenity", () => {
+    // The snack station photograph is verified, so describing the station is factual. What
+    // the alt text must not do is turn a photograph into a standing offer.
+    for (const photo of STUDIO_PHOTOS) {
+      const alt = photo.alt.toLowerCase();
+      for (const phrase of ["complimentary", "free ", "included", "unlimited", "always available"]) {
+        expect(alt, `${photo.src} alt promises an amenity: ${phrase}`).not.toContain(phrase);
       }
     }
   });
 
-  test("no image on the studio surfaces claims to show the studio", () => {
-    // public/lvm-openplay-room.jpg and lvm-openplay-social.jpg were committed on 2026-06-12
-    // as "real open-play community photos" (#40), two months before the studio appears in
-    // this repo, and their EXIF is stripped. Nothing here shows either was taken inside the
-    // studio, so the studio surfaces carry no photography until the owner supplies one that
-    // is verified. This fails the moment any image is put back without that evidence.
+
+  test("every image on a studio surface is one the owner identified", () => {
+    // The rule that replaced a bad inference. lib/studio-photos.ts records what the owner
+    // said each photograph shows; nothing may appear on these pages unless it is in there.
+    const manifest = new Set(STUDIO_PHOTOS.map((p) => p.src));
     for (const file of [STUDIO_PAGE, BANNER]) {
-      const imgs = [...readCode(file).matchAll(/src="(\/[^"]+\.(?:jpg|jpeg|png|webp|avif))"/g)].map((m) => m[1]);
-      expect(imgs, `${file} presents an unverified image as the studio`).toEqual([]);
-      expect(readCode(file), `${file} still imports next/image`).not.toContain("next/image");
+      for (const m of readCode(file).matchAll(/src="(\/[^"]+\.(?:jpg|jpeg|png|webp|avif))"/g)) {
+        expect(manifest, `${file} hard codes an image outside the manifest: ${m[1]}`).toContain(m[1]);
+      }
+      // Every photo is referenced through the manifest, so a raw src is the smell.
+      expect(readCode(file)).toContain("@/lib/studio-photos");
     }
   });
 
-  test("the open play photos are not claimed as the studio anywhere else either", () => {
-    const OPEN_PLAY_PHOTOS = ["/lvm-openplay-room.jpg", "/lvm-openplay-social.jpg"];
-    const src = readCode(STUDIO_PAGE) + readCode(BANNER);
-    for (const photo of OPEN_PLAY_PHOTOS) {
-      expect(src, `an open play photo is used as studio imagery: ${photo}`).not.toContain(photo);
+  test("the photographs that predate the studio are gone from the repo", () => {
+    // Committed 2026-06-12 as "real open-play community photos" (#40), two months before the
+    // studio existed here. They were once used as pictures of it. They are not on disk now,
+    // so the mistake cannot be repeated by reaching for a familiar filename.
+    for (const gone of ["lvm-openplay-room.jpg", "lvm-openplay-social.jpg"]) {
+      expect(fs.existsSync(path.join(ROOT, "public", gone)), `${gone} is back`).toBe(false);
     }
-    // They keep their home on the open play page, which is what they actually show.
-    const openPlay = readCode("app/mahjong-open-play-las-vegas/page.tsx");
-    for (const photo of OPEN_PLAY_PHOTOS) {
-      expect(openPlay, `${photo} should still be on the open play page`).toContain(photo);
+    const shipped = [STUDIO_PAGE, BANNER, "app/mahjong-open-play-las-vegas/page.tsx",
+                     "app/mahjong-lessons-las-vegas/page.tsx", "app/about/page.tsx"];
+    for (const file of shipped) {
+      expect(readCode(file), `${file} still references a removed photo`).not.toContain("lvm-openplay");
     }
   });
 
-  test("neither og:image nor schema.org photo asserts a picture of the studio", () => {
+  test("a room is only named in alt text when the owner identified that room", () => {
+    for (const photo of STUDIO_PHOTOS) {
+      const named = /Lucky (Wishbone|Sevens)/.exec(photo.alt);
+      if (!named) continue;
+      expect(photo.room, `${photo.src} names ${named[0]} in alt text with no verified room`).toBeTruthy();
+      expect(photo.alt, `${photo.src} alt names a different room than its manifest`).toContain(photo.room!);
+    }
+  });
+
+  test("every manifest entry is a real file, traceable to an owner original", () => {
+    for (const photo of STUDIO_PHOTOS) {
+      expect(fs.existsSync(path.join(ROOT, "public", photo.src.slice(1))), photo.src).toBe(true);
+      expect(photo.source.trim().length, `${photo.src} has no source filename`).toBeGreaterThan(0);
+      expect(photo.shows.trim().length, `${photo.src} does not say what it shows`).toBeGreaterThan(0);
+      expect(photo.alt.length, `${photo.src} alt is too short to be useful`).toBeGreaterThan(30);
+      expect(photo.width).toBeGreaterThan(0);
+      expect(photo.height).toBeGreaterThan(0);
+    }
+  });
+
+  test("declared dimensions match the files, so nothing shifts as they load", () => {
+    // Next reserves the box from these numbers. If a re-encode changes a file and the
+    // manifest is not updated, every page using it starts shifting on load.
+    for (const photo of STUDIO_PHOTOS) {
+      const buf = fs.readFileSync(path.join(ROOT, "public", photo.src.slice(1)));
+      let i = 2, dims: [number, number] | null = null;
+      while (i < buf.length - 9) {
+        if (buf[i] !== 0xff) break;
+        const marker = buf[i + 1];
+        if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) {
+          dims = [buf.readUInt16BE(i + 7), buf.readUInt16BE(i + 5)];
+          break;
+        }
+        i += 2 + buf.readUInt16BE(i + 2);
+      }
+      expect(dims, `${photo.src} is not a readable JPEG`).not.toBeNull();
+      expect(dims![0], `${photo.src} width`).toBe(photo.width);
+      expect(dims![1], `${photo.src} height`).toBe(photo.height);
+    }
+  });
+
+  test("no committed photograph is a phone original", () => {
+    // 5712px, multi megabyte files must not reach the repo: they go through sharp first.
+    for (const photo of STUDIO_PHOTOS) {
+      const bytes = fs.statSync(path.join(ROOT, "public", photo.src.slice(1))).size;
+      expect(bytes, `${photo.src} is ${Math.round(bytes / 1024)}KB, too big to commit`).toBeLessThan(700 * 1024);
+      expect(Math.max(photo.width, photo.height), `${photo.src} is larger than any layout needs`).toBeLessThanOrEqual(2000);
+    }
+  });
+
+  test("the venue door is never called a studio entrance", () => {
+    const door = STUDIO_PHOTOS.find((p) => p.src.includes("lucky-hare-door"))!;
+    expect(door.alt.toLowerCase()).not.toContain("entrance");
+    expect(door.shows.toLowerCase()).not.toContain("entrance");
+    expect(readCode(STUDIO_PAGE).toLowerCase()).not.toContain("studio entrance");
+  });
+
+  test("og:image is a verified studio photograph, and schema photo matches the manifest", () => {
     const src = readCode(STUDIO_PAGE);
-    // schema.org photo means "this image depicts this Place", which nothing here can support.
-    expect(src, "schema.org photo asserts an image depicts the Place").not.toMatch(/\bphoto:/);
-    // og:image is different: the page needs a share card, it just must not be a photograph
-    // passed off as the studio. The sitewide tiles image makes no such claim.
     const og = src.match(/images:\s*\[([^\]]*)\]/);
     expect(og, "/studio needs a share image: a page-level openGraph replaces the parent's").not.toBeNull();
-    expect(og![1], "the share card must not be an open play photo").not.toContain("lvm-openplay");
-    expect(og![1]).toContain("hero-bg.jpg");
+    expect(og![1], "the share card should come from the manifest").toContain("WISHBONE_ROOM.src");
+    // schema.org photo means "this image depicts this Place", so only room photographs qualify.
+    const photoBlock = src.match(/photo:\s*\[([\s\S]*?)\]/);
+    expect(photoBlock, "the Place should carry its verified photographs").not.toBeNull();
+    for (const ref of ["WISHBONE_ROOM.src", "SEVENS_OPEN_PLAY.src"]) {
+      expect(photoBlock![1]).toContain(ref);
+    }
   });
 });
 
