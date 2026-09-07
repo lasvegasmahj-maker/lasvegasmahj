@@ -3,6 +3,7 @@ import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import Image from "next/image";
+import { OPEN_PLAY_PLAYERS, OPEN_PLAY_ROOM } from "@/lib/studio-photos";
 
 export const metadata: Metadata = {
   title: "Mahjong Open Play Las Vegas | All Levels Welcome",
@@ -78,18 +79,18 @@ export default function MahjongOpenPlayLasVegas() {
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem", alignItems: "center", maxWidth: "900px" }}>
               <Image
-                src="/lvm-openplay-social.jpg"
-                alt="Players laughing together during a Las Vegas Mahjong open play event"
-                width={1800}
-                height={1350}
+                src={OPEN_PLAY_ROOM.src}
+                alt={OPEN_PLAY_ROOM.alt}
+                width={OPEN_PLAY_ROOM.width}
+                height={OPEN_PLAY_ROOM.height}
                 sizes="(max-width: 760px) 100vw, 480px"
                 style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
               />
               <Image
-                src="/lvm-openplay-room.jpg"
-                alt="A full room of players at tables during a Las Vegas Mahjong open play social"
-                width={1350}
-                height={1800}
+                src={OPEN_PLAY_PLAYERS.src}
+                alt={OPEN_PLAY_PLAYERS.alt}
+                width={OPEN_PLAY_PLAYERS.width}
+                height={OPEN_PLAY_PLAYERS.height}
                 sizes="(max-width: 760px) 100vw, 380px"
                 style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
               />

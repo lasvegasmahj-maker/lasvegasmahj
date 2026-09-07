@@ -1,31 +1,48 @@
+import { WISHBONE_ROOM, SEVENS_OPEN_PLAY, type StudioPhoto } from "./studio-photos";
+
 /**
- * Local news and press appearances filmed at or about the Las Vegas Mahjong studio.
+ * Local news coverage of the Las Vegas Mahjong Studio.
  *
- * This list is empty on purpose. The studio page renders its "As Seen On" section only when
- * there is at least one entry, so nothing about a broadcast ships until the owner supplies
- * the details for it. The only copy of the segment currently on hand is a phone recording of
- * a television screen, which is the station's footage rather than ours, so it is neither
- * hosted here nor described here.
+ * Every entry links to the station's own page. FOX5 exposes no oEmbed endpoint, no embed
+ * iframe and no documented embed mechanism for these videos (its /oembed path returns 404
+ * and the only iframe on the page is Google Tag Manager), so the segments are linked, never
+ * re-hosted. The card artwork is our own verified studio photography rather than the
+ * station's social image, which is a signed Gray CDN URL and not ours to reuse.
  *
- * To add an appearance, the owner needs to supply, per segment:
- *   outlet       the station or programme name, spelled the way the outlet brands itself
- *   headline     the segment title as the station published it
- *   publishedIso the air date, as YYYY-MM-DD
- *   url          the station's own page for the segment, which must load and be public
- *
- * Rules that hold for every entry:
- *   - url must be the outlet's own https page. We link to the station, we do not re-host
- *     video, and the page filters out anything that is not https before it reaches an href.
- *     If a station offers an embeddable player, add the field when there is one to embed.
- *   - No claim of affiliation, sponsorship or endorsement by the station.
- *   - Nothing is inferred. If a field is unknown, the segment waits rather than shipping.
+ * This is news coverage, not an endorsement. Nothing here says FOX5 recommends the business,
+ * and no Review or AggregateRating schema is emitted for it.
  */
 export interface StudioMediaAppearance {
+  /** The station or programme name, spelled the way the outlet brands itself. */
   outlet: string;
+  /** The headline exactly as the station published it. */
   headline: string;
+  /** Air date, as YYYY-MM-DD. */
   publishedIso: string;
+  /** The date as a reader sees it. */
+  publishedLabel: string;
+  /** The station's own public page for the segment. Always https, never re-hosted. */
   url: string;
-  summary?: string;
+  /** One of our own verified studio photographs, used as card artwork. */
+  image: StudioPhoto;
 }
 
-export const STUDIO_MEDIA: StudioMediaAppearance[] = [];
+export const STUDIO_MEDIA: StudioMediaAppearance[] = [
+  {
+    outlet: "FOX5 Las Vegas",
+    headline:
+      "LEARN & PLAY American Mahjong at NEW business Las Vegas Mahjong on Sahara",
+    publishedIso: "2026-09-02",
+    publishedLabel: "September 2, 2026",
+    url: "https://www.fox5vegas.com/video/2026/09/02/learn-play-american-mahjong-new-business-las-vegas-mahjong-sahara/",
+    image: WISHBONE_ROOM,
+  },
+  {
+    outlet: "FOX5 Las Vegas",
+    headline: "American Mahjong Classes NOW being taught at Las Vegas Mahjong",
+    publishedIso: "2026-09-02",
+    publishedLabel: "September 2, 2026",
+    url: "https://www.fox5vegas.com/video/2026/09/02/american-mahjong-classes-now-being-taught-las-vegas-mahjong/",
+    image: SEVENS_OPEN_PLAY,
+  },
+];

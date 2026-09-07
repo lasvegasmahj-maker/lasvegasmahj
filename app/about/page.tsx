@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { SHAUNA_NEON } from "@/lib/studio-photos";
 import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -84,11 +85,18 @@ export default function About() {
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container" style={{ maxWidth: "760px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "start" }}>
             <div>
+              {/* One line, not a second media section: /studio carries the full coverage. */}
+              <p style={{ fontFamily: "var(--font-nav)", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "0.9rem" }}>
+                Featured on{" "}
+                <a href="/studio#press" style={{ color: "var(--gold)", textDecoration: "underline" }}>
+                  FOX5 Las Vegas
+                </a>
+              </p>
               <Image
-                src="/lvm-private-game.jpg"
-                alt="Shauna teaching American Mahjong to a group around the table at a lesson in Las Vegas"
-                width={1350}
-                height={1800}
+                src={SHAUNA_NEON.src}
+                alt={SHAUNA_NEON.alt}
+                width={SHAUNA_NEON.width}
+                height={SHAUNA_NEON.height}
                 sizes="(max-width: 760px) 100vw, 380px"
                 style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
               />

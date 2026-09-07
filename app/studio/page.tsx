@@ -1,19 +1,25 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ogBase } from "@/lib/og";
+import {
+  WISHBONE_ROOM,
+  SEVENS_OPEN_PLAY,
+  SHAUNA_AT_TABLE,
+  OPEN_PLAY_SNACKS,
+  LUCKY_HARE_DOOR,
+} from "@/lib/studio-photos";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import { buildBreadcrumbSchema, STUDIO_PLACE } from "@/lib/schema";
 import { STUDIO_MEDIA } from "@/lib/studio-media";
+import PressCards from "@/components/press-cards";
 
 const MAP_URL = "https://maps.app.goo.gl/dGeHMfMDjuXjDFPs5";
 
 /**
- * This page ships without room photography on purpose. The two interior shots in public/
- * were committed on 2026-06-12 as "real open-play community photos" (#40), two months
- * before the studio appears anywhere in this repo, and their EXIF is stripped. Nothing in
- * the repository shows either was taken inside the studio, so neither may appear here, in
- * og:image, or as a schema.org photo of the Place. Owner-verified photographs of Lucky
- * Wishbone, Lucky Sevens and the entrance are what unblock this.
+ * Every photograph on this page comes from lib/studio-photos.ts, where the owner's
+ * identification of each one is recorded. Nothing is described as a room unless she said
+ * that is the room. The open play photographs that predate the studio are not used here.
  */
 
 export const metadata: Metadata = {
@@ -28,10 +34,9 @@ export const metadata: Metadata = {
     description:
       "Two rooms inside Lucky Hare on West Sahara. Lucky Wishbone for classes, leagues and special events, Lucky Sevens for open play. Come sit with us.",
     url: "https://www.lasvegasmahj.com/studio",
-    // A page-level openGraph object replaces the parent's rather than merging, so without
-    // this the share card has no image at all. The sitewide tiles photograph makes no claim
-    // about the studio, which is the point: there is no verified photograph of it yet.
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    // A page-level openGraph object replaces the parent's rather than merging, so this has
+    // to be stated or the share card has no image at all.
+    images: [`https://www.lasvegasmahj.com${WISHBONE_ROOM.src}`],
   },
 };
 
@@ -49,6 +54,10 @@ const studioSchema = {
       ...STUDIO_PLACE,
       url: "https://www.lasvegasmahj.com/studio",
       hasMap: MAP_URL,
+      photo: [
+        `https://www.lasvegasmahj.com${WISHBONE_ROOM.src}`,
+        `https://www.lasvegasmahj.com${SEVENS_OPEN_PLAY.src}`,
+      ],
       containsPlace: [
         {
           "@type": "Place",
@@ -119,12 +128,12 @@ export default function Studio() {
       <main style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
-          <div className="container" style={{ maxWidth: "760px" }}>
-            <div style={{ textAlign: "center" }}>
+          <div className="container">
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(320px, 100%), 1fr))", gap: "3rem", alignItems: "center" }}>
               <div>
                 <span className="studio-open-badge">Now Open</span>
                 <p className="section-label">Inside Lucky Hare &middot; West Sahara</p>
-                <h1 className="section-title" style={{ fontSize: "clamp(2.3rem, 7vw, 4.4rem)", marginBottom: "1.5rem" }}>
+                <h1 className="section-title" style={{ fontSize: "clamp(2.3rem, 7vw, 4.4rem)", marginBottom: "1.5rem", textAlign: "left" }}>
                   Our Mahjong <span className="accent-green">Studio</span> in Las Vegas
                 </h1>
                 <p style={{ fontSize: "1.12rem", color: "rgba(255,255,255,0.75)", lineHeight: 1.8, marginBottom: "2rem" }}>
@@ -133,11 +142,20 @@ export default function Studio() {
                   seat at the table for you whether you have played a thousand
                   games or never touched a tile.
                 </p>
-                <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center" }}>
+                <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
                   <a href="/schedule" className="btn-primary">View the Schedule</a>
                   <a href="#visit" className="btn-outline">How to Visit</a>
                 </div>
               </div>
+              <Image
+                src={SHAUNA_AT_TABLE.src}
+                alt={SHAUNA_AT_TABLE.alt}
+                width={SHAUNA_AT_TABLE.width}
+                height={SHAUNA_AT_TABLE.height}
+                priority
+                sizes="(max-width: 760px) 100vw, 48vw"
+                style={{ width: "100%", height: "auto", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.1)", display: "block" }}
+              />
             </div>
           </div>
         </section>
@@ -171,6 +189,14 @@ export default function Studio() {
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "2rem", marginTop: "2.5rem" }}>
               <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(233,30,140,0.25)", borderRadius: "10px", padding: "2rem" }}>
+                <Image
+                  src={WISHBONE_ROOM.src}
+                  alt={WISHBONE_ROOM.alt}
+                  width={WISHBONE_ROOM.width}
+                  height={WISHBONE_ROOM.height}
+                  sizes="(max-width: 760px) 100vw, 46vw"
+                  style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block", marginBottom: "1.25rem" }}
+                />
                 <h3 className="section-title" style={{ fontSize: "1.6rem", marginBottom: "1rem", textAlign: "left" }}>
                   <span className="accent-pink">Lucky Wishbone</span>
                 </h3>
@@ -191,6 +217,14 @@ export default function Studio() {
               </div>
 
               <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(57,230,57,0.25)", borderRadius: "10px", padding: "2rem" }}>
+                <Image
+                  src={SEVENS_OPEN_PLAY.src}
+                  alt={SEVENS_OPEN_PLAY.alt}
+                  width={SEVENS_OPEN_PLAY.width}
+                  height={SEVENS_OPEN_PLAY.height}
+                  sizes="(max-width: 760px) 100vw, 46vw"
+                  style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block", marginBottom: "1.25rem" }}
+                />
                 <h3 className="section-title" style={{ fontSize: "1.6rem", marginBottom: "1rem", textAlign: "left" }}>
                   <span className="accent-green">Lucky Sevens</span>
                 </h3>
@@ -217,6 +251,14 @@ export default function Studio() {
           <div className="container">
             <p className="section-label">What It Is Like</p>
             <h2 className="section-title">Friendship, Community, <span className="accent-pink">Fun</span></h2>
+            <Image
+              src={OPEN_PLAY_SNACKS.src}
+              alt={OPEN_PLAY_SNACKS.alt}
+              width={OPEN_PLAY_SNACKS.width}
+              height={OPEN_PLAY_SNACKS.height}
+              sizes="(max-width: 900px) 100vw, 860px"
+              style={{ width: "100%", maxWidth: "860px", height: "auto", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.1)", display: "block", margin: "2.5rem auto 0" }}
+            />
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
               {experience.map((item) => (
                 <div key={item.title} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
@@ -228,33 +270,18 @@ export default function Studio() {
           </div>
         </section>
 
-        {/* AS SEEN ON LOCAL NEWS. Renders only when a verified, station-hosted segment
-            exists in lib/studio-media.ts, so nothing about a broadcast ships on a guess. */}
+        {/* AS SEEN ON. Linked cards, never a re-hosted clip: see lib/studio-media.ts. */}
         {STUDIO_MEDIA.length > 0 && (
-          <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)", borderTop: "1px solid rgba(255,215,0,0.2)" }}>
-            <div className="container" style={{ maxWidth: "860px" }}>
+          <section id="press" style={{ padding: "5rem 2rem", background: "var(--navy-dark)", borderTop: "1px solid rgba(255,215,0,0.2)" }}>
+            <div className="container" style={{ maxWidth: "980px" }}>
               <p className="section-label">In the Local Press</p>
-              <h2 className="section-title">The Studio on <span className="accent-green">Local News</span></h2>
-              <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.75, margin: "1rem 0 2.5rem", textAlign: "center" }}>
-                Local coverage filmed at the studio. Each segment plays on the
-                station&rsquo;s own site.
+              <h2 className="section-title">As Seen on <span className="accent-green">FOX5 Las Vegas</span></h2>
+              <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, margin: "1.25rem auto 0", maxWidth: "620px", textAlign: "center" }}>
+                FOX5 came to the studio for our Grand Opening, filmed both rooms,
+                and asked what American Mahjong actually is. Both segments play on
+                FOX5&rsquo;s own site.
               </p>
-              <div style={{ display: "grid", gap: "1.25rem" }}>
-                {STUDIO_MEDIA.filter((m) => m.url.startsWith("https://")).map((item, i) => (
-                  <article key={`${item.url}-${i}`} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "1.5rem" }}>
-                    <p style={{ fontFamily: "var(--font-nav)", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "0.5rem" }}>
-                      {item.outlet}
-                    </p>
-                    <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: "#fff", marginBottom: "0.5rem" }}>{item.headline}</h3>
-                    {item.summary && (
-                      <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.95rem", lineHeight: 1.7, marginBottom: "0.85rem" }}>{item.summary}</p>
-                    )}
-                    <a href={item.url} target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ display: "inline-block", padding: "0.6rem 1.3rem", fontSize: "0.8rem" }}>
-                      Watch on {item.outlet}
-                    </a>
-                  </article>
-                ))}
-              </div>
+              <PressCards size="full" />
             </div>
           </section>
         )}
@@ -285,6 +312,14 @@ export default function Studio() {
               and I will help you choose.
             </p>
 
+            <Image
+              src={LUCKY_HARE_DOOR.src}
+              alt={LUCKY_HARE_DOOR.alt}
+              width={LUCKY_HARE_DOOR.width}
+              height={LUCKY_HARE_DOOR.height}
+              sizes="(max-width: 620px) 70vw, 320px"
+              style={{ width: "100%", maxWidth: "320px", height: "auto", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.1)", display: "block", margin: "2rem auto 0" }}
+            />
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", marginTop: "2rem" }}>
               <a href="/schedule" className="btn-primary">View the Schedule</a>
               <a href={MAP_URL} target="_blank" rel="noopener noreferrer" className="btn-outline">Get Directions</a>

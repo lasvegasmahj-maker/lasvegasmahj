@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { LESSON_TABLE } from "@/lib/studio-photos";
 import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -112,10 +113,10 @@ export default function MahjongLessonsLasVegas() {
           <div className="container" style={{ maxWidth: "900px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "3rem", alignItems: "start" }}>
             <div style={{ display: "grid", gap: "1.25rem" }}>
               <Image
-                src="/lvm-lesson-group.jpg"
-                alt="Shauna with a group of students around the table at a Las Vegas Mahjong lesson, holding the National Mah Jongg League card"
-                width={1415}
-                height={1800}
+                src={LESSON_TABLE.src}
+                alt={LESSON_TABLE.alt}
+                width={LESSON_TABLE.width}
+                height={LESSON_TABLE.height}
                 sizes="(max-width: 760px) 100vw, 400px"
                 style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
               />
