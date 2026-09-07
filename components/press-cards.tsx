@@ -44,6 +44,10 @@ export default function PressCards({ size = "compact" }: { size?: "compact" | "f
           </div>
         </a>
       ))}
+      <p className="press-credit">
+        Photographs by Las Vegas Mahjong. Both segments play on FOX5&rsquo;s own
+        site.
+      </p>
     </div>
   );
 }

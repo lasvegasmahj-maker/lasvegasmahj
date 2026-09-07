@@ -504,6 +504,8 @@ section {
   margin-top: 2.5rem;
 }
 
+.press-cards .press-credit { grid-column: 1 / -1; }
+
 .press-card {
   display: flex;
   flex-direction: column;
@@ -601,6 +603,20 @@ section {
 
 .press-cards-full .press-card-headline { font-size: 1.15rem; }
 .press-cards-full .press-card-body { padding: 1.6rem 1.75rem 1.8rem; }
+/* Taller frame where the section is the point, so the photograph reads as a feature image
+   rather than a strip above a link. */
+.press-cards-full .press-card-art { aspect-ratio: 3 / 2; }
+.press-cards-full .press-card-play { width: 66px; height: 66px; }
+
+/* Says whose photograph it is, so our own studio picture is never taken for a still from
+   the segment it links to. */
+.press-credit {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+  text-align: center;
+  margin: 1.5rem auto 0;
+  max-width: 620px;
+}
 
 @media (max-width: 860px) {
   .press-cards { grid-template-columns: 1fr; }

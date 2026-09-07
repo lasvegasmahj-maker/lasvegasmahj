@@ -3,7 +3,7 @@ import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import Image from "next/image";
-import { OPEN_PLAY_PLAYERS, OPEN_PLAY_ROOM } from "@/lib/studio-photos";
+import { OPEN_PLAY_PLAYERS, SEVENS_OPEN_PLAY } from "@/lib/studio-photos";
 
 export const metadata: Metadata = {
   title: "Mahjong Open Play Las Vegas | All Levels Welcome",
@@ -79,10 +79,10 @@ export default function MahjongOpenPlayLasVegas() {
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem", alignItems: "center", maxWidth: "900px" }}>
               <Image
-                src={OPEN_PLAY_ROOM.src}
-                alt={OPEN_PLAY_ROOM.alt}
-                width={OPEN_PLAY_ROOM.width}
-                height={OPEN_PLAY_ROOM.height}
+                src={SEVENS_OPEN_PLAY.src}
+                alt={SEVENS_OPEN_PLAY.alt}
+                width={SEVENS_OPEN_PLAY.width}
+                height={SEVENS_OPEN_PLAY.height}
                 sizes="(max-width: 760px) 100vw, 480px"
                 style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
               />

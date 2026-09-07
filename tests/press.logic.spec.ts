@@ -16,6 +16,13 @@ const readCode = (rel: string) =>
     .replace(/\/\*[\s\S]*?\*\//g, "")
     .replace(/^\s*\/\/.*$/gm, "");
 
+/** Constant name to src, read out of the manifest so the two cannot drift apart. */
+const MANIFEST_NAMES: Record<string, string> = Object.fromEntries(
+  [...read("lib/studio-photos.ts").matchAll(/export const (\w+): StudioPhoto = \{\s*\n\s*src: "([^"]+)"/g)].map(
+    (m) => [m[1], m[2]],
+  ),
+);
+
 const SURFACES = [
   "components/press-cards.tsx",
   "components/press-section.tsx",
@@ -99,6 +106,39 @@ test.describe("nothing of the station's is copied here", () => {
       // Linked, never framed: FOX5 publishes no embed mechanism for these videos.
       expect(readCode(file), `${file} frames a third party player`).not.toMatch(/<iframe/);
     }
+  });
+
+  test("no FOX5 card reuses a photograph shown elsewhere on the same page", () => {
+    // The whole point of this refinement. The press art used to repeat the photo already
+    // sitting higher up the homepage and /studio.
+    const cardArt = STUDIO_MEDIA.map((m) => m.image.src);
+    const SURFACE_FILES: Record<string, string[]> = {
+      homepage: ["components/studio-banner.tsx"],
+      "/studio": ["app/studio/page.tsx"],
+    };
+    for (const [page, files] of Object.entries(SURFACE_FILES)) {
+      const src = files.map(readCode).join("\n");
+      for (const photo of STUDIO_PHOTOS) {
+        if (!cardArt.includes(photo.src)) continue;
+        const constName = Object.entries({ ...MANIFEST_NAMES }).find(([, v]) => v === photo.src)?.[0];
+        if (!constName) continue;
+        expect(
+          new RegExp(`\\b${constName}\\b`).test(src),
+          `${page} shows ${photo.src} in its own content and again as FOX5 card art`,
+        ).toBe(false);
+      }
+    }
+  });
+
+  test("the two cards use two different photographs", () => {
+    expect(new Set(STUDIO_MEDIA.map((m) => m.image.src)).size).toBe(STUDIO_MEDIA.length);
+  });
+
+  test("the cards say whose photographs they are", () => {
+    const src = readCode("components/press-cards.tsx");
+    expect(src, "a viewer could read our photo as a still from the segment").toContain(
+      "Photographs by Las Vegas Mahjong",
+    );
   });
 
   test("card artwork is our own verified studio photography", () => {
