@@ -130,6 +130,14 @@ export function lvmPending(ref: string): Provenance {
 // a question about changing the exposure, which the joker exchange has locked.
 const CHANGE_EXPOSURE = /\b(change|fix|alter|swap them|should have been)\b[^.?!]{0,20}\b(it|exposure|pung|kong)\b|\bstill change\b|\bshould have been\b/i;
 // The courtesy pass by name or by description (the across swap with the opposite player).
+// Picking ahead, and the scene the release gate found inverted: a discard made without
+// drawing first. One object each so the corpus invariant (a gated entry can score on the
+// concept that gates it) still holds.
+const PICK_OR_SKIP = new RegExp(
+  `${PICK_VERB.source}|${SKIPPED_DRAW.source}|\\bdiscard(s|ed|ing)?\\b(?=[^.?!]{0,30}\\b(out of turn|before (my|your|their|her|his) turn|not (my|your|their) turn)\\b)`,
+  "i",
+);
+const AHEAD_OR_SKIP = new RegExp(`${AHEAD.source}|${SKIPPED_DRAW.source}`, "i");
 const COURTESY_ASK = new RegExp(`${COURTESY.source}|\\bacross swap\\b|\\bswap (with|across)\\b[^.?!]{0,20}\\bopposite\\b|\\bopposite (player|swap|exchange)\\b|\\bacross (exchange|trade)\\b`, "i");
 // "nobody threw in": the settlement entry only applies once hands were thrown in.
 const NOBODY_THREW_IN = /\b(nobody|no one|noone|none of (us|them)|no hands? (were|was)|nothing was) (threw|tossed|throw|toss|thrown)\w*( (their |her |his )?(hands?|tiles?))?( in)?\b/i;
@@ -318,7 +326,7 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     requires: [JOKER, JOKER_EXCHANGE],
     // A dead hand's jokers are dead-hand-jokers' rule, which says the opposite.
     // Changing an exposure after a joker swap is the exposure entries' rule.
-    blocks: [/\bself[- ]?pick\w*\b|\bfor the money\b|\bfor payment\b|\bcount(s)? as\b[^.?!]{0,20}\b(self|win|mahjong)\b/i,
+    blocks: [DISCARDED_JOKER_SCENE, /\bself[- ]?pick\w*\b|\bfor the money\b|\bfor payment\b|\bcount(s)? as\b[^.?!]{0,20}\b(self|win|mahjong)\b/i,
       // Once mahjong is declared the exchange window is closed; the timing entry says so.
       /\b(once|after) (mahjong|maj|the mahjong) (is|has been|was|been)? ?(declared|called)\b|\bafter (someone|anyone|she|he|they) (declared|called) (mahjong|maj)\b/i,
       CHANGE_EXPOSURE, DEAD],
@@ -781,7 +789,11 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     // The joker itself was discarded: the two words sit in one clause. "handed her a 4 dot for
     // the joker in her pung, and I already discarded" is a joker exchange gone wrong.
     requires: [JOKER, new RegExp(`\\bjokers?\\b[^.?!,;]{0,30}${DISCARDED.source}|${DISCARDED.source}[^.?!,;]{0,30}\\bjokers?\\b`, "i")],
-    blocks: [/\b(zero|no|without) jokers?\b|\bjokerless\b|\bjoker[- ]?free\b/i, JOKER_EXCHANGE, JOKER_PASS, /\bpairs?\b/i, MISNAMED],
+    blocks: [/\b(zero|no|without) jokers?\b|\bjokerless\b|\bjoker[- ]?free\b/i,
+      // An exchange phrase does not take this entry away when the joker being asked about is
+      // the one in the discard pile: that is this entry's own scene (release gate blocker 2).
+      (q: string) => JOKER_EXCHANGE.test(q) && !DISCARDED_JOKER_SCENE.test(q),
+      JOKER_PASS, /\bpairs?\b/i, MISNAMED],
     answer: "The card's joker rule says a discarded joker can never be called for mahjong. Whether a discarded joker can be claimed for an exposure is not printed on the card; common table practice treats a discarded joker as out of the hand entirely, so check with your table. Under that practice, the only way to take a joker from the table is a joker exchange from an exposed group on your own turn.",
     varies_by_house: true,
     approval: "research_verified",
@@ -982,7 +994,11 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     // entries that have none, and a question that merely mentions three of us is about
     // whatever noun it names. Requiring a procedure word instead was tried and lost
     // "we have three players is that ok", which carries none.
-    blocks: [/\b(second round|first left|majority|second charleston)\b/i, SETTLEMENT, SCORING_ASK, PAYMENT, OTHER_TOPIC, /\b(where|near|nearby|find|looking for|join|sign up)\b|\b(club|group|venue|teacher|lesson|class)s?\b(?=[^.?!]{0,20}\b(near|in|around|at)\b)/i],
+    blocks: [/\b(second round|first left|majority|second charleston)\b/i, SETTLEMENT, SCORING_ASK, PAYMENT,
+      // A courtesy or Charleston word used to hand this question to the four-handed entry.
+      // With three at the table this entry is the one that answers (owner decision 2026-09-06).
+      (q: string) => OTHER_TOPIC.test(q) && !COURTESY_ASK.test(q),
+      /\b(where|near|nearby|find|looking for|join|sign up)\b|\b(club|group|venue|teacher|lesson|class)s?\b(?=[^.?!]{0,20}\b(near|in|around|at)\b)/i],
     answer:
       "American mahjong seats 4 players, and the League's rulebook covers playing with 3. Build all 4 walls as usual with the full 152 tiles and leave one seat empty. Deal only to the three players, and the empty seat gets nothing. The deal ends with East holding 14 tiles and the other two holding 13. League publications describe the final pickup in two slightly different orders, and both reach those counts. Under League rules there is no Charleston with three players, so this is not a table preference. East opens with a discard, and play runs like the 4-player game. Anything beyond this is a table choice, such as an invented Charleston for three or a ghost hand dealt to the empty seat.",
     varies_by_house: true,
@@ -1090,7 +1106,10 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     question_patterns: [DEAD, JOKER],
     keywords: ["dead", "joker", "exchange"],
     requires: [DEAD, JOKER],
-    blocks: [/\bwho'?s dead\b|\bwhos dead\b|\bnobody noticed\b|\bwrong tile\b/i, MISNAMED],
+    // Passing a joker is charleston-jokers' scene. This entry is about redeeming a joker from a
+    // dead hand's exposure, and its "Yes" invented a penalty the League does not impose
+    // (release gate blocker 4).
+    blocks: [/\bwho'?s dead\b|\bwhos dead\b|\bnobody noticed\b|\bwrong tile\b/i, MISNAMED, JOKER_PASS],
     answer:
       "Yes, with limits that depend on which exposure the joker sits in. When a hand goes dead, the other players may still redeem jokers from any correct exposure that player made before the hand went dead. Redeem one the normal way, on your own turn, by handing over the real tile that joker stands for. This works even when the hand died for a separate reason, such as holding the wrong number of tiles. The exposure that caused the dead hand works differently: those tiles, jokers included, go back onto the player's rack, so no one can redeem them. A hand marked concealed that exposed tiles in error gives up nothing, because the whole exposed portion returns to the rack. One timing point: if a hand is already dead but nobody has declared it dead yet, even the jokers in the exposure that made it dead are still up for grabs, and they go out of reach only once the table declares the hand dead. The dead player stops drawing, discarding, and exchanging for the rest of that deal, and still pays the winner.",
     varies_by_house: false,
@@ -1107,19 +1126,16 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     questions: ["What happens if I pick a tile before my turn?"],
     related: ["order-of-play","dead-hand-details","out-of-turn"],
     topic: "Picking ahead",
-    question_patterns: [PICK_VERB, AHEAD],
+    question_patterns: [PICK_VERB, AHEAD, PICK_OR_SKIP, AHEAD_OR_SKIP],
     keywords: ["pick ahead", "out of turn", "draw early"],
     // The discard branch takes only the out-of-turn senses. AHEAD also holds a bare
     // "early" and "too soon", so pairing it with a plain discard verb answered "when
     // should I discard my flowers, early or late" with the dead-hand penalty.
-    requires: [
-      new RegExp(
-        `${PICK_VERB.source}|\\bdiscard(s|ed|ing)?\\b(?=[^.?!]{0,30}\\b(out of turn|before (my|your|their|her|his) turn|not (my|your|their) turn)\\b)`,
-        "i",
-      ),
-      AHEAD,
-    ],
-    blocks: [CHARLESTON_WORD, BLIND_PASS],
+    requires: [PICK_OR_SKIP, AHEAD_OR_SKIP],
+    // This entry's 4x sentence is about an out-of-turn DISCARD. A discard made on your own turn
+    // after forgetting to draw is a different scene, and no entry states its settlement, so a
+    // payment question there gets the topic clarification rather than a number.
+    blocks: [CHARLESTON_WORD, BLIND_PASS, (q: string) => SKIPPED_DRAW.test(q) && SETTLEMENT.test(q)],
     answer:
       "Wait for the player before you to discard, and wait a beat in case someone calls it, before you touch the wall. The back of the card bars picking or looking ahead. Under League rules, drawing out of turn makes your hand dead. That is the standard rule and it sets no condition about how quickly the table catches you. You stop picking and discarding for the rest of the deal and still pay the winner. Your hand is already dead, but still put the tile back in the exact spot it came from, because the wall has to stay intact for everyone else and hiding it somewhere else in the wall causes its own trouble. Discarding before you pick from the wall kills your hand the same way. If someone claims your out-of-turn discard for mahjong, the deal stops, you pay the winner 4 times the value of the hand, and the other two players pay nothing. Play then picks up to the right of the last action and keeps moving right, so a player your slip skipped does not get that turn back. One thing this is not: picking correctly on your own turn and having a valid call interrupt you. That is an interrupted pick, the tile goes back in its spot, and nobody's hand is dead. Two points to settle with your group. Many teachers, social tables, and tournament directors let a player off when someone stops them before they rack or look at the tile; that is house practice or director practice, not a League rule. And on whether an out-of-turn discard can still be claimed for an exposure, League answers have been reported both ways, so that one is unsettled and your table should agree on it.",
     varies_by_house: true,
@@ -1183,6 +1199,10 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     question_patterns: [COURTESY_ASK],
     keywords: ["courtesy pass", "across"],
     requires: [COURTESY_ASK, new RegExp(`${PASS_VERB.source}|\\b(thing|swap|trade|exchange|round|across|optional)\\b`, "i")],
+    // Owner decision 2026-09-06: League three-handed play omits the Charleston entirely, so
+    // there is no courtesy pass at a three-player table and this four-handed rule must not be
+    // served as though there were (release gate blocker 5).
+    blocks: [THREE_PLAYER_SEATS],
     answer: "After the charleston ends, whether it stopped after the first left pass or ran through a second charleston, you and the player across from you may make an optional courtesy pass of 0, 1, 2, or 3 tiles. Both players must agree on how many tiles to exchange, and both pass at the same time. Either player can decline.",
     varies_by_house: false,
     approval: "owner_approved",
@@ -1275,6 +1295,9 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     question_patterns: [QUINT_SEXTET, CLAIM_VERB],
     keywords: ["quint", "sextet", "call"],
     requires: [QUINT_SEXTET, CLAIM_VERB],
+    // A discarded joker is joker-discarded's rule. This entry's "Yes." is about an ordinary
+    // tile; serving it for a thrown joker inverts the card's joker rule (release gate 1).
+    blocks: [DISCARDED_JOKER_SCENE],
     answer:
       "Yes. You may call a discard to complete any group of 3 or more identical tiles, and that includes a 5 tile Quint and a 6 tile Sextet. The rest of the group must already be in your hand, with jokers allowed to fill in, and the entire group goes face up on your rack in one move. One limit applies: a call must complete a whole block as printed on the card, never part of one. If your hand shows 6 flowers as a single block, you cannot call a flower to expose just 3 of them; you need the other 5 in hand so that one call finishes all 6. A hand marked concealed cannot call for any exposure.",
     varies_by_house: false,

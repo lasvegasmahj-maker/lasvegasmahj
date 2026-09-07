@@ -185,13 +185,14 @@ export const SETTLEMENT_OR_HOLD = new RegExp(`${SETTLEMENT.source}|${HOLD_FOR_CH
 // Only the deal's final discard, never the most recent one: "her last discard finishes my
 // pung" is an ordinary calling question and must not reach the end-of-wall answer.
 export const FINAL_DISCARD_SCENE =
-  /\b(cold|hot) wall\b|(?<!(?:my|your|her|his|their|own) )\b(last|final) (discard|tile)\b(?=[^.?!]{0,40}\b(wall|deal|game|end|empty|left)\b)|\b(wall|deal|game|end|empty)\b[^.?!]{0,40}(?<!(?:my|your|her|his|their|own) )\b(last|final) (discard|tile)\b|\bwall gets (down )?to\b|\blast \d+ tiles\b|\blast (few|couple|handful of) tiles\b|\bwall is (almost|nearly|about) (gone|empty|done|out)\b|\bwall is (empty|gone|out|used up)\b|\bwall runs out\b|\bno tiles left\b|\b(only |just )?(two|three|four|five|a few|\d+) tiles? (left|remaining)\b|\bout of tiles\b|\bend of the wall\b|\bnothing left to draw\b|\blast discard of the (game|hand|round)\b|\b(very )?last (one|tile) in the wall\b|\bwall (gets|is|runs) low\b/i;
+  /\b(cold|hot) wall\b|(?<!(?:my|your|her|his|their|own) )\b(last|final) (discard|tile)\b(?=[^.?!]{0,40}\b(wall|deal|game|end|empty|left)\b)|\b(wall|deal|game|end|empty)\b[^.?!]{0,40}(?<!(?:my|your|her|his|their|own) )\b(last|final) (discard|tile)\b|\bwall gets (down )?to\b|\blast \d+ tiles\b|\blast (few|couple|handful of) tiles\b|\bwall is (almost|nearly|about) (gone|empty|done|out)\b|\bwall is (empty|gone|out|used up)\b|\bwall runs out\b|\bno tiles left\b|\b(only |just )?(two|three|four|five|a few|\d+) tiles? (left|remaining)\b|\bout of tiles\b|\bend of the wall\b|\bnothing left to draw\b|\blast discard of the (game|hand|round|deal)\b|\b(very|absolute) last (discard|tile)\b|\b(very )?last (one|tile) in the wall\b|\bwall (gets|is|runs) low\b/i;
 
 // East is dealt 14; "the dealer took 14 and we took 13" is the deal, not a count gone wrong.
 export const DEALER_COUNT = /\b(dealer|east) (took|takes|gets|got|has|had|get|take|starts? with|holds?) (13|14|fourteen|thirteen)\b/i;
 // A discard made without drawing first. No entry states the settlement for it; the turn-order
 // and payment entries stand down so the player is asked for the topic instead.
-export const SKIPPED_DRAW = /\bforgot to (pick|draw)\b|\bwithout (picking|drawing)\b|\bdidn'?t (pick|draw)\b[^.?!]{0,24}\b(threw|discarded|tossed|put down)\b/i;
+export const SKIPPED_DRAW =
+  /\bforgot to (pick|draw)\b|\bwithout (picking|drawing|taking a tile)\b|\b(didn'?t|never|did not|failed to|skipped)\s*(pick|draw|picking|drawing)\b[^.?!]{0,30}\b(threw|thrown|discard|discards|discarded|discarding|tossed|put down)\b|\b(threw|thrown|discard|discards|discarded|discarding|tossed|put down)\b[^.?!]{0,30}\b(without|before)\s+(picking|drawing|i picked|i drew|taking a tile|my pick|my draw)\b|\b(discard|discards|discarded|discarding|threw|throw|throws)\b[^.?!]{0,20}\bbefore\b[^.?!]{0,16}\b(pick|picking|draw|drawing)\b/i;
 // Which dragon belongs to which suit: the dragons entry's question wherever it appears.
 export const DRAGON_SUIT_ASK =
   /\bwhich dragon\b|\bdragon (matches|goes with|belongs)\b|\bred goes with\b|\b(red|green|white) dragons?\b[^.?!]{0,30}\b(goes|go|belongs?|matches|match) with\b|\bwhich (dragon|suit) (matches|goes)\b|\bwhich suit\b[^.?!]{0,20}\bdragons?\b/i;

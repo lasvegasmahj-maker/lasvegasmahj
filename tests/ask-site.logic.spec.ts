@@ -2,9 +2,9 @@ import { test, expect } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 import { readFileSync } from "node:fs";
-import { canonicalEntryFor, classifyTopic, coreIdentity, entryById, lookup, KNOWLEDGE_BY_ID, CORE_VERSION, type Turn } from "../lib/ask-core/index.ts";
+import { askDecision, canonicalEntryFor, classifyTopic, coreIdentity, entryById, lookup, KNOWLEDGE_BY_ID, CORE_VERSION, type Turn } from "../lib/ask-core/index.ts";
 import { STARTER_QUESTIONS } from "../lib/ask/starters";
-import { LVM_SITE, LOCAL_BUSINESS_RE } from "../lib/ask/site";
+import { LVM_SITE } from "../lib/ask/site";
 import { pickNudge } from "../lib/ask/nudges";
 
 // The Las Vegas Mahjong overlay on the shared core. The core has its own tests (mahj-ask-core);
@@ -61,18 +61,36 @@ test.describe("studio questions never become rules", () => {
     "What does MAHJ101 cover, the charleston and jokers?",
     "How many people can the studio hold for a party?",
   ];
+  // The studio vocabulary moved into the shared core on 2026-09-06 (mahj-ask-core
+  // engine/site-intent.ts), so what is asserted here is the routing DECISION for this site,
+  // not a regex this repository owns. The release gate's twentieth blocker was that nothing
+  // anywhere could compare the two sites' own matchers.
   for (const q of local) {
-    test(`other: ${q}`, () => {
-      expect(classifyTopic(q, { discoverySignal: LVM_SITE.discoverySignal }), q).toBe("other");
+    test(`studio: ${q}`, () => {
+      expect(askDecision({ question: q }, LVM_SITE).kind, q).toBe("site");
     });
   }
 
-  test("a rules question with a studio word is mixed, and the rule still answers", () => {
+  test("a rules question with a studio word answers the rule and offers the studio after it", () => {
     for (const q of ["can I use a joker in a pair at open play", "at open play can I call a discard to make a pung"]) {
-      expect(classifyTopic(q, { discoverySignal: LVM_SITE.discoverySignal }), q).toBe("mixed");
-      expect(lookup({ question: q }).kind, q).toBe("answer");
+      const d = askDecision({ question: q }, LVM_SITE);
+      expect(d.kind, q).toBe("rules");
+      if (d.kind === "rules") expect(d.result.kind, q).toBe("answer");
     }
-    expect(LOCAL_BUSINESS_RE.test("open play")).toBe(true);
+  });
+
+  test("the studio never takes a genuine rules question (release gate blockers 8, 9, 10, 15)", () => {
+    for (const q of [
+      "when do you start the charleston",
+      "when do you open the wall",
+      "does a dead hand cost anything",
+      "are the joker rules different in las vegas",
+      "who goes first",
+      "explain the wall",
+      "our instructor told us the charleston is optional",
+    ]) {
+      expect(askDecision({ question: q }, LVM_SITE).kind, q).toBe("rules");
+    }
   });
 });
 

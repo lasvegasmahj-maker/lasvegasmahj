@@ -5,11 +5,14 @@ export type { CanonicalRule, Category, Level, Provenance, ApprovalState, RuleCla
 export { RULES_KNOWLEDGE, KNOWLEDGE_BY_ID, ALIASES, resolveId, entryById, isPending, PENDING_IDS, CURRENT_CARD_YEAR } from "./corpus/entries.ts";
 export { blindReadsAsPlace, placeAfterPrep, VARIANT_RE, AMERICAN_RE } from "./corpus/matchers.ts";
 export { normalizeQuestion, spellfix, prepare, mentionedYear, summarizeForEscalation, MAX_QUESTION_CHARS } from "./engine/normalize.ts";
-export { rankEntries, retrieve, approvalRank } from "./engine/retrieve.ts";
-export { classifyTopic, hasStrongRulesSignal, SHARED_DISCOVERY_RE, type AskTopic, type TopicHooks } from "./engine/topic.ts";
+export { rankEntries, retrieve, approvalRank, polarityOf, polarityConflict } from "./engine/retrieve.ts";
+export { classifyTopic, hasStrongRulesSignal, rulesProposition, tournamentForPlay, explicitRuleAsk, SHARED_DISCOVERY_RE, type AskTopic, type TopicHooks } from "./engine/topic.ts";
+export { route, activeRulesThread, type RouteKind, type RouteDecision, type RouteInput } from "./engine/route.ts";
+export { askDecision, isRulesGap, type AskDecision, type AskInput, type SiteSurface } from "./engine/ask.ts";
+export { siteIntent, placeOnlySearch, TOPIC_SWITCH_PHRASE, type SiteIntentKind, type SiteIntentResult } from "./engine/site-intent.ts";
 export { excludedIds, overrideSummary, type SiteConfig, type SiteOverride, type SiteId } from "./site.ts";
 export { CLARIFICATIONS, GAP_ANSWER, VARIANT_SCOPE_ANSWER, needsClarification, topicClarification, resolveReply, isExactOption, answersOption, toPayload, type ClarifyContext, type ClarifyPayload, type Clarification } from "./engine/clarify.ts";
-export { CARD_REFUSAL, CARD_REFUSAL_FOLLOWUPS, EMPTY_ANSWER, SMALL_TALK, CANCELLED, ELLIPTICAL_RE, isCardContentRequest, isSmallTalk, isWhyFollowup, cancelPhrase, yearNoteFor, splitQuestions } from "./engine/guards.ts";
+export { CARD_REFUSAL, CARD_REFUSAL_FOLLOWUPS, EMPTY_ANSWER, SMALL_TALK, CANCELLED, ELLIPTICAL_RE, isCardContentRequest, cardDemandedOfAssistant, isSmallTalk, isWhyFollowup, cancelPhrase, yearNoteFor, splitQuestions } from "./engine/guards.ts";
 export { LABEL_TEXT, PENDING_NOTE, type AskLabel } from "./engine/labels.ts";
 export {
   lookup,
@@ -47,5 +50,5 @@ export {
   type ComposeOptions,
 } from "./model/compose.ts";
 export { SlidingWindow, ipOf, makeLimiters, DEFAULT_LIMITS } from "./limits/sliding-window.ts";
-export { corpusFingerprint, behaviorFingerprint, coreIdentity, BEHAVIOR_PROBES, type CoreIdentity } from "./fingerprint.ts";
+export { corpusFingerprint, behaviorFingerprint, routingFingerprint, sharedRoutingFingerprint, coreIdentity, BEHAVIOR_PROBES, ROUTING_PROBES, type CoreIdentity } from "./fingerprint.ts";
 export { CORE_VERSION } from "./version.ts";

@@ -43,18 +43,11 @@ export function readMoreUrl(e: CanonicalRule): string | undefined {
   return slug ? `${RULES}/${slug}` : undefined;
 }
 
-// Studio, lessons, and booking vocabulary. With a strong rules signal the question is
-// "mixed" (rule answered, studio link offered); with only an everyday-word rules signal it is
-// about the studio, not the table.
-export const LOCAL_BUSINESS_RE =
-  /\b(lessons?|class|classes|studio|open play|book(ing)?|schedule|hours|address|parking|price|pricing|cost|costs|party|parties|corporate|events?|sign ?up|register|reservation|reserve|contact|phone|email|location|directions|where (is|are) you|when (is|are) (you|your|the studio|the class|the lesson|open play)\b|when do you (open|start|teach|run|host|hold|have a)\b|do you (offer|run|teach|host)\b|do you have (a|an|any|the|room|space|parking|openings|gift)\b|gift cards?|shop|store|newsletter|instructor|teacher|private (lesson|event)|birthday|team building|las vegas|henderson|summerlin|mahj ?\d{3}|do you teach|what do you teach)\b/i;
-
 export const LVM_SITE: SiteConfig = {
   site: "lvm",
   helperName: "Ask Las Vegas Mahjong",
   siteHost: "lasvegasmahj.com",
   readMoreUrl,
-  discoverySignal: (q) => LOCAL_BUSINESS_RE.test(q),
   overrides: [
     {
       canonical_id: "payments-basics",

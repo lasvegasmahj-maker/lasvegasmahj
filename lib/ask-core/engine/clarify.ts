@@ -5,6 +5,7 @@
 // Mahj lib/rules/clarify.ts at cb87d4c; behavior unchanged.
 
 import { RULES_KNOWLEDGE, resolveId } from "../corpus/entries.ts";
+import { tournamentForPlay } from "./topic.ts";
 import {
   CLAIM_VERB,
   EXPOSURE_CUE,
@@ -52,11 +53,6 @@ const VARIANT_NAMES: Record<string, string> = {
   sichuan: "Sichuan", taiwanese: "Taiwanese", korean: "Korean", filipino: "Filipino", singapore: "Singapore", singaporean: "Singaporean",
   mcr: "MCR", "zung jung": "Zung Jung", zungjung: "Zung Jung", shanghai: "Shanghai", "wright patterson": "Wright-Patterson", "wright-patterson": "Wright-Patterson", wrightpatterson: "Wright-Patterson", siamese: "Siamese",
 };
-const TOURNAMENT_RE = /\btournaments?\b/i;
-// A question ABOUT tournaments (how their rules differ, what a director may do) is the
-// tournament-rules entry's, not a rule asked for tournament play.
-const TOURNAMENT_SUBJECT =
-  /\btournaments? (follow|use|have|make up|invent|run|score|differ|are different|play by|go by)\b|\bdirectors? (can|may|get to|allowed to|invent|make up|make us)\b|\btournament (rules?|directors?|play)\b[^.?!]{0,30}\b(differ|different|invent|make up|allowed|can|may|official|league|book|vs|versus|compared|same)\b|\bcan (a|the) (tournament )?directors?\b|\b(what|how) (is|are) (a |the )?tournaments? (rules?|different|scored|run)\b|\bhow do tournaments? (work|differ|score)\b|\bwhat('s| is) different about tournaments?\b/i;
 const TOURNAMENT_PHRASE = /\b(in|at|during|for|under|with) (a |the |our |my )?tournaments?( rules| play)?\b|\btournaments?( rules| play)?\b/gi;
 const PASS_VERB = /\bpass(es|ed|ing)?\b/i;
 // The disambiguating word has to sit near "pass"; "at the studio game last night I asked can I
@@ -136,7 +132,10 @@ export const CLARIFICATIONS: Clarification[] = [
   },
   {
     id: "tournament",
-    prompt: "Are you asking about standard League play or a tournament's rules?",
+    // Owner decision 2026-09-06: explicit tournament language must not be answered with the
+    // ordinary social rule as though every tournament were identical.
+    prompt:
+      "Are you asking about standard NMJL rules or the rules for a particular tournament? Tournament directors can set additional procedures and scoring.",
     options: [
       {
         key: "standard",
@@ -197,7 +196,12 @@ export function needsClarification(question: string, matchesAfterTournamentStrip
       prompt: `That sounds like it may be about ${variantName(q)} style mahjong. I can only verify American mahjong rules, the National Mah Jongg League style. Did you mean American mahjong?`,
     };
   }
-  if (TOURNAMENT_RE.test(q) && !TOURNAMENT_SUBJECT.test(q)) {
+  // One test, shared with the routing contract, so the router and the engine can never
+  // disagree about which questions are asked FOR tournament play. The gate found seven
+  // phrasings ("in tournament play ...", "under tournament rules ...") that the old
+  // subject test swallowed, and each was answered with a confident League permission for a
+  // setting where a director routinely bans it.
+  if (tournamentForPlay(q)) {
     const stripped = stripTournament(q);
     if (stripped !== q && matchesAfterTournamentStrip(stripped)) return CLARIFICATIONS.find((c) => c.id === "tournament")!;
   }

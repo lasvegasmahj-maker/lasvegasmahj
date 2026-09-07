@@ -5,8 +5,9 @@
 import type { CanonicalRule } from "./types.ts";
 import { FMG_ENTRIES } from "./entries-fmg.ts";
 import { LVM_ENTRIES } from "./entries-lvm.ts";
+import { OWNER_2026_09_06_ENTRIES } from "./entries-owner-2026-09-06.ts";
 
-export const RULES_KNOWLEDGE: CanonicalRule[] = [...FMG_ENTRIES, ...LVM_ENTRIES];
+export const RULES_KNOWLEDGE: CanonicalRule[] = [...FMG_ENTRIES, ...LVM_ENTRIES, ...OWNER_2026_09_06_ENTRIES];
 
 export const KNOWLEDGE_BY_ID: ReadonlyMap<string, CanonicalRule> = new Map(RULES_KNOWLEDGE.map((e) => [e.id, e]));
 

@@ -36,7 +36,7 @@ import {
 } from "./guards.ts";
 import type { AskLabel } from "./labels.ts";
 import { normalizeQuestion, prepare, spellfix, summarizeForEscalation } from "./normalize.ts";
-import { compareScored, rankEntries, retrieve, type RetrieveOptions } from "./retrieve.ts";
+import { compareScored, polarityConflict, rankEntries, retrieve, type RetrieveOptions } from "./retrieve.ts";
 import { ACCIDENT_SCENE, AMERICAN_RE, VARIANT_RE } from "../corpus/matchers.ts";
 
 export type Turn = {
@@ -362,6 +362,15 @@ export function lookup(input: LookupInput, opts: LookupOptions = {}): LookupResu
     return clarificationResult(toPayload(topicClarification(fixed, opts.exclude), question), "no_entry", { summary: summarizeForEscalation(question), reason: "no_entry" });
   }
   if (found.entry) {
+    // Two equally strong candidates whose approved answers open with opposite verdicts: the
+    // engine cannot tell which proposition the player is making, and serving either one's
+    // "Yes." or "No." would state a rule the other denies. Ask instead.
+    if (!found.elliptical && polarityConflict(rankEntries(fixed, opts), approvedText)) {
+      return clarificationResult(toPayload(topicClarification(fixed, opts.exclude), question), "polarity_ambiguous", {
+        summary: summarizeForEscalation(question),
+        reason: "opposite_verdicts",
+      });
+    }
     const r = entryResult(found.entry, { history, opts, raw: question, elliptical: found.elliptical, catchAllOnly: found.catchAllOnly, candidates: found.candidates });
     return twoPart(question, r, history, opts);
   }

@@ -148,7 +148,10 @@ export const LVM_CHARLESTON: CanonicalRule[] = [
     ],
     keywords: ["joker", "pass", "charleston"],
     requires: [JOKER, JOKER_PASSED],
-    blocks: [DISCARDED, DEAD],
+    // The dead-hand block is for questions about a dead hand's jokers. It must not take away
+    // "does passing a joker make my hand dead", which is this entry's own scene and which the
+    // corpus answers by saying a joker may not be passed at all (release gate blocker 4).
+    blocks: [DISCARDED, (q: string) => DEAD.test(q) && !JOKER_PASSED.test(q)],
     answer:
       "No, and you may not: jokers cannot be passed in the charleston at all. Any other 3 tiles may be passed, so hold your jokers and pass something else.",
     varies_by_house: false,

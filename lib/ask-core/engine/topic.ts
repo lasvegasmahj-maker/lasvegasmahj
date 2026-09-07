@@ -65,6 +65,7 @@ const RULES_SIGNAL_RES: RegExp[] = [
   /\bstart with\b.{0,20}\btiles?\b|\btiles?\b.{0,30}\bstart\b/i,
   /\bpenalt(y|ies)\b/i,
   /\bcourtesy pass\b/i,
+  /\bheavenly hands?\b/i,
   BLIND_PASS,
   /\bwild tiles?\b/i,
   /\b(same tile|same discard|two players (call|want)|both (call|want)|who gets the tile|who gets it)\b/i,
@@ -121,6 +122,10 @@ const RULES_SIGNAL_RES: RegExp[] = [
   /\b(got|was|were|been|being|am|are|is) (wrongly |just )?(called|declared|ruled|deemed|pronounced) dead\b|\bboth (got |were |are )?(called |declared )?dead\b|\b(two|three|both) dead\b/i,
   /\bhow long (do|does|can|before|until)\b[^.?!]{0,20}\b(call|claim)\b(?! ?back)/i,
   /\bjoker swap\b/i,
+  // Money at the table, which is a rule and not a price list: "does a dead hand cost anything",
+  // "how much do I owe the winner", "is there a fee for going dead". The commerce vocabulary
+  // that keeps shop questions out of the rules engine was swallowing these (release gate 9).
+  /\b(fee|fees|cost|costs|pay|pays|paid|owe|owes|charge|charged)\b[^.?!]{0,32}\b(going dead|gone dead|dead hand|being dead|hand (is|goes|went) dead|the winner|the discarder|self[- ]?(pick|draw)\w*|wall game)\b|\b(going dead|dead hand|the winner|the discarder|wall game)\b[^.?!]{0,32}\b(fee|fees|cost|costs|pay|pays|paid|owe|owes|charge|charged)\b/i,
   /\bwinds? (part of|in) a suit\b|\bis (north|south|east|west) a (bam|crak|dot)\b/i,
   // "tournament play near Naples" is a search; "tournament play" alone is a conditional signal.
   /\btournaments? (follow|use|have|make|run|score)\b|\b(do|does|are|how do) tournaments?\b/i,
@@ -168,7 +173,7 @@ const CONDITIONAL_RULES_SIGNALS: RegExp[] = [
   /\b(18|19) tiles\b|\bhow long is (each|the|a) wall\b|\bcard (shows|says|lists|prints|has) \d/i,
   /\b(min|minimum|max|maximum|fewest|least|most) (number of )?(people|players)\b|\bnumber of (people|players)\b/i,
   /\b(pick|choose|decide on|go for) (which|what|a|my) hand\b|\bwhich hand to\b/i,
-  /\b(stare|peek|look|glance) at\b[^.?!]{0,20}\b(tiles?|rack|exposures?)\b/i,
+  /\b(stare|peek|look|glance) at\b[^.?!]{0,20}\b(tiles?|rack|exposures?|cards?|hands?)\b/i,
   /\b(call|calling|claim) (stuff|things|anything)\b/i,
   /\bdice\b|\broll(ing)? (the )?dice\b|\bwho('s| is) east (first|for the first)\b/i,
   /\b(cannot|can'?t|couldn'?t) agree\b|\bsettle (it|this|that|the (dispute|argument))\b/i,
@@ -185,7 +190,7 @@ const CONDITIONAL_RULES_SIGNALS: RegExp[] = [
   /\brules? dispute\b|\bwho (decides|is right|has the final say)\b[^.?!]{0,30}\b(rule|rules|dispute|argument|call|table)\b/i,
 ];
 
-const MAHJ_VOCAB =
+export const MAHJ_VOCAB =
   /\b(tiles?|hands?|discards?|discarded|discarding|walls?|card|charleston|jokers?|mahjong|mahj|maj|pungs?|kongs?|quints?|sextets?|expos\w*|melds?|racks?|deal|dealer|dealt|east|turns?|passing|win|wins|winning|won|bams?|craks?|dots?|winds?|dragons?|flowers?|soap|rules?|rule ?book|scoring|pays?|paid|payments?|dead|call|calls|called|calling|play|playing|players?|three[- ]handed|on the card|blanks?|pass|passes|redeal|suits?|points?|money)\b/i;
 // Other games and pastimes that share vocabulary with mahjong.
 const OTHER_GAMES =
@@ -195,7 +200,7 @@ const MAHJ_CORE = /\b(mahjong|mahj|maj|mah ?jongg?|charleston|pungs?|kongs?|quin
 // "Which class covers exposures?", "Does MAHJ101 teach the charleston?", "do I need to know
 // how to call tiles before joining open play": what a course covers, or what a player needs
 // before booking one. A rules word here names the syllabus, not the question.
-const COURSE_CONTENT =
+export const COURSE_CONTENT =
   /\b(class|classes|course|courses|lessons?|workshop|mahj ?\d{3})\b[^.?!]{0,40}\b(cover|covers|teach|teaches|taught|deals? with|includes?|go(es)? over)\b|\b(is|are) (the |a |this |that |your )?(class|course|lessons?|workshop|mahj ?\d{3})\b[^.?!]{0,20}\babout\b|\b(cover|covers|teach|teaches|taught|includes?)\b[^.?!]{0,24}\b(class|classes|course|lessons?|workshop)\b|\bwhich (class|course|lesson|workshop)\b|\bdo i need to know\b[^.?!]{0,40}\b(before|to) (i |you |we )?(join|joining|book|booking|start|starting|attend|attending|sign|come|coming|take|taking)\b/i;
 const CHARLESTON_PLACE = /\bcharleston,? (sc|s\.c\.|south carolina|wv|west virginia)\b|\b(trip|vacation|visit|visiting|flights?|hotels?) [^.?!]{0,20}\bcharleston\b|\bcharleston\b[^.?!]{0,20}\b(trip|vacation|hotels?|flights?|weather)\b/i;
 // Shopping and pricing: "where can I buy a set", "how much is the card at your shop".
@@ -203,9 +208,9 @@ const COMMERCE_VERB = /\b(buy|buying|purchase|purchasing|order(ed|ing)? (a|an|th
 const COMMERCE_OBJECT = /\b(set|sets|tiles|card|cards|rack|racks|mat|mats|case|bag|book|books|lessons?|class|classes|shop|store|amazon|large print|copy)\b/i;
 // Naming the rule itself: "what is the rule about flowers", "is that a rule".
 const EXPLICIT_RULE_ASK =
-  /\b(what|which) (is|are) the rules?\b|\bthe rules? (about|for|on|regarding|with)\b|\bis (that|this|it) (a|the) rule\b|\bwhat does the rule say\b|\b(is|are) (the|a|an) (white|red|green) dragons?\b|\bis (the|a|an) [\w ]{0,12}\b(the )?(soap|dragon|joker|flower|wind)\b|\bwhich (dragon|suit|tile|wind|flower)\b/i;
+  /\b(what|which) (is|are) the rules?\b|\b(a|the|any) rules? (about|for|on|regarding|with)\b|\b(make|makes|made|making) up (our|their|your|his|her|my|its) own rules?\b|\b(our|their|your|his|her|my) own rules?\b|\bis (that|this|it) (a|the) rule\b|\bwhat does the rule say\b|\b(is|are) (the|a|an) (white|red|green) dragons?\b|\bis (the|a|an) [\w ]{0,12}\b(the )?(soap|dragon|joker|flower|wind)\b|\bwhich (dragon|suit|tile|wind|flower)\b/i;
 const RULE_ASK_FORM =
-  /\b((can|may|should|could|must|allowed|supposed|able) (i|we|you|she|he|they)|(i|we|you|she|he|they) (can|may|should|could|must))\b[^.?!]{0,30}\b(call|pass|exchange|swap|declare|discard|expose|redeem|use|play|pick|draw|claim|win)\b/i;
+  /\b((can|may|should|could|must|allowed|supposed|able) (i|we|you|she|he|they)|(i|we|you|she|he|they) (can|may|should|could|must))\b[^.?!]{0,30}\b(call|pass|exchange|swap|declare|discard|expose|redeem|use|pick|draw|claim|win)\b/i;
 // Strong signals that are only a tile or phase noun; beside a discovery cue they describe the
 // search ("kids class near me, jokers and all"), not a rules question.
 const NOUN_ONLY_SIGNALS = new Set<string>([
@@ -277,6 +282,64 @@ export type TopicHooks = {
 
 export function hasStrongRulesSignal(q: string): boolean {
   return RULES_SIGNAL_RES.some((re) => re.test(q));
+}
+
+// Is there a rules PROPOSITION here, as opposed to a rules noun sitting in a sentence about
+// something else? This is the test the routing contract uses, and it is deliberately stricter
+// than hasStrongRulesSignal: a tile or phase noun on its own ("jokers", "the charleston") is
+// not a proposition, because those are exactly the words a lesson listing and a club name also
+// carry. An explicit permission question, a question that names the rule itself, an everyday
+// signal in plain mahjong context, or a named style all are.
+export function rulesProposition(raw: string): boolean {
+  const q = prepare(raw);
+  if (!q) return false;
+  if (loneTileNounFragment(q)) return false;
+  // "do I need to call ahead for open play" is a phone call, not a claim. The classifier has
+  // always known this; the proposition test has to know it too, or a booking question with a
+  // studio object becomes a mixed route and the rules engine answers it.
+  if ((CONTACT_SENSE.test(q) || CONTACT_EXTRA.test(q)) && !MAHJ_ONLY_NOUN.test(q)) return false;
+  if (OTHER_GAMES.test(q) && !MAHJ_CORE.test(q)) return false;
+  if (CHARLESTON_PLACE.test(q)) return false;
+  if (COURSE_CONTENT.test(q)) return false;
+  if (RULE_ASK_FORM.test(q) || EXPLICIT_RULE_ASK.test(q)) return true;
+  const questionForm = /\b(what|how|why|when|can|could|should|is|are|do|does|work|mean|which|who)\b/i.test(q);
+  const plainContext = MAHJ_VOCAB.test(q) && !COMMERCE_RE.test(q);
+  if (VARIANT_RE.test(q) && (questionForm || plainContext)) return true;
+  if (CONDITIONAL_RULES_SIGNALS.some((re) => re.test(q)) && plainContext) return true;
+  const matchedStrong = RULES_SIGNAL_RES.filter((re) => re.test(q));
+  if (!matchedStrong.length) return false;
+  // A strong signal that is more than a bare noun is a proposition on its own.
+  return !matchedStrong.every((re) => NOUN_ONLY_SIGNALS.has(String(re)));
+}
+
+// A rules question asked FOR tournament play, which no single answer can settle because a
+// director may add procedures of their own. Distinguished from a question ABOUT tournaments,
+// which the tournament-rules entry answers: "what rules can a director change at a tournament"
+// is about them; "in tournament play can I use a joker in a pair" is asked for one.
+const TOURNAMENT_FOR_PLAY =
+  /\b(?:in|under|during|at|for|playing in|play(?:ing)? under|when playing)\s+(?:a |an |the |our |my |any |this |that )?(?:\w+ ){0,2}tourn\w{0,3}ments?(?:\s+(?:rules?|play|conditions?|settings?))?\b|\btourn\w{0,3}ment (?:rules?|play)\s*[-–,:]?\s*(?:can|may|could|do|does|is|are|must|should|am|what|when|how|who|for)\b|\btournaments?\s*[-–:]\s*(?:can|may|could|do|does|is|are|must|should|what|when|how|who)\b|\btournaments?\s+(?:let|lets|allow|allows|permit|permits|require|requires|ban|bans|forbid|forbids)\b|\b(?:can|may|could|is|are|do|does|would|will)\b[^.?!]{0,40}\b(?:in|at|during|for) (?:a |an |the |any )?(?:\w+ ){0,2}tournaments?\b/i;
+// Naming tournaments as the subject: the corpus entry answers these.
+const TOURNAMENT_AS_SUBJECT =
+  /\btournaments?\s+(?:follow|use|uses|have|has|make|makes|make up|invent|run|score|differ|are different|play by|go by)\b|\bwhat rules?\b[^.?!]{0,40}\b(?:director|tournament)\b|\b(?:what|which|how)\b[^.?!]{0,24}\b(?:a |the )?(?:tournament )?directors?\b[^.?!]{0,24}\b(?:can|may|change|set|add|decide|allowed)\b|\b(?:can|may|will|would)\s+(?:a |the )?(?:tournament )?directors?\s+(?:make|change|set|add|ban|forbid|require|invent|overrule|impose)\b|\bdo tournaments? (?:follow|use|have|go by|play by|score)\b|\bhow (?:do|are) tournaments?\b|\bwho makes the rules\b|\bwhat(?:'s| is) different about tournaments?\b/i;
+
+// Somebody explicitly asked whether something is allowed, or named the rule itself. This is
+// what tells a place-name question apart from a rules question that mentions a place.
+export function explicitRuleAsk(raw: string): boolean {
+  const q = prepare(raw);
+  return !!q && (RULE_ASK_FORM.test(q) || EXPLICIT_RULE_ASK.test(q));
+}
+
+export function tournamentForPlay(raw: string): boolean {
+  const q = prepare(raw);
+  if (!q) return false;
+  if (TOURNAMENT_AS_SUBJECT.test(q)) return false;
+  if (!TOURNAMENT_FOR_PLAY.test(q)) return false;
+  // "any tournaments in Florida this spring" names no part of the game, so it is a search.
+  // Mahjong vocabulary is the gate rather than a full proposition, because "are the card rules
+  // different in a tournament" carries no strong signal and is plainly asked for one.
+  // A short elliptical turn ("does that change in a tournament?") names no mahjong word and
+  // is still asked for tournament play.
+  return MAHJ_VOCAB.test(q) || q.split(/\s+/).filter(Boolean).length <= 8;
 }
 
 export function classifyTopic(raw: string, hooks: TopicHooks = {}): AskTopic {

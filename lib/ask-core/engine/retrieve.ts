@@ -91,3 +91,34 @@ export function retrieve(question: string, opts: RetrieveOptions = {}): Canonica
   if (!best || best.matchLength === 0) return null;
   return best.entry;
 }
+
+// Yes/no polarity safety.
+//
+// Five of the release gate's confirmed blockers were the same shape: an entry whose approved
+// answer opens with a bare "Yes." or "No." was selected for a question its text does not cover,
+// and that opening word then inverted the ruling. The matchers that let each of those five
+// through are fixed at the concept level, but the shape can recur, so retrieval carries a net.
+//
+// The net is deliberately narrow. It never rewrites an answer and never invents a rule: when
+// two candidates are equally specific, equally approved, and equally well matched, and their
+// approved texts open with OPPOSITE verdicts, the engine cannot establish which proposition the
+// player is making, so a clarification wins over a coin flip.
+export function polarityOf(text: string): "yes" | "no" | null {
+  const m = /^\s*(yes|no)\b/i.exec(text);
+  return m ? (m[1].toLowerCase() as "yes" | "no") : null;
+}
+
+export function polarityConflict(ranked: readonly Scored[], textOf: (e: CanonicalRule) => string): boolean {
+  const top = ranked[0];
+  if (!top) return false;
+  const lead = polarityOf(textOf(top.entry));
+  if (!lead) return false;
+  for (const other of ranked.slice(1, 4)) {
+    // A narrower or more explicitly decided entry winning is the ranking working as designed.
+    if (other.specificity !== top.specificity || other.approvalRank !== top.approvalRank) continue;
+    if (top.score - other.score > 1) continue;
+    const rival = polarityOf(textOf(other.entry));
+    if (rival && rival !== lead) return true;
+  }
+  return false;
+}

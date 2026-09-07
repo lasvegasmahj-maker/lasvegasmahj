@@ -1,32 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   MAX_QUESTION_CHARS,
+  askDecision,
   replyStaysReply,
   askedEntryIds,
   buildFollowups,
-  cancelPhrase,
-  classifyTopic,
   composeWithModel,
   entryById,
   excludedIds,
   ipOf,
-  isSmallTalk,
   lookup,
   makeLimiters,
   modelEligible,
+  siteIntent,
   summarizeForEscalation,
   type ClarifyPayload,
   type LookupResult,
   type Turn,
 } from "@/lib/ask-core/index.ts";
 import { anthropicClient, isModelEnabled, modelName } from "@/lib/ask/model-client";
-import { LOCAL_ANSWER, LOCAL_BUSINESS_RE, LOCAL_SUGGESTIONS, LVM_SITE, RULES_FALLBACK } from "@/lib/ask/site";
+import { LOCAL_ANSWER, LOCAL_SUGGESTIONS, LVM_SITE, RULES_FALLBACK } from "@/lib/ask/site";
 import { pickNudge, type Nudge } from "@/lib/ask/nudges";
 
 // Stateless by design: the browser sends the recent thread with every request and nothing is
-// stored server side. The shared core (lib/ask-core) decides every rule outcome; this route
-// adds the Las Vegas Mahjong overlay: the studio vocabulary, Read more links, nudges, and the
-// owner-recorded payment override.
+// stored server side. The shared core (lib/ask-core) decides every rule outcome AND which
+// surface owns the question: askDecision() applies the routing contract with this site's
+// config, so the studio can never take a question the rules engine should answer. This route
+// adds only the Las Vegas Mahjong overlay: Read more links, nudges, the studio pointer, and the
+// owner-recorded payment override. See mahj-ask-core/docs/ROUTING-CONTRACT.md.
 
 export const maxDuration = 30;
 
@@ -137,18 +138,21 @@ export async function POST(req: NextRequest) {
     const opts = { exclude: EXCLUDE };
     let live = clarify;
     if (live && question) {
-      const keep = replyStaysReply(live, question, (q) => LOCAL_BUSINESS_RE.test(q), EXCLUDE);
-      if (!keep && classifyTopic(question, { discoverySignal: LVM_SITE.discoverySignal }) === "other") live = null;
+      // A player mid-clarification who plainly switches to a studio question is not trapped;
+      // one that merely contains a studio-ish word stays in the thread.
+      if (!replyStaysReply(live, question, (q) => siteIntent(q, "lvm").structural, EXCLUDE)) live = null;
     }
-    const topic = live ? "rules" : classifyTopic(question, { discoverySignal: LVM_SITE.discoverySignal });
+    const decision = askDecision({ question, history, clarify: live }, LVM_SITE);
+    const topic = decision.route.kind;
     let response: AskResponse;
     let det: LookupResult | null = null;
 
-    if (topic === "other" && !isSmallTalk(question) && !cancelPhrase(question).cancelled) {
-      // Lessons, open play, the studio: never a rule, always a pointer into the site.
+    if (decision.kind === "site") {
+      // Lessons, open play, the studio: never a rule, always a pointer into the site. Reached
+      // only when nothing structural said "rules" and the shared engine found nothing to say.
       response = { ok: true, answer: LOCAL_ANSWER, label: "chat", kind: "offtopic", followups: [], suggestions: LOCAL_SUGGESTIONS, via: "rules" };
     } else {
-      det = lookup({ question, history, clarify: live }, opts);
+      det = decision.result;
       response = fromLookup(det, "rules");
 
       const consultModel = isModelEnabled() && modelEligible(det, question) && limits.modelPerMinute.check("global") && limits.modelPerDay.check("global");
@@ -179,7 +183,9 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      if (topic === "mixed") response.suggestions = LOCAL_SUGGESTIONS.slice(0, 2);
+      // A question that carries both a rule and a studio enquiry gets the rule first and the
+      // studio links after it, never instead of it.
+      if (decision.appendSiteResults) response.suggestions = LOCAL_SUGGESTIONS.slice(0, 2);
       if (det.escalation) console.info(JSON.stringify({ event: "ask_escalation", reason: det.escalation.reason, summary: det.escalation.summary }));
     }
 

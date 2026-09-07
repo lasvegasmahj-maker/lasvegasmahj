@@ -44,6 +44,11 @@ export const CARD_CONTENT_RES: RegExp[] = [
   /what('s| is| are) (on|in) (the|this year'?s?|the current|the new|the \d{4}|your) card/i,
   /\bhands? (on|for|from|in) (this|the|last|next|the current|the \d{4}) year\b/i,
   /\b(card hands?|hand list|hands? list|list of hands)\b/i,
+  // Which hands exist this year, however the question is dressed. "what hands use flowers this
+  // year" and "so what hands have jokers in them this year" both ask for lines off the card.
+  /\b(what|which)\b[^.?!]{0,16}\bhands?\b[^.?!]{0,40}\b(this year|last year|next year|20\d\d|on the card|on this year'?s? card)\b/i,
+  /\b(the whole|the entire|the full|the complete) card\b/i,
+  /\b(tournament|concealed|exposed|jokerless|joker[- ]?free) hands?\b[^.?!]{0,30}\b(on|in|from) (the|this|this year'?s?|the \d{4}) (\w+ )?card\b/i,
   /\b(\d{4}|this year'?s?|current|new) card\b[^.?!]{0,30}\b(hands?|lines?|categor(y|ies)|sections?)\b/i,
   // Verify a specific hand or line against the card.
   new RegExp(`(?:${HAND_PATTERN.source})[^.?!]{0,40}\\b(on|in) (the|this|this year'?s?|the \\d{4}|the new|the current) card\\b|\\b(is|are) (that|this|it|the|my) (hand|line)s? (still |even )?(on|in) (the|this|this year'?s?|the \\d{4}|the new|the current) card\\b`, "i"),
@@ -54,13 +59,24 @@ export const CARD_CONTENT_RES: RegExp[] = [
   // Is a given hand on the card.
   /\b(is|are) there (a|an|any|still a) [^.?!]{0,30}\b(hands?|lines?)\b[^.?!]{0,20}\b(on|in) (the|this|the \d{4}|this year'?s?|the new|the current) card\b/i,
   // A copy of the card.
-  /\bcards?\b[^.?!]{0,25}\b(pdf|copy|image|photo|scan|picture|download|screenshot)\b/i,
-  /\b(pdf|copy|image|photo|scan|picture|download|screenshot)\b[^.?!]{0,25}\bcards?\b/i,
+  /\bcards?\b[^.?!]{0,25}\b(pdf|image|photo|scan|picture|download|screenshot)\b/i,
+  /\b(pdf|image|photo|scan|picture|download|screenshot)\b[^.?!]{0,25}\bcards?\b/i,
+  // A copy is a content request only when it is asked of the assistant, never when it is bought.
+  /\b(send|give|share|post|email|text|show)\b[^.?!]{0,20}\bcop(y|ies)\b[^.?!]{0,20}\bcards?\b|\bcop(y|ies) of the card\b(?![^.?!]{0,30}\b(buy|purchase|order|cost|price|shop|store|where)\b)/i,
 ];
+
+// A demand aimed at the assistant. Structural site intent excuses a question that merely names
+// the card ("find a teacher who explains the card"); it never excuses this.
+// Asking WHO can do something is a search for a person, not a demand on the assistant:
+// "who can give me a card lesson in summerlin" is the directory's question.
+const THIRD_PARTY_ASK = /\b(who|anyone|anybody|someone|somebody|find|finding|looking for|is there|are there|which|what) (?:can|could|does|do|will|would|teacher|class)\b|\bwho teaches\b/i;
+
+export const CARD_DEMAND_TO_ASSISTANT =
+  /\b(send|sends|paste|pastes|print|prints|type|types|write|writes|list|lists|show|shows|give|gives|text|texts|email|emails|post|posts|recite|dump|copy|reproduce|screenshot)\b[^.?!]{0,24}\b(me|us|it|them|here|out|down|over)\b[^.?!]{0,80}\b(cards?|hands?|lines?|sections?|categor(?:y|ies))\b|\b(cards?|hands?|lines?)\b[^.?!]{0,24}\b(here|to me|to us)\b|\b(the (?:whole|entire|full|complete) card)\b/i;
 
 // Learning to read the card, asking what a notation means, or asking a rule about the card
 // in general is not a content request.
-const READ_SKILL = /\b(how to|learn(ing)? to|teach(es|ing)? (me|us|you|how)|class(es)? on|lessons? on|help (me |us )?(understand|read|with)|understand(ing)? how to)\b[^.?!]{0,20}\bread(ing)? (the|a|my|this|your|the new|the \d{4}) card\b/i;
+const READ_SKILL = /\b(how to|how (?:do|does|can|should) (?:i|you|we|a beginner)|learn(ing)? to|teach(es|ing)? (me|us|you|how)|class(es)? on|lessons? on|help (me |us )?(understand|read|with)|understand(ing)? how to)\b[^.?!]{0,20}\bread(ing)? (the|a|my|this|your|the new|the \d{4}) card\b/i;
 const NOTATION_ASK =
   /\b(colou?rs?|notation|symbols?|letters?|abbreviations?|legend|mean|means|meaning|stand for|stands for|represent|parenthes[ei]s)\b|\b[CX]\b|\bprinted in (green|red|blue|black)\b|\b(green|red|blue|black) (always )?(mean|means)\b|\b(four|five|three|two) \ds\b|\bis that (four|five|three|two|\d+)\b|\b(dollars|cents|pennies) or (points|dollars|cents)\b|\bpoints or (dollars|cents|pennies)\b|\bsoap\b[^.?!]{0,20}\bzero\b|\bzero\b[^.?!]{0,20}\bsoap\b/i;
 
@@ -80,7 +96,7 @@ const RULE_CONCEPT_HAND =
   /\b(dead|concealed|closed|open|exposed|winning|losing|jokerless|joker[- ]?free|singles and pairs|three[- ]handed) hands?\b/i;
 const MEANING_ASK = /\b(mean|means|meaning|stand for|stands for)\b/i;
 const VALUE_ASK = /\b(worth|points?|values?|pay|pays|score|scores)\b/i;
-const CARD_COMMERCE = /\bat (your|the|a) (shop|store)\b|\bdo you (carry|sell|stock)\b|\bhow much (is|does|are) [^.?!]{0,30}\b(cost|at your|charging|charge)\b|\b(buy|purchase|order) (a |the |this year'?s |a new )?card\b|\bcard (costs?|price)\b|\blarge print\b|\bcharging for the card\b/i;
+const CARD_COMMERCE = /\bat (your|the|a) (shop|store)\b|\bdo you (carry|sell|stock)\b|\bhow much (is|does|are) [^.?!]{0,30}\b(cost|at your|charging|charge)\b|\b(buy|buying|purchase|order|ordering) (a |the |this year'?s |a new |copies of |a copy of |cards? for )?(the )?cards?\b|\bcard (costs?|price)\b|\blarge print\b|\bcharging for the card\b|\bwhere (can|do) (i|we|you) (buy|get|order|find) (a |the |this year'?s |a copy of )?(the )?cards?\b/i;
 
 // "Explain the hands on the 2026 card" is the card; "a teacher who explains hands" is a
 // lesson. Tested only when the card, a section, a printed hand or a year is also present.
@@ -92,6 +108,11 @@ const TEACHING_CARD_THING = new RegExp(
   `(?:${TEACHING_VERB.source})[^.?!]{0,40}${CARD_THING.source}|${CARD_THING.source}[^.?!]{0,40}(?:${TEACHING_VERB.source})`,
   "i",
 );
+
+/** A reproduction demand aimed at the assistant rather than at a person who might teach you. */
+export function cardDemandedOfAssistant(fixed: string): boolean {
+  return CARD_DEMAND_TO_ASSISTANT.test(fixed) && !THIRD_PARTY_ASK.test(fixed);
+}
 
 export function isCardContentRequest(fixed: string): boolean {
   if (NOT_THE_CARD.test(fixed) || READ_SKILL.test(fixed) || CARD_COMMERCE.test(fixed)) return false;

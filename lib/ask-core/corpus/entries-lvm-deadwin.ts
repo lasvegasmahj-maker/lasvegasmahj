@@ -9,6 +9,7 @@ import {
   CLAIM_VERB, JOKER, JOKER_EXCHANGE, MAHJONG_CUE, DISCARDED, ERROR_CUE, MISNAMED, TWO_PLAYERS, OWN_DISCARD, DEAD,
   PASS_VERB, CHARLESTON_WORD, PAYMENT, EXPOSURE_WORD, HAND_CLOSED, DECLINE_CALL, DECLINE_CUE, WRONG_COUNT,
   EXCHANGE_CONTEXT, FINAL_DISCARD_SCENE, DISCARDED_JOKER_SCENE, OWN_DISCARD as OWN_DISCARD_M, NO_WINNER_SCENE,
+  SKIPPED_DRAW,
 } from "./matchers.ts";
 import { lvmPage, lvmPending } from "./entries-fmg.ts";
 
@@ -128,7 +129,7 @@ export const LVM_DEADWIN: CanonicalRule[] = [
     question_patterns: [DEAD, DEAD_PLAY_ON],
     keywords: ["dead", "draw", "continue", "sit out"],
     requires: [DEAD, DEAD_PLAY_ON],
-    blocks: [/\bout of turn\b|\bfrom earlier\b/i, TWO_DEAD, JOKER, WRONG_COUNT, ERROR_CUE, EXPOSURE_WORD, MISNAMED, DEAD_PAY, CALL_IS_DEAD],
+    blocks: [/\bout of turn\b|\bfrom earlier\b/i, SKIPPED_DRAW, TWO_DEAD, JOKER, WRONG_COUNT, ERROR_CUE, EXPOSURE_WORD, MISNAMED, DEAD_PAY, CALL_IS_DEAD],
     answer:
       "No. Once a hand is declared dead, that player does not draw or discard for the rest of the hand. They sit out until the next hand begins.",
     varies_by_house: false,

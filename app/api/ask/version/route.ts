@@ -10,7 +10,7 @@ export async function GET() {
   return NextResponse.json(
     {
       site: LVM_SITE.site,
-      ...coreIdentity(),
+      ...coreIdentity(LVM_SITE),
       overrides: overrideSummary(LVM_SITE),
       build: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? null,
     },
