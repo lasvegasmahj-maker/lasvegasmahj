@@ -12,6 +12,7 @@ import {
   WRONG_COUNT,
   DISCARDED_JOKER_SCENE,
 } from "./matchers.ts";
+import { DECLARE_MAHJONG } from "./concepts.ts";
 import { lvmPage, lvmPending } from "./entries-fmg.ts";
 
 // "Hong Kong" is a style name the ruleset clarification handles, never a set of four.
@@ -44,6 +45,8 @@ const EXPOSE_SHOW = new RegExp(
 const IMMEDIACY =
   /\b(immediately|right away|right then|at once|straight away|as soon as|instantly|on the spot|before (i|you) discard|until (i|you) discard|after (i|you) discard|when (i|you) call|after (i|you) call|once (i|you) call|change|changed|fix|adjust|rearrange|swap|move|alter|locked|lock(ed)? in|committed|undo|take back|first)\b/i;
 
+const WINDOW_CLOSED_CUE =
+  /\b(?:after|once)\b[^.?!]{0,40}\b(?:picked and racked|picks and racks|already (?:picked|racked|drawn|discarded)|next player has (?:picked|drawn|racked))\b|\btoo late to (?:call|claim|take)\b/i;
 const CALL_WINDOW =
   /\b(how (fast|quick|quickly|long|soon|much time|late)|too late|late|window|time limit|timer|timing|deadline|cutoff|cut off|in time|quick enough|fast enough|too slow|slow|hesitat\w+|promptly|speed|(before|until|once|after|when) the next (player|person|one)|next (player|person) (has )?(already )?(picks?|picked|draws?|drew|drawn|racks?|racked|takes?|took|taken|discards?|discarded|goes|went|moves?|moved)|already (picked|drew|drawn|racked|took|taken|discarded|moved on|gone|started)|(picked|drew|drawn|racked|took|taken)\b[^.?!,;]{0,20}\b(from the wall|next tile|their tile|a tile|the wall)|racked (it|the tile|their tile|her tile|his tile)|(still|yet) (call|claim|take|get|grab|allowed|able)|miss(ed|ing)? (it|the tile|the discard|my chance|the chance|the call|out)|(chance|window|opportunity) (is|has) (gone|closed|passed|over)|closes?|(too|so) (fast|quick|slow)|reaction|before (she|he|they|someone|somebody) (picks?|picked|draws?|drew|racks?|racked|discards?)|how long (do|does|can|before|after|until))\b/i;
 
@@ -59,6 +62,9 @@ const OUT_OF_TURN_CUE =
 // The call itself is what happened out of turn; a pick out of turn is picking-ahead's rule.
 const CALL_OUT_OF_TURN = new RegExp(
   `${CALL_WORD.source}[^.?!]{0,60}${OUT_OF_TURN_CUE.source}|${OUT_OF_TURN_CUE.source}[^.?!]{0,60}${CALL_WORD.source}`, "i");
+
+const WINDOW_CLOSED_HERE =
+  /\b(?:after|once)\b[^.?!]{0,40}\b(?:picked and racked|picks and racks|next player has (?:picked|drawn|racked))\b|\btoo late to (?:call|claim|take)\b/i;
 
 export const LVM_CALLING: CanonicalRule[] = [
   {
@@ -160,8 +166,12 @@ export const LVM_CALLING: CanonicalRule[] = [
     topic: "How long the calling window stays open",
     question_patterns: [CLAIM_VERB, CALL_WINDOW],
     keywords: ["how fast", "too late", "window", "next player"],
-    requires: [new RegExp(`${CLAIM_VERB.source}|\\bstill get (it|the tile)\\b|\\bdo i (still )?get (it|the tile)\\b|\\bwanted (the|that) (discard|tile)\\b|\\bis it gone\\b|\\blose the (discard|tile)\\b|\\bhow long (do|have) i\\b`, "i"), CALL_WINDOW],
-    blocks: [HAND_CLOSED, JOKER_EXCHANGE, MISNAMED, OWN_DISCARD, CHARLESTON_WORD, BLIND_PASS, WIN_CUE, DEAD, FINAL_DISCARD_SCENE],
+    requires: [new RegExp(`${CLAIM_VERB.source}|${DECLARE_MAHJONG.source}|\\bstill get (it|the tile)\\b|\\bdo i (still )?get (it|the tile)\\b|\\bwanted (the|that) (discard|tile)\\b|\\bis it gone\\b|\\blose the (discard|tile)\\b|\\bhow long (do|have) i\\b`, "i"), CALL_WINDOW],
+    blocks: [HAND_CLOSED, JOKER_EXCHANGE, MISNAMED, OWN_DISCARD, CHARLESTON_WORD, BLIND_PASS,
+      // The winning entries own an ordinary mahjong question, but not one about the window
+      // having already closed: that is what this entry states.
+      (q: string) => WIN_CUE.test(q) && !WINDOW_CLOSED_CUE.test(q),
+      DEAD, FINAL_DISCARD_SCENE],
     answer:
       "You may claim a discard until the next player has picked a tile from the wall and racked it, or has discarded. Once that player has picked and racked, the window to call the previous discard is closed. There is no strict timer, but call promptly and say it out loud; hesitating too long is considered poor etiquette.",
     varies_by_house: false,
@@ -202,7 +212,7 @@ export const LVM_CALLING: CanonicalRule[] = [
     question_patterns: [CALL_WORD, OUT_OF_TURN_CUE, CALL_OUT_OF_TURN],
     keywords: ["out of turn", "too early", "too soon", "wrong turn"],
     requires: [CALL_WORD, OUT_OF_TURN_CUE, CALL_OUT_OF_TURN],
-    blocks: [MISNAMED, JOKER_EXCHANGE, CHARLESTON_WORD, BLIND_PASS, OWN_DISCARD, MAHJONG_ANY_TURN],
+    blocks: [(q: string) => WINDOW_CLOSED_HERE.test(q) && !DEAD.test(q), MISNAMED, JOKER_EXCHANGE, CHARLESTON_WORD, BLIND_PASS, OWN_DISCARD, MAHJONG_ANY_TURN],
     answer:
       "Calling a tile that is not the most recent discard, or calling after the player next in turn has already picked and racked or discarded, is an out-of-turn call. The card says the tile may not be claimed, so the call does not stand and play goes on. The card names no penalty for the attempt itself; a hand is dead only if it ends up with too few or too many tiles or an incorrect exposure, and any further penalty is not printed on the card. A tile also cannot be claimed until it has been correctly named; what the card prints for a misnamed tile (a dead hand on an exposure, 4 times the value on a mahjong call) is on the dead hands and scoring pages.",
     varies_by_house: false,

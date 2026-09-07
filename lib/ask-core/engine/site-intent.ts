@@ -66,7 +66,7 @@ const FIND_FRAME =
 // "soap lake wa" and "mahjong in wind gap pa", not "Soap Lake, WA".
 const PLACE_FRAME = /\b(near|nearby|around)\b\s+(?:me\b|my area\b|here\b|[A-Z]|\d{5})|\b(?:in|at|around|near|outside|by|from|for|of)\s+(?:the\s+)?(?:[A-Z][a-z]+|\d{5})\b|\bmy area\b|\bzip\b|\bnear me\b|\bdowntown\b|\b(?:in|near|around|at|from)\s+[a-z][a-z.'-]{2,}(?:\s+[a-z.'-]+){0,2}\s+(?:a[lkzr]|c[aot]|de|fl|ga|hi|i[adln]|k[sy]|la|m[adeinost]|n[cdehjmvy]|o[hkr]|pa|ri|s[cd]|t[nx]|ut|v[at]|w[aivy]|alabama|alaska|arizona|arkansas|california|colorado|connecticut|delaware|florida|georgia|hawaii|idaho|illinois|indiana|iowa|kansas|kentucky|louisiana|maine|maryland|massachusetts|michigan|minnesota|mississippi|missouri|montana|nebraska|nevada|new hampshire|new jersey|new mexico|new york|north carolina|north dakota|ohio|oklahoma|oregon|pennsylvania|rhode island|south carolina|south dakota|tennessee|texas|utah|vermont|virginia|washington|west virginia|wisconsin|wyoming)\b/;
 const BOOK_FRAME =
-  /\b(book|books|booking|sign ?ups?|sign(?:ing)? up|register|registering|registration|reserve|reserving|enrol(?:l|ling)?|rsvp|attend|drop ?in|walk ?in|give (?:me|us)|set up|schedule|cancel|cancellation|refund|no.?show|money back|call ahead|swap my|switch my|skip (?:my|the|a|this) (?:class|lesson|session|week)|miss (?:my|the|a) (?:class|lesson|session)|reschedul\w+)\b/i;
+  /\b(book|books|booking|sign ?ups?|sign(?:ing)? up|register|registering|registration|reserve|reserving|enrol(?:l|ling)?|rsvp|attend|drop ?in|walk ?in|give (?:me|us)|set up|schedule|cancel|cancellation|refund|no.?show|money back|call ahead|swap my|switch my|skip (?:my|the|a|this) (?:\w+ )?(?:class|lesson|session|week)|miss (?:my|the|a) (?:\w+ )?(?:class|lesson|session)|reschedul\w+|how long (?:does|is|are))\b/i;
 const PRICE_FRAME =
   /\b(how much|cost|costs|costing|price|prices|priced|pricing|rates?|fees?|charge|charges|deposit|discount|refund|pay|pays|pay for|payment plan|per (?:class|lesson|session|person|hour))\b/i;
 const OFFER_FRAME =
@@ -90,7 +90,7 @@ const PLAY_SEARCH =
 // Looking for a person to teach you. "who in dallas teaches beginners to read the card" is the
 // directory's most commercially important query and must never reach the copyright guard.
 const TEACH_SEARCH =
-  /\bwho\b[^.?!]{0,24}\bteach(?:es|ing)?\b|\bteachers?\b[^.?!]{0,12}\b(?:near|in|around|who|available)\b|\bwho teaches\b|\banyone teaching\b|\b(?:does|do)\s+(?:anyone|anybody|someone|somebody|\w+)\b[^.?!]{0,24}\bteach(?:es)?\b|\bteach(?:es|ing)?\b[^.?!]{0,20}\b(?:near me|nearby|in \d{5}|on (?:mon|tues|wednes|thurs|fri|satur|sun)days?)\b/i;
+  /\bwho\b[^.?!]{0,24}\bteach(?:es|ing)?\b|\bteachers?\b[^.?!]{0,12}\b(?:near|in|around|who|available)\b|\bwho teaches\b|\banyone teaching\b|\bwho (?:can|could|will|would)\b[^.?!]{0,30}\b(?:read|teach|show|go over|walk me through|sit with)\b|\b(?:does|do)\s+(?:anyone|anybody|someone|somebody|\w+)\b[^.?!]{0,24}\bteach(?:es)?\b|\bteach(?:es|ing)?\b[^.?!]{0,20}\b(?:near me|nearby|in \d{5}|on (?:mon|tues|wednes|thurs|fri|satur|sun)days?)\b/i;
 // Addressed to the business itself. The direct-object guard keeps the rules senses out:
 // "do you teach the charleston" is a player asking when the Charleston is taught at the table.
 // How many people the room holds, not how many play the game. "How many people can the studio
@@ -119,10 +119,10 @@ const PROPER_PLACE_ADJACENT =
 // "Does the Jokers Wild club in Henderson have mahjong?", "is kong still running the thursday
 // game": a venue or a person is asked about by name, and the tile word is part of that name.
 const VENUE_HAS =
-  /\b(?:do|does|is|are|did|has|have)\b[^.?!]{0,44}\b(?:have|has|host|hosts|run|runs|running|play|plays|offer|offers|still)\b[^.?!]{0,24}\b(?:mah ?jongg?|games?|groups?|clubs?|tables?|nights?)\b/i;
+  /\b(?:do|does|is|are|did|has|have)\b[^.?!]{0,44}\b(?:have|has|host|hosts|run|runs|running|play|plays|offer|offers)\b[^.?!]{0,24}\b(?:mah ?jongg?|games?|groups?|clubs?|nights?)\b/i;
 // A listing noun modified by the game's name is a listing: "wall street mahjong club nyc".
 const LISTING_NOUN =
-  /\b(?:mah ?jongg?|mahj)\s+(?:clubs?|groups?|games?|class(?:es)?|lessons?|teachers?|instructors?|studios?|venues?|meet ?ups?|leagues?|nights?|tables?)\b/i;
+  /\b(?:mah ?jongg?|mahj)\s+(?:clubs?|groups?|games?|class(?:es)?|lessons?|teachers?|instructors?|studios?|venues?|meet ?ups?|leagues?|nights?|tables?|tournaments?|events?)\b/i;
 // An honorific plus a name: a person the directory might list.
 const PERSON_NAMED = /\b(?:mrs?|ms|mr|dr)\.?\s+[a-z][a-z'-]+/i;
 const OFFER_SELF =
@@ -149,7 +149,7 @@ const LEAGUE_SENSE = /\b(?:the |nmjl |national (?:mah ?jongg?|mahjong) )league\b
 // everyday words every directory query carries: "do I have to pay to play mahjong in Naples"
 // names a town and no rule.
 const TABLE_NOUN =
-  /\b(charleston|walls?|racks?|exposures?|discards?|jokers?|kongs?|pungs?|quints?|sextets?|bams?|craks?|dots?|dragons?|flowers?|soap|winds?|dead hands?|tiles?)\b/i;
+  /\b(charleston|walls?|racks?|exposures?|discards?|jokers?|kongs?|pungs?|quints?|sextets?|bams?|craks?|dots?|dragons?|flowers?|soap|winds?|dead hands?|tiles?|courtesy|blind pass|pass(?:es|ing)?)\b/i;
 const RULES_OBJECT =
   /\b(charleston|walls?|hands?|tiles?|racks?|exposures?|discards?|jokers?|pass(?:es|ing)?|deal|kongs?|pungs?|quints?|sextets?|bams?|craks?|dots?|dragons?|flowers?|soap|winds?|tables?|mahjong|mahj|maj|card)\b/i;
 
@@ -217,15 +217,23 @@ export function siteIntent(question: string, site: SiteId): SiteIntentResult {
   if (WHERE_FRAME.test(question) && !RULES_OBJECT.test(question)) return yes("where-frame");
   if (HOURS_FRAME.test(question) && !RULES_OBJECT.test(question)) return yes("hours-frame");
   if (PLAY_SEARCH.test(question)) return yes("play-search");
+  // "Best way to meet other players in Boca Raton" is a search for people to play with.
+  if (/\b(?:meet|find|connect with|join up with|link up with)\b[^.?!]{0,24}\b(?:other |new |more )?players?\b/i.test(question)) return yes("meet-players");
   // "your signup form goes blank when I hit register" is about the website, not blank tiles.
-  if (binds(question, POSSESS_FRAME, BOOK_FRAME)) return yes("possessive+booking");
-  if (TEACH_SEARCH.test(question)) return yes("teach-search");
+  if (binds(question, POSSESS_FRAME, BOOK_FRAME) && !TABLE_NOUN.test(question)) return yes("possessive+booking");
   if (OFFER_SELF.test(question)) return yes("offer-self");
+  if (TEACH_SEARCH.test(question)) return yes("teach-search");
   if (COURSE_CONTENT.test(question)) return yes("course-syllabus");
   if (NAMING_OWN_GROUP.test(question)) return yes("naming-own-group");
   if (SHOP_FRAME.test(question) && !MUST_BUY.test(question)) return yes("shop-frame");
   if (LISTING_NOUN.test(question)) return yes("listing-noun");
-  if (VENUE_HAS.test(question) && (PLACE_FRAME.test(question) || TIME_FRAME.test(question) || OBJECT_STRONG.test(question))) return yes("venue-has");
+  // A table noun blocks this only when it is the SUBJECT. In "the Jokers Wild club" and "is
+  // Kong still running the thursday game" the tile word is part of a name, and the listing noun
+  // right after it says so.
+  const tableNounIsName = /\b(?:jokers?|soap|dragons?|flowers?|winds?|kongs?|pungs?|walls?|charleston|bams?|craks?|dots?)\b[^.?!]{0,16}\b(?:club|game|group|night|room|hall|lounge|cafe|caf\u00e9|restaurant|centre|center|league|table)\b/i;
+  if (VENUE_HAS.test(question) && (!TABLE_NOUN.test(question) || tableNounIsName.test(question)) && (PLACE_FRAME.test(question) || TIME_FRAME.test(question) || OBJECT_STRONG.test(question))) {
+    return yes("venue-has");
+  }
   // An explicit search frame beside a real place is a search even when no listing noun is
   // named: "any joker friendly beginner tables in katy tx".
   if (FIND_FRAME.test(question) && PLACE_FRAME.test(question)) return yes("find+place");
@@ -234,7 +242,7 @@ export function siteIntent(question: string, site: SiteId): SiteIntentResult {
   // A phone call is the business's phone. "How long do I wait for a call back about lessons"
   // was reaching the call-window rule, which is about claiming a discard.
   if (CONTACT_SENSE.test(question) && !MAHJ_ONLY_NOUN.test(question)) return yes("contact-sense");
-  if (PROPER_PLACE_ADJACENT.test(question)) return yes("proper-place-adjacent");
+  if (PROPER_PLACE_ADJACENT.test(question) && !TABLE_NOUN.test(question)) return yes("proper-place-adjacent");
 
   const strongObject = OBJECT_STRONG.test(question) && !(LEAGUE_SENSE.test(question) && !OBJECT_STRONG.test(question.replace(LEAGUE_SENSE, " ")));
   if (strongObject) {
@@ -261,6 +269,48 @@ export function siteIntent(question: string, site: SiteId): SiteIntentResult {
  * A question that names a real place and asks nothing about a rule. A rule noun beside a town
  * is not a rules question (release gate, root problem B), so the directory takes it.
  */
+/**
+ * A place named anywhere after a preposition, for use ONLY when a search frame has already
+ * fired. "Who in dallas teaches beginners to read the card" names a town in lower case with no
+ * state; no lexicon of towns belongs in a rules engine, so the search frame is what licenses
+ * reading the noun as a place.
+ */
+export function looseNamedPlace(question: string): boolean {
+  const re = /\b(?:in|near|around|at|from)\s+(?:the\s+)?([a-z][a-z.'-]{2,}(?:\s+[a-z.'-]+){0,2})\b/gi;
+  for (const m of question.matchAll(re)) {
+    if (!TABLE_NOUN.test(m[1]) && !STYLE_TAIL.test(m[1])) return true;
+  }
+  return false;
+}
+
+/**
+ * A place named at the END of a search: "who teaches exposures and defense in austin". Real
+ * players type city names in lower case and without a state, and no lexicon of towns belongs in
+ * a rules engine, so the structure is the evidence: a trailing prepositional phrase whose object
+ * is not something at the table.
+ */
+/**
+ * Is the site's own noun an adjunct rather than the subject? "At my club", "in your studio" and
+ * "during our lesson" say WHERE a question is being asked, not what it is about, so they must
+ * not take a rules question away from the engine.
+ */
+export function siteObjectIsAdjunct(question: string): boolean {
+  // Zero-width, so an earlier prepositional phrase cannot swallow a later one: in "in a pair at
+  // my club" the first match must not consume the words the second one needs.
+  const m = /\b(?:at|in|near|from|during|before|after|around)\s+(?:my|our|your|the|a|an|this|that|his|her|their)?\s*(?=(\w+(?:\s+\w+)?))/gi;
+  for (const hit of question.matchAll(m)) {
+    if (OBJECT_STRONG.test(hit[1]) || OBJECT_WEAK.test(hit[1])) return true;
+  }
+  return false;
+}
+
+export function trailingPlace(question: string): boolean {
+  const m = /\b(?:in|near|around|at|from)\s+(?:the\s+)?([a-z][a-z.'-]{2,}(?:\s+[a-z.'-]+){0,2})\s*[?.!]?\s*$/i.exec(question);
+  return !!m && !TABLE_NOUN.test(m[1]) && !STYLE_TAIL.test(m[1]);
+}
+// Words that follow a preposition without naming a place: "in american mahjong", "at the table".
+const STYLE_TAIL = /\b(?:american|nmjl|league|mahjong|mah ?jongg?|play|turn|order|hand|game|round|person|player|general|theory|practice|advance|error|time|the end|the start)\b/i;
+
 export function placeOnlySearch(question: string, hasRulesProposition: boolean): boolean {
   if (hasRulesProposition) return false;
   return PLACE_FRAME.test(question) && !TABLE_NOUN.test(question.replace(PLACE_FRAME, " "));
@@ -289,4 +339,5 @@ export const SITE_INTENT_INTERNALS = {
   OFFER_SELF,
   ATTRIBUTION,
   RULES_OBJECT,
+  TABLE_NOUN,
 };

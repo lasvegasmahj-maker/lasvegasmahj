@@ -9,6 +9,7 @@ import {
   BLIND_PASS, CHARLESTON_WORD, CLAIM_VERB, COURTESY, DEAD, DECLINE_CALL, DISCARDED, EXPOSURE_WORD, JOKER,
   JOKER_PASS, MAHJONG_CUE, NAMING, OTHER_TOPIC, PASS_VERB, STOP_OR_AGREE, THREE_PLAYER_SEATS, CHARLESTON_STOP_ASK, OTHERS_TILES,
 } from "./matchers.ts";
+import { DECLARE_MAHJONG } from "./concepts.ts";
 import { lvmPage, LVM_OWNER_2026_08_29, lvmPending } from "./entries-fmg.ts";
 
 const VERIFIED_LVM = "2026-08-29" as const;
@@ -169,14 +170,17 @@ export const LVM_CHARLESTON: CanonicalRule[] = [
     related: ["charleston","calling-discard","dealing"],
     topic: "Calling during the Charleston",
     question_patterns: [
+      DECLARE_MAHJONG,
       CLAIM_VERB,
       CHARLESTON_SCENE,
       new RegExp(`${CLAIM_VERB.source}[^.?!]{0,50}${CHARLESTON_WORD.source}|${CHARLESTON_WORD.source}[^.?!]{0,40}${CLAIM_VERB.source}`, "i"),
     ],
     keywords: ["call", "charleston", "pass"],
-    requires: [CLAIM_VERB, CHARLESTON_SCENE],
+    requires: [new RegExp(`(?:${CLAIM_VERB.source}|${DECLARE_MAHJONG.source})`, "i"), CHARLESTON_SCENE],
     // "call to stop" and "call out the tile" are the stop rule and the naming rule.
-    blocks: [STOP_OR_AGREE, NAMING, NAMING_SENSE, CHARLESTON_OVER, THREE_HANDED_PLAIN],
+    // Announcing a DISCARD by name is the naming entry's question; announcing MAHJONG is this
+    // entry's, whichever verb the player uses (gate 2, invariant 7).
+    blocks: [STOP_OR_AGREE, (q: string) => (NAMING.test(q) || NAMING_SENSE.test(q)) && !DECLARE_MAHJONG.test(q), CHARLESTON_OVER, THREE_HANDED_PLAIN],
     answer:
       "No. The Charleston is the tile passing that happens before play begins, and the first discard only happens after the Charleston, when East opens play. There are no discards during the Charleston, so there is nothing to call.",
     varies_by_house: false,

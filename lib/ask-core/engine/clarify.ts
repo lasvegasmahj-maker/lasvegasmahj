@@ -53,7 +53,7 @@ const VARIANT_NAMES: Record<string, string> = {
   sichuan: "Sichuan", taiwanese: "Taiwanese", korean: "Korean", filipino: "Filipino", singapore: "Singapore", singaporean: "Singaporean",
   mcr: "MCR", "zung jung": "Zung Jung", zungjung: "Zung Jung", shanghai: "Shanghai", "wright patterson": "Wright-Patterson", "wright-patterson": "Wright-Patterson", wrightpatterson: "Wright-Patterson", siamese: "Siamese",
 };
-const TOURNAMENT_PHRASE = /\b(in|at|during|for|under|with) (a |the |our |my )?tournaments?( rules| play)?\b|\btournaments?( rules| play)?\b/gi;
+const TOURNAMENT_PHRASE = /\b(in|at|during|for|under|with) (a |an |the |our |my |this |that )?(\w+ ){0,2}tourn\w{0,3}ments?( rules| play| setting)?\b|\btourn\w{0,3}ments?( rules| play| setting)?\b/gi;
 const PASS_VERB = /\bpass(es|ed|ing)?\b/i;
 // The disambiguating word has to sit near "pass"; "at the studio game last night I asked can I
 // pass and nobody knew" is still the bare question.

@@ -125,7 +125,7 @@ const RULES_SIGNAL_RES: RegExp[] = [
   // Money at the table, which is a rule and not a price list: "does a dead hand cost anything",
   // "how much do I owe the winner", "is there a fee for going dead". The commerce vocabulary
   // that keeps shop questions out of the rules engine was swallowing these (release gate 9).
-  /\b(fee|fees|cost|costs|pay|pays|paid|owe|owes|charge|charged)\b[^.?!]{0,32}\b(going dead|gone dead|dead hand|being dead|hand (is|goes|went) dead|the winner|the discarder|self[- ]?(pick|draw)\w*|wall game)\b|\b(going dead|dead hand|the winner|the discarder|wall game)\b[^.?!]{0,32}\b(fee|fees|cost|costs|pay|pays|paid|owe|owes|charge|charged)\b/i,
+  /\b(fee|fees|cost|costs|pay|pays|paid|owe|owes|charge|charged)\b[^.?!]{0,32}\b(going dead|gone dead|dead hand|being dead|hand (is|goes|went) dead|the winner|the loser|the discarder|self[- ]?(pick|draw)\w*|wall game)\b|\b(going dead|dead hand|the winner|the loser|the discarder|wall game)\b[^.?!]{0,32}\b(fee|fees|cost|costs|pay|pays|paid|owe|owes|charge|charged)\b/i,
   /\bwinds? (part of|in) a suit\b|\bis (north|south|east|west) a (bam|crak|dot)\b/i,
   // "tournament play near Naples" is a search; "tournament play" alone is a conditional signal.
   /\btournaments? (follow|use|have|make|run|score)\b|\b(do|does|are|how do) tournaments?\b/i,
@@ -187,6 +187,7 @@ const CONDITIONAL_RULES_SIGNALS: RegExp[] = [
   /\b(north|south|east|west) winds?\b|\b(four|4|the) winds\b|\bwinds? tiles?\b/i,
   /\b(penny|pennies|quarter|quarters|nickel|dime|cent|cents) (a|per|each) (point|hand|game)\b|\ba point\b[^.?!]{0,20}\b(worth|pay|penny|cent)\b|\bkitty\b|\bante\b/i,
   /\bdead\b[^.?!]{0,30}\b(pay|pays|paid|collect|collects|winner)\b|\b(pay|pays|paid|collect|collects|winner)\b[^.?!]{0,30}\bdead\b/i,
+  /\b(different|differently|differ|differs|the same|vary|varies|varied)\b[^.?!]{0,40}\b(charleston|jokers?|pass\w*|exposures?|discards?|dead hands?|walls?|tiles?|rules?|scoring|payments?)\b|\b(charleston|jokers?|pass\w*|exposures?|discards?|dead hands?|walls?|tiles?|rules?|scoring|payments?)\b[^.?!]{0,40}\b(different|differently|differ|differs|the same|vary|varies|varied)\b/i,
   /\brules? dispute\b|\bwho (decides|is right|has the final say)\b[^.?!]{0,30}\b(rule|rules|dispute|argument|call|table)\b/i,
 ];
 
@@ -316,8 +317,28 @@ export function rulesProposition(raw: string): boolean {
 // director may add procedures of their own. Distinguished from a question ABOUT tournaments,
 // which the tournament-rules entry answers: "what rules can a director change at a tournament"
 // is about them; "in tournament play can I use a joker in a pair" is asked for one.
-const TOURNAMENT_FOR_PLAY =
-  /\b(?:in|under|during|at|for|playing in|play(?:ing)? under|when playing)\s+(?:a |an |the |our |my |any |this |that )?(?:\w+ ){0,2}tourn\w{0,3}ments?(?:\s+(?:rules?|play|conditions?|settings?))?\b|\btourn\w{0,3}ment (?:rules?|play)\s*[-–,:]?\s*(?:can|may|could|do|does|is|are|must|should|am|what|when|how|who|for)\b|\btournaments?\s*[-–:]\s*(?:can|may|could|do|does|is|are|must|should|what|when|how|who)\b|\btournaments?\s+(?:let|lets|allow|allows|permit|permits|require|requires|ban|bans|forbid|forbids)\b|\b(?:can|may|could|is|are|do|does|would|will)\b[^.?!]{0,40}\b(?:in|at|during|for) (?:a |an |the |any )?(?:\w+ ){0,2}tournaments?\b/i;
+const TOURN = String.raw`tourn\w{0,3}ments?`;
+// Asked FOR tournament play. Structural context, not the bare word: behind a preposition, named
+// as the setting, owned by the player, or governing a permission verb. Gate 2 blockers 13, 14,
+// 17 and 25 were all phrasings that named a tournament without a preposition.
+const TOURNAMENT_FOR_PLAY = new RegExp(
+  [
+    // "in a tournament", "under tournament rules", "at the Henderson tournament"
+    String.raw`\b(?:in|under|during|at|for|playing in|play(?:ing)? under|when playing)\s+(?:a |an |the |our |my |any |this |that )?(?:\w+ ){0,2}${TOURN}(?:\s+(?:rules?|play|conditions?|settings?))?\b`,
+    // "tournament rules - can I", "tournament play, what happens"
+    String.raw`\b${TOURN} (?:rules?|play)\s*[-–,:]?\s*(?:can|may|could|do|does|is|are|must|should|am|what|when|how|who|for)\b`,
+    String.raw`\b${TOURN}\s*[-–:]\s*(?:can|may|could|do|does|is|are|must|should|what|when|how|who)\b`,
+    // "tournament setting: what happens on a wall game"
+    String.raw`\b${TOURN} (?:setting|conditions?|context|situation)s?\b`,
+    // "do tournaments in henderson nv allow jokers"
+    String.raw`\b${TOURN}\b[^.?!]{0,40}\b(?:let|lets|allow|allows|permit|permits|require|requires|ban|bans|forbid|forbids)\b`,
+    // "my tournament starts saturday, do I have to do the charleston"
+    String.raw`\b(?:my|our|the|this|that|a) (?:\w+ ){0,2}${TOURN}\b[^.?!]{0,60}\b(?:do|does|can|could|may|must|should|have to|is|are|what|when|how|who)\b`,
+    // "can I ... at a tournament"
+    String.raw`\b(?:can|may|could|is|are|do|does|would|will)\b[^.?!]{0,40}\b(?:in|at|during|for) (?:a |an |the |any )?(?:\w+ ){0,2}${TOURN}\b`,
+  ].join("|"),
+  "i",
+);
 // Naming tournaments as the subject: the corpus entry answers these.
 const TOURNAMENT_AS_SUBJECT =
   /\btournaments?\s+(?:follow|use|uses|have|has|make|makes|make up|invent|run|score|differ|are different|play by|go by)\b|\bwhat rules?\b[^.?!]{0,40}\b(?:director|tournament)\b|\b(?:what|which|how)\b[^.?!]{0,24}\b(?:a |the )?(?:tournament )?directors?\b[^.?!]{0,24}\b(?:can|may|change|set|add|decide|allowed)\b|\b(?:can|may|will|would)\s+(?:a |the )?(?:tournament )?directors?\s+(?:make|change|set|add|ban|forbid|require|invent|overrule|impose)\b|\bdo tournaments? (?:follow|use|have|go by|play by|score)\b|\bhow (?:do|are) tournaments?\b|\bwho makes the rules\b|\bwhat(?:'s| is) different about tournaments?\b/i;

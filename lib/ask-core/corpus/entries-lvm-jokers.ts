@@ -250,7 +250,14 @@ export const LVM_JOKERS: CanonicalRule[] = [
     keywords: ["news", "north", "east", "west", "south", "winds"],
     requires: [JOKER, NEWS_BLOCK],
     // A question that also asks about runs or year hands is the broader mixed-groups entry's.
-    blocks: [/\b(runs?|sequences?|consecutive|year hands?|a year|the year|20\d\d hand|1 ?2 ?3)\b/i, JOKER_EXCHANGE, JOKER_PASS, DISCARDED_JOKER, DEAD],
+    // NEWS is the four winds as ONE printed block. A sentence that merely names two winds is
+    // usually a seat and a tile ("east discarded a north"), and answering it with the NEWS rule
+    // told the player a joker may not go in a Kong of one wind (gate 2, blocker 1).
+    blocks: [/\b(runs?|sequences?|consecutive|year hands?|a year|the year|20\d\d hand|1 ?2 ?3)\b/i, JOKER_EXCHANGE, JOKER_PASS, DISCARDED_JOKER, DEAD,
+      (q: string) =>
+        !/\bnews\b|\bfour winds\b|\bn ?e ?w ?s\b|\ball (?:four )?winds\b|\bone of each wind\b/i.test(q) &&
+        // ...or all four winds spelled out, in any order.
+        !(/\bnorth\b/i.test(q) && /\beast\b/i.test(q) && /\bwest\b/i.test(q) && /\bsouth\b/i.test(q))],
     answer:
       "No. NEWS is made up of four different tiles (North, East, West, and South), so each one counts as a single tile, and a joker can never be used as a single. Jokers only work inside groups of 3 or more identical tiles: a Pung, Kong, Quint, or Sextet.",
     varies_by_house: false,

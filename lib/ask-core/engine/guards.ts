@@ -114,7 +114,20 @@ export function cardDemandedOfAssistant(fixed: string): boolean {
   return CARD_DEMAND_TO_ASSISTANT.test(fixed) && !THIRD_PARTY_ASK.test(fixed);
 }
 
+// Card etiquette and card ownership at the table: showing your card to another player, two
+// people sharing one, reading your own while you play, writing on it. The subject is a physical
+// card and the audience is the table, not the assistant, so nothing is being reproduced. The
+// gate of 2026-09-07 found these refused as copyright violations (blocker 19).
+const CARD_ETIQUETTE =
+  /\b(?:show|showing|shows|share|sharing|shares|read|reading|reads|look at|looking at|write|writing|writes|hold|holding|use|using|bring|bringing|borrow|borrowing|lend|lending|pass|passing|hand|handing)\b[^.?!]{0,40}\bcards?\b[^.?!]{0,40}\b(?:(?:to|with)\s+(?!me\b|us\b|here\b)|at|during|while|another player|other players?|the table|my (?:partner|friend|mom|mother|group)|someone else|playing|a game|the game|my turn)|\b(?:two|both|we|everyone|people|players)\b[^.?!]{0,24}\bshare\b[^.?!]{0,20}\bcards?\b|\b(?:my|your|her|his|their|one|the same) cards?\b[^.?!]{0,30}\b(?:at the table|while (?:i am |we are |you are )?playing|during (?:the |a )?(?:game|hand|deal))\b|\bwrite (?:notes?|on)\b[^.?!]{0,20}\bcards?\b|\bcards?\b[^.?!]{0,20}\bwrite (?:notes?|on)\b|\b(?:whose|which player'?s) cards?\b|\bbring (?:my|your|a|the) own cards?\b/i;
+
 export function isCardContentRequest(fixed: string): boolean {
+  // A demand aimed at the assistant is never excused by any of the exemptions below, and
+  // neither is one that names a section, a line value, or the hands themselves: "we're at the
+  // table, read me the winds dragons section real quick" is a reproduction request wearing an
+  // etiquette frame.
+  const namesCardContent = SECTION_NAME.test(fixed) || ALL_HANDS.test(fixed) || /\b(?:sections?|line values?|point values?|categor(?:y|ies))\b/i.test(fixed);
+  if (!cardDemandedOfAssistant(fixed) && !namesCardContent && CARD_ETIQUETTE.test(fixed)) return false;
   if (NOT_THE_CARD.test(fixed) || READ_SKILL.test(fixed) || CARD_COMMERCE.test(fixed)) return false;
   if (CARD_DESCRIBES.test(fixed) && !CONTENT_VERB.test(fixed.replace(CARD_DESCRIBES, " "))) return false;
   const contentVerb = CONTENT_VERB.test(fixed);

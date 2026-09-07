@@ -8,11 +8,19 @@
 // paraphrase all resolve to the same concept.
 // "hands on lessons" and "second hand set" are directory phrases, not hands.
 // "marked C" is the card's own label for a concealed hand.
+import { CLAIM_WORDS, DEAD_WORDS, DECLARE_MAHJONG, EXCHANGE_WORDS, EXPOSE_WORDS, MAHJONG_WORDS, PASS_WORDS } from "./concepts.ts";
+
 export const HAND_CLOSED =
   /(?<!second[- ])\b(closed|concealed)\b[^.?!]{0,40}\bhands?\b(?![- ]on\b)|(?<!second[- ])\bhands?\b(?![- ]on\b)[^.?!]{0,40}\b(closed|concealed)\b|\b(marked|labeled|labelled|says) C\b|\bC hands?\b|\bhands? (has|with|marked|shows|showing) (a |an )?C\b(?! and X)|\bmarked (as )?C\b/i;
-export const CLAIM_VERB = /\b(call|calls|called|calling|claim|claims|claiming|pick(ing)? up|takes? from the discard|take it|grab|take (the|that|this|a|her|his|their) (last |final |winning )?(tile|discard))\b/i;
+// Claiming a DISCARD. Declaring mahjong is its own concept (concepts.ts DECLARE_MAHJONG) and
+// is deliberately not folded in here: "can a dead hand declare mahjong" is not a question about
+// claiming somebody's discard, and the entries that mean one must not answer the other.
+export const CLAIM_VERB = new RegExp(
+  `(?:\\b(?:${CLAIM_WORDS})\\b|\\bpick(?:ing)? up\\b|\\btakes? from the discard\\b)`,
+  "i",
+);
 export const BLIND = /\bblind(ly)?\b|\bwithout looking\b|\bshoved (them )?straight (on|through|along)\b|\bstraight (on|through|along) without\b/i;
-export const PASS_VERB = /\bpass(es|ed|ing)?\b/i;
+export const PASS_VERB = new RegExp(`\\b(?:${PASS_WORDS})\\b`, "i");
 export const JOKER = /\bjokers?\b/i;
 // Proximity concepts: the two words must sit within one clause of each other, so
 // "legally blind, can she pass tiles" is not a blind pass and "what is a joker? my
@@ -23,15 +31,17 @@ export const JOKER_PASS = new RegExp(
   `${JOKER.source}[^.?!,;]{0,45}${PASS_VERB.source}(?!\\s+(for|as)\\b)|${PASS_VERB.source}(?!\\s+(for|as)\\b)[^.?!,;]{0,45}${JOKER.source}`, "i");
 // Joker exchange from an exposure is allowed for any hand; that question belongs
 // on the exchange answer, whatever verb the player uses.
-export const EXCHANGE_VERB = "(exchange[sd]?|exchanging|redeem(s|ed|ing)?|swap(s|ped|ping)?|trad(e|es|ed|ing))";
+export const EXCHANGE_VERB = `(?:${EXCHANGE_WORDS})`;
 // A joker somewhere in the message, before or after the phrase, even across a clause break
 // (an elliptical follow-up carries its context term after the question mark).
 const NEAR_JOKER = "(?:(?<=\\bjokers?\\b[\\s\\S]{0,120})|(?=[\\s\\S]{0,120}\\bjokers?\\b))";
 export const JOKER_EXCHANGE = new RegExp(
   `\\b${EXCHANGE_VERB}\\b[^.?!,;]{0,30}\\bjokers?\\b|\\bjokers?\\b[^.?!,;]{0,30}\\b${EXCHANGE_VERB}\\b|\\b(take|took|takes|taking|get|pull|pulled|grab|grabbed|claim|reach(ed)? (over|in)|pick(ing)? up)\\b[^.?!,;]{0,20}\\bjokers?\\b[^.?!,;]{0,30}\\b(exposure|exposed|rack)\\b|\\b(grab|take|get|claim|pick up)\\b(?:(?!\\b(paid|pay|pays|money|points?)\\b)[^.?!,;]){0,12}\\b(the|that|this|a|her|his|their|someone's) jokers?\\b(?!\\s+(in|as|for)\\b)(?![^.?!,;]{0,30}\\b(discard\\w*|threw|thrown|tossed|throw(n|s)? (away|out)))|\\bhave\\b(?:(?!\\b(paid|pay|pays|money|points?)\\b)[^.?!,;]){0,12}\\b(her|his|their|someone's|another player'?s) jokers?\\b|\\bjokers?\\b[^.?!]{0,60}\\b(rack|exposure|exposed|kong|pung|quint|sextet)\\b[^.?!]{0,40}\\b(can|may|could|am i allowed to)\\b[^.?!]{0,12}\\b(grab|take|get|have|claim|swap|trade|exchange)\\b(?![^.?!,;]{0,16}\\b(in|as|for) (a|an|the) (pair|single|kong|pung|quint|sextet|news|year|run)\\b)|\\b(have|take|get|grab|claim)\\b[^.?!,;]{0,12}\\b(a|the|that|this|her|his|their) jokers?\\b[^.?!,;]{0,16}\\b(in|from|on|off|out of)\\b[^.?!,;]{0,12}\\b(her|his|their|someone'?s|another player'?s|that|the) (exposure|exposed|rack|kong|pung|quint|sextet|group)\\b|\\b(have|take|get|grab|claim)\\b[^.?!,;]{0,12}\\b(a|the|that|her|his|their) jokers?\\b[^.?!,;]{0,12}\\boff (her|his|their|someone'?s|the) rack\\b|\\b(have|take|get|grab|claim)\\b[^.?!,;]{0,12}\\b(the|that|her|his|their) jokers?\\b[^.?!,;]{0,8}\\bfor\\b[^.?!,;]{0,24}\\b(tiles?|craks?|bams?|dots?|real|matching|it stands for)\\b|\\b(trade|swap|exchange|redeem) (my|the|a) (real |own |actual |natural )?tile for (it|that|the joker|a joker|her joker|his joker|their joker)\\b|\\bput (the|a|my) (real|natural|actual) tile (in|down)\\b|\\b(take|get|have) (my|the|a) joker back\\b|\\btrade (it|a tile|that) (for|to get) (the|a|my) joker\\b|\\b(can|may) (we|i) (trade|swap|exchange)( it| tiles| for it)?\\b${NEAR_JOKER}|\\b(offered|offer|offering|want|wants|wanted) to (trade|swap|exchange)\\b${NEAR_JOKER}|\\btrade (it|a joker|her joker|the joker) (to|with) me\\b|\\b(gave|handed|give|hand|giving|handing) (her|him|them|someone|my neighbor|the player|[^.?!,;]{0,12}) [^.?!,;]{0,16}\\bfor (the|a|her|his|their|that) jokers?\\b`, "i");
 
-export const MAHJONG_CUE =
-  /\b(mah ?jong+|mahj|maj|win|wins|winning|won|go out|(last|final) tile (i|you|she|he|they|we) need|complete[sd]? (my|your|the|her|his) (hand|mahjong)|finish(es|ed)? (my|your|the|her|his) hand)\b/i;
+export const MAHJONG_CUE = new RegExp(
+  `\\b(?:${MAHJONG_WORDS}|win|wins|winning|won|go out|goes out|went out|(?:last|final) tile (?:i|you|she|he|they|we) need|complete[sd]? (?:my|your|the|her|his) (?:hand|mahjong)|finish(?:es|ed)? (?:my|your|the|her|his) hand)\\b`,
+  "i",
+);
 export const EXPOSURE_CUE = /\b(expos(e|ed|es|ure|ures|ing)|pungs?|kongs?|quints?|sextets?|meld|build(ing)?|group)\b/i;
 export const DISCARDED = /\b(discard|discards|discarded|discarding|thrown|throw|throws|threw|toss|tossed|put down)\b/i;
 export const ERROR_CUE =
@@ -40,7 +50,7 @@ export const ERROR_CUE =
 // and threw a 3 dot", "threw a 6 dot but called it 6 bam". The named groups must differ.
 const TILE_NAME = "(?:(?:\\d|one|two|three|four|five|six|seven|eight|nine) ?(?:bams?|craks?|dots?)?|north|south|east|west|soap|(?:red|green|white)(?: dragon)?|dragons?|flowers?|jokers?|bams?|craks?|dots?)";
 export const MISNAMED = new RegExp(
-  String.raw`\bmis-?nam(e|ed|es|ing)\b|\bwrong name\b|\bnamed (it|the tile|a tile|my discard|the discard) wrong(ly)?\b|\bcalled it (the )?wrong\b|\bsaid the wrong tile\b|\bwrong tile name\b|\bnamed the wrong\b|\bmisspoke\b|\bcalled (it|the tile|my discard) (a|an) \w+ by mistake\b|\bannounced (it|the tile) (as )?the wrong\b|\bcalled it (a|an) [^.?!]{1,20} but (it was|it's|its|it is)\b|\bsaid (a |an |the )?${TILE_NAME}\b[^.?!]{0,8} but (it was|it's|it is)\b|\bnamed it (a|an) [^.?!]{1,20}\bbut\b|\b(called|named|said) it (a|an|the) ?[\w ]{1,14}\bbut (it was|it'?s|its|it is|threw|discarded|actually|(she|he|they) (threw|discarded|named|actually|really|had))\b|\bsaid [^.?!]{1,15} but (threw|discarded|put down|tossed|played)\b|\bcalled (a|an|the|my|it|that) [^.?!]{1,12} (a|an) [^.?!]{1,12} by (accident|mistake)\b|\bsaid (a|an)? ?[^.?!]{1,12} (when|but) (it|the tile) (was|is) (really |actually )?(a|an)\b` +
+  String.raw`\bmis-?nam(e|ed|es|ing)\b|\bwrong name\b|\bnamed (it|the tile|a tile|my discard|the discard|a discard) wrong(ly)?\b|\b(tile|discard)\b[^.?!,;]{0,16}\b(i|you|she|he|they|someone) named wrong(ly)?\b|\bcalled it (the )?wrong\b|\bsaid the wrong tile\b|\bwrong tile name\b|\bnamed the wrong\b|\bmisspoke\b|\bcalled (it|the tile|my discard) (a|an) \w+ by mistake\b|\bannounced (it|the tile) (as )?the wrong\b|\bcalled it (a|an) [^.?!]{1,20} but (it was|it's|its|it is)\b|\bsaid (a |an |the )?${TILE_NAME}\b[^.?!]{0,8} but (it was|it's|it is)\b|\bnamed it (a|an) [^.?!]{1,20}\bbut\b|\b(called|named|said) it (a|an|the) ?[\w ]{1,14}\bbut (it was|it'?s|its|it is|threw|discarded|actually|(she|he|they) (threw|discarded|named|actually|really|had))\b|\bsaid [^.?!]{1,15} but (threw|discarded|put down|tossed|played)\b|\bcalled (a|an|the|my|it|that) [^.?!]{1,12} (a|an) [^.?!]{1,12} by (accident|mistake)\b|\bsaid (a|an)? ?[^.?!]{1,12} (when|but) (it|the tile) (was|is) (really |actually )?(a|an)\b` +
     `|\\b(?:said|announced|named) (?<said>${TILE_NAME})\\b[^.?!]{0,6}\\b(?:but|and) (?:then )?(?:threw|discarded|put down|tossed|played) (?:a |an |the )?(?!\\k<said>\\b)${TILE_NAME}\\b|\\b(?:threw|discarded|put down|tossed|played) (?:a |an |the )?(?<threw>${TILE_NAME})\\b[^.?!]{0,6}\\b(?:but|and) (?:called|named|said|announced) (?:it |the tile |the discard )?(?:a |an |the )?(?!\\k<threw>\\b)${TILE_NAME}\\b`,
   "i",
 );
@@ -58,14 +68,14 @@ export const OWN_DISCARD =
 export const NAMING = /\b(name|names|naming|named|announce|announcing|call out|say (the|its|the tile'?s?) name|tile name|say same|saying same|say aloud|out loud|aloud|quiet|quietly|silent|silently|without (saying|naming|announcing|calling) (them|it|the tile|anything|the name)|say (them|it|anything|nothing)\b)\b/i;
 export const TIMING =
   /\b(when|before|after|during|timing|turn|my turn|own turn|right away|immediately|as soon as|first|then|order)\b/i;
-export const DEAD = /\bdead\b|\bkilled (her|his|their|my|the|your) hand\b/i;
+export const DEAD = new RegExp(`\\b(?:${DEAD_WORDS})\\b|\\bkilled (?:her|his|their|my|the|your) hand\\b`, "i");
 export const DEAD_DETAIL =
   /\b(too many|too few|wrong number|how many|count|thirteen|fifteen|twelve|1[0-9]|expos(e|ed|ure|ures)|pay|pays|payment|who (can|may|gets to) (declare|call|say)|declare (my|your|his|her|their) own|self|myself|what makes|why|when|causes?|reasons?|say (i'?m|im|i am) dead|call myself dead|declare myself dead|does someone else (have|need) to)\b/i;
 export const HAND_SIZE =
   /\b((should|do|must|can|am|are) (i|you|we) (supposed to )?(have|hold|be holding|keep) [^.?!]{0,20}\btiles?\b|how many tiles (should|do|must|can) (i|you|we) (have|hold|keep|be holding)|how many tiles (should|must) (be )?in (my|your|our) hand|tiles? in (my|your|our) hand|tiles? (should|must) (be )?in (my|your) hand|between turns|after (i|you) discard|during (my|your) turn|correct number of tiles|right number of tiles|count (my|your) tiles|i have (\d+|too many|too few|an extra|one too many|one less) tiles?(?!\s+sets?\b)|one short|short a tile|missing a tile|extra tile(?!\s+sets?\b))\b/i;
 export const PICK_VERB = /\b(pick|picks|picked|picking|draw|draws|drew|drawing|take|takes|took|taking|grab)\b/i;
 export const AHEAD = /\b(ahead|early|before (my|your|their|her|his) turn|out of turn|not (my|your|their) turn|too soon|in advance|before (she|he|they|someone) (has )?(discards?|discarded|throws?|thrown)|before (the )?(person|player|one) (before|ahead of|in front of|to my right|on my right) (me )?(has |had )?(discarded|threw|discards|throws)|(then|and) (someone|somebody|she|he|they) called|before (i|you) (even )?(looked|look) at (my|the) tile|while (she|he|they|someone) (is|are) (still )?(deciding|thinking|looking|discarding|choosing))\b/i;
-export const ORDER = /\b(order of play|turn order|direction|which way|clockwise|counterclockwise|counter-clockwise|whose turn|who goes (next|first|after)|next player|after east|goes next|turns? (go|pass|move|rotate)|to the (right|left)|when (do|can|am) i (get to )?(pick|draw)|how (does|do) (a|my|the) turns? (work|go)|(pick|picking|draw|drawing|take)\b[^.?!]{0,24}\bbefore (i|you) discard|skip (my|your|a|the) turn|(discard|draw|pick)\\w*\\b[^.?!]{0,20}\\bevery turn|every turn\\b[^.?!]{0,20}\\b(discard|draw|pick))\b/i;
+export const ORDER = /\b(order of play|turn order|direction|which way|clockwise|counterclockwise|counter-clockwise|whose turn|who goes (next|first|after)|who sits (in|at|where)|which seat|(east|west|north|south) seat|next player|after east|goes next|turns? (go|pass|move|rotate)|to the (right|left)|when (do|can|am) i (get to )?(pick|draw)|how (does|do) (a|my|the) turns? (work|go)|(pick|picking|draw|drawing|take)\b[^.?!]{0,24}\bbefore (i|you) discard|skip (my|your|a|the) turn|(discard|draw|pick)\\w*\\b[^.?!]{0,20}\\bevery turn|every turn\\b[^.?!]{0,20}\\b(discard|draw|pick))\b/i;
 export const COURTESY = /\bcourtesy\b/i;
 export const CHARLESTON_WORD = /(?<!(?:near|in|around|at|visiting|by|to|from)\s)\bcharleston\b/i;
 export const STOP = /\b(stop|stops|stopped|stopping|end it(?! (was|is|turned|became))|ending|skip|skipped|skipping|decline|declined|refuse|refused|opt out|refuses|declines|skips|halt|halts|cancel|cancels|call off|say no|don'?t want to( do| play| pass)?|do not want to( do| play| pass)?|if (i|we) don'?t want|required|mandatory|optional|must (i|we) do|have to (do|play|pass)|must (we|i|you|everyone) (do|play|pass)|forced)\b/i;
@@ -89,7 +99,10 @@ export const MAHJONG_ANY_TURN =
   /\b(mahjong|mahj|maj|win|winning)\b[^.?!]{0,50}\b(not|isn'?t|wasn'?t|is not|was not) (my|your|her|his|their|our) turn\b|\b(not|isn'?t|wasn'?t|is not|was not) (my|your|her|his|their|our) turn\b[^.?!]{0,50}\b(mahjong|mahj|maj|win|winning)\b/i;
 // "call a discard to make an exposure": the permission to build one, not the timing of showing it.
 export const MAKE_EXPOSURE = /\b(make|makes|making|build|builds|building|form|forms|forming|create|creating|start|starting|complete|completing) (an? |my |the |that )?(exposure|exposures|pung|kong|quint|sextet|group|meld)s?\b/i;
-export const EXPOSURE_WORD = /\b(expos(e|ed|es|ure|ures|ing)|melds?|lay (it |them )?down|put (it |them )?down|put (it |them |a |the |my )?up|on top of (my|the|your) rack|face up)\b/i;
+export const EXPOSURE_WORD = new RegExp(
+  `\\b(?:${EXPOSE_WORDS}|lay (?:it |them )?down|put (?:it |them )?down|on top of (?:my|the|your) rack|face up)\\b`,
+  "i",
+);
 export const CARD_WORD = /\bcards?\b/i;
 export const CX_LETTERS = /\bC and X\b|\bX and C\b|\bC or X\b|\bX or C\b|\b[CX] hands?\b|\bmarked [CX]\b/i;
 export const NOTATION =
@@ -185,7 +198,7 @@ export const SETTLEMENT_OR_HOLD = new RegExp(`${SETTLEMENT.source}|${HOLD_FOR_CH
 // Only the deal's final discard, never the most recent one: "her last discard finishes my
 // pung" is an ordinary calling question and must not reach the end-of-wall answer.
 export const FINAL_DISCARD_SCENE =
-  /\b(cold|hot) wall\b|(?<!(?:my|your|her|his|their|own) )\b(last|final) (discard|tile)\b(?=[^.?!]{0,40}\b(wall|deal|game|end|empty|left)\b)|\b(wall|deal|game|end|empty)\b[^.?!]{0,40}(?<!(?:my|your|her|his|their|own) )\b(last|final) (discard|tile)\b|\bwall gets (down )?to\b|\blast \d+ tiles\b|\blast (few|couple|handful of) tiles\b|\bwall is (almost|nearly|about) (gone|empty|done|out)\b|\bwall is (empty|gone|out|used up)\b|\bwall runs out\b|\bno tiles left\b|\b(only |just )?(two|three|four|five|a few|\d+) tiles? (left|remaining)\b|\bout of tiles\b|\bend of the wall\b|\bnothing left to draw\b|\blast discard of the (game|hand|round|deal)\b|\b(very|absolute) last (discard|tile)\b|\b(very )?last (one|tile) in the wall\b|\bwall (gets|is|runs) low\b/i;
+  /\b(cold|hot) wall\b|(?<!(?:my|your|her|his|their|own) )\b(last|final) (discard|tile)\b(?=[^.?!]{0,40}\b(wall|deal|game|end|empty|left)\b)|\b(wall|deal|game|end|empty)\b[^.?!]{0,40}(?<!(?:my|your|her|his|their|own) )\b(last|final) (discard|tile)\b|\bwall gets (down )?to\b|\blast \d+ tiles\b|\blast (few|couple|handful of) tiles\b|\bwall is (almost|nearly|about) (gone|empty|done|out)\b|\bwall is (empty|gone|out|used up)\b|\bwall runs out\b|\bno tiles left\b|\b(only |just )?(two|three|four|five|a few|\d+) tiles? (left|remaining)\b|\bout of tiles\b|\bend of the wall\b|\bnothing left to draw\b|\blast discard of the (game|hand|round|deal)\b|\b(very|absolute) last (discard|tile)\b|\bfinal discard\b|\bfinal tile\b|\b(very )?last (one|tile) in the wall\b|\bwall (gets|is|runs) low\b/i;
 
 // East is dealt 14; "the dealer took 14 and we took 13" is the deal, not a count gone wrong.
 export const DEALER_COUNT = /\b(dealer|east) (took|takes|gets|got|has|had|get|take|starts? with|holds?) (13|14|fourteen|thirteen)\b/i;

@@ -4,10 +4,11 @@
 export type { CanonicalRule, Category, Level, Provenance, ApprovalState, RuleClassification, EvidenceState, SourceType, OwnerSite, Tag } from "./corpus/types.ts";
 export { RULES_KNOWLEDGE, KNOWLEDGE_BY_ID, ALIASES, resolveId, entryById, isPending, PENDING_IDS, CURRENT_CARD_YEAR } from "./corpus/entries.ts";
 export { blindReadsAsPlace, placeAfterPrep, VARIANT_RE, AMERICAN_RE } from "./corpus/matchers.ts";
+export { CONCEPT_FAMILIES, DECLARE_MAHJONG, PERMISSION_FRAME, FILLER, PLAYER_REF } from "./corpus/concepts.ts";
 export { normalizeQuestion, spellfix, prepare, mentionedYear, summarizeForEscalation, MAX_QUESTION_CHARS } from "./engine/normalize.ts";
 export { rankEntries, retrieve, approvalRank, polarityOf, polarityConflict } from "./engine/retrieve.ts";
 export { classifyTopic, hasStrongRulesSignal, rulesProposition, tournamentForPlay, explicitRuleAsk, SHARED_DISCOVERY_RE, type AskTopic, type TopicHooks } from "./engine/topic.ts";
-export { route, activeRulesThread, type RouteKind, type RouteDecision, type RouteInput } from "./engine/route.ts";
+export { route, activeRulesThread, isElliptical, splitClauses, type RouteKind, type RouteDecision, type RouteInput, type ContextKind, type RulesEvidence, type SiteEvidence } from "./engine/route.ts";
 export { askDecision, isRulesGap, type AskDecision, type AskInput, type SiteSurface } from "./engine/ask.ts";
 export { siteIntent, placeOnlySearch, TOPIC_SWITCH_PHRASE, type SiteIntentKind, type SiteIntentResult } from "./engine/site-intent.ts";
 export { excludedIds, overrideSummary, type SiteConfig, type SiteOverride, type SiteId } from "./site.ts";

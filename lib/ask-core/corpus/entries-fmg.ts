@@ -138,6 +138,10 @@ const PICK_OR_SKIP = new RegExp(
   "i",
 );
 const AHEAD_OR_SKIP = new RegExp(`${AHEAD.source}|${SKIPPED_DRAW.source}`, "i");
+// The chance to claim has already gone: the next player has picked and racked, or the tile is
+// buried. call-window states the rule; the ordinary claiming entries must stand down.
+const WINDOW_CLOSED =
+  /\b(?:after|once)\b[^.?!]{0,40}\b(?:picked and racked|picks and racks|already (?:picked|racked|drawn|discarded)|next player has (?:picked|drawn|racked)|racked (?:it|the tile|her tile|his tile))\b|\btoo late to (?:call|claim|take)\b|\bwindow (?:has )?closed\b/i;
 const COURTESY_ASK = new RegExp(`${COURTESY.source}|\\bacross swap\\b|\\bswap (with|across)\\b[^.?!]{0,20}\\bopposite\\b|\\bopposite (player|swap|exchange)\\b|\\bacross (exchange|trade)\\b`, "i");
 // "nobody threw in": the settlement entry only applies once hands were thrown in.
 const NOBODY_THREW_IN = /\b(nobody|no one|noone|none of (us|them)|no hands? (were|was)|nothing was) (threw|tossed|throw|toss|thrown)\w*( (their |her |his )?(hands?|tiles?))?( in)?\b/i;
@@ -506,7 +510,7 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     ],
     keywords: ["win", "winning", "declare", "mahjong means"],
     // Whether East may declare on the dealt hand is not stated anywhere in the corpus.
-    blocks: [(q: string) => DEALT_HAND_SCENE.test(q) && MAHJONG_CUE.test(q)],
+    blocks: [WINDOW_CLOSED, (q: string) => DEALT_HAND_SCENE.test(q) && MAHJONG_CUE.test(q)],
     answer:
       "You win by completing a 14 tile hand that exactly matches one of the hands printed on the current National Mah Jongg League card, then declaring mahjong. The 14th tile can come from your own draw or from a called discard.",
     varies_by_house: false,
@@ -707,7 +711,7 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     keywords: ["mahjong", "win", "call", "discard"],
     requires: [new RegExp(`${CLAIM_VERB.source}|\\b(yell|yells|yelled|shout|shouts|shouted|say|declare|declares|declared|announce|announces) (mahjong|mahj|maj)\\b`, "i"), MAHJONG_CUE],
     // Closed-hand and false-mahjong questions have their own answers.
-    blocks: [DEALT_HAND_SCENE, /\bforgot to (pick|draw)\b|\bwithout (picking|drawing)\b|\b(threw|discarded|tossed) (a|the) joker\b|\bdiscarded joker\b/i, FINAL_DISCARD_SCENE, /\bself[- ]?(pick|draw)\w*\b|\bown (draw|pick)\b|\boff the wall\b|\bfrom the wall\b/i, HAND_CLOSED, ERROR_CUE, TWO_PLAYERS, OWN_DISCARD, JOKER, MISNAMED],
+    blocks: [DEALT_HAND_SCENE, CHARLESTON_WORD, DEAD, WINDOW_CLOSED, /\bforgot to (pick|draw)\b|\bwithout (picking|drawing)\b|\b(threw|discarded|tossed) (a|the) joker\b|\bdiscarded joker\b/i, FINAL_DISCARD_SCENE, /\bself[- ]?(pick|draw)\w*\b|\bown (draw|pick)\b|\boff the wall\b|\bfrom the wall\b/i, HAND_CLOSED, ERROR_CUE, TWO_PLAYERS, OWN_DISCARD, JOKER, MISNAMED],
     answer: "Yes. Any player may call a discard to complete a winning hand (mahjong), except a discarded joker, as long as the next player has not yet picked and racked or discarded. A call for mahjong beats any call for an exposure, even one already placed on a rack. If two players call the same tile for mahjong, the player next in turn after the discarder gets it unless the other caller has already racked the tile or exposed.",
     varies_by_house: false,
     approval: "owner_approved",
@@ -790,6 +794,8 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     // the joker in her pung, and I already discarded" is a joker exchange gone wrong.
     requires: [JOKER, new RegExp(`\\bjokers?\\b[^.?!,;]{0,30}${DISCARDED.source}|${DISCARDED.source}[^.?!,;]{0,30}\\bjokers?\\b`, "i")],
     blocks: [/\b(zero|no|without) jokers?\b|\bjokerless\b|\bjoker[- ]?free\b/i,
+      // Another tile named as the thing discarded: the joker is elsewhere in the sentence.
+      /\b(?:discard|discards|discarded|discarding|threw|thrown|throws|toss|tossed|put down)\s+(?:a|an|the|her|his|their|my)?\s*(?:north|south|east|west|soap|flowers?|dragons?|bams?|craks?|dots?|winds?|\d)\b/i,
       // An exchange phrase does not take this entry away when the joker being asked about is
       // the one in the discard pile: that is this entry's own scene (release gate blocker 2).
       (q: string) => JOKER_EXCHANGE.test(q) && !DISCARDED_JOKER_SCENE.test(q),
@@ -939,7 +945,7 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     question_patterns: [MAHJONG_CUE, ERROR_CUE],
     keywords: ["mahjong", "error", "mistake", "false"],
     requires: [MAHJONG_CUE, ERROR_CUE],
-    blocks: [(q: string) => /\b(can|may) (i|we) (still )?(call|claim|take)\b/i.test(q) && !/\b(declared|said mahjong|called mahjong|blurted|yelled mahjong)\b/i.test(q), OWN_DISCARD, JOKER_EXCHANGE, MISNAMED, TWO_PLAYERS],
+    blocks: [SKIPPED_DRAW, (q: string) => /\b(can|may) (i|we) (still )?(call|claim|take)\b/i.test(q) && !/\b(declared|said mahjong|called mahjong|blurted|yelled mahjong)\b/i.test(q), OWN_DISCARD, JOKER_EXCHANGE, MISNAMED, TWO_PLAYERS],
     answer:
       "It depends on how far the declaration went. If you only said mahjong and nothing went face up, take it back right away, before anyone else exposes tiles or disturbs a hand; there is no penalty and play continues. If you called a discard for mahjong and racked the tile, or laid down only the one group that tile completes, you may drop the mahjong declaration and keep it as a call for that exposure, then discard to finish your turn. The exposure stays on your rack, and if it fits no hand on the card the other players can declare your hand dead the normal way. That path needs a hand that can make an exposure, so it does not help a hand marked concealed, and a tile you picked yourself gives no such escape. If you put tiles down from behind your rack, your hand is dead and you cannot take the declaration back. Your turn ends without a discard, put the tiles you just showed back behind the sloped part of your rack, and any exposures you made properly earlier stay up, so other players may still redeem jokers from them. If your hand was a concealed hand, every tile returns to your rack and no one can redeem a joker from it. You stop drawing and discarding, and play continues with the player on your right. Anyone who threw in a hand because of your false mahjong is dead too.",
     varies_by_house: false,
@@ -967,7 +973,7 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     ],
     // A misname settlement is misnamed-discard's rule, not this one; the two
     // state opposite payers, so this must not win a misname question.
-    blocks: [/\b(got|was|were|been) (called|declared) dead\b|\bsince (she|he|they) (is|are) dead\b/i, (q: string) => NOBODY_THREW_IN.test(q) && !/\b(pay|pays|paid|owe|owes|settle|collect|double)\w*\b/i.test(q), MISNAMED],
+    blocks: [/\b(got|was|were|been) (called|declared) dead\b|\bsince (she|he|they) (is|are) dead\b/i, (q: string) => NOBODY_THREW_IN.test(q) && !/\b(pay|pays|paid|owe|owes|settle|collect|double)\w*\b/i.test(q), MISNAMED, SKIPPED_DRAW],
     answer:
       "Settlement follows from how many hands are left standing. Everyone should hold their hands until someone checks the call, and you cannot take back a hand you threw in, because that hand is dead too. If at least two hands stay intact, play continues and no one pays yet; when someone later wins, the dead players pay along with everyone else, and a wall game means no one pays. If the false call leaves only one intact hand, the deal ends there and the player who declared in error pays that one player double the value of the hand the declarer was attempting, while players who threw in neither pay nor collect. If more than one player declared in error, the last one to do so carries that payment. A player who throws in a hand and wrecks the wall before anyone checks the call pays each player with an intact hand the lowest value printed on the card. One more thing worth knowing: another player who wanted that same claimed tile for mahjong may still take it and win, but a player who wanted it only for an exposure may not.",
     varies_by_house: false,
@@ -1157,7 +1163,7 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     question_patterns: [ORDER],
     keywords: ["order", "turn", "direction", "next"],
     requires: [ORDER],
-    blocks: [CHARLESTON_WORD, ERROR_CUE, TWO_PLAYERS, SKIPPED_DRAW, PAYMENT],
+    blocks: [WINDOW_CLOSED, CHARLESTON_WORD, ERROR_CUE, TWO_PLAYERS, SKIPPED_DRAW, PAYMENT],
     answer:
       "East starts the deal by discarding. Turns then move to the right, counterclockwise around the table: East, then South, then West, then North. On your turn you either draw the next tile from the wall or call the most recent discard, then you discard one tile face up and name it. You hold 13 tiles between turns and 14 during your turn.",
     varies_by_house: false,
@@ -1179,7 +1185,7 @@ export const FMG_ENTRIES: CanonicalRule[] = [
     requires: [HAND_SIZE],
     // "How many do I hold" is this entry's. A count that has already gone wrong is the
     // count entry's, and holding your hand while a call is checked is a third question.
-    blocks: [DEAD, JOKER, WRONG_COUNT, HOLD_FOR_CHECK, /\bpairs?\b|\bsingles?\b|\bexpos|\bdealer\b|\beast\b/i],
+    blocks: [(q: string) => PASS_VERB.test(q) && /\b(3|three) tiles\b/i.test(q), DEAD, JOKER, WRONG_COUNT, HOLD_FOR_CHECK, /\bpairs?\b|\bsingles?\b|\bexpos|\bdealer\b|\beast\b/i],
     answer:
       "You hold 13 tiles between turns. When you draw or call, you have 14; after you discard, you are back to 13. A finished mahjong is 14 tiles. Count quietly whenever you are unsure, because the wrong number of tiles once play has begun makes a hand dead.",
     varies_by_house: false,
