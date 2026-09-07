@@ -118,6 +118,17 @@ test.describe("phone is collected, never published", () => {
   });
 });
 
+test.describe("the modal offers the same way out as /contact", () => {
+  test("a visitor who will not give a phone number is not cornered", () => {
+    // The modal requires a phone number and, until now, offered no alternative, so anyone
+    // unwilling to give one hit a dead end on the highest traffic page. /contact has always
+    // said "Prefer email?"; the modal now says it too.
+    const src = read(MODAL);
+    expect(src).toContain("Prefer email?");
+    expect(src).toContain("mailto:hello@lasvegasmahj.com");
+  });
+});
+
 test.describe("public business email", () => {
   const PUBLIC = "hello@lasvegasmahj.com";
 
@@ -170,5 +181,39 @@ test.describe("the dropdowns show they are dropdowns", () => {
     // %2339e639 is --green url-encoded. A new colour would be a redesign.
     expect(block.toLowerCase()).toContain("%2339e639");
     expect(css).toContain("--green: #39e639");
+  });
+});
+
+test.describe("the published-number guard catches any number, not just one", () => {
+  // Every shipped phone guard keys on the owner's current number. If she ever changed it, or
+  // a number were added by mistake, those guards would pass while the site published it.
+  // This one is shape based, with the visitor-facing placeholder as the only allowed value.
+  // The lookarounds matter: without them a ten digit window inside a longer run of digits
+  // matches, and the Facebook profile id in the footer reads as a phone number.
+  const PHONE_SHAPE = /(?<!\d)(?:\+?1[.\s-]?)?\(?\d{3}\)?[.\s-]?\d{3}[.\s-]?\d{4}(?!\d)/g;
+  const ALLOWED = new Set(["(702) 555-0123"]);
+
+  test("the shape guard matches a real number and ignores dates and prices", () => {
+    const find = (s: string) => [...s.matchAll(PHONE_SHAPE)].map((m) => m[0]);
+    for (const s of ["847-609-3112", "(847) 609-3112", "847.609.3112", "+1 702 462 1180", "7024621180"]) {
+      expect(find(s).length, s).toBeGreaterThan(0);
+    }
+    for (const s of ["2026-09-06", "$60 per person", "152 tiles", "8687 W. Sahara Ave", "9-20 people",
+                     "https://www.facebook.com/profile.php?id=61581027728474"]) {
+      expect(find(s), s).toEqual([]);
+    }
+  });
+
+  test("no shipped component publishes any phone-shaped number", () => {
+    const offenders: string[] = [];
+    for (const f of shipped) {
+      if (!/\.tsx?$/.test(f)) continue;
+      // Comments are stripped: the validation comment lists example formats deliberately,
+      // and documentation is not publication.
+      for (const m of readCode(path.relative(ROOT, f)).matchAll(PHONE_SHAPE)) {
+        if (!ALLOWED.has(m[0])) offenders.push(`${path.relative(ROOT, f)}: ${m[0]}`);
+      }
+    }
+    expect(offenders).toEqual([]);
   });
 });

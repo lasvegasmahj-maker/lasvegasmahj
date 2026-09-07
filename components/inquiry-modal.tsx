@@ -23,7 +23,12 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
           Book a <span style={{ color: "var(--green)" }}>Lesson</span>
         </h3>
         <p className="modal-desc">
-          Fill out the form below and I&rsquo;ll be in touch within 24 hours!
+          Fill out the form below and I&rsquo;ll be in touch within 24 hours! Prefer email?
+          Write to{" "}
+          <a href="mailto:hello@lasvegasmahj.com" style={{ color: "var(--green)", fontWeight: 600 }}>
+            hello@lasvegasmahj.com
+          </a>
+          .
         </p>
 
         {/* The same component /contact renders, so both entry points ask the same questions,
