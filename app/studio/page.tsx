@@ -28,6 +28,10 @@ export const metadata: Metadata = {
     description:
       "Two rooms inside Lucky Hare on West Sahara. Lucky Wishbone for classes, leagues and special events, Lucky Sevens for open play. Come sit with us.",
     url: "https://www.lasvegasmahj.com/studio",
+    // A page-level openGraph object replaces the parent's rather than merging, so without
+    // this the share card has no image at all. The sitewide tiles photograph makes no claim
+    // about the studio, which is the point: there is no verified photograph of it yet.
+    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
 
