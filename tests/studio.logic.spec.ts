@@ -159,8 +159,14 @@ test.describe("nothing unsourceable ships", () => {
 
   test("neither og:image nor schema.org photo asserts a picture of the studio", () => {
     const src = readCode(STUDIO_PAGE);
+    // schema.org photo means "this image depicts this Place", which nothing here can support.
     expect(src, "schema.org photo asserts an image depicts the Place").not.toMatch(/\bphoto:/);
-    expect(src, "og:image points at an unverified studio picture").not.toMatch(/images:\s*\[/);
+    // og:image is different: the page needs a share card, it just must not be a photograph
+    // passed off as the studio. The sitewide tiles image makes no such claim.
+    const og = src.match(/images:\s*\[([^\]]*)\]/);
+    expect(og, "/studio needs a share image: a page-level openGraph replaces the parent's").not.toBeNull();
+    expect(og![1], "the share card must not be an open play photo").not.toContain("lvm-openplay");
+    expect(og![1]).toContain("hero-bg.jpg");
   });
 });
 

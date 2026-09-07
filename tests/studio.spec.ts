@@ -65,10 +65,15 @@ test.describe("/studio", () => {
       "content",
       "https://www.lasvegasmahj.com/studio",
     );
-    // Falls back to the sitewide tiles image. The open play photos must never be the card.
-    for (const el of await page.locator('meta[property="og:image"]').all()) {
+    // There must BE a share card, and it must not be an open play photo passed off as the
+    // studio. A page-level openGraph replaces the parent's, so a missing image is a real
+    // regression rather than a harmless omission.
+    const cards = page.locator('meta[property="og:image"]');
+    await expect(cards, "/studio has no share image at all").not.toHaveCount(0);
+    for (const el of await cards.all()) {
       const img = (await el.getAttribute("content")) ?? "";
       expect(img, "an open play photo is being shared as the studio").not.toContain("lvm-openplay");
+      expect(img, "the share image should be a real asset").toMatch(/^https:\/\/www\.lasvegasmahj\.com\//);
     }
   });
 
