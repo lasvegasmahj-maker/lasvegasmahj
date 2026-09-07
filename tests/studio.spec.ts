@@ -1,8 +1,19 @@
 import { test, expect, type Page } from "@playwright/test";
+import fs from "node:fs";
+import path from "node:path";
 
 // Runs against a real production build. Covers the studio page itself, the homepage section
 // under the hero, the ninth nav link at both desktop and phone widths, and a regression pass
 // over the two pages that already rank.
+
+// The nav collapses to the menu button at a width defined once, in app/globals.css. Reading
+// it here instead of repeating the number keeps this test honest when the breakpoint moves.
+function navBreakpoint(): number {
+  const css = fs.readFileSync(path.join(__dirname, "..", "app", "globals.css"), "utf8");
+  const m = css.match(/NAV_BREAKPOINT \*\/\s*@media \(max-width:\s*(\d+)px\)/);
+  if (!m) throw new Error("the NAV_BREAKPOINT marker is gone from app/globals.css");
+  return Number(m[1]);
+}
 
 function jsonLd(page: Page) {
   return page.locator('script[type="application/ld+json"]').allTextContents();
@@ -253,9 +264,11 @@ test.describe("navigation", () => {
 
   test("the desktop bar does not overflow at its narrowest width", async ({ page, isMobile }) => {
     test.skip(isMobile, "desktop project only");
-    // 1100px is the first pixel above the mobile breakpoint, so it is the tightest the
-    // horizontal bar ever gets with nine links in it.
-    for (const width of [1100, 1280, 1440]) {
+    // One pixel above the breakpoint is the tightest the horizontal bar ever gets with nine
+    // links in it, so that is where wrapping would show up first.
+    // Swept, not sampled: the spacing changes at more than one width, and it was a band
+    // between two sampled points (1281px to 1370px) that overflowed unnoticed.
+    for (const width of [navBreakpoint() + 1, 1300, 1366, 1439, 1440, 1512, 1920]) {
       await page.setViewportSize({ width, height: 900 });
       await page.goto("/studio");
       const logo = (await page.locator(".nav-logo").boundingBox())!;
@@ -270,12 +283,13 @@ test.describe("navigation", () => {
       // 1025px before the breakpoint moved.
       const navH = (await page.locator("nav").boundingBox())!.height;
       expect(navH, `the bar stays one row at ${width}`).toBeLessThan(80);
+      expect(links.height, `the links stay one row at ${width}`).toBeLessThan(40);
     }
   });
 
   test("the menu button takes over just below the desktop breakpoint", async ({ page, isMobile }) => {
     test.skip(isMobile, "desktop project only");
-    for (const width of [1099, 1024, 820]) {
+    for (const width of [navBreakpoint(), 1024, 820]) {
       await page.setViewportSize({ width, height: 900 });
       await page.goto("/studio");
       await expect(page.locator(".nav-toggle"), `toggle at ${width}`).toBeVisible();

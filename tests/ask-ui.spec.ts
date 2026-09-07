@@ -1,5 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import fs from "node:fs";
+import path from "node:path";
 
 // Real-user flows on /ask at desktop and mobile viewports. Network goes to the real API
 // except where a failure is deliberately injected.
@@ -15,6 +16,15 @@ async function askAndWait(page: Page, question: string) {
   await page.getByLabel("Your American Mahjong rules question").fill(question);
   await page.getByRole("button", { name: "Ask", exact: true }).click();
   await expect(page.locator(".ask-turn-answer:not(.ask-thinking)").last()).toBeVisible();
+}
+
+// The nav collapses to the menu button at a width defined once, in app/globals.css. Reading
+// it here instead of repeating the number keeps this test honest when the breakpoint moves.
+function navBreakpoint(): number {
+  const css = fs.readFileSync(path.join(__dirname, "..", "app", "globals.css"), "utf8");
+  const m = css.match(/NAV_BREAKPOINT \*\/\s*@media \(max-width:\s*(\d+)px\)/);
+  if (!m) throw new Error("the NAV_BREAKPOINT marker is gone from app/globals.css");
+  return Number(m[1]);
 }
 
 test.describe("/ask page", () => {
@@ -168,12 +178,13 @@ test.describe("entry points", () => {
 
   test("desktop nav does not wrap or overflow with the new link", async ({ page, isMobile }) => {
     test.skip(isMobile, "desktop only");
+    const bp = navBreakpoint();
     for (const width of [1440, 1280, 1100, 1024, 900, 800]) {
       await page.setViewportSize({ width, height: 800 });
       await page.goto("/");
       const nav = (await page.locator("nav").boundingBox())!;
       expect(nav.height, `nav height at ${width}px`).toBeLessThan(80);
-      if (width > 1024) {
+      if (width > bp) {
         await expect(page.locator(".nav-links"), `links visible at ${width}px`).toBeVisible();
         const links = (await page.locator(".nav-links").boundingBox())!;
         expect(links.height, `links on one row at ${width}px`).toBeLessThan(40);
