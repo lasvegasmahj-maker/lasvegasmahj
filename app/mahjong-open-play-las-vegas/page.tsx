@@ -59,7 +59,8 @@ export default function MahjongOpenPlayLasVegas() {
               Open play is a casual, social mahjong session where players of all skill levels gather to play. No strict tournament rules, just good games, good people, and a welcoming environment.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
-              Our events are hosted at restaurants, community venues, and local spots across Las Vegas. Tickets typically include a drink, and we always keep the energy light, fun, and beginner-friendly.
+              Most open play now happens in Lucky Sevens, the playing room at{" "}
+              <a href="/studio" style={{ color: "var(--green)", fontWeight: 600 }}>our studio inside Lucky Hare</a>. We also host at restaurants, community venues, and local spots across Las Vegas, and we always keep the energy light, fun, and beginner-friendly.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8 }}>
               Already know how to play? Come and meet the local mahjong community. Just learning? Come anyway. Open play is the best way to practice and get better fast.

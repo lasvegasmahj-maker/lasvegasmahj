@@ -105,7 +105,7 @@ export function buildBreadcrumbSchema(items: BreadcrumbItem[]) {
 // Only the studio address is verified, so an event anywhere else is skipped rather than
 // given an address we cannot source. Google requires location.address to be a real street
 // address, and inventing one for a partner venue would be a factual claim we cannot make.
-const STUDIO_PLACE = {
+export const STUDIO_PLACE = {
   "@type": "Place",
   "@id": "https://www.lasvegasmahj.com/#studio",
   name: "Lucky Hare",

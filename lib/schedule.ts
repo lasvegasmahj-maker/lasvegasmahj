@@ -94,7 +94,7 @@ function fmtClock(h: number, mi: number): string {
 function classify(title: string): { tone: Tone; room: string | null } {
   const t = title.toLowerCase();
   if (t.includes("grand opening") || t.includes("turns 1") || t.includes("anniversary"))
-    return { tone: "gold", room: "Both studios" };
+    return { tone: "gold", room: "Both rooms" };
   if (t.includes("bling") || t.includes("bedazzle")) return { tone: "gold", room: "Celebration" };
   if (/mahj\s*10[123]/.test(t) || /\b10[123]\b/.test(t) || t.includes("lesson"))
     return { tone: "pink", room: "in Lucky Wishbone room" };

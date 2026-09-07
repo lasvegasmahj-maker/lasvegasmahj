@@ -28,6 +28,7 @@ export default function Nav() {
         className={`nav-toggle${menuOpen ? " open" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Toggle navigation"
+        aria-expanded={menuOpen}
       >
         <span />
         <span />
@@ -35,6 +36,11 @@ export default function Nav() {
       </button>
 
       <ul className={`nav-links${menuOpen ? " open" : ""}`}>
+        <li>
+          <a href="/studio" onClick={handleLinkClick}>
+            Studio
+          </a>
+        </li>
         <li>
           <a href="/about" onClick={handleLinkClick}>
             About

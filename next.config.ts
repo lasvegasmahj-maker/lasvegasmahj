@@ -13,6 +13,13 @@ const nextConfig: NextConfig = {
         // client handles it, while 308 is still unfamiliar to some older crawlers and tools.
         statusCode: 301,
       },
+      {
+        // The studio lives at /studio. This reserves the descriptive phrase someone might
+        // guess or type, without creating a second studio destination to compete with it.
+        source: "/mahjong-studio-las-vegas",
+        destination: "/studio",
+        statusCode: 301,
+      },
     ];
   },
   async headers() {

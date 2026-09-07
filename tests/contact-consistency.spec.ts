@@ -183,7 +183,7 @@ test.describe("the homepage Plan Your Event flow", () => {
     await page.goto("/");
     await expect(page.getByRole("button", { name: "Plan Your Event", exact: true }).first()).toBeVisible();
     await openModal(page);
-    await expect(page.locator(".modal-content h3")).toContainText("Book a");
+    await expect(page.locator(".modal-content h3")).toContainText("Plan Your Mahjong Experience");
     await expect(page.locator(".modal-label")).toHaveText("Let\u2019s Play");
   });
 
