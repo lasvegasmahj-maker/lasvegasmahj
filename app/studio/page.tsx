@@ -152,14 +152,15 @@ export default function Studio() {
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "1.5rem 0 1rem" }}>
               There are two rooms here, and each one has its own personality. One
               is where you learn and where the group gathers. The other is where
-              you sit down and play. Most people end up in both.
+              you sit down and play. You are welcome in both.
             </p>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: 0 }}>
-              Classes, open play, leagues and special events all run out of this
-              studio, and everything that is currently scheduled sits on one
-              calendar. Private lessons and private events are hosted here too,
-              and for those I can also come to your home or venue across the
-              Valley for an added fee.
+              Classes, open play, leagues and special events all run here, and
+              everything that is currently scheduled, at the studio and out
+              around town, sits on one calendar. Private lessons are held here
+              too, with in-home available by request. For a private party or a
+              corporate group, tell me what you have in mind and we will build
+              it around your people.
             </p>
           </div>
         </section>
@@ -214,7 +215,7 @@ export default function Studio() {
             <figure style={{ margin: "3rem auto 0", maxWidth: "820px" }}>
               <Image
                 src="/lvm-openplay-social.jpg"
-                alt="Shauna teaching a room of mahjong players at the Las Vegas Mahjong studio"
+                alt="Shauna with a room of players at the Las Vegas Mahjong studio"
                 width={1800}
                 height={1350}
                 sizes="(max-width: 900px) 100vw, 820px"
@@ -255,8 +256,8 @@ export default function Studio() {
                 station&rsquo;s own site.
               </p>
               <div style={{ display: "grid", gap: "1.25rem" }}>
-                {STUDIO_MEDIA.map((item) => (
-                  <article key={item.url} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "1.5rem" }}>
+                {STUDIO_MEDIA.filter((m) => m.url.startsWith("https://")).map((item, i) => (
+                  <article key={`${item.url}-${i}`} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "1.5rem" }}>
                     <p style={{ fontFamily: "var(--font-nav)", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "0.5rem" }}>
                       {item.outlet}
                     </p>
@@ -281,7 +282,7 @@ export default function Studio() {
             <h2 className="section-title">Where to <span className="accent-green">Find Us</span></h2>
 
             <address style={{ fontStyle: "normal", color: "rgba(255,255,255,0.85)", fontSize: "1.05rem", lineHeight: 1.9, margin: "1.75rem 0 1.5rem", textAlign: "center" }}>
-              <strong>Las Vegas Mahjong Studio</strong>
+              <strong>Our Studio</strong>
               <br />
               Inside Lucky Hare
               <br />

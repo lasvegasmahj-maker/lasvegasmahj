@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
+import { STUDIO_MEDIA } from "../lib/studio-media";
 
 // Runs against a real production build. Covers the studio page itself, the homepage section
 // under the hero, the ninth nav link at both desktop and phone widths, and a regression pass
@@ -104,14 +105,23 @@ test.describe("/studio", () => {
     ).toBeVisible();
   });
 
-  test("the media section stays hidden while no verified segment exists", async ({ page }) => {
+  test("the media section matches what lib/studio-media.ts actually holds", async ({ page }) => {
     await page.goto("/studio");
     const body = await page.locator("body").innerText();
-    // Either the section is absent, or it is present because a real entry was added.
-    if (body.includes("The Studio on")) {
-      await expect(page.locator('a[href^="https://"]:has-text("Watch on")').first()).toBeVisible();
+    // Assert against the real heading the page renders, not a string it never emits, so the
+    // empty branch cannot pass vacuously.
+    const heading = "The Studio on Local News";
+    if (STUDIO_MEDIA.length === 0) {
+      expect(body, "an empty media list must render no section").not.toContain(heading);
+      expect(body).not.toContain("In the Local Press");
+      await expect(page.locator('a:has-text("Watch on")')).toHaveCount(0);
     } else {
-      expect(body).not.toContain("As Seen On");
+      expect(body).toContain(heading);
+      const links = page.locator('a:has-text("Watch on")');
+      await expect(links).toHaveCount(STUDIO_MEDIA.filter((m) => m.url.startsWith("https://")).length);
+      for (const href of await links.evaluateAll((els) => els.map((e) => e.getAttribute("href")!))) {
+        expect(href, "a segment link must point at the station over https").toMatch(/^https:\/\//);
+      }
     }
   });
 });

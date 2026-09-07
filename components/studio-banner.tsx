@@ -25,7 +25,7 @@ export default function StudioBanner() {
               </li>
               <li>
                 <strong>Lucky Sevens</strong> is the playing room: open play,
-                social play, and whoever shows up.
+                social play, and every level at the same tables.
               </li>
             </ul>
 

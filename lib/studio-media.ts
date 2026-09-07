@@ -12,10 +12,11 @@
  *   headline     the segment title as the station published it
  *   publishedIso the air date, as YYYY-MM-DD
  *   url          the station's own page for the segment, which must load and be public
- *   embedUrl     only if the station publishes an embeddable player for it
  *
  * Rules that hold for every entry:
- *   - url must be the outlet's own domain. We link to the station, we do not re-host video.
+ *   - url must be the outlet's own https page. We link to the station, we do not re-host
+ *     video, and the page filters out anything that is not https before it reaches an href.
+ *     If a station offers an embeddable player, add the field when there is one to embed.
  *   - No claim of affiliation, sponsorship or endorsement by the station.
  *   - Nothing is inferred. If a field is unknown, the segment waits rather than shipping.
  */
@@ -24,7 +25,6 @@ export interface StudioMediaAppearance {
   headline: string;
   publishedIso: string;
   url: string;
-  embedUrl?: string;
   summary?: string;
 }
 

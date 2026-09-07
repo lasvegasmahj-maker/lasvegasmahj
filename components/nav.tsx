@@ -28,6 +28,7 @@ export default function Nav() {
         className={`nav-toggle${menuOpen ? " open" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Toggle navigation"
+        aria-expanded={menuOpen}
       >
         <span />
         <span />
