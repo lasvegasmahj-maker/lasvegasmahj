@@ -179,9 +179,9 @@ test.describe("entry points", () => {
   test("desktop nav does not wrap or overflow with the new link", async ({ page, isMobile }) => {
     test.skip(isMobile, "desktop only");
     const bp = navBreakpoint();
+    await page.goto("/");
     for (const width of [1440, 1280, 1100, 1024, 900, 800]) {
       await page.setViewportSize({ width, height: 800 });
-      await page.goto("/");
       const nav = (await page.locator("nav").boundingBox())!;
       expect(nav.height, `nav height at ${width}px`).toBeLessThan(80);
       if (width > bp) {

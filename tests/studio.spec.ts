@@ -267,10 +267,12 @@ test.describe("navigation", () => {
     // One pixel above the breakpoint is the tightest the horizontal bar ever gets with nine
     // links in it, so that is where wrapping would show up first.
     // Swept, not sampled: the spacing changes at more than one width, and it was a band
-    // between two sampled points (1281px to 1370px) that overflowed unnoticed.
+    // between two sampled points (1281px to 1370px) that overflowed unnoticed. The page
+    // loads once and only the viewport changes, because media queries re-evaluate on resize
+    // and seven navigations is what made this time out on a busy runner.
+    await page.goto("/studio");
     for (const width of [navBreakpoint() + 1, 1300, 1366, 1439, 1440, 1512, 1920]) {
       await page.setViewportSize({ width, height: 900 });
-      await page.goto("/studio");
       const logo = (await page.locator(".nav-logo").boundingBox())!;
       const links = (await page.locator("nav .nav-links").boundingBox())!;
       const cta = (await page.locator("nav .nav-cta").boundingBox())!;
@@ -289,9 +291,9 @@ test.describe("navigation", () => {
 
   test("the menu button takes over just below the desktop breakpoint", async ({ page, isMobile }) => {
     test.skip(isMobile, "desktop project only");
+    await page.goto("/studio");
     for (const width of [navBreakpoint(), 1024, 820]) {
       await page.setViewportSize({ width, height: 900 });
-      await page.goto("/studio");
       await expect(page.locator(".nav-toggle"), `toggle at ${width}`).toBeVisible();
       await expect(page.locator("nav .nav-links"), `bar hidden at ${width}`).toBeHidden();
     }
