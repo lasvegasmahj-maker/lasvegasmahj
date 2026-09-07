@@ -20,17 +20,30 @@ export default function StudioBanner() {
             </p>
 
             <div className="studio-room-cards">
-              <div className="studio-room-card studio-room-card-teach">
+              {/* The whole card is the link, so there is nothing nested inside it to click. */}
+              <a
+                className="studio-room-card studio-room-card-teach"
+                href="/mahjong-lessons-las-vegas"
+              >
                 <h3>Lucky Wishbone</h3>
                 <p>The teaching room. Classes, leagues, and special events.</p>
-              </div>
-              <div className="studio-room-card studio-room-card-play">
+                <span className="studio-room-cue">
+                  Explore Lessons<span aria-hidden="true"> &rarr;</span>
+                </span>
+              </a>
+              <a
+                className="studio-room-card studio-room-card-play"
+                href="/mahjong-open-play-las-vegas"
+              >
                 <h3>Lucky Sevens</h3>
                 <p>
                   The playing room. Open play, social play, and every level at
                   the same tables.
                 </p>
-              </div>
+                <span className="studio-room-cue">
+                  Book Open Play<span aria-hidden="true"> &rarr;</span>
+                </span>
+              </a>
             </div>
 
             <div className="studio-banner-btns">

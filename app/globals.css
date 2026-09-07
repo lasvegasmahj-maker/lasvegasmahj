@@ -418,12 +418,46 @@ section {
 }
 
 .studio-room-card {
+  display: block;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.1);
   border-left-width: 3px;
   border-radius: 8px;
   padding: 1.4rem 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
+
+.studio-room-card:hover {
+  background: rgba(255,255,255,0.06);
+  transform: translateY(-2px);
+}
+
+.studio-room-card-teach:hover { border-color: rgba(233,30,140,0.55); }
+.studio-room-card-play:hover  { border-color: rgba(57,230,57,0.55); }
+
+/* Keyboard users get the same cue as a hover, plus a ring the accent cannot hide. */
+.studio-room-card:focus-visible {
+  outline: 3px solid var(--white);
+  outline-offset: 3px;
+  background: rgba(255,255,255,0.06);
+}
+
+.studio-room-cue {
+  display: inline-block;
+  margin-top: 0.85rem;
+  font-family: var(--font-nav);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.studio-room-card-teach .studio-room-cue { color: var(--pink); }
+.studio-room-card-play .studio-room-cue { color: var(--green); }
+
+.studio-room-card:hover .studio-room-cue { text-decoration: underline; }
 
 .studio-room-card-teach { border-left-color: var(--pink); }
 .studio-room-card-play  { border-left-color: var(--green); }
