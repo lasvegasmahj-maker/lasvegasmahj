@@ -76,7 +76,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
 const experience = [
   {
     title: "One address, always",
-    body: "Everything at the studio happens in the same place, inside Lucky Hare at 8687 W. Sahara Ave., Suite 200, Las Vegas, NV 89117.",
+    body: "You come to the same place every time, inside Lucky Hare at 8687 W. Sahara Ave., Suite 200, Las Vegas, NV 89117.",
   },
   {
     title: "Two rooms, two moods",
