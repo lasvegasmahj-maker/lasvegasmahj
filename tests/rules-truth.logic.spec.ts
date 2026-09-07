@@ -2,12 +2,13 @@ import { test, expect } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 import { RULES_TOPICS, getQA, type RuleQA } from "../content/rules";
-import { ALIGNMENT_EXCEPTIONS, KNOWLEDGE_BY_ID, PENDING_BY_OWNER_DECISION, RULES_KNOWLEDGE } from "../lib/ask/knowledge";
-import { answerDeterministic, labelFor, readMoreUrl } from "../lib/ask/engine";
+import { RULES_KNOWLEDGE, KNOWLEDGE_BY_ID, isPending, lookup, labelFor, approvedText } from "../lib/ask-core/index.ts";
+import { READ_MORE, readMoreUrl, LVM_SITE } from "../lib/ask/site";
 
-// The rules truth layer: /rules pages, the Ask knowledge base, and the learn page must never
-// disagree on an approved rule, a pending answer must never look verified, and a house rule
-// must never be dressed up as a League rule. Pure logic, no browser.
+// The rules truth layer on this site: the /rules pages, the shared Ask corpus, and the learn
+// page must never disagree on an approved rule; a pending answer must never look verified; and
+// a house rule must never be dressed up as a League rule. The corpus itself lives in the shared
+// core (lib/ask-core); this file checks that this site's pages agree with it. Pure logic.
 
 const allQA: Array<RuleQA & { ref: string }> = RULES_TOPICS.flatMap((t) => t.qa.map((qa) => ({ ...qa, ref: `${t.slug}.${qa.id}` })));
 const DASH_RE = /[–—]/;
@@ -19,8 +20,22 @@ const NMJL_CLAIM_RE = /\b(standard NMJL|NMJL standard|official (NMJL |League )?r
 // not cover. New ones cannot be added silently: list them here with the owner's eyes on them.
 const RULEBOOK_CLAIMS: string[] = [];
 // Standard-rule answers with no source in our materials, awaiting the owner's confirmation.
-// The same rule: a new one must be listed here, not slipped in.
 const OWNER_REVIEW: string[] = [];
+
+// Canonical entries that mirror a /rules Q&A but deliberately keep their own wording. Each
+// needs a reason; the test fails on any other divergence.
+const ALIGNMENT_EXCEPTIONS: Record<string, string> = {
+  "self-drawn-win": "Same facts as winning.self-drawn, but that page answer opens with 'Yes', which reads wrong for the payment question this entry also answers.",
+  "called-dead": "Stitched from one Find My Mahj sentence and two page sentences; every sentence is traced by the test below.",
+};
+
+// Entries whose canonical text comes from a lasvegasmahj.com/rules page: provenance names the
+// page Q&A it mirrors. The core is the source of truth for Ask; the page must agree with it.
+function pageRef(e: (typeof RULES_KNOWLEDGE)[number]): string | null {
+  if (e.provenance.approved_via !== "lvm") return null;
+  const m = e.provenance.source_ref?.match(/^([a-z-]+\.[a-z-]+)/);
+  return m ? m[1] : null;
+}
 
 test.describe("rules content modules", () => {
   test("every topic has unique ids, kinds, evidence, and clean copy", () => {
@@ -57,12 +72,6 @@ test.describe("rules content modules", () => {
     }
     for (const ref of RULEBOOK_CLAIMS) expect(getQA(ref).evidence, `${ref} no longer cites the rule book; drop it from the list`).toBe("rulebook");
     for (const ref of OWNER_REVIEW) expect(getQA(ref).evidence, `${ref} is now sourced; drop it from OWNER_REVIEW`).toBe("unverified");
-    // An unverified page answer must not reach Ask as a verified rule.
-    for (const e of RULES_KNOWLEDGE) {
-      if (e.source === "lvm_rules_page" && e.page_ref?.some((r) => OWNER_REVIEW.includes(r))) {
-        throw new Error(`${e.id} mirrors an owner-review answer but is served as verified`);
-      }
-    }
   });
 
   test("the /rules index counts match the content", () => {
@@ -75,24 +84,38 @@ test.describe("rules content modules", () => {
   });
 });
 
-test.describe("Ask mirrors the pages", () => {
-  test("every page-sourced Ask entry points at a real Q&A and carries its exact text", () => {
+test.describe("the pages agree with the shared corpus", () => {
+  test("every page-sourced canonical entry carries the page's exact text, or is a listed exception", () => {
+    let mirrored = 0;
     for (const e of RULES_KNOWLEDGE) {
-      if (e.source !== "lvm_rules_page") continue;
-      expect(e.page_ref?.length, `${e.id} has no page_ref`).toBeGreaterThan(0);
-      for (const ref of e.page_ref!) getQA(ref);
-      if (e.id in ALIGNMENT_EXCEPTIONS) continue;
-      expect(e.page_ref!.length, e.id).toBe(1);
-      expect(e.answer, e.id).toBe(getQA(e.page_ref![0]).a);
-      expect(e.varies_by_house, `${e.id} house flag disagrees with the page`).toBe(getQA(e.page_ref![0]).kind === "house");
+      const ref = pageRef(e);
+      if (!ref) continue;
+      const page = getQA(ref);
+      if (e.id in ALIGNMENT_EXCEPTIONS) {
+        expect(e.answer, `${e.id} is an exception but now matches the page; remove it from ALIGNMENT_EXCEPTIONS`).not.toBe(page.a);
+        continue;
+      }
+      mirrored++;
+      expect(e.answer, `${e.id} drifted from ${ref}. Change the page and the core together.`).toBe(page.a);
+      expect(e.varies_by_house, `${e.id} house flag disagrees with the page`).toBe(page.kind === "house");
     }
-    for (const e of RULES_KNOWLEDGE) {
-      if (!e.page_ref || !e.source_url) continue;
-      expect(e.source_url, `${e.id} links to a different page than it mirrors`).toBe(`https://www.lasvegasmahj.com/rules/${e.page_ref[0].split(".")[0]}`);
+    expect(mirrored).toBeGreaterThanOrEqual(35);
+  });
+
+  test("every alignment exception still exists and has a reason", () => {
+    for (const [id, reason] of Object.entries(ALIGNMENT_EXCEPTIONS)) {
+      expect(KNOWLEDGE_BY_ID.has(id), id).toBe(true);
+      expect(reason.length).toBeGreaterThan(20);
     }
   });
 
-  test("shared Find My Mahj entries that link to a page agree with it", () => {
+  test("a stitched entry is traceable sentence by sentence", () => {
+    const e = KNOWLEDGE_BY_ID.get("called-dead")!;
+    const pool = [getQA("dead-hands.draws").a, getQA("dead-hands.pays").a, KNOWLEDGE_BY_ID.get("dead-hand")!.answer].join(" ");
+    for (const sentence of e.answer.split(/(?<=\.)\s+/)) expect(pool, `untraced sentence: ${sentence}`).toContain(sentence);
+  });
+
+  test("shared owner-approved entries that link to a page agree with it", () => {
     const agreement: Array<[string, RegExp]> = [
       ["charleston-blind-pass", /First Left and, if a second Charleston is played, Last Right/],
       ["closed-hand-final-tile", /any tile except a joker may be called for mahjong, even for a concealed hand/],
@@ -101,91 +124,61 @@ test.describe("Ask mirrors the pages", () => {
       ["jokers-basics", /Jokers can substitute for any tile in a set of three or more/],
     ];
     for (const [id, re] of agreement) {
-      const e = KNOWLEDGE_BY_ID.get(id)!;
-      expect(e.source_url, id).toBeTruthy();
-      const slug = e.source_url!.split("/").pop()!;
+      const url = readMoreUrl(KNOWLEDGE_BY_ID.get(id)!);
+      expect(url, id).toBeTruthy();
+      const slug = url!.split("/").pop()!;
       const pageText = RULES_TOPICS.find((t) => t.slug === slug)!.qa.map((q) => q.a).join(" ");
       expect(pageText, `${id}: linked page ${slug} agrees`).toMatch(re);
     }
   });
 
-  test("pending entries that mirror a corrected page carry the page text, or are listed exceptions", () => {
+  test("Read more links point only at real pages and never at a pending entry", () => {
+    const slugs = new Set(RULES_TOPICS.map((t) => t.slug));
+    for (const [id, slug] of Object.entries(READ_MORE)) {
+      expect(KNOWLEDGE_BY_ID.has(id), `READ_MORE names ${id}, which is not a canonical entry`).toBe(true);
+      expect(slugs.has(slug), `${id} links to /rules/${slug}, which does not exist`).toBe(true);
+    }
     for (const e of RULES_KNOWLEDGE) {
-      if (e.source !== "derived" || !e.page_ref) continue;
-      const page = getQA(e.page_ref[0]);
-      if (e.id in ALIGNMENT_EXCEPTIONS) {
-        expect(e.answer, `${e.id} is an exception but now matches the page; remove it from ALIGNMENT_EXCEPTIONS`).not.toBe(page.a);
-        continue;
-      }
-      expect(e.answer, `${e.id} drifted from ${e.page_ref[0]}`).toBe(page.a);
+      if (isPending(e)) expect(readMoreUrl(e), `${e.id} is pending and must not link`).toBeUndefined();
+      const url = readMoreUrl(e);
+      if (url) expect(url).toMatch(/^https:\/\/www\.lasvegasmahj\.com\/rules\/[a-z-]+$/);
     }
   });
 
-  test("every alignment exception still exists and has a reason", () => {
-    for (const [id, reason] of Object.entries(ALIGNMENT_EXCEPTIONS)) {
-      expect(KNOWLEDGE_BY_ID.has(id), id).toBe(true);
-      expect(reason.length).toBeGreaterThan(20);
-      expect(KNOWLEDGE_BY_ID.get(id)!.page_ref?.length, `${id} exception without a page_ref`).toBeGreaterThan(0);
+  test("the owner's pending entries stay pending and are served that way", () => {
+    for (const id of ["joker-discarded", "out-of-turn", "own-discard", "passed-winning-tile", "two-dead-hands", "self-drawn-win", "players-count"]) {
+      const e = KNOWLEDGE_BY_ID.get(id)!;
+      expect(isPending(e), `${id} must stay pending until the owner rules`).toBe(true);
+      expect(labelFor(e), id).toBe("pending");
+      const served = lookup({ question: e.questions[0] });
+      expect(served.entry?.id, e.questions[0]).toBe(id);
+      expect(served.label, id).toBe("pending");
+      expect(served.answer, id).toBe(approvedText(e));
     }
+    expect(KNOWLEDGE_BY_ID.get("joker-discarded")!.answer).toMatch(/common table practice/);
+    expect(KNOWLEDGE_BY_ID.get("joker-discarded")!.answer).toMatch(/not printed on the card/);
   });
 
-  test("a stitched entry is traceable sentence by sentence", () => {
-    const e = KNOWLEDGE_BY_ID.get("called-dead")!;
-    const pool = [...e.page_ref!.map((r) => getQA(r).a), KNOWLEDGE_BY_ID.get("dead-hand")!.answer].join(" ");
-    for (const sentence of e.answer.split(/(?<=\.)\s+/)) expect(pool, `untraced sentence: ${sentence}`).toContain(sentence);
-  });
-
-  test("exactly the owner's six entries are pending, and owner-approved entries are verified", () => {
-    const pending = RULES_KNOWLEDGE.filter((e) => e.source === "derived").map((e) => e.id).sort();
-    expect(pending).toEqual([...PENDING_BY_OWNER_DECISION].sort());
-    for (const e of RULES_KNOWLEDGE) {
-      if (e.source === "owner_approved") {
-        expect(labelFor(e), e.id).not.toBe("pending");
-        expect(e.source_url, `${e.id} has no page yet, so it must not link`).toBeUndefined();
-      }
-      if (e.source === "lvm_rules_page") expect(e.source_url, `${e.id} is a verified mirror and should link to its page`).toBeTruthy();
-    }
-    // A pending answer built on table practice must say so.
-    expect(KNOWLEDGE_BY_ID.get("discarded-joker")!.answer).toMatch(/common table practice/);
-    expect(KNOWLEDGE_BY_ID.get("discarded-joker")!.answer).toMatch(/not printed on the card/);
-  });
-
-  test("Ask text never claims League authority outside a sourced page", () => {
-    for (const e of RULES_KNOWLEDGE) {
-      if (e.source === "shared_approved") continue;
-      expect(e.house_note ?? "", `${e.id} house note`).not.toMatch(NMJL_CLAIM_RE);
-      if (!e.page_ref?.length || e.id in ALIGNMENT_EXCEPTIONS) expect(e.answer, `${e.id} own text`).not.toMatch(NMJL_CLAIM_RE);
-    }
+  test("payment wording on this site stays neutral: the owner's 2026-08-29 decision is a recorded override", () => {
+    expect(LVM_SITE.overrides.map((o) => o.canonical_id)).toContain("payments-basics");
+    const exclude = new Set(LVM_SITE.overrides.map((o) => o.canonical_id));
     const served = [
       "How does payment work in a wall game?",
       "Can I use last year's card?",
       "Who pays when someone wins on a discard?",
       "Who pays on a self drawn win?",
       "Do any hands pay extra beyond joker-free?",
+      "who pays when i win on a discard",
+      "is a jokerless hand worth double",
     ];
     for (const q of served) {
-      const r = answerDeterministic(q);
-      expect(r.answer, q).not.toMatch(/NMJL standard|official play|League rule book|standard NMJL/i);
+      const r = lookup({ question: q }, { exclude });
+      expect(r.entry?.id, q).not.toBe("payments-basics");
+      expect(r.answer, q).not.toMatch(/NMJL standard|official play|League rule book|standard NMJL|The League sets who pays/i);
     }
-  });
-
-  test("a pending rule is never presented as verified", () => {
     for (const e of RULES_KNOWLEDGE) {
-      if (e.source !== "derived") continue;
-      expect(labelFor(e), e.id).toBe("pending");
-      expect(readMoreUrl(e), `${e.id} would show a Read more link`).toBeUndefined();
-      const served = answerDeterministic(e.question);
-      expect(served.entry?.id, e.question).toBe(e.id);
-      expect(served.label, e.id).toBe("pending");
-    }
-  });
-
-  test("an approved page rule never sits behind a pending Ask answer with different substance", () => {
-    // Every corrected page Q&A that Ask can reach must be served with the same text.
-    for (const qa of allQA) {
-      const mirror = RULES_KNOWLEDGE.find((e) => e.page_ref?.[0] === qa.ref && e.source !== "shared_approved" && !(e.id in ALIGNMENT_EXCEPTIONS));
-      if (!mirror) continue;
-      expect(mirror.answer, qa.ref).toBe(qa.a);
+      if (exclude.has(e.id) || e.provenance.approved_via === "fmg") continue;
+      expect(e.house_note ?? "", `${e.id} house note`).not.toMatch(NMJL_CLAIM_RE);
     }
   });
 });
@@ -246,8 +239,9 @@ test.describe("card-verified corrections stay corrected", () => {
   });
 
   test("Ask serves the corrected rule for each discrepancy question", () => {
+    const exclude = new Set(LVM_SITE.overrides.map((o) => o.canonical_id));
     const probes: Array<[string, RegExp]> = [
-      ["Can I pass a joker in the Charleston?", /cannot be passed in the charleston/i],
+      ["Can I pass a joker in the Charleston?", /cannot be passed in the charleston|never pass a joker in the Charleston/i],
       ["Can I stop the Charleston?", /compulsory/i],
       ["What is a blind pass?", /first left/i],
       ["Can a closed hand call the last tile for mahjong?", /completes your mahjong/i],
@@ -261,6 +255,6 @@ test.describe("card-verified corrections stay corrected", () => {
       ["Who pays when someone wins on a discard?", /Payment conventions can vary by group/],
       ["How does payment work in a wall game?", /Confirm your table/i],
     ];
-    for (const [q, re] of probes) expect(answerDeterministic(q).answer, q).toMatch(re);
+    for (const [q, re] of probes) expect(lookup({ question: q }, { exclude }).answer, q).toMatch(re);
   });
 });

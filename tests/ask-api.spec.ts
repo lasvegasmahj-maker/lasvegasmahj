@@ -39,13 +39,50 @@ test.describe("POST /api/ask", () => {
     expect(["jokers-basics", "joker-substitute"]).toContain(body.entry_id);
   });
 
-  test("card contents are refused and unknown rules fail honestly", async ({ request }) => {
+  test("card contents are refused and an unknown rule is clarified, never refused", async ({ request }) => {
     const card = await ask(request, "What hands are on the 2026 card?");
     expect(card.body.kind).toBe("card_refusal");
     expect(card.body.answer).toMatch(/copyrighted/);
     const unknown = await ask(request, "What happens if my elbow knocks over the rack?");
-    expect(unknown.body.kind).toBe("unverified");
-    expect(unknown.body.answer).toMatch(/cannot verify/i);
+    expect(unknown.body.kind).toBe("clarify");
+    expect(unknown.body.clarify.id).toBe("topic");
+    expect(unknown.body.answer).toMatch(/Which part of the game/);
+    expect(unknown.body.answer).not.toMatch(/cannot verify/i);
+  });
+
+  test("a clarification round trip resolves to the rule, by option and by typed reply", async ({ request }) => {
+    const ip = ipFor("clarify-trip");
+    const first = await ask(request, "Can I call that tile?", [], ip);
+    expect(first.body.kind).toBe("clarify");
+    expect(first.body.clarify.id).toBe("call-purpose");
+    expect(first.body.clarify.options.map((o: { label: string }) => o.label)).toEqual(["To make an exposure", "It would complete mahjong"]);
+    const ctx = { id: first.body.clarify.id, question: first.body.clarify.question };
+    const picked = await request.post("/api/ask", { data: { question: "It would complete mahjong", history: [], clarify: ctx }, headers: { "x-forwarded-for": ip } });
+    const pickedBody = await picked.json();
+    expect(pickedBody.kind).toBe("answer");
+    expect(pickedBody.entry_id).toBe("calling-for-mahjong");
+    const typed = await request.post("/api/ask", { data: { question: "for an exposure", history: [], clarify: ctx }, headers: { "x-forwarded-for": ip } });
+    expect((await typed.json()).entry_id).toBe("calling-for-exposure");
+  });
+
+  test("a studio question gets the local pointer, never a rule", async ({ request }) => {
+    const { body } = await ask(request, "do I need to call ahead for open play");
+    expect(body.kind).toBe("offtopic");
+    expect(body.entry_id).toBeUndefined();
+    expect(body.suggestions.map((s: { href: string }) => s.href)).toContain("/mahjong-open-play-las-vegas");
+  });
+
+  test("the version endpoint reports the shared core identity without secrets", async ({ request }) => {
+    const res = await request.get("/api/ask/version");
+    expect(res.status()).toBe(200);
+    expect(res.headers()["cache-control"]).toContain("no-store");
+    const body = await res.json();
+    expect(body.site).toBe("lvm");
+    expect(body.core_version).toMatch(/^\d+\.\d+\.\d+$/);
+    expect(body.corpus_fingerprint).toMatch(/^[0-9a-f]{16}$/);
+    expect(body.behavior_fingerprint).toMatch(/^[0-9a-f]{16}$/);
+    expect(body.overrides.map((o: { canonical_id: string }) => o.canonical_id)).toContain("payments-basics");
+    expect(JSON.stringify(body)).not.toMatch(/sk-ant|ANTHROPIC/);
   });
 
   test("rejects bad input with JSON, not a stack trace", async ({ request }) => {

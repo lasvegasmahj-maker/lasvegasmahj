@@ -1529,6 +1529,12 @@ footer {
 .ask-chip:hover:not(:disabled) { background: rgba(57,230,57,0.12); border-color: var(--green); }
 .ask-chip:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 .ask-chip:disabled { opacity: 0.5; cursor: default; }
+.ask-chip-quiet { border-color: rgba(255,255,255,0.18); color: rgba(255,255,255,0.7); }
+.ask-chip-link { text-decoration: none; display: inline-flex; align-items: center; border-color: rgba(233,30,140,0.45); }
+.ask-chip-link:hover { background: rgba(233,30,140,0.12); border-color: var(--pink); }
+.ask-clarify { margin-top: 0.9rem; }
+.ask-answer-long p + p { margin-top: 0.7rem; }
+.ask-pending-note { color: #ffb347 !important; }
 
 .ask-nudge {
   margin-top: 1rem;
@@ -1552,7 +1558,7 @@ footer {
   z-index: 5;
   display: flex;
   gap: 0.6rem;
-  padding: 0.75rem 0;
+  padding: 0.75rem 0 calc(0.75rem + env(safe-area-inset-bottom, 0px));
   background: var(--navy);
   box-shadow: 0 -12px 20px var(--navy);
 }

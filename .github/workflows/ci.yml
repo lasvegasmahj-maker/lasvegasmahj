@@ -25,6 +25,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Shared Ask core is vendored intact and not stale
+        run: node scripts/ask-core/ask-core-check.mjs
       - name: Typecheck
         run: pnpm typecheck
       - name: Production build
