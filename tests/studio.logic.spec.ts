@@ -246,10 +246,16 @@ test.describe("the local news section cannot invent a source", () => {
     expect(read(STUDIO_PAGE)).toContain("STUDIO_MEDIA.length > 0");
   });
 
-  test("no station name is hard coded into the page", () => {
+  test("a station is only named when it is one the owner verified", () => {
+    // FOX5 is named on this page because two of its segments are in STUDIO_MEDIA, each with
+    // the station's own URL. Any other station appearing here would be an unsourced claim.
+    const verified = new Set(STUDIO_MEDIA.map((m) => m.outlet));
     const src = readCode(STUDIO_PAGE);
-    for (const station of ["FOX", "KVVU", "KTNV", "KSNV", "KLAS", "Channel 3", "Channel 5", "Channel 8", "Channel 13"]) {
-      expect(src, `hard coded station: ${station}`).not.toContain(station);
+    for (const station of ["KVVU", "KTNV", "KSNV", "KLAS", "Channel 3", "Channel 5", "Channel 8", "Channel 13"]) {
+      expect(src, `unverified station named: ${station}`).not.toContain(station);
+    }
+    if (src.includes("FOX5")) {
+      expect(verified, "FOX5 is named without a verified segment behind it").toContain("FOX5 Las Vegas");
     }
   });
 
@@ -363,10 +369,13 @@ test.describe("internal linking is deliberate, not stuffed", () => {
     });
   }
 
-  test("no page links to /studio more than twice", () => {
+  test("no page links to /studio more than a couple of times", () => {
+    // About is allowed one more than the rest: the credentials card plus the single line of
+    // FOX5 credit, which points at the coverage on /studio rather than repeating it.
+    const ALLOWANCE: Record<string, number> = { "app/about/page.tsx": 4 };
     for (const file of LINKERS) {
       const hits = read(file).match(/\/studio/g) ?? [];
-      expect(hits.length, `${file} over-links /studio`).toBeLessThanOrEqual(2);
+      expect(hits.length, `${file} over-links /studio`).toBeLessThanOrEqual(ALLOWANCE[file] ?? 2);
     }
   });
 

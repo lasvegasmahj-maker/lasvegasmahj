@@ -12,6 +12,7 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import { buildBreadcrumbSchema, STUDIO_PLACE } from "@/lib/schema";
 import { STUDIO_MEDIA } from "@/lib/studio-media";
+import PressCards from "@/components/press-cards";
 
 const MAP_URL = "https://maps.app.goo.gl/dGeHMfMDjuXjDFPs5";
 
@@ -269,33 +270,18 @@ export default function Studio() {
           </div>
         </section>
 
-        {/* AS SEEN ON LOCAL NEWS. Renders only when a verified, station-hosted segment
-            exists in lib/studio-media.ts, so nothing about a broadcast ships on a guess. */}
+        {/* AS SEEN ON. Linked cards, never a re-hosted clip: see lib/studio-media.ts. */}
         {STUDIO_MEDIA.length > 0 && (
-          <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)", borderTop: "1px solid rgba(255,215,0,0.2)" }}>
-            <div className="container" style={{ maxWidth: "860px" }}>
+          <section id="press" style={{ padding: "5rem 2rem", background: "var(--navy-dark)", borderTop: "1px solid rgba(255,215,0,0.2)" }}>
+            <div className="container" style={{ maxWidth: "980px" }}>
               <p className="section-label">In the Local Press</p>
-              <h2 className="section-title">The Studio on <span className="accent-green">Local News</span></h2>
-              <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.75, margin: "1rem 0 2.5rem", textAlign: "center" }}>
-                Local coverage filmed at the studio. Each segment plays on the
-                station&rsquo;s own site.
+              <h2 className="section-title">As Seen on <span className="accent-green">FOX5 Las Vegas</span></h2>
+              <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, margin: "1.25rem auto 0", maxWidth: "620px", textAlign: "center" }}>
+                FOX5 came to the studio for our Grand Opening, filmed both rooms,
+                and asked what American Mahjong actually is. Both segments play on
+                FOX5&rsquo;s own site.
               </p>
-              <div style={{ display: "grid", gap: "1.25rem" }}>
-                {STUDIO_MEDIA.filter((m) => m.url.startsWith("https://")).map((item, i) => (
-                  <article key={`${item.url}-${i}`} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "1.5rem" }}>
-                    <p style={{ fontFamily: "var(--font-nav)", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "0.5rem" }}>
-                      {item.outlet}
-                    </p>
-                    <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: "#fff", marginBottom: "0.5rem" }}>{item.headline}</h3>
-                    {item.summary && (
-                      <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.95rem", lineHeight: 1.7, marginBottom: "0.85rem" }}>{item.summary}</p>
-                    )}
-                    <a href={item.url} target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ display: "inline-block", padding: "0.6rem 1.3rem", fontSize: "0.8rem" }}>
-                      Watch on {item.outlet}
-                    </a>
-                  </article>
-                ))}
-              </div>
+              <PressCards size="full" />
             </div>
           </section>
         )}

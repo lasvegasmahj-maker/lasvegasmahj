@@ -449,6 +449,129 @@ section {
   flex-wrap: wrap;
 }
 
+/* ── PRESS / AS SEEN ON ── */
+.press {
+  background: var(--navy);
+  border-bottom: 1px solid rgba(255,215,0,0.18);
+}
+
+.press-lede {
+  color: rgba(255,255,255,0.7);
+  line-height: 1.8;
+  max-width: 620px;
+  margin: 1.25rem auto 0;
+  text-align: center;
+}
+
+.press-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.press-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.15s;
+}
+
+.press-card:hover {
+  border-color: rgba(255,215,0,0.55);
+  transform: translateY(-2px);
+}
+
+.press-card-art {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.press-card-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* A play cue, drawn rather than imported: no station logo or artwork is reproduced. */
+.press-card-play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(17,18,74,0.72);
+  border: 2px solid rgba(255,255,255,0.9);
+}
+
+.press-card-play::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 9px 0 9px 15px;
+  border-color: transparent transparent transparent #fff;
+}
+
+.press-card:hover .press-card-play { background: var(--pink); }
+
+.press-card-body {
+  padding: 1.4rem 1.5rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.press-card-outlet {
+  font-family: var(--font-nav);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.press-card-headline {
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--white);
+  margin: 0;
+}
+
+.press-card-date {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.press-card-cta {
+  font-family: var(--font-nav);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-top: auto;
+  padding-top: 0.6rem;
+}
+
+.press-cards-full .press-card-headline { font-size: 1.15rem; }
+.press-cards-full .press-card-body { padding: 1.6rem 1.75rem 1.8rem; }
+
+@media (max-width: 860px) {
+  .press-cards { grid-template-columns: 1fr; }
+}
+
 /* ── WHY / MISSION ── */
 .why {
   background: var(--navy);

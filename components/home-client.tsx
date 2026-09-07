@@ -4,6 +4,7 @@ import { useState } from "react";
 import Nav from "@/components/nav";
 import Hero from "@/components/hero";
 import StudioBanner from "@/components/studio-banner";
+import PressSection from "@/components/press-section";
 import WhySection from "@/components/why-section";
 import Teacher from "@/components/teacher";
 import WhatToExpect from "@/components/what-to-expect";
@@ -25,6 +26,7 @@ export default function HomeClient() {
       <Nav />
       <Hero />
       <StudioBanner />
+      <PressSection />
       <WhySection />
       <Teacher />
       <WhatToExpect />

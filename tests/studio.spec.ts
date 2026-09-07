@@ -2,7 +2,6 @@ import { test, expect, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 import { STUDIO_PHOTOS, WISHBONE_ROOM } from "../lib/studio-photos";
-import { STUDIO_MEDIA } from "../lib/studio-media";
 
 // Runs against a real production build. Covers the studio page itself, the homepage section
 // under the hero, the ninth nav link at both desktop and phone widths, and a regression pass
@@ -17,12 +16,17 @@ function navBreakpoint(): number {
   return Number(m[1]);
 }
 
-/** Scroll an image into view and wait until it has actually decoded before measuring it. */
+/**
+ * Scroll an image into view and wait until it has actually decoded before measuring it.
+ * The first request for each AVIF variant is encoded on demand, which on a cold CI cache
+ * with the suite running in parallel takes far longer than it does locally. The wait is
+ * generous for that reason; the assertion it guards is unchanged.
+ */
 async function settled(el: import("@playwright/test").Locator) {
   await el.scrollIntoViewIfNeeded();
   await expect
     .poll(() => el.evaluate((n: HTMLImageElement) => n.complete && n.naturalWidth > 0), {
-      timeout: 15_000,
+      timeout: 60_000,
     })
     .toBe(true);
 }
@@ -90,8 +94,9 @@ test.describe("/studio", () => {
   });
 
   test("every photograph on the page is a verified one, and it decodes", async ({ page }) => {
+    test.slow();
     await page.goto("/studio");
-    const imgs = page.locator("main img");
+    const imgs = page.locator("main img:not(.press-card img)");
     await expect(imgs, "the studio page should show the studio").not.toHaveCount(0);
     for (const el of await imgs.all()) {
       await settled(el);
@@ -107,8 +112,9 @@ test.describe("/studio", () => {
   });
 
   test("no photograph is stretched or squashed", async ({ page }) => {
+    test.slow();
     await page.goto("/studio");
-    for (const el of await page.locator("main img").all()) {
+    for (const el of await page.locator("main img:not(.press-card img)").all()) {
       await settled(el);
       const r = await el.evaluate((n: HTMLImageElement) => ({
         natural: n.naturalWidth / n.naturalHeight,
@@ -155,25 +161,8 @@ test.describe("/studio", () => {
     ).toBeVisible();
   });
 
-  test("the media section matches what lib/studio-media.ts actually holds", async ({ page }) => {
-    await page.goto("/studio");
-    const body = await page.locator("body").innerText();
-    // Assert against the real heading the page renders, not a string it never emits, so the
-    // empty branch cannot pass vacuously.
-    const heading = "The Studio on Local News";
-    if (STUDIO_MEDIA.length === 0) {
-      expect(body, "an empty media list must render no section").not.toContain(heading);
-      expect(body).not.toContain("In the Local Press");
-      await expect(page.locator('a:has-text("Watch on")')).toHaveCount(0);
-    } else {
-      expect(body).toContain(heading);
-      const links = page.locator('a:has-text("Watch on")');
-      await expect(links).toHaveCount(STUDIO_MEDIA.filter((m) => m.url.startsWith("https://")).length);
-      for (const href of await links.evaluateAll((els) => els.map((e) => e.getAttribute("href")!))) {
-        expect(href, "a segment link must point at the station over https").toMatch(/^https:\/\//);
-      }
-    }
-  });
+  // The press section is covered end to end in tests/press.spec.ts, against the real
+  // headlines and URLs FOX5 published.
 });
 
 test.describe("/studio structured data", () => {
@@ -300,6 +289,7 @@ test.describe("the homepage studio section", () => {
   });
 
   test("it shows the verified Lucky Wishbone room, undistorted", async ({ page }) => {
+    test.slow();
     await page.goto("/");
     const img = page.locator("#studio img").first();
     await settled(img);
@@ -391,6 +381,7 @@ test.describe("narrow phones", () => {
     test.skip(!isMobile, "phone project only");
     // body sets overflow-x: hidden, so anything past the right edge is unreachable rather
     // than scrollable. An auto-fit track with a hard 300px minimum used to do exactly that.
+    test.slow();
     await page.setViewportSize({ width: 320, height: 700 });
     await page.goto("/studio");
     // Photographs reserve their box from width/height, but the measurement still has to wait

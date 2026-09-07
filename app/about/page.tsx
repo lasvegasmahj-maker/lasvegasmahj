@@ -85,6 +85,13 @@ export default function About() {
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container" style={{ maxWidth: "760px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "start" }}>
             <div>
+              {/* One line, not a second media section: /studio carries the full coverage. */}
+              <p style={{ fontFamily: "var(--font-nav)", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "0.9rem" }}>
+                Featured on{" "}
+                <a href="/studio#press" style={{ color: "var(--gold)", textDecoration: "underline" }}>
+                  FOX5 Las Vegas
+                </a>
+              </p>
               <Image
                 src={SHAUNA_NEON.src}
                 alt={SHAUNA_NEON.alt}
