@@ -157,26 +157,26 @@ function inquiryTypes() {
 }
 
 test.describe("form fields", () => {
-  test("the six visible fields are present, and nothing else asks a question", () => {
+  test("the seven visible fields are present, and nothing else asks a question", () => {
     const src = read(FORM);
-    for (const name of ["name", "email", "inquiry_type", "group_size", "preferred_date", "message"]) {
+    for (const name of ["name", "email", "phone", "inquiry_type", "group_size", "preferred_date", "message"]) {
       expect(src, `${name} field missing`).toContain(`name="${name}"`);
     }
     expect(src).toContain('name="source"');
     expect(src).toContain('type="hidden"');
   });
 
-  test("only name, email and inquiry type are required", () => {
+  test("name, email, phone and inquiry type are required, and nothing else is", () => {
     const src = readCode(FORM);
-    // Group size and preferred date are optional on purpose: an inquiry that arrives
+    // Group size and preferred date stay optional on purpose: an inquiry that arrives
     // without them is still a lead, and forcing a guessed date produces worse data than a
-    // blank one.
+    // blank one. Phone became required on owner instruction (contact consistency cleanup).
     const optional = ["contact-group-size", "contact-date", "contact-message"];
     for (const id of optional) {
-      const field = src.slice(src.indexOf(`id="${id}"`), src.indexOf(`id="${id}"`) + 220);
+      const field = src.slice(src.indexOf(`id="${id}"`), src.indexOf(`id="${id}"`) + 260);
       expect(field, `${id} must not be required`).not.toMatch(/\brequired\b/);
     }
-    expect((src.match(/\brequired\b/g) ?? []).length, "exactly three required controls").toBe(3);
+    expect((src.match(/\brequired\b/g) ?? []).length, "exactly four required controls").toBe(4);
   });
 
   test("the inquiry types are concise and match real Las Vegas Mahjong services", () => {
@@ -202,27 +202,50 @@ test.describe("form fields", () => {
     expect(src).not.toMatch(/[–—]/);
   });
 
-  test("no phone field and no phone number were introduced", () => {
+  test("the phone field collects the visitor's number and is required", () => {
     const src = read(FORM);
-    expect(src).not.toMatch(/type="tel"/);
-    expect(src).not.toMatch(/name="phone"/);
-    expect(src).not.toMatch(/autoComplete="tel"/);
-    expect(src).not.toMatch(/\btelephone\b/i);
-    expect(src).not.toMatch(/tel:/);
-    expect(src).not.toMatch(/\d{3}[.\s-]\d{3}[.\s-]\d{4}/);
+    expect(src).toMatch(/type="tel"/);
+    expect(src).toContain('name="phone"');
+    expect(src).toContain('autoComplete="tel"');
+    expect(src).toContain('inputMode="tel"');
+    const field = src.slice(src.indexOf('id="contact-phone"'), src.indexOf('id="contact-phone"') + 320);
+    expect(field, "the phone field must be required").toMatch(/\brequired\b/);
+    expect(src).toContain('htmlFor="contact-phone"');
   });
 
-  test("autocomplete helps with name and email only", () => {
+  test("collecting a phone number did not publish one", () => {
+    // The owner's own number must still never appear. A tel: link would make the site
+    // publish a number to call, and a `telephone` key would put one in structured data.
+    // Comments are stripped: the validation comment lists example formats on purpose, and
+    // those are documentation, not published numbers.
+    const src = readCode(FORM);
+    expect(src).not.toMatch(/tel:/);
+    expect(src).not.toMatch(/\btelephone\b/i);
+    expect(src).not.toMatch(/847[^0-9a-z]{0,4}609[^0-9a-z]{0,4}3112/i);
+    // The one number in the file is the placeholder inside the field asking the VISITOR for
+    // theirs, which is the same 702 555 pattern the homepage modal has always used.
+    const numbers = [...src.matchAll(/\d{3}[.\s()-]{0,4}\d{3}[.\s-]\d{4}/g)].map((m) => m[0]);
+    expect(numbers).toEqual(["702) 555-0123"]);
+  });
+
+  test("phone validation counts digits instead of matching one format", () => {
+    const src = readCode(FORM);
+    expect(src).toContain("validatePhone");
+    expect(src).toContain("setCustomValidity");
+    // A brittle pattern attribute would reject formats the owner explicitly wants accepted.
+    expect(src).not.toMatch(/pattern="/);
+  });
+
+  test("autocomplete helps with name, email and phone only", () => {
     const src = read(FORM);
-    expect(src).toContain('autoComplete="name"');
-    expect(src).toContain('autoComplete="email"');
-    expect((src.match(/autoComplete=/g) ?? []).length).toBe(2);
+    for (const a of ["name", "email", "tel"]) expect(src).toContain(`autoComplete="${a}"`);
+    expect((src.match(/autoComplete=/g) ?? []).length).toBe(3);
   });
 
   test("every visible control is labelled", () => {
     const src = read(FORM);
     const ids = [...src.matchAll(/\sid="(contact-[a-z-]+)"/g)].map((m) => m[1]);
-    expect(ids.length).toBe(6);
+    expect(ids.length).toBe(7);
     for (const id of ids) expect(src, `${id} has no label`).toContain(`htmlFor="${id}"`);
   });
 });

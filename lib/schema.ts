@@ -62,7 +62,7 @@ export function buildEventSchema(event: EventSchemaInput) {
       "@id": "https://www.lasvegasmahj.com/#business",
       name: "Las Vegas Mahjong",
       url: "https://www.lasvegasmahj.com",
-      email: "lasvegasmahj@gmail.com",
+      email: "hello@lasvegasmahj.com",
     },
     image: event.imageUrl
       ? [event.imageUrl]

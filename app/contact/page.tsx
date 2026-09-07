@@ -88,8 +88,8 @@ export default function Contact() {
             <h2 className="section-title">Tell Us What You Are <span className="accent-green">Planning</span></h2>
             <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.75, margin: "1rem 0 2rem" }}>
               Fill in the form and it comes straight to our inbox. Prefer email? Write to{" "}
-              <a href="mailto:lasvegasmahj@gmail.com" style={{ color: "var(--green)", fontWeight: 600 }}>
-                lasvegasmahj@gmail.com
+              <a href="mailto:hello@lasvegasmahj.com" style={{ color: "var(--green)", fontWeight: 600 }}>
+                hello@lasvegasmahj.com
               </a>
               .
             </p>
@@ -119,8 +119,8 @@ export default function Contact() {
               <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
                 <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.8rem" }}>Email</h3>
                 <p style={{ marginBottom: "1rem" }}>
-                  <a href="mailto:lasvegasmahj@gmail.com" style={{ color: "var(--green)", fontWeight: 600 }}>
-                    lasvegasmahj@gmail.com
+                  <a href="mailto:hello@lasvegasmahj.com" style={{ color: "var(--green)", fontWeight: 600 }}>
+                    hello@lasvegasmahj.com
                   </a>
                 </p>
                 <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>

@@ -94,6 +94,7 @@ test.describe("/contact works end to end", () => {
     await page.goto("/contact");
     await page.fill("#contact-name", "Test Planner");
     await page.fill("#contact-email", "planner@example.com");
+    await page.fill("#contact-phone", "(702) 555-0123");
     await page.selectOption("#contact-inquiry", "Corporate or Team Building");
     await page.fill("#contact-message", "Corporate offsite for 40 people in November.");
     await page.getByRole("button", { name: "Send Message" }).click();

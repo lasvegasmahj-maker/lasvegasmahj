@@ -19,6 +19,18 @@ const SOURCES: Record<string, { label: string; inquiry: string }> = {
 
 const GENERAL_SOURCE = "General (nav, footer or direct)";
 
+// type="tel" applies no native validation, so "required" alone would accept a single
+// character. Counting digits keeps every real format valid: 7025551212, 702-555-1212,
+// (702) 555-1212 and +1 702 555 1212 all pass, while a stray character or a truncated
+// number does not. The upper bound is E.164's fifteen digits so an international number
+// still fits. An empty value is left alone so the browser's own "required" message shows
+// instead of this one.
+function validatePhone(el: HTMLInputElement) {
+  const digits = el.value.replace(/\D/g, "");
+  const ok = digits.length >= 10 && digits.length <= 15;
+  el.setCustomValidity(el.value.trim() === "" || ok ? "" : "Please enter a phone number we can reach you on, including the area code.");
+}
+
 // A half typed date leaves the control in badInput, which fails constraint validation and
 // blocks the whole submit before onSubmit can fire, so an optional field silently holds the
 // lead hostage. A year below the current one is the other reachable case: typing 111426
@@ -47,14 +59,21 @@ const subscribe = () => () => {};
 const readSlug = () => new URLSearchParams(window.location.search).get("source") ?? "";
 const noSlug = () => "";
 
-export default function ContactForm() {
+interface ContactFormProps {
+  /** Fixed attribution for embedded uses. Omit on /contact, which reads ?source= instead. */
+  source?: string;
+  successTitle?: string;
+  successBody?: string;
+}
+
+export default function ContactForm({ source: fixedSource, successTitle, successBody }: ContactFormProps = {}) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [chosenInquiry, setChosenInquiry] = useState<string | null>(null);
 
   const match = SOURCES[useSyncExternalStore(subscribe, readSlug, noSlug)];
-  const source = match ? match.label : GENERAL_SOURCE;
+  const source = fixedSource ?? (match ? match.label : GENERAL_SOURCE);
   // The source only supplies a starting point; once the visitor picks, their choice wins.
-  const inquiry = chosenInquiry ?? (match ? match.inquiry : "");
+  const inquiry = chosenInquiry ?? (fixedSource ? "" : match ? match.inquiry : "");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,8 +101,8 @@ export default function ContactForm() {
   if (status === "sent") {
     return (
       <div className="form-success">
-        <h4>Message Sent!</h4>
-        <p>Thanks for reaching out. I&rsquo;ll be in touch soon!</p>
+        <h4>{successTitle ?? "Message Sent!"}</h4>
+        <p>{successBody ?? "Thanks for reaching out. I\u2019ll be in touch soon!"}</p>
       </div>
     );
   }
@@ -99,6 +118,20 @@ export default function ContactForm() {
       <div className="form-group">
         <label htmlFor="contact-email">Email Address *</label>
         <input type="email" id="contact-email" name="email" required autoComplete="email" placeholder="jane@email.com" />
+      </div>
+      <div className="form-group">
+        <label htmlFor="contact-phone">Phone Number *</label>
+        <input
+          type="tel"
+          id="contact-phone"
+          name="phone"
+          required
+          autoComplete="tel"
+          inputMode="tel"
+          placeholder="(702) 555-0123"
+          onInput={(e) => validatePhone(e.currentTarget)}
+          onBlur={(e) => validatePhone(e.currentTarget)}
+        />
       </div>
       <div className="form-group">
         <label htmlFor="contact-inquiry">What Can We Help With? *</label>
@@ -166,8 +199,8 @@ export default function ContactForm() {
       {status === "error" && (
         <p role="status" aria-live="polite" style={{ marginTop: "1rem", color: "#ff8a8a", fontSize: "0.9rem", lineHeight: 1.6 }}>
           Something went wrong. Please email{" "}
-          <a href="mailto:lasvegasmahj@gmail.com" style={{ color: "var(--green)", fontWeight: 600 }}>
-            lasvegasmahj@gmail.com
+          <a href="mailto:hello@lasvegasmahj.com" style={{ color: "var(--green)", fontWeight: 600 }}>
+            hello@lasvegasmahj.com
           </a>{" "}
           and we will pick it up from there.
         </p>

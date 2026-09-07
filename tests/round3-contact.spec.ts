@@ -37,6 +37,7 @@ async function submit(page: Page, url: string, fill: (p: Page) => Promise<void> 
   await page.goto(url);
   await page.fill("#contact-name", "Round 3 Test");
   await page.fill("#contact-email", "round3@example.com");
+  await page.fill("#contact-phone", "(702) 555-0123");
   await fill(page);
   await page.getByRole("button", { name: "Send Message" }).click();
   await expect(page.getByText("Message Sent!")).toBeVisible();
@@ -45,11 +46,12 @@ async function submit(page: Page, url: string, fill: (p: Page) => Promise<void> 
 }
 
 test.describe("the form asks the questions that qualify a lead", () => {
-  test("all six visible fields render and are labelled", async ({ page }) => {
+  test("all seven visible fields render and are labelled", async ({ page }) => {
     await page.goto("/contact");
     const expected: [string, string][] = [
       ["#contact-name", "Your Name *"],
       ["#contact-email", "Email Address *"],
+      ["#contact-phone", "Phone Number *"],
       ["#contact-inquiry", "What Can We Help With? *"],
       ["#contact-group-size", "Group Size"],
       ["#contact-date", "Preferred Date"],
@@ -83,21 +85,30 @@ test.describe("the form asks the questions that qualify a lead", () => {
     expect(values).toEqual(["Not sure yet", "Just me", "2-3 people", "4-8 people", "9-20 people", "21-50 people", "50+ people"]);
   });
 
-  test("no phone field exists and no phone number is published", async ({ page }) => {
+  test("the phone field collects the visitor's number, and publishes none", async ({ page }) => {
     await page.goto("/contact");
-    await expect(page.locator('input[type="tel"]')).toHaveCount(0);
-    await expect(page.locator('[name="phone"]')).toHaveCount(0);
+    // The owner asked for the visitor's number. What must never appear is a number to CALL.
+    await expect(page.locator('input[type="tel"][name="phone"]')).toHaveCount(1);
     await expect(page.locator('a[href^="tel:"]')).toHaveCount(0);
     const html = await page.content();
     expect(html).not.toContain('"telephone"');
     expect(html).not.toMatch(/847[.\s-]?609[.\s-]?3112/);
+  });
+
+  test("the public business email is hello@, not the gmail address", async ({ page }) => {
+    await page.goto("/contact");
+    const html = await page.content();
+    expect(html).toContain("hello@lasvegasmahj.com");
+    expect(html).not.toContain("lasvegasmahj@gmail.com");
+    expect(html).not.toContain("shauna@lasvegasmahj.com");
+    await expect(page.locator('a[href="mailto:hello@lasvegasmahj.com"]').first()).toBeVisible();
   });
 });
 
 test.describe("validation asks for only what is needed", () => {
   test("name, email and inquiry type are required; the rest are not", async ({ page }) => {
     await page.goto("/contact");
-    for (const id of ["contact-name", "contact-email", "contact-inquiry"]) {
+    for (const id of ["contact-name", "contact-email", "contact-phone", "contact-inquiry"]) {
       expect(await page.locator(`#${id}`).evaluate((el: HTMLInputElement) => el.required), id).toBe(true);
     }
     for (const id of ["contact-group-size", "contact-date", "contact-message"]) {
@@ -114,6 +125,7 @@ test.describe("validation asks for only what is needed", () => {
     await page.goto("/contact");
     await page.fill("#contact-name", "No Type");
     await page.fill("#contact-email", "notype@example.com");
+    await page.fill("#contact-phone", "(702) 555-0123");
     await page.getByRole("button", { name: "Send Message" }).click();
     await expect(page.getByText("Message Sent!")).toHaveCount(0);
     expect(posted, "a submission escaped without an inquiry type").toBe(false);
@@ -275,7 +287,7 @@ test.describe("the source tagged URL is a normal page", () => {
     // marker here. This is the assertion that catches that regression.
     const html = await (await request.get("/contact")).text();
     expect(html).not.toContain("BAILOUT_TO_CLIENT_SIDE_RENDERING");
-    for (const id of ["contact-name", "contact-email", "contact-inquiry", "contact-group-size", "contact-date", "contact-message"]) {
+    for (const id of ["contact-name", "contact-email", "contact-phone", "contact-inquiry", "contact-group-size", "contact-date", "contact-message"]) {
       expect(html, `${id} missing from the static HTML`).toContain(`id="${id}"`);
     }
     expect(html).toContain('name="source"');
@@ -299,7 +311,7 @@ test.describe("the form works on a phone", () => {
   test("no control overflows the viewport", async ({ page }) => {
     await page.goto("/contact");
     const width = page.viewportSize()!.width;
-    for (const id of ["contact-name", "contact-email", "contact-inquiry", "contact-group-size", "contact-date", "contact-message"]) {
+    for (const id of ["contact-name", "contact-email", "contact-phone", "contact-inquiry", "contact-group-size", "contact-date", "contact-message"]) {
       const box = await page.locator(`#${id}`).boundingBox();
       expect(box, id).not.toBeNull();
       expect(box!.x, `${id} starts off screen`).toBeGreaterThanOrEqual(0);
