@@ -113,7 +113,8 @@ export default function Contact() {
                   Las Vegas, NV 89117
                 </address>
                 <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>
-                  Group lessons, private lessons, and open play all happen here.
+                  Group lessons, private lessons, and open play all happen here.{" "}
+                  <a href="/studio" style={{ color: "var(--green)", fontWeight: 600 }}>See the studio</a>.
                 </p>
               </div>
               <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>

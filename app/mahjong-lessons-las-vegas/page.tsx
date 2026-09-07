@@ -146,7 +146,7 @@ export default function MahjongLessonsLasVegas() {
                 My teaching style is patient, clear, and beginner-obsessed. I break the game into simple, logical steps so you&rsquo;re not overwhelmed, and you&rsquo;ll play a game in your first lesson.
               </p>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "2rem" }}>
-                My studio inside <strong>Lucky Hare</strong> in Las Vegas is home base for group lessons and open play. If you would rather learn one on one, at your own pace, I also teach <a href="/private-mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>private mahjong lessons at the studio</a>.
+                My <a href="/studio" style={{ color: "var(--green)", fontWeight: 600 }}>studio inside <strong>Lucky Hare</strong></a> in Las Vegas is home base for group lessons and open play. If you would rather learn one on one, at your own pace, I also teach <a href="/private-mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>private mahjong lessons at the studio</a>.
               </p>
               <a href="/#classes" className="btn-primary">Book Your Lesson</a>
             </div>

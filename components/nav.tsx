@@ -36,6 +36,11 @@ export default function Nav() {
 
       <ul className={`nav-links${menuOpen ? " open" : ""}`}>
         <li>
+          <a href="/studio" onClick={handleLinkClick}>
+            Studio
+          </a>
+        </li>
+        <li>
           <a href="/about" onClick={handleLinkClick}>
             About
           </a>

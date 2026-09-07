@@ -4,7 +4,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("site regression", () => {
   test("key routes still return 200", async ({ request }) => {
-    for (const path of ["/", "/ask", "/rules", "/rules/jokers", "/rules/charleston", "/schedule", "/mahjong-lessons-las-vegas", "/learn-mahjong", "/mahjong-open-play-las-vegas", "/about", "/blog", "/contact", "/private-mahjong-lessons-las-vegas"]) {
+    for (const path of ["/", "/ask", "/rules", "/rules/jokers", "/rules/charleston", "/schedule", "/studio", "/mahjong-lessons-las-vegas", "/learn-mahjong", "/mahjong-open-play-las-vegas", "/about", "/blog", "/contact", "/private-mahjong-lessons-las-vegas"]) {
       const res = await request.get(path);
       expect(res.status(), path).toBe(200);
     }
@@ -27,7 +27,7 @@ test.describe("site regression", () => {
   test("existing navigation links are intact", async ({ page, isMobile }) => {
     await page.goto("/");
     if (isMobile) await page.locator(".nav-toggle").click();
-    for (const label of ["About", "Schedule", "Lessons", "Ask a Rule", "Shop", "Private Parties", "Corporate", "Contact"]) {
+    for (const label of ["Studio", "About", "Schedule", "Lessons", "Ask a Rule", "Shop", "Private Parties", "Corporate", "Contact"]) {
       await expect(page.locator("nav .nav-links a", { hasText: label }).first()).toBeVisible();
     }
     await expect(page.locator("nav .nav-cta")).toHaveText("Join an Event");

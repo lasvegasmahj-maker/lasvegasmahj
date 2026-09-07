@@ -9,6 +9,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: "https://www.lasvegasmahj.com/studio",
+      lastModified: new Date("2026-09-06"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
       url: "https://www.lasvegasmahj.com/schedule",
       lastModified: new Date("2026-08-07"),
       changeFrequency: "weekly",

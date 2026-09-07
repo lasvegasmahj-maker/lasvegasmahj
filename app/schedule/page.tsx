@@ -69,7 +69,9 @@ export default async function Schedule() {
               Class &amp; Open Play <span className="accent-pink">Schedule</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "640px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              See everything coming up in one place, at the studio and out around town. Classes, open play, special events, and partner nights at local spots, all here. Studio spots are limited, with an automatic waitlist when a session fills.
+              See everything coming up in one place, at{" "}
+              <a href="/studio" style={{ color: "var(--green)", fontWeight: 600 }}>the studio</a>{" "}
+              and out around town. Classes, open play, special events, and partner nights at local spots, all here. Studio spots are limited, with an automatic waitlist when a session fills.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="#calendar" className="btn-primary">See the Calendar</a>

@@ -20,7 +20,7 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
 
         <p className="modal-label">Let&rsquo;s Play</p>
         <h3>
-          Book a <span style={{ color: "var(--green)" }}>Lesson</span>
+          Plan Your Mahjong <span style={{ color: "var(--green)" }}>Experience</span>
         </h3>
         <p className="modal-desc">
           Fill out the form below and I&rsquo;ll be in touch within 24 hours! Prefer email?
