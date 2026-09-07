@@ -103,6 +103,21 @@ export const OPEN_PLAY_ROOM: StudioPhoto = {
   height: 1500,
 };
 
+/**
+ * The owner grouped this one under community activity and did not say which room it is in,
+ * so it makes no room claim. The wall behind it resembles the Lucky Wishbone wallpaper, but
+ * matching a wallpaper is the kind of inference that put open play photographs on the studio
+ * page in the first place.
+ */
+export const PLAYERS_AT_TABLE: StudioPhoto = {
+  src: "/studio-players-at-table.jpg",
+  source: "IMG_8679.JPG",
+  shows: "Four players around a mahjong table mid-game at the studio",
+  alt: "Four players around a mahjong table mid-game at the Las Vegas Mahjong Studio, under a neon Let's Mahjong sign",
+  width: 2000,
+  height: 1500,
+};
+
 export const LUCKY_HARE_DOOR: StudioPhoto = {
   src: "/studio-lucky-hare-door.jpg",
   source: "IMG_8938.JPG",
@@ -123,5 +138,6 @@ export const STUDIO_PHOTOS: StudioPhoto[] = [
   OPEN_PLAY_SNACKS,
   OPEN_PLAY_PLAYERS,
   OPEN_PLAY_ROOM,
+  PLAYERS_AT_TABLE,
   LUCKY_HARE_DOOR,
 ];

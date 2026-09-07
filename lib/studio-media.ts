@@ -1,4 +1,4 @@
-import { WISHBONE_ROOM, SEVENS_OPEN_PLAY, type StudioPhoto } from "./studio-photos";
+import { OPEN_PLAY_ROOM, PLAYERS_AT_TABLE, type StudioPhoto } from "./studio-photos";
 
 /**
  * Local news coverage of the Las Vegas Mahjong Studio.
@@ -35,7 +35,7 @@ export const STUDIO_MEDIA: StudioMediaAppearance[] = [
     publishedIso: "2026-09-02",
     publishedLabel: "September 2, 2026",
     url: "https://www.fox5vegas.com/video/2026/09/02/learn-play-american-mahjong-new-business-las-vegas-mahjong-sahara/",
-    image: WISHBONE_ROOM,
+    image: OPEN_PLAY_ROOM,
   },
   {
     outlet: "FOX5 Las Vegas",
@@ -43,6 +43,6 @@ export const STUDIO_MEDIA: StudioMediaAppearance[] = [
     publishedIso: "2026-09-02",
     publishedLabel: "September 2, 2026",
     url: "https://www.fox5vegas.com/video/2026/09/02/american-mahjong-classes-now-being-taught-las-vegas-mahjong/",
-    image: SEVENS_OPEN_PLAY,
+    image: PLAYERS_AT_TABLE,
   },
 ];
