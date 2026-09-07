@@ -381,13 +381,22 @@ test.describe("narrow phones", () => {
     test.skip(!isMobile, "phone project only");
     // body sets overflow-x: hidden, so anything past the right edge is unreachable rather
     // than scrollable. An auto-fit track with a hard 300px minimum used to do exactly that.
-    test.slow();
     await page.setViewportSize({ width: 320, height: 700 });
     await page.goto("/studio");
-    // Photographs reserve their box from width/height, but the measurement still has to wait
-    // for layout to settle or a loading image can read as a transient overflow under load.
-    for (const el of await page.locator("main img").all()) await settled(el);
-    await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+    // Every photograph reserves its box from width/height, so this does not need decoded
+    // pixels, only a layout that has stopped moving. Waiting on the on-demand image
+    // optimizer instead made this flaky whenever the suite ran the server hot.
+    await expect
+      .poll(
+        async () => {
+          const a = await page.evaluate(() => document.documentElement.scrollWidth);
+          await page.waitForTimeout(150);
+          const b = await page.evaluate(() => document.documentElement.scrollWidth);
+          return a === b ? b : -1;
+        },
+        { timeout: 20_000 },
+      )
+      .toBeGreaterThan(0);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(overflow, "page is wider than the viewport").toBeLessThanOrEqual(0);
     const past = await page.evaluate(() =>
