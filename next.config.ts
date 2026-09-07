@@ -20,6 +20,13 @@ const nextConfig: NextConfig = {
         destination: "/studio",
         statusCode: 301,
       },
+      {
+        // People hear the venue name on air and guess it. Straight to /studio, not via the
+        // other alias, so there is one hop and no chain.
+        source: "/lucky-hare",
+        destination: "/studio",
+        statusCode: 301,
+      },
     ];
   },
   async headers() {

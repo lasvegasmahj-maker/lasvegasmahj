@@ -36,6 +36,7 @@ const TAGGED_PAGES: Record<string, { slug: string; count: number }> = {
   "app/convention-activities-las-vegas/page.tsx": { slug: "convention", count: 2 },
   "app/mahjong-parties-las-vegas/page.tsx": { slug: "parties", count: 4 },
   "app/private-mahjong-lessons-las-vegas/page.tsx": { slug: "private-lessons", count: 3 },
+  "app/studio/page.tsx": { slug: "studio", count: 1 },
 };
 
 // The nav and the footer are deliberately left bare. They are one shared component each,
@@ -78,7 +79,7 @@ test.describe("source attribution vocabulary", () => {
     // Bidirectional: a slug the CTAs never use is dead code, and a slug the form does not
     // know silently degrades that page's leads to "General".
     expect(inForm).toEqual(inCtas);
-    expect(inForm).toHaveLength(6);
+    expect(inForm).toHaveLength(7);
   });
 
   test("every honoured slug is lowercase, hyphenated and URL safe", () => {
@@ -88,20 +89,35 @@ test.describe("source attribution vocabulary", () => {
     }
   });
 
-  test("each slug maps to a human readable label and a real inquiry type", () => {
+  test("each slug maps to a human readable label, and any prefill is a real inquiry type", () => {
     const src = read(FORM);
     const block = src.slice(src.indexOf("const SOURCES"), src.indexOf("const GENERAL_SOURCE"));
-    const entries = [...block.matchAll(/label:\s*"([^"]+)",\s*inquiry:\s*"([^"]+)"/g)];
-    expect(entries).toHaveLength(6);
+    // Every entry must have a label. `inquiry` is optional: a page can be worth attributing
+    // without implying what the visitor wants, which is the studio page's case.
+    const entries = [...block.matchAll(/label:\s*"([^"]+)"(?:,\s*inquiry:\s*"([^"]+)")?/g)];
+    expect(entries, "every honoured slug needs a label").toHaveLength(sourceSlugsInForm().length);
 
     const types = inquiryTypes();
+    let prefills = 0;
     for (const [, label, inquiry] of entries) {
       // The label is what lands in the inbox, so it must read as a phrase, not a slug.
       expect(label, label).toMatch(/^[A-Z]/);
       expect(label, label).not.toMatch(/[-_]/);
+      if (!inquiry) continue;
+      prefills++;
       // A prefill that is not an option would render the required select as blank.
       expect(types, `${label} prefills an inquiry type that does not exist`).toContain(inquiry);
     }
+    expect(prefills, "the six commercial pages still prefill").toBe(6);
+  });
+
+  test("the studio slug attributes without touching the visitor's inquiry choice", () => {
+    const src = read(FORM);
+    const block = src.slice(src.indexOf("const SOURCES"), src.indexOf("const GENERAL_SOURCE"));
+    const studio = block.match(/studio:\s*\{([^}]*)\}/);
+    expect(studio, "the studio slug is missing").not.toBeNull();
+    expect(studio![1]).toContain('label: "Studio Page"');
+    expect(studio![1], "attribution only: no inquiry prefill").not.toContain("inquiry");
   });
 
   test("the fallback covers nav, footer and direct traffic", () => {
@@ -141,9 +157,13 @@ test.describe("CTA tagging", () => {
     }
   });
 
-  test("fifteen CTAs carry attribution in total", () => {
+  test("every tagged CTA on the site is accounted for, and none is untagged", () => {
+    // Derived from the table rather than a literal, so adding a page updates one place and
+    // an accidental extra or missing CTA on any listed page still fails above.
+    const expected = Object.values(TAGGED_PAGES).reduce((n, p) => n + p.count, 0);
     const total = Object.keys(TAGGED_PAGES).reduce((n, f) => n + contactHrefs(f).length, 0);
-    expect(total).toBe(15);
+    expect(total).toBe(expected);
+    expect(total, "the tagged CTA set should not shrink").toBeGreaterThanOrEqual(16);
   });
 });
 

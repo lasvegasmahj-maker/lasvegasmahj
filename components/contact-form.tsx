@@ -8,13 +8,18 @@ import { trackEvent } from "@/lib/analytics";
 // lands in the email, so it reads as a phrase rather than a slug. `inquiry` pre-selects
 // the matching Inquiry Type, which is what lets that field be required without adding
 // friction for anyone arriving from a tagged CTA.
-const SOURCES: Record<string, { label: string; inquiry: string }> = {
+//
+// `inquiry` is optional because a page can be worth attributing without implying what the
+// visitor wants. The studio page invites classes, open play and private bookings alike, so
+// it names itself in the inbox and leaves the Inquiry Type for the visitor to choose.
+const SOURCES: Record<string, { label: string; inquiry?: string }> = {
   corporate: { label: "Corporate Events page", inquiry: "Corporate or Team Building" },
   "team-building": { label: "Corporate Team Building page", inquiry: "Corporate or Team Building" },
   conference: { label: "Conference Activities page", inquiry: "Conference or Convention" },
   convention: { label: "Convention Activities page", inquiry: "Conference or Convention" },
   parties: { label: "Private Parties page", inquiry: "Private Party or Celebration" },
   "private-lessons": { label: "Private Lessons page", inquiry: "Private Lesson" },
+  studio: { label: "Studio Page" },
 };
 
 const GENERAL_SOURCE = "General (nav, footer or direct)";
@@ -76,7 +81,7 @@ export default function ContactForm({ source: fixedSource, successTitle, success
   const match = SOURCES[useSyncExternalStore(subscribe, readSlug, noSlug)];
   const source = fixedSource ?? (match ? match.label : GENERAL_SOURCE);
   // The source only supplies a starting point; once the visitor picks, their choice wins.
-  const inquiry = chosenInquiry ?? (fixedSource ? "" : match ? match.inquiry : "");
+  const inquiry = chosenInquiry ?? (fixedSource ? "" : match?.inquiry ?? "");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

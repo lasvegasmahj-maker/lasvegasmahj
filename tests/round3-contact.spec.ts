@@ -330,3 +330,57 @@ test.describe("the form works on a phone", () => {
     expect(sent.group_size).toBe("21-50 people");
   });
 });
+
+test.describe("the studio page attributes its leads without steering them", () => {
+  test("a studio inquiry arrives as Studio Page with the visitor's own choice intact", async ({ page }) => {
+    const sent = await submit(page, "/contact?source=studio", async (p) => {
+      await p.selectOption("#contact-inquiry", "Group Lesson or Class");
+    });
+    expect(sent.source, "the inbox must say where the lead came from").toBe("Studio Page");
+    expect(sent.inquiry_type, "the visitor's choice must survive").toBe("Group Lesson or Class");
+  });
+
+  test("it works for any inquiry type, not just one", async ({ page }) => {
+    for (const choice of ["Private Party or Celebration", "Corporate or Team Building", "Something Else"]) {
+      const sent = await submit(page, "/contact?source=studio", async (p) => {
+        await p.selectOption("#contact-inquiry", choice);
+      });
+      expect(sent.source, choice).toBe("Studio Page");
+      expect(sent.inquiry_type, choice).toBe(choice);
+    }
+  });
+
+  test("the inquiry dropdown is not pre-selected: attribution only", async ({ page }) => {
+    await page.goto("/contact?source=studio");
+    // The six commercial pages prefill on purpose. The studio page invites classes, open
+    // play and private bookings alike, so it must leave the visitor on "Select one...".
+    await expect(page.locator("#contact-inquiry")).toHaveValue("");
+    await expect(page.locator("#contact-inquiry")).toBeVisible();
+  });
+
+  test("the studio page's own CTA carries the slug", async ({ page }) => {
+    await page.goto("/studio");
+    const cta = page.locator('main a[href="/contact?source=studio"]');
+    await expect(cta).toHaveCount(1);
+    await cta.click();
+    await expect(page).toHaveURL(/\/contact\?source=studio$/);
+    await expect(page.locator("#contact-inquiry")).toHaveValue("");
+  });
+
+  test("phone is still required and still validated on this route", async ({ page }) => {
+    await page.goto("/contact?source=studio");
+    const phone = page.locator("#contact-phone");
+    await expect(phone).toBeVisible();
+    expect(await phone.evaluate((el: HTMLInputElement) => el.required)).toBe(true);
+    await phone.fill("123");
+    await phone.blur();
+    expect(await phone.evaluate((el: HTMLInputElement) => el.validationMessage)).not.toBe("");
+  });
+
+  test("an unknown slug still falls back to General, never reaching the inbox verbatim", async ({ page }) => {
+    const sent = await submit(page, "/contact?source=not-a-real-page", async (p) => {
+      await p.selectOption("#contact-inquiry", "Something Else");
+    });
+    expect(sent.source).toBe("General (nav, footer or direct)");
+  });
+});

@@ -118,7 +118,7 @@ test.describe("nothing unsourceable ships", () => {
     }
   });
 
-  test("neither photo is captioned as a named room", () => {
+  test("no photo is captioned as a named room, now or when one arrives", () => {
     // No image on disk is identifiably Lucky Wishbone or Lucky Sevens, so no alt text or
     // caption may assert which room a picture shows.
     for (const file of [STUDIO_PAGE, BANNER]) {
@@ -131,14 +131,36 @@ test.describe("nothing unsourceable ships", () => {
     }
   });
 
-  test("only real studio photography is used", () => {
-    // Every other lvm-*.jpg in public/ was shot in a private home.
-    const STUDIO_PHOTOS = ["/lvm-openplay-room.jpg", "/lvm-openplay-social.jpg"];
+  test("no image on the studio surfaces claims to show the studio", () => {
+    // public/lvm-openplay-room.jpg and lvm-openplay-social.jpg were committed on 2026-06-12
+    // as "real open-play community photos" (#40), two months before the studio appears in
+    // this repo, and their EXIF is stripped. Nothing here shows either was taken inside the
+    // studio, so the studio surfaces carry no photography until the owner supplies one that
+    // is verified. This fails the moment any image is put back without that evidence.
     for (const file of [STUDIO_PAGE, BANNER]) {
-      for (const m of read(file).matchAll(/src="(\/[^"]+\.(?:jpg|jpeg|png|webp|avif))"/g)) {
-        expect(STUDIO_PHOTOS, `${file} uses a non-studio image: ${m[1]}`).toContain(m[1]);
-      }
+      const imgs = [...readCode(file).matchAll(/src="(\/[^"]+\.(?:jpg|jpeg|png|webp|avif))"/g)].map((m) => m[1]);
+      expect(imgs, `${file} presents an unverified image as the studio`).toEqual([]);
+      expect(readCode(file), `${file} still imports next/image`).not.toContain("next/image");
     }
+  });
+
+  test("the open play photos are not claimed as the studio anywhere else either", () => {
+    const OPEN_PLAY_PHOTOS = ["/lvm-openplay-room.jpg", "/lvm-openplay-social.jpg"];
+    const src = readCode(STUDIO_PAGE) + readCode(BANNER);
+    for (const photo of OPEN_PLAY_PHOTOS) {
+      expect(src, `an open play photo is used as studio imagery: ${photo}`).not.toContain(photo);
+    }
+    // They keep their home on the open play page, which is what they actually show.
+    const openPlay = readCode("app/mahjong-open-play-las-vegas/page.tsx");
+    for (const photo of OPEN_PLAY_PHOTOS) {
+      expect(openPlay, `${photo} should still be on the open play page`).toContain(photo);
+    }
+  });
+
+  test("neither og:image nor schema.org photo asserts a picture of the studio", () => {
+    const src = readCode(STUDIO_PAGE);
+    expect(src, "schema.org photo asserts an image depicts the Place").not.toMatch(/\bphoto:/);
+    expect(src, "og:image points at an unverified studio picture").not.toMatch(/images:\s*\[/);
   });
 });
 

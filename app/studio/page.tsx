@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -7,6 +6,15 @@ import { buildBreadcrumbSchema, STUDIO_PLACE } from "@/lib/schema";
 import { STUDIO_MEDIA } from "@/lib/studio-media";
 
 const MAP_URL = "https://maps.app.goo.gl/dGeHMfMDjuXjDFPs5";
+
+/**
+ * This page ships without room photography on purpose. The two interior shots in public/
+ * were committed on 2026-06-12 as "real open-play community photos" (#40), two months
+ * before the studio appears anywhere in this repo, and their EXIF is stripped. Nothing in
+ * the repository shows either was taken inside the studio, so neither may appear here, in
+ * og:image, or as a schema.org photo of the Place. Owner-verified photographs of Lucky
+ * Wishbone, Lucky Sevens and the entrance are what unblock this.
+ */
 
 export const metadata: Metadata = {
   title: "Mahjong Studio in Las Vegas",
@@ -20,7 +28,6 @@ export const metadata: Metadata = {
     description:
       "Two rooms inside Lucky Hare on West Sahara. Lucky Wishbone for classes, leagues and special events, Lucky Sevens for open play. Come sit with us.",
     url: "https://www.lasvegasmahj.com/studio",
-    images: ["https://www.lasvegasmahj.com/lvm-openplay-room.jpg"],
   },
 };
 
@@ -38,10 +45,6 @@ const studioSchema = {
       ...STUDIO_PLACE,
       url: "https://www.lasvegasmahj.com/studio",
       hasMap: MAP_URL,
-      photo: [
-        "https://www.lasvegasmahj.com/lvm-openplay-room.jpg",
-        "https://www.lasvegasmahj.com/lvm-openplay-social.jpg",
-      ],
       containsPlace: [
         {
           "@type": "Place",
@@ -112,12 +115,12 @@ export default function Studio() {
       <main style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
-          <div className="container">
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "3rem", alignItems: "center" }}>
+          <div className="container" style={{ maxWidth: "760px" }}>
+            <div style={{ textAlign: "center" }}>
               <div>
                 <span className="studio-open-badge">Now Open</span>
                 <p className="section-label">Inside Lucky Hare &middot; West Sahara</p>
-                <h1 className="section-title" style={{ fontSize: "clamp(2.3rem, 7vw, 4.4rem)", marginBottom: "1.5rem", textAlign: "left" }}>
+                <h1 className="section-title" style={{ fontSize: "clamp(2.3rem, 7vw, 4.4rem)", marginBottom: "1.5rem" }}>
                   Our Mahjong <span className="accent-green">Studio</span> in Las Vegas
                 </h1>
                 <p style={{ fontSize: "1.12rem", color: "rgba(255,255,255,0.75)", lineHeight: 1.8, marginBottom: "2rem" }}>
@@ -126,20 +129,11 @@ export default function Studio() {
                   seat at the table for you whether you have played a thousand
                   games or never touched a tile.
                 </p>
-                <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center" }}>
                   <a href="/schedule" className="btn-primary">View the Schedule</a>
                   <a href="#visit" className="btn-outline">How to Visit</a>
                 </div>
               </div>
-              <Image
-                src="/lvm-openplay-room.jpg"
-                alt="Players at tables inside the Las Vegas Mahjong studio at Lucky Hare"
-                width={1350}
-                height={1800}
-                priority
-                sizes="(max-width: 711px) 100vw, (max-width: 1164px) 46vw, 526px"
-                style={{ width: "100%", height: "auto", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.1)", display: "block" }}
-              />
             </div>
           </div>
         </section>
@@ -211,20 +205,6 @@ export default function Studio() {
                 </p>
               </div>
             </div>
-
-            <figure style={{ margin: "3rem auto 0", maxWidth: "820px" }}>
-              <Image
-                src="/lvm-openplay-social.jpg"
-                alt="Shauna with a room of players at the Las Vegas Mahjong studio"
-                width={1800}
-                height={1350}
-                sizes="(max-width: 900px) 100vw, 820px"
-                style={{ width: "100%", height: "auto", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.1)", display: "block" }}
-              />
-              <figcaption style={{ color: "rgba(255,255,255,0.62)", fontSize: "0.85rem", textAlign: "center", marginTop: "0.85rem" }}>
-                A session in progress at the studio.
-              </figcaption>
-            </figure>
           </div>
         </section>
 
@@ -318,11 +298,7 @@ export default function Studio() {
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/schedule" className="btn-primary">See What Is On</a>
-              {/* Deliberately untagged. The six ?source= slugs and their inquiry prefills are
-                  the owner's, and she asked for the contact form left alone in this change,
-                  so this falls back to the same General bucket the nav and footer use.
-                  Adding a "studio" slug is a one line follow up if she wants the attribution. */}
-              <a href="/contact" className="btn-outline">Plan Something Private</a>
+              <a href="/contact?source=studio" className="btn-outline">Plan Something Private</a>
             </div>
           </div>
         </section>
