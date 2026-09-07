@@ -23,12 +23,15 @@ const GENERAL_SOURCE = "General (nav, footer or direct)";
 // character. Counting digits keeps every real format valid: 7025551212, 702-555-1212,
 // (702) 555-1212 and +1 702 555 1212 all pass, while a stray character or a truncated
 // number does not. The upper bound is E.164's fifteen digits so an international number
-// still fits. An empty value is left alone so the browser's own "required" message shows
-// instead of this one.
+// still fits.
+//
+// Only a TRULY empty value defers to the browser's own "required" message. Trimming first
+// would hand a value of spaces back to `required`, which is already satisfied by it, so
+// nothing would catch it and a blank phone number would submit.
 function validatePhone(el: HTMLInputElement) {
   const digits = el.value.replace(/\D/g, "");
   const ok = digits.length >= 10 && digits.length <= 15;
-  el.setCustomValidity(el.value.trim() === "" || ok ? "" : "Please enter a phone number we can reach you on, including the area code.");
+  el.setCustomValidity(el.value === "" || ok ? "" : "Please enter a phone number we can reach you on, including the area code.");
 }
 
 // A half typed date leaves the control in badInput, which fails constraint validation and
@@ -78,6 +81,19 @@ export default function ContactForm({ source: fixedSource, successTitle, success
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
+
+    // Re-check here as well as on input and blur: a value the browser restores on back
+    // navigation, or fills by autofill, can arrive without firing either event, leaving the
+    // custom validity stale and letting an unusable number through.
+    const phone = form.elements.namedItem("phone");
+    if (phone instanceof HTMLInputElement) {
+      validatePhone(phone);
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+    }
+
     const data = new FormData(form);
     setStatus("sending");
 
