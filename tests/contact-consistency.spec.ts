@@ -106,6 +106,78 @@ test.describe("phone validation accepts how people actually type", () => {
   });
 });
 
+test.describe("a blank phone cannot slip through", () => {
+  test("a value of only whitespace is rejected", async ({ page }) => {
+    // `required` is satisfied by a string of spaces, so if validation trims before deciding,
+    // nothing catches it and a lead arrives with no way to phone them back.
+    await page.goto("/contact");
+    for (const blank of ["   ", "\t ", " \n "]) {
+      const res = await page.locator("#contact-phone").evaluate((el: HTMLInputElement, v: string) => {
+        el.value = v;
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+        return { valid: el.checkValidity(), missing: el.validity.valueMissing };
+      }, blank);
+      expect(res.valid, `${JSON.stringify(blank)} should be rejected`).toBe(false);
+    }
+  });
+
+  test("a whitespace phone does not submit", async ({ page }) => {
+    let posted = 0;
+    await page.route(ENDPOINT, async (route) => {
+      posted++;
+      await route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
+    });
+    await page.goto("/contact");
+    await page.fill("#contact-name", "Whitespace Test");
+    await page.fill("#contact-email", "ws@example.com");
+    await page.selectOption("#contact-inquiry", "Something Else");
+    await page.locator("#contact-phone").evaluate((el: HTMLInputElement) => {
+      el.value = "   ";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    await page.getByRole("button", { name: "Send Message" }).click();
+    await page.waitForTimeout(800);
+    expect(posted, "a blank phone number reached the inbox").toBe(0);
+    await expect(page.getByText("Message Sent!")).toHaveCount(0);
+  });
+
+  test("a value set without firing input or blur is still caught at submit", async ({ page }) => {
+    // Autofill and back-navigation restore both do this. Without a re-check on submit the
+    // custom validity is stale and an unusable number posts.
+    let posted = 0;
+    await page.route(ENDPOINT, async (route) => {
+      posted++;
+      await route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
+    });
+    await page.goto("/contact");
+    await page.fill("#contact-name", "Restored Value");
+    await page.fill("#contact-email", "restored@example.com");
+    await page.selectOption("#contact-inquiry", "Something Else");
+    await page.locator("#contact-phone").evaluate((el: HTMLInputElement) => {
+      el.value = "555";
+    });
+    await page.getByRole("button", { name: "Send Message" }).click();
+    await page.waitForTimeout(800);
+    expect(posted, "a stale-validity phone number reached the inbox").toBe(0);
+  });
+
+  test("a real number still submits after the extra checking", async ({ page }) => {
+    let payload: Record<string, string> | null = null;
+    await page.route(ENDPOINT, async (route) => {
+      payload = parseMultipart(route.request().postData() ?? "");
+      await route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
+    });
+    await page.goto("/contact");
+    await page.fill("#contact-name", "Good Number");
+    await page.fill("#contact-email", "good@example.com");
+    await page.fill("#contact-phone", "+1 702 555 1212");
+    await page.selectOption("#contact-inquiry", "Private Lesson");
+    await page.getByRole("button", { name: "Send Message" }).click();
+    await expect(page.getByText("Message Sent!")).toBeVisible();
+    expect((payload as unknown as Record<string, string>).phone).toBe("+1 702 555 1212");
+  });
+});
+
 test.describe("the homepage Plan Your Event flow", () => {
   test("the CTA wording and the modal heading are unchanged", async ({ page }) => {
     await page.goto("/");
