@@ -1,7 +1,105 @@
 # Handoff: Las Vegas Mahjong competitive SEO
 
-Rounds 1, 2 and 3 are all CLOSED, MERGED and LIVE. Their records are preserved below and
-must not be edited or re-litigated. There is no active round.
+Rounds 1, 2, 3 and the contact consistency cleanup are all CLOSED, MERGED and LIVE. Their
+records are preserved below and must not be edited or re-litigated. There is no active round.
+
+---
+
+# CONTACT CONSISTENCY CLEANUP (CLOSED, MERGED, LIVE)
+
+**Date closed:** 2026-09-06
+**Merged as:** **`2d0a4dd`** (PR #106), **`a7eda81`** (PR #107), **`7aff7ef`** (PR #108)
+**Base:** `origin/main` at `8986ae4`
+**Production:** LIVE on `www.lasvegasmahj.com` via `lasvegasmahj-6104s-projects / lasvegasmahj-h1iz`.
+
+## The owner reversed an instruction. Read this before "fixing" a phone field.
+
+She now wants a phone number **REQUIRED** on inquiry forms. She still will **not** publish her
+own number. These are opposite things and the codebase does the first and not the second:
+
+- **COLLECT the visitor's number: required.** `/contact` has a required `type="tel"`
+  `name="phone"`. The homepage modal inherits it.
+- **PUBLISH her number: still forbidden.** No `tel:` link, no `telephone` in structured data,
+  no business number in copy. Every guard from rounds 1 and 2 still passes untouched.
+
+A `type="tel"` input trips none of the guards, because they all need the colon in `tel:`.
+
+## Phone validation, and two traps already hit
+
+Digit counting (10 to 15) via `setCustomValidity`, with **no `pattern` attribute** on purpose: a
+regex rejects formats the owner explicitly asked to accept. Accepts `7025551212`,
+`702-555-1212`, `(702) 555-1212`, `+1 702 555 1212`, `702.555.1212`.
+
+Both of these shipped broken in #106 and were fixed in #107. Do not reintroduce either:
+
+1. `el.value.trim() === ""` handed a whitespace-only value back to `required`, which any
+   non-empty string satisfies, so a blank phone number submitted. Test `el.value === ""`.
+2. Validating only on `input` and `blur` is bypassed by back-navigation restore and by
+   autofill, neither of which fires them. `handleSubmit` re-runs validation and calls
+   `reportValidity()` before posting.
+
+## One lead schema, by construction
+
+`components/inquiry-modal.tsx` has no form of its own. It renders the same `<ContactForm>` that
+`/contact` renders, passing `source="Homepage Plan Your Event"` plus its own success wording.
+This retired the modal's private vocabulary (`first_name`, `last_name`, `interest`, `dates`).
+
+**Exactly one file in the repo posts to Formspree, and a test enforces that.**
+
+Routing the homepage button to `/contact` was the alternative and was deliberately rejected: it
+changes what the top-ranking page does on click, and trips the guard that keeps button CTAs off
+that page, to solve a problem sharing the component already solves.
+
+## Select carets
+
+`app/globals.css` `.form-group select` gained an inline SVG caret in `--green`. `appearance:
+none` plus the shared `background` shorthand had left every select pixel-identical to a text
+input, so the required Inquiry Type looked already filled in.
+
+## Public email
+
+`hello@lasvegasmahj.com` in copy, `mailto:` links and both JSON-LD blocks (11 references).
+`shauna@lasvegasmahj.com` appears nowhere. **The Formspree endpoint deliberately did not
+change**: which address the site displays and where the form delivers are separate mechanisms.
+
+## LIVE AND UNFIXED: the stale Vercel host publishes her phone number
+
+`https://lasvegasmahj.vercel.app` returns 200 with `"telephone":"+1-847-609-3112"` and
+`lasvegasmahj@gmail.com` in LocalBusiness JSON-LD, `<meta name="robots" content="index,
+follow">`, and a robots.txt allowing everything. It is a build from before 2026-09-05
+(`/contact` 404s there; cache age about 7 days). `www` is clean.
+
+This is **pre-existing**, not caused by this work, but it breaks the owner's hard rule on an
+indexable page. **No code change in this repo can fix it**: that project does not rebuild from
+`main`. The owner has to redeploy or delete that Vercel project.
+
+## Guard hardening (#108)
+
+Every published-number guard keyed on the one literal `847-609-3112`, so a different number
+would have passed all of them. The new guard is shape based. Two details it needs: the final
+separator must be optional (or a bare `7024621180` slips through), and the digit lookarounds are
+load bearing (without them a ten digit window inside the footer's fourteen digit Facebook
+profile id `61581027728474` reads as a phone number).
+
+## Verification
+
+25 agents, 6 dimensions, 3 adversarial refuters each, plus a completeness critic. 0 agent
+errors. Shipped suites run against live production: 227 passed, 0 failed, desktop and iPhone.
+
+**One verification agent sent two REAL submissions to Formspree** through a route-handler
+ordering bug in its own script ("Verify Test" and "Verify Two"). They are junk and need deleting
+from the Formspree submissions and the notification inbox.
+
+## Owner actions still open
+
+1. Confirm `hello@lasvegasmahj.com` actually receives mail. The domain has Google Workspace MX
+   and real mailboxes (`shauna@lasvegasmahj.com` exists), but that does not prove a `hello`
+   mailbox or alias does. Nothing automated may send mail to check.
+2. Redeploy or delete the `lasvegasmahj.vercel.app` project. See above.
+3. Delete the two junk verification submissions.
+4. The modal heading still says "Book a Lesson" while the button that opens it says "Plan Your
+   Event". Pre-existing mismatch, wording deliberately untouched, now worth a decision because
+   the modal handles every inquiry type.
 
 ---
 
