@@ -26,7 +26,7 @@ const shopItems = [
     logo: "/logos/bespoke.webp",
   },
   {
-    name: "Mahjong Maven",
+    name: "Mahjongg Maven",
     color: "var(--green)",
     borderColor: "rgba(57,230,57,0.3)",
     borderBottomColor: "rgba(57,230,57,0.1)",
