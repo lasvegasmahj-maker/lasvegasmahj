@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     ...ogBase,
     title: "Las Vegas Meeting Planner Activities | Las Vegas Mahjong",
     description:
-      "An icebreaker, a breakout between sessions or a hosted evening social, fitted to the slot you need to fill. We bring everything to your meeting room.",
+      "An icebreaker, a breakout between sessions or a hosted evening social, fitted to the slot you need to fill. We bring the mahjong equipment and facilitation to your meeting room.",
     url: PAGE_URL,
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
@@ -77,7 +77,7 @@ const roles = [
   { title: "Attendee engagement", body: "Every attendee gets hands-on instruction, so people play rather than watch from the back of the room." },
   { title: "A breakout activity", body: "It fits one room and one time slot, and we shorten or extend it to match your agenda." },
   { title: "Client entertainment", body: "A hosted table gives your team relaxed time with the clients attending your meeting." },
-  { title: "A hosted social", body: "We host from setup to breakdown, so your staff can join the tables instead of running them." },
+  { title: "A hosted social", body: "We run the game from start to finish, so your staff can join the tables instead of running them." },
   { title: "A group activity", body: "Mixed rooms work: first-timers and experienced players, leaders and new hires, at the same tables." },
 ];
 
@@ -96,7 +96,7 @@ const faqs = [
   },
   {
     q: "What do you need from the hotel or venue?",
-    a: "The room and the time slot. Tell us which room you have and how it is set, and we will confirm what the space needs. We bring the sets, racks, NMJL cards and facilitators, and handle setup and breakdown. You provide any food or drink you would like.",
+    a: "The event space, set with tables and chairs for your group, and the time slot. The hotel or venue provides the room and furniture; we provide the sets, racks, NMJL cards and other game materials, plus the facilitators, and we set up and clear the game. Any food or drink is yours to arrange.",
   },
   {
     q: "Do our attendees need to know how to play?",
@@ -188,20 +188,21 @@ export default function LasVegasMeetingPlannerActivities() {
                   <li>152-tile American Mahjong sets, racks and current NMJL cards</li>
                   <li>Instruction from the very first tile</li>
                   <li>Facilitators matched to your headcount</li>
-                  <li>Setup and breakdown</li>
+                  <li>Setting up and clearing the game at every table</li>
                 </ul>
               </div>
               <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(233,30,140,0.25)", borderRadius: "8px", padding: "1.8rem" }}>
                 <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.75rem" }}>You provide</h3>
                 <ul style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, margin: 0, paddingLeft: "1.1rem", listStyle: "disc" }}>
                   <li>The room: a hotel meeting room, ballroom, breakout space, hospitality suite or private room</li>
+                  <li>Tables and chairs for the group, set in the room</li>
                   <li>The time slot in your agenda</li>
                   <li>Any food or drink you would like</li>
                 </ul>
               </div>
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "2rem" }}>
-              To get started, send us your dates, venue, headcount and time slot. For a whole company event rather than a meeting, see{" "}
+              To get started, send us your dates, venue, headcount and time slot. Partner and referral arrangements are available for DMCs and event professionals. Contact us to discuss your program. For a whole company event rather than a meeting, see{" "}
               <a href="/corporate-event-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate event activities</a>, and for how we run events for companies, see{" "}
               <a href="/mahjong-corporate-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate mahjong events</a>.
             </p>

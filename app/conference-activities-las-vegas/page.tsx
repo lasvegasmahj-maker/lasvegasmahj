@@ -12,14 +12,14 @@ export const metadata: Metadata = {
   openGraph: {
     ...ogBase,
     title: "Conference Activities in Las Vegas | Mahjong Networking Break",
-    description: "A memorable mahjong break-out and networking activity for conferences and large meetings in Las Vegas. Scales from one table to 100+. Contact for a quote.",
+    description: "A mahjong break-out and networking activity for conference attendees in Las Vegas, set up in your hotel meeting room or ballroom. Contact for a quote.",
     url: "https://www.lasvegasmahj.com/conference-activities-las-vegas",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Conference Activities in Las Vegas | Mahjong Networking Break",
-    description: "A memorable mahjong break-out and networking activity for conferences and large meetings in Las Vegas. Scales from one table to 100+. Contact for a quote.",
+    description: "A mahjong break-out and networking activity for conference attendees in Las Vegas, set up in your hotel meeting room or ballroom. Contact for a quote.",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
@@ -29,7 +29,7 @@ const jsonLd = {
   "@type": "Service",
   name: "Conference Activities Las Vegas",
   serviceType: "Conference networking activity",
-  description: "A mahjong networking and break-out activity for conferences and conference attendee groups in Las Vegas. Runs in a hotel meeting room or on-site, scales from one table to 100+, no experience needed.",
+  description: "A mahjong networking and break-out activity for conferences and conference attendee groups in Las Vegas. Runs in a hotel meeting room, ballroom or on-site venue, no experience needed.",
   provider: {
     "@type": "LocalBusiness",
     "@id": "https://www.lasvegasmahj.com/#business",
@@ -58,12 +58,12 @@ const breadcrumb = {
 };
 
 const faqs = [
-  { q: "Can a mahjong activity work for a large conference group?", a: "Yes. We scale from a single table to 100+ guests. For large groups we bring extra facilitators so every table gets proper instruction and stays engaged. Contact us with your headcount for a quote." },
+  { q: "Can a mahjong activity work for a large conference group?", a: "Yes. We add facilitators to match your headcount so every table gets proper instruction and stays engaged. Contact us with your numbers for a quote." },
   { q: "Do our attendees need any mahjong experience?", a: "None at all. We teach the game from zero and have people playing real hands within the first session, so it works for a room of total beginners and mixed skill levels alike." },
-  { q: "Can you run this in our hotel meeting room or on-site?", a: "Yes. We come to your hotel meeting room, ballroom, breakout space, or on-site venue. We handle setup, bring all tiles, racks, and NMJL cards, and facilitate the activity from start to finish." },
+  { q: "Can you run this in our hotel meeting room or on-site?", a: "Yes. We come to your hotel meeting room, ballroom, breakout space, or on-site venue. The venue provides the space, tables and chairs; we bring the tiles, racks, NMJL cards and game materials, set up the game, and facilitate the activity from start to finish." },
   { q: "How long does a conference mahjong activity run?", a: "Most run 60 to 90 minutes as a break-out or networking session, and we can shorten or extend to fit your agenda. Tell us your time slot and we will tailor the format." },
   { q: "Why is mahjong a good conference networking activity?", a: "Four people at a small table, learning something new together, naturally start talking. It breaks the ice faster than a reception and gives out-of-town attendees a shared experience to remember." },
-  { q: "How much does a conference mahjong activity cost?", a: "Pricing depends on group size, format, and length, so we put together a custom proposal. Contact us for a quote and we will respond within 24 hours." },
+  { q: "How much does a conference mahjong activity cost?", a: "Pricing depends on group size, format, and length, so we put together a custom proposal. Contact us and we will follow up with a quote." },
 ];
 
 export default function ConferenceActivitiesLasVegas() {
@@ -82,7 +82,7 @@ export default function ConferenceActivitiesLasVegas() {
               Conference Activities in <span className="accent-green">Las Vegas</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "640px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Give your attendees a break that they actually remember. A mahjong break-out is a memorable networking activity that runs right in your hotel meeting room, scales from one table to 100+, and needs zero experience to enjoy.
+              Give your attendees a break that they actually remember. A mahjong break-out is a networking activity that runs right in your hotel meeting room or ballroom and needs zero experience to enjoy.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/contact?source=conference" className="btn-primary">Request a Quote</a>
@@ -98,9 +98,9 @@ export default function ConferenceActivitiesLasVegas() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
               {[
                 { icon: "🤝", title: "A Real Ice-Breaker", desc: "Four people at one small table, learning a new game together. Attendees who would never strike up a conversation at a reception end up laughing and trading tips within minutes." },
-                { icon: "📈", title: "Scales to 100+", desc: "Run a single demo table at a booth or fill a ballroom with dozens of tables. We bring additional facilitators so every group gets hands-on instruction, no matter the headcount." },
+                { icon: "📈", title: "Scales With Your Group", desc: "Run a single table or a ballroom session. We add facilitators to match your headcount so every group gets hands-on instruction." },
                 { icon: "🏨", title: "Runs in Your Meeting Room", desc: "No off-site logistics, no buses, no scheduling around a venue. We set up in your hotel meeting room or breakout space and have your group playing in minutes." },
-                { icon: "🌟", title: "Genuinely Memorable", desc: "Out-of-town attendees have seen plenty of receptions and panels. A mahjong session is the part of the agenda they talk about on the flight home." },
+                { icon: "🌟", title: "Genuinely Memorable", desc: "Out-of-town attendees have seen plenty of receptions and panels. A mahjong session gives them something different to remember from the week." },
               ].map(item => (
                 <div key={item.title} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
                   <div style={{ fontSize: "1.8rem", marginBottom: "0.6rem" }}>{item.icon}</div>
@@ -122,7 +122,7 @@ export default function ConferenceActivitiesLasVegas() {
                 { title: "Conference Reception Activity", desc: "Set up tables during a welcome reception or evening social. Guests rotate through, learn the game, and connect over something more engaging than small talk." },
                 { title: "Exhibit Booth Draw", desc: "A live demo table at your booth pulls attendees in and gives your team a natural reason to start conversations. A standout way to drive booth traffic." },
                 { title: "Out-of-Town Group Activity", desc: "Hosting an incoming group in Las Vegas? A guided mahjong session gives visiting attendees a uniquely local, social experience without leaving the property." },
-                { title: "Large Meeting or General Session", desc: "For big groups, we fill the room with tables and bring a team of facilitators so every attendee gets hands-on instruction at the same time." },
+                { title: "Large Meeting or General Session", desc: "For big groups, the venue sets the room with tables and we bring a team of facilitators so every attendee gets hands-on instruction at the same time." },
               ].map((item, i) => (
                 <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
                   <div style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--green)", opacity: 0.35, flexShrink: 0, lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</div>
@@ -134,7 +134,7 @@ export default function ConferenceActivitiesLasVegas() {
               ))}
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "2.5rem" }}>
-              Every format includes all equipment (152-tile American sets, racks, and current NMJL cards), setup, and full facilitation from start to finish. You provide the room and any food or drink you would like. Want a deeper look at how we run company events? See our{" "}
+              Every format includes the mahjong equipment (152-tile American sets, racks, and current NMJL cards), game setup, and full facilitation from start to finish. Your venue provides the room, tables and chairs, and any food or drink you would like. Want a deeper look at how we run company events? See our{" "}
               <a href="/mahjong-corporate-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>corporate mahjong events</a> page. Exhibiting at the show and want tables at your booth? See{" "}
               <a href="/trade-show-booth-activities-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>trade show booth activities</a>.
             </p>
@@ -173,7 +173,7 @@ export default function ConferenceActivitiesLasVegas() {
           <div className="container">
             <h2 className="section-title">Make Your Agenda <span className="accent-green">Unforgettable</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "520px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
-              Tell us your group size, dates, and the time slot you want to fill. We will send a custom proposal within 24 hours. Planning a broader program? Start with{" "}
+              Tell us your group size, dates, and the time slot you want to fill. We will follow up with a custom proposal. Planning a broader program? Start with{" "}
               <a href="/corporate-team-building-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>corporate team building</a>.
             </p>
             <a href="/contact?source=conference" className="btn-primary">Request a Quote</a>

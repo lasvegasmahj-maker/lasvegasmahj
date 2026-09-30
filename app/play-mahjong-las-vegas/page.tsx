@@ -6,6 +6,7 @@ import Footer from "@/components/footer";
 import { SEVENS_OPEN_PLAY, OPEN_PLAY_PLAYERS } from "@/lib/studio-photos";
 import { getScheduleEvents, type ScheduleEvent } from "@/lib/schedule";
 import { buildBreadcrumbSchema } from "@/lib/schema";
+import { OPEN_PLAY_PRICE_LINE } from "@/lib/pricing";
 
 const PAGE_URL = "https://www.lasvegasmahj.com/play-mahjong-las-vegas";
 const MAP_URL = "https://maps.app.goo.gl/dGeHMfMDjuXjDFPs5";
@@ -62,7 +63,7 @@ const faqs = [
   },
   {
     q: "How much experience do I need for Open Play?",
-    a: "Open Play is for playing, not a class. If you already play American Mahjong, you are ready, and help is there when you want it. Every level is welcome, but if you have never played American Mahjong before, Mahj 101 is the place to start: it teaches the tiles, how to read the NMJL card and how a hand comes together.",
+    a: "Open Play is for playing, not a class, and it is for players who already know American Mahjong. If you already play, or have completed Mahj 101, you are ready. If you have never played, start with Mahj 101: it teaches the tiles, how to read the NMJL card and how a hand comes together.",
   },
   {
     q: "Do I need to reserve in advance?",
@@ -107,11 +108,11 @@ const quickFacts = [
   },
   {
     title: "Who can come",
-    body: "Visitors and locals alike. Come on your own or bring friends. You do not need a table of four to sign up.",
+    body: "Players who already know American Mahjong, visitors and locals alike. Come on your own or bring friends; you do not need a table of four.",
   },
   {
     title: "How to get a seat",
-    body: "Advance registration is required. Pick an Open Play session on the schedule and book your seat online before you come.",
+    body: `Advance registration is required. Book a seat for an Open Play session on the schedule before you come: ${OPEN_PLAY_PRICE_LINE}.`,
   },
 ];
 
@@ -314,19 +315,18 @@ export default async function PlayMahjongLasVegas() {
             <h2 className="section-title">What Level Is <span className="accent-green">Open Play?</span></h2>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "1.5rem 0 1rem" }}>
               Open Play is for playing. It is a relaxed, social two hours at the
-              table, not a class. Every level is welcome, from brand-new players
-              to regulars building their game, and help is there when you want it.
+              table, not a class, and help is there when you want it.
             </p>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, marginBottom: "1rem" }}>
-              If you already play American Mahjong with the NMJL card, you are
-              ready. If you are a little rusty, come anyway.
+              It is for players who already know American Mahjong. If you play
+              with the NMJL card at home, or you have completed Mahj 101, you are
+              ready. A little rusty? Come anyway.
             </p>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: 0 }}>
-              If you have never played American Mahjong, you are still welcome,
-              but Mahj 101 is the better first step. It teaches the tiles, how to
-              read the NMJL card and how a hand comes together, and you play a full
-              game in your first lesson. Class dates are on the same schedule as
-              Open Play.
+              If you have never played American Mahjong, start with Mahj 101
+              before Open Play. It teaches the tiles, how to read the NMJL card and
+              how a hand comes together, and you play a full game in your first
+              lesson. Class dates are on the same schedule as Open Play.
             </p>
           </div>
         </section>

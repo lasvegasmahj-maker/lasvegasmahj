@@ -171,7 +171,7 @@ export default function PrivateMahjongLessons() {
             <p className="section-label">Pricing</p>
             <h2 className="section-title">Contact for <span className="accent-green">Pricing</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.7, marginBottom: "2rem" }}>
-              Private lessons are priced per session, and what you need shapes what it costs. Tell me what you are hoping to get out of it and I will send you the details. I answer within 24 hours.
+              Private lessons are priced per session, and what you need shapes what it costs. Tell me what you are hoping to get out of it and I will send you the details.
             </p>
             <a href="/contact?source=private-lessons" className="btn-primary">Ask About a Private Lesson</a>
           </div>

@@ -134,7 +134,7 @@ test.describe("the cluster stays distinct", () => {
   });
 
   test("no FAQ question is asked twice anywhere in the cluster or on the visitor page", () => {
-    const all = [...CLUSTER, "/play-mahjong-las-vegas"].flatMap((r) => faqQuestions(file(r)));
+    const all = [...CLUSTER, "/play-mahjong-las-vegas", "/mahjong-open-play-las-vegas"].flatMap((r) => faqQuestions(file(r)));
     const dupes = all.filter((q, i) => all.indexOf(q) !== i);
     expect(dupes).toEqual([]);
   });

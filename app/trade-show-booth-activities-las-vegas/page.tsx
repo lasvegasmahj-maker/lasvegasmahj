@@ -67,7 +67,7 @@ const formats = [
 const faqs = [
   {
     q: "Can a mahjong table fit in a trade show booth?",
-    a: "We work with the space you have, from a single demo table at the booth to hosted tables in a hospitality suite or lounge. Tell us your booth size and layout, and check your show's exhibitor rules for booth activities, and we will suggest the format that fits.",
+    a: "Yes, if your booth has room for a table and seating. You provide the booth space, table and chairs; we bring the game. Tell us your booth size and layout, and check your show's exhibitor rules for booth activities, and we will suggest the format that fits.",
   },
   {
     q: "How does a booth session work if visitors have never played?",
@@ -75,7 +75,7 @@ const faqs = [
   },
   {
     q: "Can you set up in our hospitality suite?",
-    a: "Yes. Hospitality suites suit longer, hosted play for the clients and prospects you invite, and we handle setup and breakdown there too.",
+    a: "Yes. Hospitality suites suit longer, hosted play for the clients and prospects you invite. The suite provides the tables and chairs; we bring the game and run it.",
   },
   {
     q: "Can mahjong be part of a sponsorship or experiential marketing activation?",
@@ -83,7 +83,7 @@ const faqs = [
   },
   {
     q: "What do you bring to the show?",
-    a: "The 152-tile American Mahjong sets, racks and current NMJL cards, facilitators matched to the sessions you are running, and setup and breakdown. You provide the space; tell us how it is set and we will confirm what it needs.",
+    a: "The 152-tile American Mahjong sets, racks, current NMJL cards and other game materials, and facilitators matched to the sessions you are running. You provide the space, with tables and chairs set for play.",
   },
   {
     q: "How is a trade show activity priced?",
@@ -167,6 +167,7 @@ export default function TradeShowBoothActivitiesLasVegas() {
             <ul style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.9, margin: "1.5rem 0 0", paddingLeft: "1.25rem", listStyle: "disc" }}>
               <li>Check your show&rsquo;s exhibitor rules for booth activities and seating.</li>
               <li>Send us your booth size and layout, the show dates, and the hours you want covered.</li>
+              <li>Plan a table and seating in your booth, suite or lounge; we bring the game materials.</li>
               <li>Short sessions suit the booth itself; longer, relaxed play suits a suite or lounge.</li>
               <li>Tell us who you want at the table: walk-up attendees, invited clients, or both.</li>
             </ul>
@@ -178,7 +179,7 @@ export default function TradeShowBoothActivitiesLasVegas() {
             <p className="section-label">One Table, Several Jobs</p>
             <h2 className="section-title">What It Can Do at <span className="accent-green">the Show</span></h2>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "1.5rem 0 1rem" }}>
-              At the booth, a live table is booth engagement and attendee engagement in one, and a natural way into networking conversations for your staff. In a suite or lounge it becomes a breakout from the show floor, client entertainment for the accounts you invite, or a hosted social that we run from setup to breakdown.
+              At the booth, a live table is booth engagement and attendee engagement in one, and a natural way into networking conversations for your staff. In a suite or lounge it becomes a breakout from the show floor, client entertainment for the accounts you invite, or a hosted social that we run from start to finish.
             </p>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: 0 }}>
               As an experiential marketing activation, it gives attendees something to do in your space rather than something to carry away. And once the show closes, the same tables work as a group activity, or light team building, for your own booth team.

@@ -6,19 +6,19 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Corporate Team Building Las Vegas",
   description:
-    "Corporate team building in Las Vegas for teams, departments and offsites of any size. Strategic, social mahjong, and we bring everything to you.",
+    "Corporate team building in Las Vegas: mahjong puts colleagues at one table to learn, talk and compete together. For teams, departments and offsites.",
   alternates: { canonical: "https://www.lasvegasmahj.com/corporate-team-building-las-vegas" },
   openGraph: {
     ...ogBase,
     title: "Corporate Team Building Las Vegas",
-    description: "Mahjong team building in Las Vegas. Strategic, social, and genuinely different from the usual happy hours and escape rooms. Any group size. Contact for a quote.",
+    description: "Mahjong team building in Las Vegas: colleagues learn a new game side by side, then read the table and compete. For teams, departments and offsites.",
     url: "https://www.lasvegasmahj.com/corporate-team-building-las-vegas",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Corporate Team Building Las Vegas",
-    description: "Mahjong team building in Las Vegas. Strategic, social, and genuinely different from the usual happy hours and escape rooms. Any group size. Contact for a quote.",
+    description: "Mahjong team building in Las Vegas: colleagues learn a new game side by side, then read the table and compete. For teams, departments and offsites.",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
@@ -28,7 +28,7 @@ const jsonLd = {
   "@type": "Service",
   name: "Corporate Team Building Las Vegas",
   serviceType: "Corporate team building",
-  description: "Mahjong-based corporate team building in Las Vegas. A strategic, social, and genuinely different activity for teams, departments, and offsites of any size. We bring everything to your office, hotel, or venue.",
+  description: "Mahjong-based corporate team building in Las Vegas. A strategic, social, and genuinely different activity for teams, departments, and offsites of any size. We bring the mahjong equipment and facilitation to your office, hotel, or venue.",
   provider: {
     "@type": "LocalBusiness",
     "@id": "https://www.lasvegasmahj.com/#business",
@@ -58,10 +58,10 @@ const breadcrumb = {
 
 const faqs = [
   { q: "What makes mahjong a good corporate team building activity?", a: "Mahjong rewards strategy, reading the table, and quick communication, the same skills that make a strong team. It also levels the playing field: leaders and new hires learn together from zero, which breaks down hierarchy in a way a standard happy hour cannot." },
-  { q: "How many people can you accommodate for a team building event?", a: "Any group size. We run small departments and large offsites alike, scaling tables and facilitation so every group gets proper instruction. Tell us your headcount and we will build the right setup." },
-  { q: "Do you come to our office, hotel, or event venue?", a: "Yes. We come to your office, a hotel meeting room, a private restaurant room, or a corporate venue, and we bring everything: tiles, racks, NMJL cards, and full facilitation. You provide the space and any food or drink." },
-  { q: "Can mahjong be part of a corporate offsite in Las Vegas?", a: "Yes. A 2-3 hour mahjong session fits into an offsite agenda, whether it opens the day, breaks up a long afternoon of meetings, or closes the evening. We come to your offsite venue, hotel or office and bring everything. Contact us for a quote." },
-  { q: "How much does a corporate team building event cost?", a: "Pricing depends on group size, length, and location, so we put together a custom plan for each event. Contact us for a quote and we will respond within 24 hours." },
+  { q: "How many people can you accommodate for a team building event?", a: "We run sessions for small departments and larger offsites, adding facilitators to match the headcount so every table gets proper instruction. Tell us your numbers and we will plan the setup." },
+  { q: "Do you come to our office, hotel, or event venue?", a: "Yes. We come to your office, a hotel meeting room, a private restaurant room, or a corporate venue, and we bring the mahjong equipment: tiles, racks, NMJL cards, and full facilitation. Your venue provides the space, tables and chairs, and any food or drink." },
+  { q: "Can mahjong be part of a corporate offsite in Las Vegas?", a: "Yes. A 2-3 hour mahjong session fits into an offsite agenda, whether it opens the day, breaks up a long afternoon of meetings, or closes the evening. We come to your offsite venue, hotel or office and bring the game. Contact us for a quote." },
+  { q: "How much does a corporate team building event cost?", a: "Pricing depends on group size, length, and location, so we put together a custom plan for each event. Contact us for a quote and we will follow up with a custom plan." },
   { q: "Does anyone need to know how to play mahjong beforehand?", a: "No experience required. We start from zero, and most groups are playing real hands within the first session. Beginners are our specialty, so mixed-experience teams are welcome." },
   { q: "How long does a typical team building event run?", a: "Most events run 2-3 hours, and we tailor the length to your agenda. Tell us your schedule and we will fit the experience to it. Contact us for a quote." },
 ];
@@ -77,12 +77,12 @@ export default function CorporateTeamBuildingLasVegas() {
       <main style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
-            <p className="section-label">Team Building · Offsites · Any Group Size</p>
+            <p className="section-label">Team Building · Offsites · Departments</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
               Corporate Team Building in <span className="accent-green">Las Vegas</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "660px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Your team has done the happy hours and the escape rooms. Give them something genuinely different: a strategic, social mahjong experience that builds communication and real connection. Any group size, and we bring everything to you.
+              Your team has done the happy hours and the escape rooms. Give them something genuinely different: a strategic, social mahjong experience that builds communication and real connection. Everyone learns together, from the very first tile.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/contact?source=team-building" className="btn-primary">Request a Quote</a>
@@ -117,20 +117,19 @@ export default function CorporateTeamBuildingLasVegas() {
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
           <div className="container" style={{ maxWidth: "680px" }}>
-            <p className="section-label">How It Works</p>
-            <h2 className="section-title">We Bring the Whole Experience to <span className="accent-green">You</span></h2>
+            <p className="section-label">The Team Experience</p>
+            <h2 className="section-title">What Happens at <span className="accent-green">the Table</span></h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginTop: "1.5rem" }}>
-              From a small department session to a full company offsite, the format flexes to fit your group and your room. Here is how a typical event comes together.
+              Here is how a session unfolds for a team, from the first tile to the final hand.
             </p>
             <div style={{ marginTop: "2.5rem" }}>
               {[
-                { title: "Tell Us About Your Team", desc: "Share your headcount, date, location, and what you want out of the event. We build a plan around your goals, whether that is connection, a reward, or a memorable break from the agenda." },
-                { title: "We Set Up Everywhere You Are", desc: "Your office, a hotel meeting room, a restaurant private room, or a corporate venue. We bring all the tiles, racks, and NMJL cards, and we handle setup and breakdown." },
-                { title: "Everyone Learns From Zero", desc: "No experience needed. We teach the basics fast, then facilitate every table so beginners and mixed-experience teams stay engaged from the first hand." },
+                { title: "First Tiles, Together", desc: "We teach the whole group at once, so the opening minutes are a shared puzzle rather than a presentation. Nobody has a head start." },
+                { title: "Learning Side by Side", desc: "The tiles, the card and how a hand comes together. Tablemates ask questions out loud and help each other through the first hands." },
+                { title: "Reading the Table", desc: "Once play gets going, everyone watches discards, plans a hand and changes course when the tiles do not cooperate, with mistakes that cost nothing." },
                 { title: "Play, Connect, and Compete", desc: "The room comes alive once people are playing. Add a friendly tournament format if your team likes a little competition, or keep it relaxed and social." },
-                { title: "Scale to Any Group Size", desc: "Small teams or large offsites, we bring the right number of facilitators so no one is left waiting. Tell us the headcount and we make it work." },
               ].map((item, i) => (
-                <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
+                <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
                   <div style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--green)", opacity: 0.35, flexShrink: 0, lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</div>
                   <div>
                     <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.3rem" }}>{item.title}</h3>
@@ -152,7 +151,7 @@ export default function CorporateTeamBuildingLasVegas() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
               <a href="/conference-activities-las-vegas" style={{ display: "block", textDecoration: "none", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
                 <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.4rem", color: "var(--green)" }}>Conference Activities in Las Vegas</h3>
-                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>A standout break-out or evening session for conference attendees. We slot mahjong into your agenda and bring everything to the room.</p>
+                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>A standout break-out or evening session for conference attendees. We slot mahjong into your agenda and bring the game to the room.</p>
               </a>
               <a href="/convention-activities-las-vegas" style={{ display: "block", textDecoration: "none", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
                 <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.4rem", color: "var(--green)" }}>Convention Activities in Las Vegas</h3>
@@ -192,7 +191,7 @@ export default function CorporateTeamBuildingLasVegas() {
           <div className="container">
             <h2 className="section-title">Build Something <span className="accent-green">Your Team Remembers</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "520px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
-              Tell us your group size, date, and what you are looking for, and we will send a custom quote within 24 hours.
+              Tell us your group size, date, and what you are looking for, and we will follow up with a custom quote.
             </p>
             <a href="/contact?source=team-building" className="btn-primary">Request a Quote</a>
           </div>

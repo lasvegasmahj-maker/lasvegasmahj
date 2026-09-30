@@ -32,7 +32,7 @@ const bookOptions = [
   {
     title: "Open Play",
     accent: "accent-green" as const,
-    body: "Come play in a friendly, no-pressure room. Social Open Play welcomes all levels, from brand-new players to regulars building their game. Two hours at the table with help when you want it.",
+    body: "Come play in a friendly, no-pressure room. Social Open Play is for players who already know the game, from Mahj 101 graduates to regulars building their game. Two hours at the table with help when you want it.",
     link: { lead: "Visiting Las Vegas?", text: "Play mahjong while you are in town", href: "/play-mahjong-las-vegas" },
   },
   {

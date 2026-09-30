@@ -28,13 +28,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: "https://www.lasvegasmahj.com/private-mahjong-lessons-las-vegas",
-      lastModified: new Date("2026-09-05"),
+      lastModified: new Date("2026-09-29"),
       changeFrequency: "monthly",
       priority: 0.85,
     },
     {
       url: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas",
-      lastModified: new Date("2026-05-23"),
+      lastModified: new Date("2026-09-29"),
       changeFrequency: "monthly",
       priority: 0.9,
     },
@@ -106,7 +106,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: "https://www.lasvegasmahj.com/contact",
-      lastModified: new Date("2026-09-05"),
+      lastModified: new Date("2026-09-29"),
       changeFrequency: "monthly",
       priority: 0.7,
     },

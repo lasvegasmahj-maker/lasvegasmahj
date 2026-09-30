@@ -94,7 +94,7 @@ const roles = [
   { title: "Guest engagement", body: "Guests play instead of watching, which is what separates an activity from entertainment on a stage." },
   { title: "A breakout", body: "It can be one segment of a longer event, such as a session after dinner, rather than the whole program." },
   { title: "Hosting clients", body: "Hosts and clients share a table and a game, not only a conversation about the account." },
-  { title: "A hosted social", body: "We run it start to finish, including setup and breakdown, so the host team can relax too." },
+  { title: "A hosted social", body: "We run the game start to finish, so the host team can relax too." },
   { title: "A group activity", body: "A bigger event still gets proper instruction at every table, because the facilitator team grows with the guest list." },
 ];
 
@@ -113,7 +113,7 @@ const faqs = [
   },
   {
     q: "Where can a corporate mahjong activity take place?",
-    a: "We bring it to you: a hotel meeting room or ballroom, a conference room, your office, a corporate venue, a hospitality suite, a private room or an offsite location.",
+    a: "We bring it to you: a hotel meeting room or ballroom, a conference room, your office, a corporate venue, a hospitality suite, a private room or an offsite location. The venue provides the space, tables and chairs; we bring the game.",
   },
   {
     q: "Can mahjong be one part of a larger event?",
@@ -189,7 +189,7 @@ export default function CorporateEventActivitiesLasVegas() {
               ))}
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "2.5rem", maxWidth: "720px" }}>
-              Every event includes the 152-tile American Mahjong sets, racks and current NMJL cards, instruction from zero and facilitation from start to finish. The space, and any food or drink, come from you. For timing and what is included, see how we run{" "}
+              Every event includes the 152-tile American Mahjong sets, racks and current NMJL cards, instruction from zero and facilitation from start to finish. The event space, tables and chairs, and any food or drink come from you or your venue. For timing and what is included, see how we run{" "}
               <a href="/mahjong-corporate-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate mahjong events</a>.
             </p>
           </div>

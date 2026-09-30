@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Convention Activities Las Vegas | Las Vegas Mahjong",
-    description: "A unique, social mahjong activity for convention groups in Las Vegas. Booth draws, attendee engagement, and group downtime, any size. Contact for a quote.",
+    description: "A social mahjong activity for convention groups in Las Vegas: attendee engagement sessions and group downtime. Contact for a quote.",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
@@ -61,7 +61,7 @@ const faqs = [
   { q: "Can you handle large convention groups?", a: "Yes. We accommodate large attendee groups and scale the number of facilitators to the headcount so every table gets proper instruction. Tell us your expected numbers and we will build the right setup. Contact us for a quote." },
   { q: "Where can a convention mahjong activity be hosted?", a: "We come to you. We host at the convention venue, your hotel meeting space, an exhibitor suite, or a nearby room you have booked. We work with the space and schedule you already have. Contact us for a quote." },
   { q: "How does mahjong work as a booth draw or attendee engagement activity?", a: "We can run rotating short sessions to keep traffic moving at your booth, or set up longer hosted tables for group downtime between sessions. It gives attendees a reason to stop, sit down, and connect. Contact us for a quote." },
-  { q: "What is included in a convention mahjong activity?", a: "We bring all the equipment (152-tile American Mahjong sets, racks, and NMJL cards) and provide full instruction and facilitation start to finish. You provide the space and any food or drink you would like." },
+  { q: "What is included in a convention mahjong activity?", a: "We bring the mahjong equipment (152-tile American Mahjong sets, racks, and NMJL cards) and provide full instruction and facilitation start to finish. You or your venue provide the space, tables and chairs, and any food or drink you would like." },
   { q: "How much does a convention activity cost?", a: "Convention and group pricing depends on your headcount, format, and schedule, so we build a custom quote for each event. Tell us your dates and expected numbers and we will send pricing. Contact us for a quote." },
   { q: "Do attendees need any mahjong experience?", a: "None at all. Mahjong is approachable for complete beginners, and jokers are wild, which makes early hands forgiving and fun. We start from zero and have groups playing quickly." },
 ];
@@ -82,7 +82,7 @@ export default function ConventionActivitiesLasVegas() {
               Convention Activities in <span className="accent-green">Las Vegas</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "660px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Las Vegas is the top convention city in the country, which means your attendees have seen every standard activity. Give them something different: a social, hands-on mahjong experience that gets people sitting down, talking, and remembering your event.
+              Convention attendees in Las Vegas have plenty of standard activities to choose from. Give them something different: a social, hands-on mahjong experience that gets people sitting down, talking, and remembering your event.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/contact?source=convention" className="btn-primary">Request a Quote</a>
@@ -173,7 +173,7 @@ export default function ConventionActivitiesLasVegas() {
           <div className="container">
             <h2 className="section-title">Make Your Convention <span className="accent-green">Stand Out</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "520px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
-              Tell us your dates, expected headcount, and what you have in mind, whether it is a booth draw, an attendee session, or group downtime. We will send a custom quote within 24 hours.
+              Tell us your dates, expected headcount, and what you have in mind, whether it is a booth draw, an attendee session, or group downtime. We will follow up with a custom quote.
             </p>
             <a href="/contact?source=convention" className="btn-primary">Request a Convention Quote</a>
           </div>

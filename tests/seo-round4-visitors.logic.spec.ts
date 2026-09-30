@@ -198,14 +198,16 @@ test.describe("sitewide LocalBusiness", () => {
     expect(desc).not.toMatch(/premier|best|top|#1|leading/i);
   });
 
-  test("offers Social Open Play as the same node the open play page describes, with no price", () => {
+  test("offers Social Open Play as the same node the open play page describes, priced from one place", () => {
     expect(biz).toMatch(/itemOffered: OPEN_PLAY_SERVICE,/);
     expect(read(OPEN_PLAY)).toContain("...OPEN_PLAY_SERVICE,");
     const schema = read("lib/schema.ts");
     const node = schema.slice(schema.indexOf("export const OPEN_PLAY_SERVICE"), schema.indexOf("export interface ScheduleEventInput"));
     expect(node).toContain('"@id": "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas#service"');
     expect(node).toContain("Lucky Sevens");
-    expect(node).not.toMatch(/price/i);
+    // Open Play is the one service with published prices, and they come only from lib/pricing.ts.
+    expect(node).toContain("price: OPEN_PLAY_PRICES.session.toFixed(2)");
+    expect(node).not.toMatch(/price: "\d/);
   });
 });
 

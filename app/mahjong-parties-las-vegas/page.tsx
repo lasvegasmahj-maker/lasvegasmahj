@@ -130,7 +130,7 @@ export default function MahjongPartiesLasVegas() {
             <p className="section-label">The Process</p>
             <h2 className="section-title">How It <span className="accent-pink">Works</span></h2>
             {[
-              { num: "01", title: "Reach Out", desc: "Tell us about your event: date, group size, location, and what kind of experience you're looking for. We'll get back to you within 24 hours." },
+              { num: "01", title: "Reach Out", desc: "Tell us about your event: date, group size, location, and what kind of experience you're looking for. We'll follow up with ideas and a quote." },
               { num: "02", title: "We Plan Together", desc: "We customize everything to your group: timing, format, venue recommendations, and any special touches you want." },
               { num: "03", title: "We Show Up", desc: "We arrive with all the equipment: tiles, racks, cards, everything. You don't need to provide a thing." },
               { num: "04", title: "Everyone Plays", desc: "We teach your group from scratch in a fun, low-pressure way. Everyone leaves knowing how to play, and wanting to play again." },

@@ -51,7 +51,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
 const reasons = [
   { title: "It feels like a reward", desc: "A hosted, social experience with nothing to prepare. The group is on the trip to be thanked, and this reads as a treat, not another session." },
   { title: "It mixes the group", desc: "Winners from different teams, offices or regions sit four to a table and get to know each other over a shared game." },
-  { title: "It comes to the group", desc: "We set up in the hotel, ballroom, hospitality suite or private room your program has booked, so guests do not need to leave the property." },
+  { title: "It comes to the group", desc: "We bring the game to the hotel, ballroom, hospitality suite or private room your program has booked, so guests do not need to leave the property." },
   { title: "Everyone can take part", desc: "No one needs to have played before. We teach from the first tile, and guests who already play sit alongside first-timers." },
 ];
 
@@ -65,11 +65,11 @@ const slots = [
 const faqs = [
   {
     q: "Can you run a mahjong activity at our group's resort or hotel?",
-    a: "Yes. We bring a hosted, facilitated American Mahjong experience to the hotel, ballroom, conference room, hospitality suite or private room your program has booked, and handle setup and breakdown.",
+    a: "Yes. We bring a hosted, facilitated American Mahjong experience to the hotel, ballroom, conference room, hospitality suite or private room your program has booked. The hotel or venue provides the space, tables and chairs; we provide the mahjong equipment, game materials and facilitation.",
   },
   {
     q: "Can a DMC or incentive planner request this for a client program?",
-    a: "Yes. Send us the program dates, the hotel, the headcount and the time slot you have in mind, and we will put together a quote for that event.",
+    a: "Yes. Send us the program dates, the hotel, the headcount and the time slot you have in mind, and we will put together a quote for that event. Partner and referral arrangements are available for DMCs and event professionals. Contact us to discuss your program.",
   },
   {
     q: "Do incentive guests need to know how to play?",
@@ -158,7 +158,7 @@ export default function IncentiveGroupActivitiesLasVegas() {
             <p className="section-label">For DMCs and Incentive Planners</p>
             <h2 className="section-title">Building a <span className="accent-pink">Client Program?</span></h2>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "1.5rem 0 1rem" }}>
-              If you are a destination management company (DMC) or incentive planner putting together a Las Vegas program for a client, send us the program dates, the hotel, the headcount and the time slot. We quote each event individually, bring the 152-tile American Mahjong sets, racks and current NMJL cards, handle setup and breakdown, and facilitate from start to finish. The program provides the room and any food or drink.
+              If you are a destination management company (DMC) or incentive planner putting together a Las Vegas program for a client, send us the program dates, the hotel, the headcount and the time slot. We quote each event individually and bring the 152-tile American Mahjong sets, racks, current NMJL cards and other game materials, plus the facilitators. The hotel or venue provides the event space, tables and chairs, and any food or drink. Partner and referral arrangements are available for DMCs and event professionals. Contact us to discuss your program.
             </p>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: 0 }}>
               Planning a meeting inside the trip as well? See{" "}
@@ -175,7 +175,7 @@ export default function IncentiveGroupActivitiesLasVegas() {
             <p className="section-label">One Experience, Several Jobs</p>
             <h2 className="section-title">What It Can Do for <span className="accent-green">Your Group</span></h2>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "1.5rem 0 0" }}>
-              On a reward trip, one hosted session does several jobs. It is light team building for colleagues who rarely work together, networking between top performers from different offices, and guest engagement, because everyone learns by playing. It fits the schedule as a breakout block in one room, becomes client entertainment when clients travel with the group, and runs as a hosted social from setup to breakdown: a group activity, with facilitators planned around your headcount.
+              On a reward trip, one hosted session does several jobs. It is light team building for colleagues who rarely work together, networking between top performers from different offices, and guest engagement, because everyone learns by playing. It fits the schedule as a breakout block in one room, becomes client entertainment when clients travel with the group, and runs as a hosted social from the first tile to the last: a group activity, with facilitators planned around your headcount.
             </p>
           </div>
         </section>

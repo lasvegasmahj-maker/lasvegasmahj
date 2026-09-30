@@ -39,6 +39,7 @@ Non-negotiable. When any other instruction conflicts with this section, this sec
 ### Pricing
 - Group lessons: $60 per person. Group size is 4-8 people. Show this on lesson pages only.
 - Private lessons, parties, and corporate events: say "contact for pricing." Never show a dollar amount for these.
+- Social Open Play: $20 per session, $85 for a 5-pack (owner, 2026-09-29). The numbers live only in `lib/pricing.ts`; pages and schema read them from there, never hard-code them.
 
 ### Data honesty
 - Never present seed or sample data as real.

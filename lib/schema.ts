@@ -1,3 +1,5 @@
+import { OPEN_PLAY_PRICES } from "./pricing";
+
 /**
  * Schema.org JSON-LD helpers for Las Vegas Mahjong.
  * Import these in page.tsx files and render via:
@@ -127,8 +129,22 @@ export const OPEN_PLAY_SERVICE = {
   name: "Social Open Play",
   serviceType: "American Mahjong open play",
   description:
-    "Two-hour social American Mahjong sessions in the Lucky Sevens room at the Las Vegas Mahjong studio inside Lucky Hare. Visitors and every skill level welcome; seats are booked in advance on the schedule.",
+    "Two-hour social American Mahjong sessions, primarily in the Lucky Sevens room at the Las Vegas Mahjong studio inside Lucky Hare. For players who already know how to play, including Mahj 101 graduates; locals and visitors welcome. Advance registration required.",
   url: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas",
+  offers: [
+    {
+      "@type": "Offer",
+      name: "Social Open Play session",
+      price: OPEN_PLAY_PRICES.session.toFixed(2),
+      priceCurrency: "USD",
+    },
+    {
+      "@type": "Offer",
+      name: "Social Open Play 5-pack",
+      price: OPEN_PLAY_PRICES.fivePack.toFixed(2),
+      priceCurrency: "USD",
+    },
+  ],
 };
 
 export interface ScheduleEventInput {
