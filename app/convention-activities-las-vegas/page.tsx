@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     ...ogBase,
     title: "Convention Activities Las Vegas | Las Vegas Mahjong",
-    description: "Mahjong is a unique convention activity in Las Vegas. Social, memorable, and built for large groups. Hosted at your venue, hotel, or nearby space. Contact for a quote.",
+    description: "A social mahjong activity for convention groups in Las Vegas: attendee engagement sessions and group downtime at your venue or hotel. Contact for a quote.",
     url: "https://www.lasvegasmahj.com/convention-activities-las-vegas",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
@@ -60,7 +60,7 @@ const breadcrumb = {
 const faqs = [
   { q: "Can you handle large convention groups?", a: "Yes. We accommodate large attendee groups and scale the number of facilitators to the headcount so every table gets proper instruction. Tell us your expected numbers and we will build the right setup. Contact us for a quote." },
   { q: "Where can a convention mahjong activity be hosted?", a: "We come to you. We host at the convention venue, your hotel meeting space, an exhibitor suite, or a nearby room you have booked. We work with the space and schedule you already have. Contact us for a quote." },
-  { q: "How does mahjong work as a booth draw or attendee engagement activity?", a: "We can run rotating short sessions to keep traffic moving at your booth, or set up longer hosted tables for group downtime between sessions. It gives attendees a reason to stop, sit down, and connect. Contact us for a quote." },
+  { q: "How does mahjong work as a booth draw or attendee engagement activity?", a: "We can run rotating short sessions to keep traffic moving at your booth, or host longer games for group downtime between sessions. It gives attendees a reason to stop, sit down, and connect. Contact us for a quote." },
   { q: "What is included in a convention mahjong activity?", a: "We bring the mahjong equipment (152-tile American Mahjong sets, racks, and NMJL cards) and provide full instruction and facilitation start to finish. You or your venue provide the space, tables and chairs, and any food or drink you would like." },
   { q: "How much does a convention activity cost?", a: "Convention and group pricing depends on your headcount, format, and schedule, so we build a custom quote for each event. Tell us your dates and expected numbers and we will send pricing. Contact us for a quote." },
   { q: "Do attendees need any mahjong experience?", a: "None at all. Mahjong is approachable for complete beginners, and jokers are wild, which makes early hands forgiving and fun. We start from zero and have groups playing quickly." },
@@ -100,7 +100,7 @@ export default function ConventionActivitiesLasVegas() {
                 { icon: "🪑", title: "It Gets People to Sit Down", desc: "Conventions are exhausting and most activities keep attendees on their feet. A hosted mahjong table gives people a reason to stop, settle in, and engage for more than a passing glance." },
                 { icon: "🧲", title: "A Real Booth Draw", desc: "A live, social game pulls foot traffic to an exhibitor booth in a way a screen or a giveaway bowl cannot. People stop to watch, then stay to play." },
                 { icon: "💬", title: "Built for Connection", desc: "Four people at a small table, focused on the same game. It sparks the kind of relaxed conversation that turns strangers at a convention into actual connections." },
-                { icon: "📈", title: "Scales to the Crowd", desc: "From a single booth table to a large hosted room, we add facilitators to match your headcount so the experience holds up no matter how big the group is." },
+                { icon: "📈", title: "Scales to the Crowd", desc: "From a single booth table to a large hosted room, we add facilitators to match your headcount." },
               ].map(item => (
                 <div key={item.title} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
                   <div style={{ fontSize: "1.8rem", marginBottom: "0.6rem" }}>{item.icon}</div>
@@ -175,7 +175,9 @@ export default function ConventionActivitiesLasVegas() {
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "520px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
               Tell us your dates, expected headcount, and what you have in mind, whether it is a booth draw, an attendee session, or group downtime. We will follow up with a custom quote.
             </p>
-            <a href="/contact?source=convention" className="btn-primary">Request a Convention Quote</a>
+            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+              <a href="/contact?source=convention" className="btn-primary">Request a Convention Quote</a>
+            </div>
           </div>
         </section>
       </main>

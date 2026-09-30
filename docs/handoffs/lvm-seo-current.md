@@ -43,16 +43,39 @@ cards; the booth page is reached through convention, conference and the occasion
   client entertainment, hosted social, group activity) without identical copy across pages.
 - Titles, descriptions (155 max), serviceTypes and FAQ questions are unique across the cluster.
 
-## Owner decisions left open
+## Owner decisions made in the final pass (2026-09-29), now standing rules
 
-1. Who supplies tables and chairs at hotels and venues. Pages say "we will confirm what the
-   space needs" until answered.
-2. DMC terms (commission, proof of insurance) before promoting to DMCs.
-3. Hub and team building still share their opening line and four "why mahjong" cards
-   (on production today). Needs the owner's wording.
-4. `/mahjong-open-play-las-vegas` is thin (about 300 words) with out-of-date venue text.
-5. Older unsourced lines: "Las Vegas hosts thousands of conventions per year" (hub), "top
-   convention city in the country" (convention), "Scales to 100+" (conference body).
+1. **Furniture:** the client, hotel or venue provides the event space, tables and chairs. Las
+   Vegas Mahjong provides the mahjong equipment, game materials and facilitation. Never write
+   "we bring everything", "we fill the room with tables" or anything implying we supply
+   furniture. Tests enforce it on all eight corporate pages.
+2. **DMC terms:** only "Partner and referral arrangements are available for DMCs and event
+   professionals. Contact us to discuss your program." No commission rate, no insurance or
+   COI claim.
+3. **Hub vs team building:** the hub answers what we provide, how an event comes together,
+   which programs we support and how to book. Team building answers why mahjong works for a
+   team and what happens at the table. Different openings, cards and closing sections.
+4. **Open Play** (`/mahjong-open-play-las-vegas`): primarily Lucky Sevens; social play, not a
+   lesson; for players who already know the game, including Mahj 101 graduates; solo or with
+   friends; advance registration; bring your current NMJL card (never say cards are
+   provided); $20 a session, $85 for a 5-pack. **Prices live only in `lib/pricing.ts`.** The
+   visitor page, schedule card, studio Lucky Sevens copy and schema no longer invite complete
+   beginners to Open Play.
+5. **Legacy claims removed:** "thousands of conventions", "top convention city", "Scales to
+   100+", "10 to 100+", "any size" / "no matter how big", and reply-time promises on the
+   corporate pages, contact, parties and private lessons.
+
+## Still open (outside this PR's scope, owner's call)
+
+- Homepage (unchanged by instruction): FAQ "we'll have extras" for NMJL cards, studio banner
+  "every level at the same tables", "Groups of any size", inquiry pop-up "within 24 hours".
+- Summerlin and Henderson (owner deferred rewrites): "We respond within 24 hours", Henderson
+  "open play events across the Las Vegas Valley", Summerlin "we bring everything".
+- Parties page: "We bring everything", "large corporate events of 50+", "any size group".
+- Footer (sitewide, homepage too): "open play events, leagues, tournaments ... entire Las Vegas
+  Valley".
+- Bookwhen listings (owner-side): Social Open Play says "Drop in and play"; the Halloween
+  special says "All levels welcome"; booking pages show her phone and gmail.
 
 Architecture record in Drive: LVM/Marketing, "LVM SEO Content Architecture - Corporate, Group
 and Visitor Clusters (2026-09-29)".

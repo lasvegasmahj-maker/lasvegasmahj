@@ -63,7 +63,7 @@ const slots = [
   },
   {
     title: "Evening hosted social",
-    desc: "Tables set up during a reception or after dinner. Guests drop in, learn and play at their own pace, a relaxed change from another cocktail hour.",
+    desc: "A session during a reception or after dinner. Guests drop in, learn and play at their own pace, a relaxed change from another cocktail hour.",
   },
   {
     title: "Client or VIP table",

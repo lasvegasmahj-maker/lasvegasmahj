@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     ...ogBase,
     title: "Trade Show Booth Activities in Las Vegas | Las Vegas Mahjong",
     description:
-      "A live American Mahjong table for exhibitors and sponsors: short sessions at the booth, hosted play in your hospitality suite, or tables in a sponsored lounge.",
+      "A live American Mahjong table for exhibitors and sponsors: short sessions at the booth, hosted play in your hospitality suite, or hosted play in a sponsored lounge.",
     url: PAGE_URL,
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
@@ -60,7 +60,7 @@ const reasons = [
 const formats = [
   { title: "Booth demo table", desc: "Short, rotating sessions at your booth that teach the basics on the spot and keep the seats turning over through the day." },
   { title: "Hospitality suite tables", desc: "Hosted play in your suite for the clients and prospects you invite, with time for longer games and real conversation." },
-  { title: "Sponsored lounge", desc: "Hosted tables in a lounge or meeting room that attendees can drop into between sessions, set up in the space you sponsor." },
+  { title: "Sponsored lounge", desc: "Hosted play in a lounge or meeting room that attendees can drop into between sessions, in the space you sponsor." },
   { title: "After-hours client event", desc: "A hosted mahjong evening for the clients you are entertaining while you are in town for the show." },
 ];
 
@@ -113,7 +113,7 @@ export default function TradeShowBoothActivitiesLasVegas() {
               Trade Show Booth Activities in <span className="accent-green">{"Las\u00a0Vegas"}</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "660px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Give attendees a reason to stop. Las Vegas Mahjong runs short, hosted American Mahjong sessions at your booth, longer play in your hospitality suite, and tables in a lounge you sponsor, so people have a reason to sit down, play and talk with your team.
+              Give attendees a reason to stop. Las Vegas Mahjong runs short, hosted American Mahjong sessions at your booth, longer play in your hospitality suite, and hosted play in a lounge you sponsor, so people have a reason to sit down, play and talk with your team.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/contact?source=trade-show" className="btn-primary">Request a Quote</a>
@@ -182,7 +182,7 @@ export default function TradeShowBoothActivitiesLasVegas() {
               At the booth, a live table is booth engagement and attendee engagement in one, and a natural way into networking conversations for your staff. In a suite or lounge it becomes a breakout from the show floor, client entertainment for the accounts you invite, or a hosted social that we run from start to finish.
             </p>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: 0 }}>
-              As an experiential marketing activation, it gives attendees something to do in your space rather than something to carry away. And once the show closes, the same tables work as a group activity, or light team building, for your own booth team.
+              As an experiential marketing activation, it gives attendees something to do in your space rather than something to carry away. And once the show closes, the same game works as a group activity, or light team building, for your own booth team.
             </p>
           </div>
         </section>

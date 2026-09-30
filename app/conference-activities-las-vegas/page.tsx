@@ -119,7 +119,7 @@ export default function ConferenceActivitiesLasVegas() {
             <div style={{ marginTop: "2.5rem" }}>
               {[
                 { title: "Networking Break-Out", desc: "A 60 to 90 minute session that drops into your agenda between keynotes or sessions. Perfect for getting a room of strangers talking and energized." },
-                { title: "Conference Reception Activity", desc: "Set up tables during a welcome reception or evening social. Guests rotate through, learn the game, and connect over something more engaging than small talk." },
+                { title: "Conference Reception Activity", desc: "Run a session during a welcome reception or evening social. Guests rotate through, learn the game, and connect over something more engaging than small talk." },
                 { title: "Exhibit Booth Draw", desc: "A live demo table at your booth pulls attendees in and gives your team a natural reason to start conversations. A standout way to drive booth traffic." },
                 { title: "Out-of-Town Group Activity", desc: "Hosting an incoming group in Las Vegas? A guided mahjong session gives visiting attendees a uniquely local, social experience without leaving the property." },
                 { title: "Large Meeting or General Session", desc: "For big groups, the venue sets the room with tables and we bring a team of facilitators so every attendee gets hands-on instruction at the same time." },
@@ -135,7 +135,7 @@ export default function ConferenceActivitiesLasVegas() {
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "2.5rem" }}>
               Every format includes the mahjong equipment (152-tile American sets, racks, and current NMJL cards), game setup, and full facilitation from start to finish. Your venue provides the room, tables and chairs, and any food or drink you would like. Want a deeper look at how we run company events? See our{" "}
-              <a href="/mahjong-corporate-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>corporate mahjong events</a> page. Exhibiting at the show and want tables at your booth? See{" "}
+              <a href="/mahjong-corporate-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>corporate mahjong events</a> page. Exhibiting at the show and want a game at your booth? See{" "}
               <a href="/trade-show-booth-activities-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>trade show booth activities</a>.
             </p>
           </div>

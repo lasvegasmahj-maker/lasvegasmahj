@@ -28,7 +28,7 @@ const jsonLd = {
   "@type": "Service",
   name: "Corporate Team Building Las Vegas",
   serviceType: "Corporate team building",
-  description: "Mahjong-based corporate team building in Las Vegas. A strategic, social, and genuinely different activity for teams, departments, and offsites of any size. We bring the mahjong equipment and facilitation to your office, hotel, or venue.",
+  description: "Mahjong-based corporate team building in Las Vegas. A strategic, social, and genuinely different activity for teams, departments, and offsites. We bring the mahjong equipment and facilitation to your office, hotel, or venue.",
   provider: {
     "@type": "LocalBusiness",
     "@id": "https://www.lasvegasmahj.com/#business",
@@ -61,7 +61,7 @@ const faqs = [
   { q: "How many people can you accommodate for a team building event?", a: "We run sessions for small departments and larger offsites, adding facilitators to match the headcount so every table gets proper instruction. Tell us your numbers and we will plan the setup." },
   { q: "Do you come to our office, hotel, or event venue?", a: "Yes. We come to your office, a hotel meeting room, a private restaurant room, or a corporate venue, and we bring the mahjong equipment: tiles, racks, NMJL cards, and full facilitation. Your venue provides the space, tables and chairs, and any food or drink." },
   { q: "Can mahjong be part of a corporate offsite in Las Vegas?", a: "Yes. A 2-3 hour mahjong session fits into an offsite agenda, whether it opens the day, breaks up a long afternoon of meetings, or closes the evening. We come to your offsite venue, hotel or office and bring the game. Contact us for a quote." },
-  { q: "How much does a corporate team building event cost?", a: "Pricing depends on group size, length, and location, so we put together a custom plan for each event. Contact us for a quote and we will follow up with a custom plan." },
+  { q: "How much does a corporate team building event cost?", a: "Pricing depends on group size, length, and location, so we put together a custom plan for each event. Contact us and we will follow up with a quote." },
   { q: "Does anyone need to know how to play mahjong beforehand?", a: "No experience required. We start from zero, and most groups are playing real hands within the first session. Beginners are our specialty, so mixed-experience teams are welcome." },
   { q: "How long does a typical team building event run?", a: "Most events run 2-3 hours, and we tailor the length to your agenda. Tell us your schedule and we will fit the experience to it. Contact us for a quote." },
 ];
@@ -124,7 +124,7 @@ export default function CorporateTeamBuildingLasVegas() {
             </p>
             <div style={{ marginTop: "2.5rem" }}>
               {[
-                { title: "First Tiles, Together", desc: "We teach the whole group at once, so the opening minutes are a shared puzzle rather than a presentation. Nobody has a head start." },
+                { title: "First Tiles, Together", desc: "We teach the whole group at once, so the opening minutes are a shared puzzle rather than a presentation." },
                 { title: "Learning Side by Side", desc: "The tiles, the card and how a hand comes together. Tablemates ask questions out loud and help each other through the first hands." },
                 { title: "Reading the Table", desc: "Once play gets going, everyone watches discards, plans a hand and changes course when the tiles do not cooperate, with mistakes that cost nothing." },
                 { title: "Play, Connect, and Compete", desc: "The room comes alive once people are playing. Add a friendly tournament format if your team likes a little competition, or keep it relaxed and social." },

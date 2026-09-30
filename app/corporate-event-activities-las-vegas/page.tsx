@@ -117,7 +117,7 @@ const faqs = [
   },
   {
     q: "Can mahjong be one part of a larger event?",
-    a: "Yes. It can be the main activity, or one segment of a bigger event, such as a session after dinner or tables during a reception.",
+    a: "Yes. It can be the main activity, or one segment of a bigger event, such as a session after dinner or during a reception.",
   },
   {
     q: "How is a corporate event activity priced?",

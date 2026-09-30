@@ -133,6 +133,9 @@ test.describe("Open Play states the current operating facts", () => {
     for (const rel of [VISITORS, page("/schedule"), "lib/schema.ts"]) {
       expect(readCode(rel), rel).not.toMatch(/brand-new players|every level is welcome|every skill level welcome/i);
     }
+    // The studio's own "Every level is welcome" card is about the whole calendar, Mahj 101
+    // included, and stays. Its Lucky Sevens copy and schema are about Open Play and must not.
+    expect(readCode(page("/studio"))).not.toMatch(/at every level|how new you are/i);
     expect(read(VISITORS)).toContain("completed Mahj 101");
   });
 });
@@ -166,7 +169,7 @@ test.describe("legacy claims with no source are gone", () => {
   test("no statistic, superlative, capacity or reply-time promise in the corporate cluster", () => {
     for (const route of CORPORATE) {
       const code = readCode(page(route));
-      expect(code, route).not.toMatch(/thousands of conventions|top convention city|\d+\s?\+|within 24 hours|dozens of tables/i);
+      expect(code, route).not.toMatch(/thousands of conventions|top convention city|\d+\s?\+|within 24 hours|dozens of tables|no matter how big|of any size|any group size/i);
     }
   });
 

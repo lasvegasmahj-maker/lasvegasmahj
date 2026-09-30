@@ -56,7 +56,7 @@ const reasons = [
 ];
 
 const slots = [
-  { title: "Welcome reception", desc: "Tables set up during the arrival reception give guests something to do together on the first night besides small talk." },
+  { title: "Welcome reception", desc: "A hosted session during the arrival reception gives guests something to do together on the first night besides small talk." },
   { title: "A hosted afternoon", desc: "A relaxed session between free time and the evening program, offered as one of the group's activity choices or to everyone." },
   { title: "A private VIP table", desc: "A private hosted session planned for top performers or another small group within the program." },
   { title: "Closing night", desc: "A hosted mahjong evening as part of the farewell event, with a friendly tournament if the group likes to compete." },
@@ -81,7 +81,7 @@ const faqs = [
   },
   {
     q: "Can mahjong be part of a welcome reception or farewell event?",
-    a: "Yes. Tables can be set up during a reception so guests drop in, learn and play, or the evening can be built around a hosted game.",
+    a: "Yes. We can host a session during a reception so guests drop in, learn and play, or the evening can be built around a hosted game.",
   },
   {
     q: "How is an incentive group activity priced?",

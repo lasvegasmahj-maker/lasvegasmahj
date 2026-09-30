@@ -51,7 +51,7 @@ const breadcrumb = {
 };
 
 const faqs = [
-  { q: "How large of a corporate group can you accommodate?", a: "We plan around your headcount, adding facilitators so every table gets proper instruction. Tell us your numbers and we will build the right setup." },
+  { q: "How large of a corporate group can you accommodate?", a: "Send your expected headcount with your inquiry, and we will staff the event with enough facilitators for every table." },
   { q: "What's included in a corporate mahjong event?", a: "We provide the mahjong equipment and game materials (tiles, racks and NMJL cards), full instruction, and facilitation from start to finish, and we set up and clear the game. Your venue provides the event space, tables and chairs, and any food or drink you would like." },
   { q: "How long does a corporate mahjong event run?", a: "Typical events run 2-3 hours. We can customize the duration based on your schedule and what fits your team's energy." },
   { q: "Can you host at our office or hotel meeting room?", a: "Yes. We come to wherever your team is: your office, a hotel conference space, a restaurant private room, or a corporate venue. As long as the room is set with tables and chairs for the group, we bring the rest of the game." },
@@ -199,11 +199,13 @@ export default function MahjongCorporateLasVegas() {
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy)", textAlign: "center", borderTop: "1px solid rgba(57,230,57,0.15)" }}>
           <div className="container">
-            <h2 className="section-title">Let&rsquo;s Build Something <span className="accent-green">Your Team Remembers</span></h2>
+            <h2 className="section-title">Tell Us About <span className="accent-green">Your Program</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "500px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
-              Tell us your group size, date, and what you&rsquo;re looking for. We&rsquo;ll follow up with a custom quote.
+              Send your date, venue, headcount and time slot, and we&rsquo;ll follow up with a custom quote.
             </p>
-            <a href="/contact?source=corporate" className="btn-primary">Request a Corporate Quote</a>
+            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+              <a href="/contact?source=corporate" className="btn-primary">Request a Corporate Quote</a>
+            </div>
           </div>
         </section>
       </main>
