@@ -6,7 +6,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Corporate Team Building Las Vegas",
   description:
-    "Corporate team building in Las Vegas that teams actually remember. Strategic, social mahjong for any group size. We bring everything to your office, hotel, or venue. Get a quote.",
+    "Corporate team building in Las Vegas for teams, departments and offsites of any size. Strategic, social mahjong, and we bring everything to you.",
   alternates: { canonical: "https://www.lasvegasmahj.com/corporate-team-building-las-vegas" },
   openGraph: {
     ...ogBase,
@@ -27,6 +27,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Corporate Team Building Las Vegas",
+  serviceType: "Corporate team building",
   description: "Mahjong-based corporate team building in Las Vegas. A strategic, social, and genuinely different activity for teams, departments, and offsites of any size. We bring everything to your office, hotel, or venue.",
   provider: {
     "@type": "LocalBusiness",
@@ -37,7 +38,7 @@ const jsonLd = {
   areaServed: [
     { "@type": "City", name: "Las Vegas" },
     { "@type": "City", name: "Henderson" },
-    { "@type": "City", name: "Summerlin" },
+    { "@type": "Place", name: "Summerlin" },
     { "@type": "Place", name: "Green Valley" },
     { "@type": "Place", name: "Anthem" },
   ],
@@ -59,6 +60,7 @@ const faqs = [
   { q: "What makes mahjong a good corporate team building activity?", a: "Mahjong rewards strategy, reading the table, and quick communication, the same skills that make a strong team. It also levels the playing field: leaders and new hires learn together from zero, which breaks down hierarchy in a way a standard happy hour cannot." },
   { q: "How many people can you accommodate for a team building event?", a: "Any group size. We run small departments and large offsites alike, scaling tables and facilitation so every group gets proper instruction. Tell us your headcount and we will build the right setup." },
   { q: "Do you come to our office, hotel, or event venue?", a: "Yes. We come to your office, a hotel meeting room, a private restaurant room, or a corporate venue, and we bring everything: tiles, racks, NMJL cards, and full facilitation. You provide the space and any food or drink." },
+  { q: "Can mahjong be part of a corporate offsite in Las Vegas?", a: "Yes. A 2-3 hour mahjong session fits into an offsite agenda, whether it opens the day, breaks up a long afternoon of meetings, or closes the evening. We come to your offsite venue, hotel or office and bring everything. Contact us for a quote." },
   { q: "How much does a corporate team building event cost?", a: "Pricing depends on group size, length, and location, so we put together a custom plan for each event. Contact us for a quote and we will respond within 24 hours." },
   { q: "Does anyone need to know how to play mahjong beforehand?", a: "No experience required. We start from zero, and most groups are playing real hands within the first session. Beginners are our specialty, so mixed-experience teams are welcome." },
   { q: "How long does a typical team building event run?", a: "Most events run 2-3 hours, and we tailor the length to your agenda. Tell us your schedule and we will fit the experience to it. Contact us for a quote." },

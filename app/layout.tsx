@@ -86,7 +86,7 @@ const localBusinessSchema = {
   name: "Las Vegas Mahjong",
   alternateName: "LV Mahjong",
   description:
-    "Las Vegas's premier mahjong instruction and community. Certified Oh My Mahjong instructor offering beginner lessons, open play events, private parties, corporate team building, leagues, and tournaments across the Las Vegas Valley.",
+    "American Mahjong in Las Vegas, played with the National Mah Jongg League (NMJL) card: lessons from first tile to confident play, Social Open Play, leagues, and private and corporate mahjong experiences. The Las Vegas Mahjong studio is inside Lucky Hare at 8687 W. Sahara Ave., Suite 200. Founded by a certified Oh My Mahjong instructor.",
   url: "https://www.lasvegasmahj.com",
   email: "hello@lasvegasmahj.com",
   image: [
@@ -98,7 +98,10 @@ const localBusinessSchema = {
   foundingDate: "2025",
   knowsAbout: [
     "American Mahjong",
+    "American Mah Jongg",
     "NMJL",
+    "National Mah Jongg League card",
+    "mahjong open play",
     "mahjong instruction",
     "corporate team building",
     "team building activities",
@@ -114,6 +117,14 @@ const localBusinessSchema = {
     addressRegion: "NV",
     postalCode: "89117",
     addressCountry: "US",
+  },
+  // By reference, not a second address block: the full Lucky Hare Place (same @id) is
+  // defined in lib/schema.ts and emitted on /studio and /schedule, so the business carries
+  // one address and still names the venue it sits inside on every page.
+  containedInPlace: {
+    "@type": "Place",
+    "@id": "https://www.lasvegasmahj.com/#studio",
+    name: "Lucky Hare",
   },
   areaServed: [
     { "@type": "City", name: "Las Vegas" },
@@ -207,6 +218,16 @@ const localBusinessSchema = {
           name: "Private Mahjong Lessons",
           description:
             "One-on-one or small group private mahjong instruction at the Las Vegas Mahjong studio, with in-home lessons available on request. Contact for pricing.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Social Open Play",
+          description:
+            "Two-hour social American Mahjong sessions in the Lucky Sevens room at the Las Vegas Mahjong studio inside Lucky Hare. Visitors and every skill level welcome; seats are booked in advance.",
+          url: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas",
         },
       },
       {

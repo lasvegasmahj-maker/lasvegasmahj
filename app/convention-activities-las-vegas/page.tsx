@@ -6,7 +6,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Convention Activities Las Vegas",
   description:
-    "Mahjong as a convention activity in Las Vegas. A social, hands-on experience for attendee groups, exhibitors, and booth draws, any size. Contact for a quote.",
+    "Convention activities in Las Vegas: mahjong booth draws, attendee engagement sessions and group downtime for exhibitors and attendee groups of any size.",
   alternates: { canonical: "https://www.lasvegasmahj.com/convention-activities-las-vegas" },
   openGraph: {
     ...ogBase,
@@ -27,6 +27,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Convention Activities Las Vegas",
+  serviceType: "Convention attendee engagement activity",
   description: "Mahjong convention activities and attendee experiences in Las Vegas. A unique, social, hands-on activity for convention groups, exhibitors, and large gatherings of any size.",
   provider: {
     "@type": "LocalBusiness",
@@ -37,7 +38,7 @@ const jsonLd = {
   areaServed: [
     { "@type": "City", name: "Las Vegas" },
     { "@type": "City", name: "Henderson" },
-    { "@type": "City", name: "Summerlin" },
+    { "@type": "Place", name: "Summerlin" },
     { "@type": "Place", name: "Green Valley" },
     { "@type": "Place", name: "Anthem" },
   ],
@@ -132,7 +133,8 @@ export default function ConventionActivitiesLasVegas() {
               ))}
             </div>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginTop: "2.5rem" }}>
-              Planning a company-wide event around your convention? See our full <a href="/corporate-team-building-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate team building</a> options, or explore <a href="/mahjong-corporate-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate mahjong events</a> for teams, conferences, and incentive trips.
+              Planning a company-wide event around your convention? See our full <a href="/corporate-team-building-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate team building</a> options, or explore <a href="/mahjong-corporate-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate mahjong events</a> for teams, conferences, and incentive trips. Fitting a networking session or breakout into a conference agenda? See{" "}
+              <a href="/conference-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>conference activities in Las Vegas</a>.
             </p>
           </div>
         </section>

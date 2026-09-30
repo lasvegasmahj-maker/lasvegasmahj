@@ -8,25 +8,28 @@ import { OPEN_PLAY_PLAYERS, SEVENS_OPEN_PLAY } from "@/lib/studio-photos";
 export const metadata: Metadata = {
   title: "Mahjong Open Play Las Vegas | All Levels Welcome",
   description:
-    "Play mahjong in Las Vegas with a welcoming community. Open play events across Summerlin and Henderson. All skill levels welcome. Find your next game.",
+    "Social mahjong open play in Las Vegas, in the Lucky Sevens room at our studio inside Lucky Hare. All skill levels welcome. Book your seat online.",
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas" },
   openGraph: {
     ...ogBase,
     title: "Mahjong Open Play Las Vegas | Events & Community Games",
-    description: "Join mahjong open play events across Las Vegas, Summerlin, and Henderson. All skill levels welcome. Come solo, bring a friend, or meet new players.",
+    description: "Social American Mahjong open play at our Las Vegas studio inside Lucky Hare. All skill levels welcome. Come solo, bring a friend, or meet new players.",
     url: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
 
+// A Service of the one business, not an organization of its own: the old SportsOrganization
+// node named a second entity with a city-only address, which competed with #business.
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "SportsOrganization",
-  name: "Las Vegas Mahjong: Open Play Events",
-  description: "Mahjong open play events, leagues, and community games across Las Vegas, Summerlin, and Henderson.",
+  "@type": "Service",
+  name: "Social Open Play",
+  serviceType: "American Mahjong open play",
+  description: "Two-hour social American Mahjong sessions in the Lucky Sevens room at the Las Vegas Mahjong studio inside Lucky Hare. All skill levels welcome; seats are booked in advance on the schedule.",
   url: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas",
-  location: { "@type": "Place", address: { "@type": "PostalAddress", addressLocality: "Las Vegas", addressRegion: "NV" } },
-  parentOrganization: { "@id": "https://www.lasvegasmahj.com/#business" },
+  provider: { "@id": "https://www.lasvegasmahj.com/#business" },
+  areaServed: { "@type": "City", name: "Las Vegas" },
 };
 
 export default function MahjongOpenPlayLasVegas() {
@@ -64,7 +67,8 @@ export default function MahjongOpenPlayLasVegas() {
               <a href="/studio" style={{ color: "var(--green)", fontWeight: 600 }}>our studio inside Lucky Hare</a>. We also host at restaurants, community venues, and local spots across Las Vegas, and we always keep the energy light, fun, and beginner-friendly.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8 }}>
-              Already know how to play? Come and meet the local mahjong community. Just learning? Come anyway. Open play is the best way to practice and get better fast.
+              Already know how to play? Come and meet the local mahjong community. Just learning? Come anyway. Open play is the best way to practice and get better fast. In town for a few days? Here is how to{" "}
+              <a href="/play-mahjong-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>play mahjong while visiting Las Vegas</a>.
             </p>
           </div>
         </section>

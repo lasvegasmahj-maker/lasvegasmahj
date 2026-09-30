@@ -37,6 +37,7 @@ const TAGGED_PAGES: Record<string, { slug: string; count: number }> = {
   "app/mahjong-parties-las-vegas/page.tsx": { slug: "parties", count: 4 },
   "app/private-mahjong-lessons-las-vegas/page.tsx": { slug: "private-lessons", count: 3 },
   "app/studio/page.tsx": { slug: "studio", count: 1 },
+  "app/play-mahjong-las-vegas/page.tsx": { slug: "visitors", count: 1 },
 };
 
 // The nav and the footer are deliberately left bare. They are one shared component each,
@@ -79,7 +80,7 @@ test.describe("source attribution vocabulary", () => {
     // Bidirectional: a slug the CTAs never use is dead code, and a slug the form does not
     // know silently degrades that page's leads to "General".
     expect(inForm).toEqual(inCtas);
-    expect(inForm).toHaveLength(7);
+    expect(inForm).toHaveLength(8);
   });
 
   test("every honoured slug is lowercase, hyphenated and URL safe", () => {

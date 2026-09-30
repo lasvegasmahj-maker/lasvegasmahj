@@ -6,7 +6,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Conference Activities Las Vegas",
   description:
-    "Conference activities in Las Vegas built around mahjong. A memorable networking ice-breaker that runs in your hotel meeting room, scales to 100+, no experience needed. Get a quote.",
+    "Conference activities in Las Vegas: a mahjong networking break, reception or breakout for meeting groups, run in your hotel meeting room. Scales to 100+.",
   alternates: { canonical: "https://www.lasvegasmahj.com/conference-activities-las-vegas" },
   openGraph: {
     ...ogBase,
@@ -27,7 +27,8 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Conference Activities Las Vegas",
-  description: "A mahjong networking and break-out activity for conferences, conventions, and large meetings in Las Vegas. Runs in a hotel meeting room or on-site, scales from one table to 100+, no experience needed.",
+  serviceType: "Conference networking activity",
+  description: "A mahjong networking and break-out activity for conferences, meetings, and large meeting groups in Las Vegas. Runs in a hotel meeting room or on-site, scales from one table to 100+, no experience needed.",
   provider: {
     "@type": "LocalBusiness",
     "@id": "https://www.lasvegasmahj.com/#business",
@@ -37,7 +38,7 @@ const jsonLd = {
   areaServed: [
     { "@type": "City", name: "Las Vegas" },
     { "@type": "City", name: "Henderson" },
-    { "@type": "City", name: "Summerlin" },
+    { "@type": "Place", name: "Summerlin" },
     { "@type": "Place", name: "Green Valley" },
     { "@type": "Place", name: "Anthem" },
   ],
@@ -133,7 +134,8 @@ export default function ConferenceActivitiesLasVegas() {
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "2.5rem" }}>
               Every format includes all equipment (152-tile American sets, racks, and current NMJL cards), setup, and full facilitation from start to finish. You provide the room and any food or drink you would like. Want a deeper look at how we run company events? See our{" "}
-              <a href="/mahjong-corporate-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>corporate mahjong events</a> page.
+              <a href="/mahjong-corporate-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>corporate mahjong events</a> page. Running tables on a show floor or at an exhibitor booth? See{" "}
+              <a href="/convention-activities-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>convention activities in Las Vegas</a>.
             </p>
           </div>
         </section>

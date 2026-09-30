@@ -4,19 +4,22 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import { getScheduleEvents } from "@/lib/schedule";
 import { buildScheduleEventSchema } from "@/lib/schema";
+import { SEVENS_OPEN_PLAY } from "@/lib/studio-photos";
 
 export const metadata: Metadata = {
-  title: "Schedule & Booking",
+  title: "Mahjong Class & Open Play Schedule",
   description:
-    "See the upcoming Las Vegas Mahjong schedule of classes, open play, and special events, and book your spot online.",
+    "Upcoming American Mahjong classes, Social Open Play and special events at our Las Vegas studio inside Lucky Hare. See the dates and book your seat online.",
   alternates: { canonical: "https://www.lasvegasmahj.com/schedule" },
-  robots: { index: true, follow: true },
   openGraph: {
     ...ogBase,
-    title: "Schedule & Booking | Las Vegas Mahjong",
+    title: "Mahjong Class & Open Play Schedule | Las Vegas Mahjong",
     description:
       "Upcoming classes, open play, and special events at the Las Vegas Mahjong studio. Reserve your seat online.",
     url: "https://www.lasvegasmahj.com/schedule",
+    // A page-level openGraph object replaces the parent's, so without this the share card
+    // had no image at all.
+    images: [`https://www.lasvegasmahj.com${SEVENS_OPEN_PLAY.src}`],
   },
 };
 

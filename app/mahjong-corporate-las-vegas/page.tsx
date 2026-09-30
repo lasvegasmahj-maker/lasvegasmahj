@@ -6,7 +6,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Corporate Mahjong Events in Las Vegas",
   description:
-    "Corporate mahjong events in Las Vegas. Corporate entertainment and client experiences for meetings, offsites, and groups of any size. Contact for a quote.",
+    "Corporate mahjong events in Las Vegas for client entertainment, company parties, incentive groups and visiting teams. We bring everything. Get a quote.",
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas" },
   openGraph: {
     ...ogBase,
@@ -27,6 +27,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Corporate Mahjong Events Las Vegas",
+  serviceType: "Corporate event entertainment",
   description: "Corporate mahjong events in Las Vegas. Interactive corporate entertainment and client experiences, hosted and facilitated for groups of any size.",
   provider: {
     "@type": "LocalBusiness",
@@ -53,6 +54,7 @@ const faqs = [
   { q: "What's included in a corporate mahjong event?", a: "We provide all tiles, racks, NMJL cards, and full instruction. We also handle setup and facilitate the event from start to finish. You provide the venue and any food or drink you'd like." },
   { q: "How long does a corporate mahjong event run?", a: "Typical events run 2-3 hours. We can customize the duration based on your schedule and what fits your team's energy." },
   { q: "Can you host at our office or hotel meeting room?", a: "Yes. We come to wherever your team is: your office, a hotel conference space, a restaurant private room, or a corporate venue. We accommodate the space you have." },
+  { q: "Can you plan a mahjong experience for an incentive trip or a visiting company group?", a: "Yes. Send us your dates, headcount and where your group is staying, and we will build a mahjong experience around your program. We come to your hotel meeting space or venue and bring all the equipment. Pricing is quoted for each event." },
   { q: "Do you do charity mahjong events?", a: "We do. Charity mahjong events, fundraiser tournaments, and cause-based gatherings are a specialty. Contact us to discuss your organization's needs." },
 ];
 
@@ -81,7 +83,7 @@ export default function MahjongCorporateLasVegas() {
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container" style={{ maxWidth: "780px" }}>
             <p className="section-label">Why Mahjong</p>
-            <h2 className="section-title">The Team Building Activity That <span className="accent-pink">Actually Works</span></h2>
+            <h2 className="section-title">The Corporate Event That <span className="accent-pink">Actually Works</span></h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
               {[
                 { icon: "🧠", title: "Strategy Makes People Think", desc: "Mahjong requires real strategic thinking, reading other players, and adapting quickly. The skills that make a great mahjong player are the same ones that make a great teammate." },

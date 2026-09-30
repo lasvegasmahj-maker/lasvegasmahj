@@ -27,7 +27,6 @@ export const metadata: Metadata = {
   description:
     "Our mahjong studio is now open inside Lucky Hare at 8687 W. Sahara Ave. Two rooms: Lucky Wishbone for classes and events, Lucky Sevens for open play.",
   alternates: { canonical: "https://www.lasvegasmahj.com/studio" },
-  robots: { index: true, follow: true },
   openGraph: {
     ...ogBase,
     title: "Our Mahjong Studio in Las Vegas | Las Vegas Mahjong",
@@ -239,7 +238,10 @@ export default function Studio() {
                   <a href="/mahjong-open-play-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>
                     open play
                   </a>{" "}
-                  works.
+                  works. Visiting from out of town? See how to{" "}
+                  <a href="/play-mahjong-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>
+                    play mahjong while you are in Las Vegas
+                  </a>.
                 </p>
               </div>
             </div>

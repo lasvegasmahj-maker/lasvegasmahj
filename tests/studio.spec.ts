@@ -62,8 +62,12 @@ test.describe("/studio", () => {
       "href",
       "https://www.lasvegasmahj.com/studio",
     );
-    const robots = await page.locator('meta[name="robots"]').getAttribute("content");
-    expect(robots ?? "index").not.toContain("noindex");
+    // No page-level robots object any more: one replaced the root object instead of merging
+    // with it, which stripped the googlebot preview directives from this page.
+    for (const content of await page.locator('meta[name="robots"]').evaluateAll((els) => els.map((e) => e.getAttribute("content") ?? ""))) {
+      expect(content).not.toContain("noindex");
+    }
+    await expect(page.locator('meta[name="googlebot"]')).toHaveAttribute("content", /max-image-preview:large/);
   });
 
   test("the title and description are the ones the page shipped with", async ({ page }) => {

@@ -11,7 +11,9 @@ import { trackEvent } from "@/lib/analytics";
 //
 // `inquiry` is optional because a page can be worth attributing without implying what the
 // visitor wants. The studio page invites classes, open play and private bookings alike, so
-// it names itself in the inbox and leaves the Inquiry Type for the visitor to choose.
+// it names itself in the inbox and leaves the Inquiry Type for the visitor to choose. The
+// visitors page is the same case: a traveling group might want a lesson, a party or a
+// company event.
 const SOURCES: Record<string, { label: string; inquiry?: string }> = {
   corporate: { label: "Corporate Events page", inquiry: "Corporate or Team Building" },
   "team-building": { label: "Corporate Team Building page", inquiry: "Corporate or Team Building" },
@@ -20,6 +22,7 @@ const SOURCES: Record<string, { label: string; inquiry?: string }> = {
   parties: { label: "Private Parties page", inquiry: "Private Party or Celebration" },
   "private-lessons": { label: "Private Lessons page", inquiry: "Private Lesson" },
   studio: { label: "Studio Page" },
+  visitors: { label: "Play Mahjong for Visitors page" },
 };
 
 const GENERAL_SOURCE = "General (nav, footer or direct)";
