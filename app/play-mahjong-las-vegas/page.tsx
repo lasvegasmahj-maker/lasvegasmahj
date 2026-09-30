@@ -4,7 +4,7 @@ import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import { SEVENS_OPEN_PLAY, OPEN_PLAY_PLAYERS } from "@/lib/studio-photos";
-import { getScheduleEvents } from "@/lib/schedule";
+import { getScheduleEvents, type ScheduleEvent } from "@/lib/schedule";
 import { buildBreadcrumbSchema } from "@/lib/schema";
 
 const PAGE_URL = "https://www.lasvegasmahj.com/play-mahjong-las-vegas";
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   // page shows and put a second pipe in it.
   title: { absolute: "Play Mahjong in Las Vegas | Open Play for Visitors" },
   description:
-    "Visiting Las Vegas and already play American Mahjong? Join Social Open Play at our studio inside Lucky Hare. Come solo or with friends. Book online.",
+    "Visiting Las Vegas and already play American Mahjong? Book a seat at Social Open Play during your trip. Come solo or with friends; no table of four needed.",
   alternates: { canonical: PAGE_URL },
   openGraph: {
     ...ogBase,
@@ -42,7 +42,7 @@ const faqs = [
   },
   {
     q: "Where can I play American Mahjong in Las Vegas?",
-    a: "At the Las Vegas Mahjong studio, inside Lucky Hare at 8687 W. Sahara Ave., Suite 200, Las Vegas, NV 89117. Social Open Play meets in the Lucky Sevens room, and every Open Play date is listed on our schedule, where you book your seat.",
+    a: "At the Las Vegas Mahjong studio, inside Lucky Hare at 8687 W. Sahara Ave., Suite 200, Las Vegas, NV 89117. Social Open Play meets in the Lucky Sevens room, and every Open Play date is listed on our schedule with a Book button.",
   },
   {
     q: "Can I come to Open Play alone?",
@@ -50,15 +50,15 @@ const faqs = [
   },
   {
     q: "Do I need to bring three other players?",
-    a: "No. You do not need to find a table of four before you register. Book a seat for yourself, or one for each person you are traveling with. Open Play is set up for players who come on their own as well as for groups.",
+    a: "No. You do not need to find a table of four before you register. Book a seat for yourself, or one for each person you are traveling with. Open Play welcomes players who come on their own as well as groups.",
   },
   {
     q: "What type of mahjong do you play?",
-    a: "American Mahjong, also written American Mah Jongg, played with the current National Mah Jongg League (NMJL) card. It is not Riichi (Japanese) mahjong, and it is not Chinese or Hong Kong style mahjong. American Mahjong uses a 152-tile set that includes jokers, opens every hand with the Charleston, and a winning hand has to match one of the hands on the current year's card.",
+    a: "American Mahjong, also written American Mah Jongg, played with the current National Mah Jongg League (NMJL) card. It is not Riichi (Japanese) mahjong, and it is not Chinese or Hong Kong style mahjong. American Mahjong uses a 152-tile set that includes jokers, opens every hand with the Charleston, and requires a winning hand to match one of the hands on the current year's card.",
   },
   {
     q: "Do I need an NMJL card?",
-    a: "You play from the current year's National Mah Jongg League card. If you have your own, bring it; otherwise we'll have extras. You do not need to pack tiles: at Open Play you pick a mat, racks and a set of tiles from the studio's collection.",
+    a: "Yes. Open Play uses the current year's National Mah Jongg League card, so please bring your own. You do not need to pack tiles: at Open Play you pick a mat, racks and a set of tiles from the studio's collection.",
   },
   {
     q: "How much experience do I need for Open Play?",
@@ -74,11 +74,11 @@ const faqs = [
   },
   {
     q: "What if I am visiting with a group?",
-    a: "Friends traveling together can book seats at the same Open Play session. If your group would rather have something of its own, such as a private lesson, a mahjong party or an activity for a business, conference or convention group, send us your dates and group size through the contact form and we will plan it with you. Private and corporate events are priced on request.",
+    a: "Friends traveling together can book seats at the same Open Play session while seats remain. If your group would rather have something of its own, such as a private lesson, a mahjong party or an activity for a business, conference or convention group, send us your dates and group size through the contact form and we will plan it with you. Private and corporate events are priced on request.",
   },
   {
     q: "Where can I see upcoming Open Play sessions?",
-    a: "On our schedule at lasvegasmahj.com/schedule. It lists every upcoming class, Open Play session and special event with the date and time, and you book your seat right there. Times are shown in Pacific.",
+    a: "On our schedule at lasvegasmahj.com/schedule. It lists every upcoming class, Open Play session and special event with the date and time, and each listing has a Book button. Times are shown in Pacific.",
   },
 ];
 
@@ -134,10 +134,22 @@ const steps = [
   },
 ];
 
-export default async function PlayMahjongLasVegas() {
-  const openPlay = (await getScheduleEvents())
-    .filter((e) => e.venueKind === "studio" && /open play/i.test(e.title))
+// Regular Social Open Play only: specials (a holiday night in both rooms, a priced promo)
+// would contradict the two-hours-in-Lucky-Sevens copy beside the list. The feed only drops
+// past days, so a session that ended earlier today is dropped here by its end time.
+function nextSocialOpenPlay(events: ScheduleEvent[]) {
+  const now = Date.now();
+  return events
+    .filter((e) => e.venueKind === "studio" && /^social open play\b/i.test(e.title) && !/\$\s?\d/.test(e.title))
+    .filter((e) => {
+      const end = e.endIso ?? e.startIso;
+      return !end || Date.parse(end) > now;
+    })
     .slice(0, 4);
+}
+
+export default async function PlayMahjongLasVegas() {
+  const openPlay = nextSocialOpenPlay(await getScheduleEvents());
 
   return (
     <>
@@ -162,11 +174,10 @@ export default async function PlayMahjongLasVegas() {
                   Looking for a Mahjong Game While Visiting <span className="accent-green">Las Vegas?</span>
                 </h1>
                 <p style={{ fontSize: "1.12rem", color: "rgba(255,255,255,0.75)", lineHeight: 1.8, marginBottom: "2rem" }}>
-                  If you already play American Mahjong, you can play with us while
-                  you are in town. Las Vegas Mahjong runs Social Open Play at its own
-                  mahjong studio, inside Lucky Hare on West Sahara Avenue. Visitors
-                  are welcome, you can come on your own or with friends, and you
-                  reserve your seat online before you come.
+                  If you already play American Mahjong, book a seat at Social Open
+                  Play during your trip. We run it at our own mahjong studio, inside
+                  Lucky Hare on West Sahara Avenue. Come on your own or with friends,
+                  and reserve your seat online before you come.
                 </p>
                 <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
                   <a href="/schedule" className="btn-primary">See Open Play Dates</a>
@@ -206,7 +217,7 @@ export default async function PlayMahjongLasVegas() {
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
           <div className="container" style={{ maxWidth: "680px" }}>
             <p className="section-label">How It Works</p>
-            <h2 className="section-title">How to Get a <span className="accent-green">Seat at the Table</span></h2>
+            <h2 className="section-title">How to Get <span className="accent-green">a Seat</span></h2>
             <div style={{ marginTop: "2.5rem" }}>
               {steps.map((item, i) => (
                 <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < steps.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
@@ -232,13 +243,13 @@ export default async function PlayMahjongLasVegas() {
             <p className="section-label">On the Calendar</p>
             <h2 className="section-title">Upcoming <span className="accent-green">Open Play</span></h2>
             <p style={{ color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "1rem auto 2.5rem", lineHeight: 1.75, textAlign: "center" }}>
-              The next Open Play sessions at the studio, straight from our booking calendar. Times are shown in Pacific.
+              The next Social Open Play sessions at the studio, straight from our booking calendar. Times are shown in Pacific. Special events are on the full schedule.
             </p>
 
             {openPlay.length === 0 ? (
               <div style={{ maxWidth: "620px", margin: "0 auto", textAlign: "center", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "2.5rem 1.5rem" }}>
                 <p style={{ color: "rgba(255,255,255,0.75)", lineHeight: 1.75, margin: 0 }}>
-                  There are no Open Play sessions on the calendar right now. Check the schedule for the latest dates.
+                  There are no Social Open Play sessions on the calendar right now. Check the schedule for the latest dates.
                 </p>
               </div>
             ) : (
@@ -262,7 +273,7 @@ export default async function PlayMahjongLasVegas() {
                 ))}
               </div>
             )}
-            <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
+            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", marginTop: "2.5rem" }}>
               <a href="/schedule" className="btn-primary">See the Full Schedule</a>
             </div>
           </div>
@@ -364,8 +375,8 @@ export default async function PlayMahjongLasVegas() {
             <p className="section-label">Traveling Together?</p>
             <h2 className="section-title">Visiting With a <span className="accent-pink">Group</span></h2>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "1.5rem 0 1rem" }}>
-              Friends traveling together can simply book seats at the same Open
-              Play session. If your group would rather have something of its own,
+              Friends traveling together can book seats at the same Open Play
+              session while seats remain. If your group would rather have something of its own,
               we plan private experiences too:
             </p>
             <ul style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.9, margin: "0 0 1.5rem", paddingLeft: "1.25rem" }}>
@@ -386,7 +397,7 @@ export default async function PlayMahjongLasVegas() {
               Tell us your dates and group size and we will plan it with you.
               Private and corporate events are priced on request.
             </p>
-            <div style={{ textAlign: "center" }}>
+            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/contact?source=visitors" className="btn-outline">Plan Something Private</a>
             </div>
           </div>

@@ -4,18 +4,20 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import Image from "next/image";
 import { OPEN_PLAY_PLAYERS, SEVENS_OPEN_PLAY } from "@/lib/studio-photos";
+import { OPEN_PLAY_SERVICE } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Mahjong Open Play Las Vegas | All Levels Welcome",
+  // Absolute: the brand suffix made this 68 characters, so results pages cut it off.
+  title: { absolute: "Mahjong Open Play Las Vegas | All Levels Welcome" },
   description:
     "Social mahjong open play in Las Vegas, in the Lucky Sevens room at our studio inside Lucky Hare. All skill levels welcome. Book your seat online.",
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas" },
   openGraph: {
     ...ogBase,
-    title: "Mahjong Open Play Las Vegas | Events & Community Games",
+    title: "Mahjong Open Play Las Vegas | All Levels Welcome",
     description: "Social American Mahjong open play at our Las Vegas studio inside Lucky Hare. All skill levels welcome. Come solo, bring a friend, or meet new players.",
     url: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [`https://www.lasvegasmahj.com${SEVENS_OPEN_PLAY.src}`],
   },
 };
 
@@ -23,11 +25,7 @@ export const metadata: Metadata = {
 // node named a second entity with a city-only address, which competed with #business.
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Service",
-  name: "Social Open Play",
-  serviceType: "American Mahjong open play",
-  description: "Two-hour social American Mahjong sessions in the Lucky Sevens room at the Las Vegas Mahjong studio inside Lucky Hare. All skill levels welcome; seats are booked in advance on the schedule.",
-  url: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas",
+  ...OPEN_PLAY_SERVICE,
   provider: { "@id": "https://www.lasvegasmahj.com/#business" },
   areaServed: { "@type": "City", name: "Las Vegas" },
 };

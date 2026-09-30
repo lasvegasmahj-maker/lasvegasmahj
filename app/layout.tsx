@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Montserrat, DM_Sans } from "next/font/google";
 import { Analytics, AnalyticsNoscript } from "@/components/analytics";
+import { OPEN_PLAY_SERVICE } from "@/lib/schema";
 import "./globals.css";
 
 const bebasNeue = Bebas_Neue({
@@ -222,13 +223,7 @@ const localBusinessSchema = {
       },
       {
         "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Social Open Play",
-          description:
-            "Two-hour social American Mahjong sessions in the Lucky Sevens room at the Las Vegas Mahjong studio inside Lucky Hare. Visitors and every skill level welcome; seats are booked in advance.",
-          url: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas",
-        },
+        itemOffered: OPEN_PLAY_SERVICE,
       },
       {
         "@type": "Offer",
@@ -354,7 +349,7 @@ const websiteSchema = {
   name: "Las Vegas Mahjong",
   url: "https://www.lasvegasmahj.com",
   description:
-    "Las Vegas's premier mahjong community offering lessons, events, and open play across the Valley.",
+    "American Mahjong lessons, Social Open Play and events at the Las Vegas Mahjong studio inside Lucky Hare in Las Vegas.",
   publisher: {
     "@type": "Organization",
     "@id": "https://www.lasvegasmahj.com/#business",

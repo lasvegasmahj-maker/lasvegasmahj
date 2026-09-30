@@ -119,6 +119,18 @@ export const STUDIO_PLACE = {
   },
 };
 
+// One node for Social Open Play, shared by the sitewide offer catalog and the open play page,
+// so both describe the same service under one @id instead of two same-named services.
+export const OPEN_PLAY_SERVICE = {
+  "@type": "Service",
+  "@id": "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas#service",
+  name: "Social Open Play",
+  serviceType: "American Mahjong open play",
+  description:
+    "Two-hour social American Mahjong sessions in the Lucky Sevens room at the Las Vegas Mahjong studio inside Lucky Hare. Visitors and every skill level welcome; seats are booked in advance on the schedule.",
+  url: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas",
+};
+
 export interface ScheduleEventInput {
   title: string;
   description: string;

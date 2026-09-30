@@ -33,6 +33,7 @@ const bookOptions = [
     title: "Open Play",
     accent: "accent-green" as const,
     body: "Come play in a friendly, no-pressure room. Social Open Play welcomes all levels, from brand-new players to regulars building their game. Two hours at the table with help when you want it.",
+    link: { lead: "Visiting Las Vegas?", text: "Play mahjong while you are in town", href: "/play-mahjong-las-vegas" },
   },
   {
     title: "Private & Parties",
@@ -151,7 +152,15 @@ export default async function Schedule() {
                   <h3 className="section-title" style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
                     <span className={opt.accent}>{opt.title}</span>
                   </h3>
-                  <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.75 }}>{opt.body}</p>
+                  <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.75 }}>
+                    {opt.body}
+                    {opt.link && (
+                      <>
+                        {" "}{opt.link.lead}{" "}
+                        <a href={opt.link.href} style={{ color: "var(--green)", fontWeight: 600 }}>{opt.link.text}</a>.
+                      </>
+                    )}
+                  </p>
                 </div>
               ))}
             </div>

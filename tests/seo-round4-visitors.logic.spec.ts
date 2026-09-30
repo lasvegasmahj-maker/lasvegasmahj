@@ -115,6 +115,12 @@ test.describe("/play-mahjong-las-vegas", () => {
     expect(hero.indexOf('href="/schedule"')).toBeLessThan(hero.indexOf('href="/studio"'));
   });
 
+  test("tells Open Play guests to bring their own card, as the booking listing does", () => {
+    const src = read(VISITORS);
+    expect(src).toContain("so please bring your own");
+    expect(src).not.toMatch(/we'll have extras/);
+  });
+
   test("sends private groups to the private and corporate paths", () => {
     const src = read(VISITORS);
     for (const href of ["/private-mahjong-lessons-las-vegas", "/mahjong-parties-las-vegas", "/mahjong-corporate-las-vegas", "/contact?source=visitors"]) {
@@ -126,7 +132,9 @@ test.describe("/play-mahjong-las-vegas", () => {
   test("lists only studio Open Play sessions and leaves Event markup to /schedule", () => {
     const src = read(VISITORS);
     expect(src).toContain('e.venueKind === "studio"');
-    expect(src).toMatch(/\/open play\/i\.test\(e\.title\)/);
+    expect(src).toContain("/^social open play\\b/i.test(e.title)");
+    expect(src, "a priced special must not reach a page with no prices").toContain("!/\\$\\s?\\d/.test(e.title)");
+    expect(src, "a session that already ended today must not show a Book button").toMatch(/Date\.parse\(end\) > now/);
     expect(src).not.toContain("buildScheduleEventSchema");
     expect(src).not.toContain('"@type": "Event"');
   });
@@ -137,9 +145,10 @@ test.describe("/play-mahjong-las-vegas", () => {
     expect(code).not.toMatch(/src="\/[^"]+\.(jpg|jpeg|png|webp|avif)"/);
   });
 
-  test("is reachable from the open play page and the studio page", () => {
+  test("is reachable from the open play page, the studio page and the schedule", () => {
     expect(read(OPEN_PLAY)).toContain('href="/play-mahjong-las-vegas"');
     expect(read("app/studio/page.tsx")).toContain('href="/play-mahjong-las-vegas"');
+    expect(read("app/schedule/page.tsx")).toContain('href: "/play-mahjong-las-vegas"');
   });
 
   test("the contact form attributes it without prefilling an inquiry type", () => {
@@ -161,7 +170,7 @@ test.describe("/mahjong-open-play-las-vegas stops competing with it", () => {
   test("describes open play as a service of the one business, not a rival organization", () => {
     const src = readCode(OPEN_PLAY);
     expect(src).not.toContain("SportsOrganization");
-    expect(src).toContain('"@type": "Service"');
+    expect(src).toContain("...OPEN_PLAY_SERVICE,");
     expect(src).toContain('provider: { "@id": "https://www.lasvegasmahj.com/#business" }');
   });
 });
@@ -176,6 +185,11 @@ test.describe("sitewide LocalBusiness", () => {
     expect(read("lib/schema.ts")).toMatch(/"@id": "https:\/\/www\.lasvegasmahj\.com\/#studio",\s*name: "Lucky Hare"/);
   });
 
+  test("the WebSite node carries no superlative either", () => {
+    const site = layout.slice(layout.indexOf("const websiteSchema"));
+    expect(site.match(/description:\s*\n?\s*"([^"]+)"/)![1]).not.toMatch(/premier|best|top|#1|leading/i);
+  });
+
   test("describes the real offering in plain terms, with no superlative", () => {
     const desc = biz.match(/description:\s*\n?\s*"([^"]+)"/)![1];
     for (const term of ["American Mahjong", "National Mah Jongg League", "Social Open Play", "corporate", "Lucky Hare", "8687 W. Sahara Ave., Suite 200"]) {
@@ -184,10 +198,14 @@ test.describe("sitewide LocalBusiness", () => {
     expect(desc).not.toMatch(/premier|best|top|#1|leading/i);
   });
 
-  test("offers Social Open Play with no price", () => {
-    const offer = biz.slice(biz.indexOf('name: "Social Open Play"'), biz.indexOf('name: "Corporate & Private Event Mahjong"'));
-    expect(offer).toContain("Lucky Sevens");
-    expect(offer).not.toMatch(/price/i);
+  test("offers Social Open Play as the same node the open play page describes, with no price", () => {
+    expect(biz).toMatch(/itemOffered: OPEN_PLAY_SERVICE,/);
+    expect(read(OPEN_PLAY)).toContain("...OPEN_PLAY_SERVICE,");
+    const schema = read("lib/schema.ts");
+    const node = schema.slice(schema.indexOf("export const OPEN_PLAY_SERVICE"), schema.indexOf("export interface ScheduleEventInput"));
+    expect(node).toContain('"@id": "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas#service"');
+    expect(node).toContain("Lucky Sevens");
+    expect(node).not.toMatch(/price/i);
   });
 });
 
