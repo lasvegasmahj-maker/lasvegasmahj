@@ -32,13 +32,14 @@ export const metadata: Metadata = {
 const serviceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": `${PAGE_URL}#service`,
   name: "Incentive Group Activities Las Vegas",
   serviceType: "Incentive group activity",
   description:
     "Hosted, facilitated American Mahjong experiences for incentive trips, DMC programs and VIP groups in Las Vegas, set up at the group's hotel, ballroom, hospitality suite or private room.",
   url: PAGE_URL,
   provider: { "@id": "https://www.lasvegasmahj.com/#business" },
-  areaServed: { "@type": "City", name: "Las Vegas" },
+  areaServed: { "@type": "City", name: "Las Vegas", containedInPlace: { "@type": "State", name: "Nevada" } },
   audience: { "@type": "BusinessAudience", name: "Incentive travel planners, destination management companies and incentive groups visiting Las Vegas" },
 };
 
@@ -57,18 +58,8 @@ const reasons = [
 const slots = [
   { title: "Welcome reception", desc: "Tables set up during the arrival reception give guests something to do together on the first night besides small talk." },
   { title: "A hosted afternoon", desc: "A relaxed session between free time and the evening program, offered as one of the group's activity choices or to everyone." },
-  { title: "A private VIP table", desc: "A private hosted session for top performers, executives or another small group within the program." },
+  { title: "A private VIP table", desc: "A private hosted session planned for top performers or another small group within the program." },
   { title: "Closing night", desc: "A hosted mahjong evening as part of the farewell event, with a friendly tournament if the group likes to compete." },
-];
-
-const roles = [
-  { title: "Team building", body: "Colleagues who rarely work together plan hands side by side, without it feeling like a workshop." },
-  { title: "Networking", body: "Top performers from across the company meet each other at the table." },
-  { title: "Guest engagement", body: "Every guest plays, with facilitators at hand, so no one sits it out." },
-  { title: "A breakout", body: "It runs as one block in the program schedule, in one room." },
-  { title: "Client entertainment", body: "When clients travel with the group, a hosted table gives them time with your leaders." },
-  { title: "A hosted social", body: "We host and facilitate from setup to breakdown." },
-  { title: "A group activity", body: "We add facilitators to match the size of the group." },
 ];
 
 const faqs = [
@@ -77,16 +68,16 @@ const faqs = [
     a: "Yes. We bring a hosted, facilitated American Mahjong experience to the hotel, ballroom, conference room, hospitality suite or private room your program has booked, and handle setup and breakdown.",
   },
   {
-    q: "Can a DMC or incentive planner book this for a client program?",
+    q: "Can a DMC or incentive planner request this for a client program?",
     a: "Yes. Send us the program dates, the hotel, the headcount and the time slot you have in mind, and we will put together a quote for that event.",
   },
   {
     q: "Do incentive guests need to know how to play?",
-    a: "No. We teach American Mahjong from the first tile, and jokers are wild, which makes early hands forgiving. Guests who already play are welcome at the same tables.",
+    a: "No. First-timers learn at the table, and guests who already play can sit right alongside them.",
   },
   {
     q: "Can you host a smaller VIP group on its own?",
-    a: "Yes. A private hosted session works for a small group within the program, such as top performers or executives, apart from the main group activity.",
+    a: "Yes. A private hosted session can be planned for a small group within the program, such as top performers. Tell us the headcount and we will quote it.",
   },
   {
     q: "Can mahjong be part of a welcome reception or farewell event?",
@@ -117,14 +108,14 @@ export default function IncentiveGroupActivitiesLasVegas() {
           <div className="container">
             <p className="section-label">Incentive Travel &middot; DMC Programs &middot; VIP Groups</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
-              Incentive Group Activities in <span className="accent-green">Las Vegas</span>
+              Incentive Group Activities in <span className="accent-green">{"Las\u00a0Vegas"}</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "660px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
               An incentive trip is a reward, so the activities should feel like one. Las Vegas Mahjong brings a hosted, facilitated American Mahjong experience to the resort, ballroom, hospitality suite or private room your program has booked. No one needs to have played before, and everyone learns together.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/contact?source=incentive" className="btn-primary">Request a Quote</a>
-              <a href="/corporate-event-activities-las-vegas" className="btn-outline">Corporate Event Activities</a>
+              <a href="/corporate-event-activities-las-vegas" className="btn-outline">Event Ideas</a>
             </div>
           </div>
         </section>
@@ -167,7 +158,7 @@ export default function IncentiveGroupActivitiesLasVegas() {
             <p className="section-label">For DMCs and Incentive Planners</p>
             <h2 className="section-title">Building a <span className="accent-pink">Client Program?</span></h2>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "1.5rem 0 1rem" }}>
-              If you are putting together a Las Vegas program for a client, send us the program dates, the hotel, the headcount and the time slot. We quote each event individually, bring every 152-tile American Mahjong set, rack and current NMJL card, handle setup and breakdown, and facilitate from start to finish. The program provides the room and any food or drink.
+              If you are a destination management company (DMC) or incentive planner putting together a Las Vegas program for a client, send us the program dates, the hotel, the headcount and the time slot. We quote each event individually, bring the 152-tile American Mahjong sets, racks and current NMJL cards, handle setup and breakdown, and facilitate from start to finish. The program provides the room and any food or drink.
             </p>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: 0 }}>
               Planning a meeting inside the trip as well? See{" "}
@@ -180,17 +171,12 @@ export default function IncentiveGroupActivitiesLasVegas() {
         </section>
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
-          <div className="container">
+          <div className="container" style={{ maxWidth: "760px" }}>
             <p className="section-label">One Experience, Several Jobs</p>
             <h2 className="section-title">What It Can Do for <span className="accent-green">Your Group</span></h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
-              {roles.map((item) => (
-                <div key={item.title} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
-                  <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.4rem" }}>{item.title}</h3>
-                  <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>{item.body}</p>
-                </div>
-              ))}
-            </div>
+            <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "1.5rem 0 0" }}>
+              On a reward trip, one hosted session does several jobs. It is light team building for colleagues who rarely work together, networking between top performers from different offices, and guest engagement, because everyone learns by playing. It fits the schedule as a breakout block in one room, becomes client entertainment when clients travel with the group, and runs as a hosted social from setup to breakdown: a group activity, with facilitators planned around your headcount.
+            </p>
           </div>
         </section>
 
@@ -199,7 +185,7 @@ export default function IncentiveGroupActivitiesLasVegas() {
             <p className="section-label">Guests Who Already Play</p>
             <h2 className="section-title">A Game on a <span className="accent-pink">Free Day</span></h2>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "1.5rem 0 0" }}>
-              Some of your guests may already play American Mahjong. On a free day they can book a seat at Social Open Play at our studio inside Lucky Hare, on their own or with friends from the trip. Registration is required, and dates are on the schedule. Here is how to{" "}
+              Some of your guests may already play American Mahjong. If a Social Open Play session falls on a free day, they can book a seat at our studio inside Lucky Hare while seats remain, on their own or with friends from the trip. Registration is required, spots are limited, and dates are on the schedule. Here is how to{" "}
               <a href="/play-mahjong-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>play mahjong while visiting Las Vegas</a>.
             </p>
           </div>

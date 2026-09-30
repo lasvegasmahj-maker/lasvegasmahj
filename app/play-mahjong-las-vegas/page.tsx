@@ -379,7 +379,7 @@ export default async function PlayMahjongLasVegas() {
               session while seats remain. If your group would rather have something of its own,
               we plan private experiences too:
             </p>
-            <ul style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.9, margin: "0 0 1.5rem", paddingLeft: "1.25rem" }}>
+            <ul style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.9, margin: "0 0 1.5rem", paddingLeft: "1.25rem", listStyle: "disc" }}>
               <li>
                 <a href="/private-mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>Private mahjong lessons</a>{" "}
                 at the studio, for one player or a small group

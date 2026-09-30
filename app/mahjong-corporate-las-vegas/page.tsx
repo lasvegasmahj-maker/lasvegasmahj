@@ -12,14 +12,14 @@ export const metadata: Metadata = {
   openGraph: {
     ...ogBase,
     title: "Corporate Mahjong Events in Las Vegas | Las Vegas Mahjong",
-    description: "Interactive corporate mahjong events in Las Vegas. Corporate entertainment and client experiences for groups of any size. Contact for a custom quote.",
+    description: "Corporate mahjong events in Las Vegas, hosted and facilitated at your office, hotel or venue. We bring the sets, cards and instruction. Contact for a custom quote.",
     url: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Corporate Mahjong Events in Las Vegas | Las Vegas Mahjong",
-    description: "Interactive corporate mahjong events in Las Vegas. Corporate entertainment and client experiences for groups of any size. Contact for a quote.",
+    description: "Corporate mahjong events in Las Vegas, hosted and facilitated at your office, hotel or venue. We bring the sets, cards and instruction. Contact for a quote.",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
@@ -28,8 +28,8 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Corporate Mahjong Events Las Vegas",
-  serviceType: "Corporate event entertainment",
-  description: "Corporate mahjong events in Las Vegas. Interactive corporate entertainment and client experiences, hosted and facilitated for groups of any size.",
+  serviceType: "Corporate mahjong event hosting",
+  description: "Corporate mahjong events in Las Vegas, hosted and facilitated at the client's office, hotel or venue, with all tiles, racks, NMJL cards and instruction provided.",
   provider: {
     "@type": "LocalBusiness",
     name: "Las Vegas Mahjong",
@@ -124,13 +124,15 @@ export default function MahjongCorporateLasVegas() {
               ))}
             </div>
             <p style={{ marginTop: "2rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.8, fontSize: "0.95rem" }}>
-              Explore our Las Vegas group experiences: <a href="/corporate-team-building-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate team building</a>, <a href="/conference-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>conference activities</a>, and <a href="/convention-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>convention activities</a>.
+              Looking for ideas by occasion, from client nights to employee appreciation and holiday parties? See{" "}
+              <a href="/corporate-event-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate event activities in Las Vegas</a>.
             </p>
           </div>
         </section>
 
         <RelatedExperiences
           background="var(--navy-dark)"
+          divider
           label="Corporate and Group Experiences"
           heading="Find the Right"
           accent="Format"
@@ -140,7 +142,6 @@ export default function MahjongCorporateLasVegas() {
             "/las-vegas-meeting-planner-activities",
             "/conference-activities-las-vegas",
             "/convention-activities-las-vegas",
-            "/trade-show-booth-activities-las-vegas",
             "/incentive-group-activities-las-vegas",
           ]}
         />

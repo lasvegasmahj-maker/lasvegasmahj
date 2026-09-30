@@ -75,7 +75,7 @@ for (const p of NEW_PAGES) {
 
 test("the corporate hub, team building, conference and convention pages link to the new pages", async ({ request }) => {
   const expectations: Record<string, string[]> = {
-    "/mahjong-corporate-las-vegas": NEW_PAGES.map((p) => p.path),
+    "/mahjong-corporate-las-vegas": NEW_PAGES.map((p) => p.path).filter((p) => p !== "/trade-show-booth-activities-las-vegas"),
     "/corporate-team-building-las-vegas": ["/las-vegas-meeting-planner-activities", "/corporate-event-activities-las-vegas"],
     "/conference-activities-las-vegas": ["/las-vegas-meeting-planner-activities", "/trade-show-booth-activities-las-vegas", "/incentive-group-activities-las-vegas"],
     "/convention-activities-las-vegas": ["/trade-show-booth-activities-las-vegas", "/incentive-group-activities-las-vegas", "/corporate-event-activities-las-vegas"],

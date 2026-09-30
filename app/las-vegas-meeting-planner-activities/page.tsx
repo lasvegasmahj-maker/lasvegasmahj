@@ -32,13 +32,14 @@ export const metadata: Metadata = {
 const serviceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": `${PAGE_URL}#service`,
   name: "Las Vegas Meeting Planner Activities",
   serviceType: "Facilitated meeting activity",
   description:
     "Facilitated American Mahjong sessions for meetings in Las Vegas: opening icebreakers, breakouts between sessions, team breakouts and evening socials, set up in the meeting room, ballroom or breakout space the planner has booked.",
   url: PAGE_URL,
   provider: { "@id": "https://www.lasvegasmahj.com/#business" },
-  areaServed: { "@type": "City", name: "Las Vegas" },
+  areaServed: { "@type": "City", name: "Las Vegas", containedInPlace: { "@type": "State", name: "Nevada" } },
   audience: { "@type": "BusinessAudience", name: "Meeting planners and corporate meeting organizers in Las Vegas" },
 };
 
@@ -50,11 +51,11 @@ const breadcrumbSchema = buildBreadcrumbSchema([
 const slots = [
   {
     title: "Opening icebreaker",
-    desc: "Seat people who have not met four to a table on the first morning. Learning the same new game together, they start talking without being asked to.",
+    desc: "Seat people who have not met four to a table on the first morning. Learning the same new game together gives them something to talk about from the first tile.",
   },
   {
     title: "Breakout between sessions",
-    desc: "A 60 to 90 minute session between keynotes or working sessions. Attendees get a real break from the agenda and still spend it with each other.",
+    desc: "Between working sessions, a breakout of 60 to 90 minutes gives attendees a real break from the agenda while keeping them together.",
   },
   {
     title: "Team or department breakout",
@@ -66,7 +67,7 @@ const slots = [
   },
   {
     title: "Client or VIP table",
-    desc: "A private hosted session for the clients or guests your meeting is looking after, run apart from the main group.",
+    desc: "A private hosted session for the clients or guests your meeting is looking after.",
   },
 ];
 
@@ -83,7 +84,7 @@ const roles = [
 const faqs = [
   {
     q: "What kinds of meetings is a mahjong activity a good fit for?",
-    a: "Corporate meetings, sales meetings, leadership and department meetings, and conferences held in Las Vegas hotels and venues. It works best when you want the people in the room talking to each other, not only listening.",
+    a: "Corporate meetings, sales meetings, department meetings and conferences held in Las Vegas hotels and venues. It works best when you want the people in the room talking to each other, not only listening.",
   },
   {
     q: "How much time do we need to set aside in the agenda?",
@@ -95,7 +96,7 @@ const faqs = [
   },
   {
     q: "What do you need from the hotel or venue?",
-    a: "A room for the group and the time slot. Tell us which room you have and how it is set, and we will work with that space. We bring the sets, racks, NMJL cards and facilitators, and handle setup and breakdown. You provide any food or drink you would like.",
+    a: "The room and the time slot. Tell us which room you have and how it is set, and we will confirm what the space needs. We bring the sets, racks, NMJL cards and facilitators, and handle setup and breakdown. You provide any food or drink you would like.",
   },
   {
     q: "Do our attendees need to know how to play?",
@@ -103,7 +104,7 @@ const faqs = [
   },
   {
     q: "How do we get a quote for a meeting activity?",
-    a: "Send us your dates, venue, headcount and the time slot you want to fill through the contact form. Pricing depends on group size, format and length, so every quote is built for the meeting.",
+    a: "Send us your dates, venue, headcount and the time slot you want to fill through the contact form. Every meeting gets its own quote, based on group size, format and length.",
   },
 ];
 
@@ -126,7 +127,7 @@ export default function LasVegasMeetingPlannerActivities() {
           <div className="container">
             <p className="section-label">Meeting Planners &middot; Breakouts &middot; Icebreakers</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
-              Meeting Activities for <span className="accent-green">Las Vegas Planners</span>
+              Meeting Activities for <span className="accent-green">{"Las\u00a0Vegas Planners"}</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "660px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
               You have the room, the headcount and a gap in the agenda. Las Vegas Mahjong brings a facilitated American Mahjong session to your hotel meeting room, ballroom or breakout space and fits it to the time you have: an icebreaker to open the meeting, a breakout between sessions, or a hosted social to close the day.
@@ -183,7 +184,7 @@ export default function LasVegasMeetingPlannerActivities() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
               <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(57,230,57,0.25)", borderRadius: "8px", padding: "1.8rem" }}>
                 <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.75rem", color: "var(--green)" }}>We bring</h3>
-                <ul style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, margin: 0, paddingLeft: "1.1rem" }}>
+                <ul style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, margin: 0, paddingLeft: "1.1rem", listStyle: "disc" }}>
                   <li>152-tile American Mahjong sets, racks and current NMJL cards</li>
                   <li>Instruction from the very first tile</li>
                   <li>Facilitators matched to your headcount</li>
@@ -191,8 +192,8 @@ export default function LasVegasMeetingPlannerActivities() {
                 </ul>
               </div>
               <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(233,30,140,0.25)", borderRadius: "8px", padding: "1.8rem" }}>
-                <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.75rem", color: "var(--pink)" }}>You provide</h3>
-                <ul style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, margin: 0, paddingLeft: "1.1rem" }}>
+                <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.75rem" }}>You provide</h3>
+                <ul style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, margin: 0, paddingLeft: "1.1rem", listStyle: "disc" }}>
                   <li>The room: a hotel meeting room, ballroom, breakout space, hospitality suite or private room</li>
                   <li>The time slot in your agenda</li>
                   <li>Any food or drink you would like</li>

@@ -7,19 +7,19 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Parties Las Vegas",
   description:
-    "Host a mahjong party in Las Vegas. Birthdays, corporate teams, girls nights, and holiday parties. Certified instructor, all equipment provided. Get a quote.",
+    "Host a mahjong party in Las Vegas for birthdays, girls nights, bridal showers and holiday gatherings. Certified instructor, all equipment provided.",
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas" },
   openGraph: {
     ...ogBase,
-    title: "Mahjong Party Las Vegas | Birthday, Corporate & Group Events",
-    description: "Skip the same old party. Book a private mahjong experience in Las Vegas for birthdays, corporate events, and girls nights. Certified instructor, any size group. Custom quote.",
+    title: "Mahjong Party Las Vegas | Birthdays, Showers & Celebrations",
+    description: "Skip the same old party. Book a private mahjong experience in Las Vegas for birthdays, girls nights and group celebrations. Certified instructor, any size group. Custom quote.",
     url: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mahjong Party Las Vegas | Birthday, Corporate & Group Events",
-    description: "Book a private mahjong experience in Las Vegas. Birthday parties, corporate events, girls nights, and group activities. Certified instructor, any size group. Custom quote.",
+    title: "Mahjong Party Las Vegas | Birthdays, Showers & Celebrations",
+    description: "Book a private mahjong experience in Las Vegas. Birthday parties, girls nights, showers and group celebrations. Certified instructor, any size group. Custom quote.",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };

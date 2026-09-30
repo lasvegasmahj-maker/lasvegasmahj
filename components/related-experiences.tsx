@@ -23,7 +23,7 @@ const EXPERIENCES: Record<ExperienceHref, { title: string; blurb: string }> = {
   },
   "/corporate-event-activities-las-vegas": {
     title: "Corporate Event Activities",
-    blurb: "Employee appreciation, client nights, sales meetings, retreats and holiday parties, with the format that suits each.",
+    blurb: "Pick the occasion, from employee appreciation to client nights and holiday parties, and find the format that suits it.",
   },
   "/corporate-team-building-las-vegas": {
     title: "Corporate Team Building",
@@ -39,7 +39,7 @@ const EXPERIENCES: Record<ExperienceHref, { title: string; blurb: string }> = {
   },
   "/convention-activities-las-vegas": {
     title: "Convention Activities",
-    blurb: "Attendee engagement sessions and group downtime for convention groups of any size.",
+    blurb: "Attendee engagement sessions and group downtime for convention groups.",
   },
   "/trade-show-booth-activities-las-vegas": {
     title: "Trade Show Booth Activities",
@@ -51,7 +51,7 @@ const EXPERIENCES: Record<ExperienceHref, { title: string; blurb: string }> = {
   },
   "/play-mahjong-las-vegas": {
     title: "Play While You Visit",
-    blurb: "Already play American Mahjong? Book a seat at Social Open Play at our studio during your trip.",
+    blurb: "Already play American Mahjong? Book a seat at Social Open Play at our studio if a session falls during your trip.",
   },
 };
 
@@ -61,18 +61,19 @@ interface RelatedExperiencesProps {
   accent: string;
   links: ExperienceHref[];
   background?: string;
-  maxWidth?: string;
+  /** For a slot where the section above shares this background, so the two stay distinct. */
+  divider?: boolean;
 }
 
-export default function RelatedExperiences({ label = "Related Experiences", heading, accent, links, background = "var(--navy)", maxWidth = "980px" }: RelatedExperiencesProps) {
+export default function RelatedExperiences({ label = "Related Experiences", heading, accent, links, background = "var(--navy)", divider = false }: RelatedExperiencesProps) {
   return (
-    <section style={{ padding: "5rem 2rem", background }}>
-      <div className="container" style={{ maxWidth }}>
+    <section style={{ padding: "5rem 2rem", background, ...(divider ? { borderTop: "1px solid rgba(57,230,57,0.15)" } : {}) }}>
+      <div className="container" style={{ maxWidth: "780px" }}>
         <p className="section-label">{label}</p>
         <h2 className="section-title">
           {heading} <span className="accent-pink">{accent}</span>
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
           {links.map((href) => (
             <a key={href} href={href} style={{ display: "block", textDecoration: "none", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
               <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.4rem", color: "var(--green)" }}>{EXPERIENCES[href].title}</h3>

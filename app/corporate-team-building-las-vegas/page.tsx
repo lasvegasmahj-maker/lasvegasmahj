@@ -149,7 +149,7 @@ export default function CorporateTeamBuildingLasVegas() {
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginTop: "1.5rem", marginBottom: "0.5rem" }}>
               Team building is one part of what we do for organizations in Las Vegas. If you are planning around a larger program, these formats fit naturally into a busy week.
             </p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
               <a href="/conference-activities-las-vegas" style={{ display: "block", textDecoration: "none", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
                 <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.4rem", color: "var(--green)" }}>Conference Activities in Las Vegas</h3>
                 <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>A standout break-out or evening session for conference attendees. We slot mahjong into your agenda and bring everything to the room.</p>
@@ -159,7 +159,7 @@ export default function CorporateTeamBuildingLasVegas() {
                 <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>A memorable activity for out-of-town convention groups. Perfect for hospitality suites, booth draws, and after-hours gatherings.</p>
               </a>
               <a href="/las-vegas-meeting-planner-activities" style={{ display: "block", textDecoration: "none", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
-                <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.4rem", color: "var(--green)" }}>Meeting Activities in Las Vegas</h3>
+                <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.4rem", color: "var(--green)" }}>Meeting Planner Activities in Las Vegas</h3>
                 <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>An icebreaker, a breakout between sessions or an evening social, fitted to the slot in your meeting agenda.</p>
               </a>
               <a href="/corporate-event-activities-las-vegas" style={{ display: "block", textDecoration: "none", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>

@@ -7,7 +7,7 @@ import RelatedExperiences from "@/components/related-experiences";
 export const metadata: Metadata = {
   title: "Conference Activities Las Vegas",
   description:
-    "Conference activities in Las Vegas: a mahjong networking break, reception or breakout for meeting groups, run in your hotel meeting room. Scales to 100+.",
+    "Conference activities in Las Vegas: a mahjong networking break, reception or breakout for attendees, set up in your hotel meeting room or ballroom.",
   alternates: { canonical: "https://www.lasvegasmahj.com/conference-activities-las-vegas" },
   openGraph: {
     ...ogBase,
@@ -29,7 +29,7 @@ const jsonLd = {
   "@type": "Service",
   name: "Conference Activities Las Vegas",
   serviceType: "Conference networking activity",
-  description: "A mahjong networking and break-out activity for conferences, meetings, and large meeting groups in Las Vegas. Runs in a hotel meeting room or on-site, scales from one table to 100+, no experience needed.",
+  description: "A mahjong networking and break-out activity for conferences and conference attendee groups in Las Vegas. Runs in a hotel meeting room or on-site, scales from one table to 100+, no experience needed.",
   provider: {
     "@type": "LocalBusiness",
     "@id": "https://www.lasvegasmahj.com/#business",
@@ -43,7 +43,7 @@ const jsonLd = {
     { "@type": "Place", name: "Green Valley" },
     { "@type": "Place", name: "Anthem" },
   ],
-  audience: { "@type": "BusinessAudience", name: "Conference organizers, meeting planners, and out-of-town groups in Las Vegas" },
+  audience: { "@type": "BusinessAudience", name: "Conference organizers and out-of-town attendee groups in Las Vegas" },
   offers: { "@type": "Offer", availability: "https://schema.org/InStock", url: "https://www.lasvegasmahj.com/conference-activities-las-vegas" },
 };
 
@@ -77,7 +77,7 @@ export default function ConferenceActivitiesLasVegas() {
       <main style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
-            <p className="section-label">Conferences · Conventions · Large Meetings</p>
+            <p className="section-label">Conferences · Networking · General Sessions</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
               Conference Activities in <span className="accent-green">Las Vegas</span>
             </h1>
@@ -135,8 +135,8 @@ export default function ConferenceActivitiesLasVegas() {
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "2.5rem" }}>
               Every format includes all equipment (152-tile American sets, racks, and current NMJL cards), setup, and full facilitation from start to finish. You provide the room and any food or drink you would like. Want a deeper look at how we run company events? See our{" "}
-              <a href="/mahjong-corporate-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>corporate mahjong events</a> page. Running tables on a show floor or at an exhibitor booth? See{" "}
-              <a href="/convention-activities-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>convention activities in Las Vegas</a>.
+              <a href="/mahjong-corporate-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>corporate mahjong events</a> page. Exhibiting at the show and want tables at your booth? See{" "}
+              <a href="/trade-show-booth-activities-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>trade show booth activities</a>.
             </p>
           </div>
         </section>
@@ -145,6 +145,7 @@ export default function ConferenceActivitiesLasVegas() {
           heading="Planning More Than"
           accent="One Session?"
           background="var(--navy-dark)"
+          divider
           links={[
             "/las-vegas-meeting-planner-activities",
             "/convention-activities-las-vegas",

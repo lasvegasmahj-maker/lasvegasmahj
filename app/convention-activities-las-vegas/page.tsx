@@ -7,7 +7,7 @@ import RelatedExperiences from "@/components/related-experiences";
 export const metadata: Metadata = {
   title: "Convention Activities Las Vegas",
   description:
-    "Convention activities in Las Vegas: mahjong booth draws, attendee engagement sessions and group downtime for exhibitors and attendee groups of any size.",
+    "Convention activities in Las Vegas: mahjong attendee engagement sessions, receptions and group downtime for convention organizers and attendee groups.",
   alternates: { canonical: "https://www.lasvegasmahj.com/convention-activities-las-vegas" },
   openGraph: {
     ...ogBase,
@@ -29,7 +29,7 @@ const jsonLd = {
   "@type": "Service",
   name: "Convention Activities Las Vegas",
   serviceType: "Convention attendee engagement activity",
-  description: "Mahjong convention activities and attendee experiences in Las Vegas. A unique, social, hands-on activity for convention groups, exhibitors, and large gatherings of any size.",
+  description: "Mahjong convention activities and attendee experiences in Las Vegas. A social, hands-on activity for convention organizers and attendee groups.",
   provider: {
     "@type": "LocalBusiness",
     name: "Las Vegas Mahjong",
@@ -43,7 +43,7 @@ const jsonLd = {
     { "@type": "Place", name: "Green Valley" },
     { "@type": "Place", name: "Anthem" },
   ],
-  audience: { "@type": "BusinessAudience", name: "Convention organizers, exhibitors, and attendee groups in Las Vegas" },
+  audience: { "@type": "BusinessAudience", name: "Convention organizers and attendee groups in Las Vegas" },
   offers: { "@type": "Offer", availability: "https://schema.org/InStock", url: "https://www.lasvegasmahj.com/convention-activities-las-vegas" },
 };
 
@@ -77,7 +77,7 @@ export default function ConventionActivitiesLasVegas() {
       <main style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
-            <p className="section-label">Conventions · Trade Shows · Attendee Engagement</p>
+            <p className="section-label">Conventions · Attendee Engagement · Group Downtime</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
               Convention Activities in <span className="accent-green">Las Vegas</span>
             </h1>
@@ -135,7 +135,8 @@ export default function ConventionActivitiesLasVegas() {
             </div>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginTop: "2.5rem" }}>
               Planning a company-wide event around your convention? See our full <a href="/corporate-team-building-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate team building</a> options, or explore <a href="/mahjong-corporate-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate mahjong events</a> for teams, conferences, and incentive trips. Fitting a networking session or breakout into a conference agenda? See{" "}
-              <a href="/conference-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>conference activities in Las Vegas</a>.
+              <a href="/conference-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>conference activities in Las Vegas</a>. Exhibiting rather than organizing? Booth, suite and lounge formats are on our{" "}
+              <a href="/trade-show-booth-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>trade show booth activities</a> page.
             </p>
           </div>
         </section>
@@ -144,6 +145,7 @@ export default function ConventionActivitiesLasVegas() {
           heading="More for"
           accent="Your Convention Week"
           background="var(--navy-dark)"
+          divider
           links={[
             "/trade-show-booth-activities-las-vegas",
             "/conference-activities-las-vegas",

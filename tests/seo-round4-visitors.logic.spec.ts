@@ -251,7 +251,8 @@ test.describe("the corporate cluster keeps its intents apart", () => {
   });
 
   test("conference and convention link to each other, and both still link up to the hub", () => {
-    expect(read(CLUSTER.conference)).toContain('href="/convention-activities-las-vegas"');
+    // Conference reaches convention through the related-experiences module since round 5.
+    expect(read(CLUSTER.conference)).toContain('"/convention-activities-las-vegas"');
     expect(read(CLUSTER.convention)).toContain('href="/conference-activities-las-vegas"');
     for (const rel of [CLUSTER.teamBuilding, CLUSTER.conference, CLUSTER.convention]) {
       expect(read(rel), rel).toContain('href="/mahjong-corporate-las-vegas"');

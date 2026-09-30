@@ -33,13 +33,14 @@ export const metadata: Metadata = {
 const serviceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": `${PAGE_URL}#service`,
   name: "Trade Show Booth Activities Las Vegas",
   serviceType: "Trade show booth engagement activity",
   description:
     "Live, hosted American Mahjong for exhibitors and sponsors at Las Vegas trade shows and conventions: short rotating sessions at the booth, hosted tables in a hospitality suite or sponsored lounge, and after-hours client events.",
   url: PAGE_URL,
   provider: { "@id": "https://www.lasvegasmahj.com/#business" },
-  areaServed: { "@type": "City", name: "Las Vegas" },
+  areaServed: { "@type": "City", name: "Las Vegas", containedInPlace: { "@type": "State", name: "Nevada" } },
   audience: { "@type": "BusinessAudience", name: "Exhibitors, sponsors and marketing teams at Las Vegas trade shows and conventions" },
 };
 
@@ -50,10 +51,10 @@ const breadcrumbSchema = buildBreadcrumbSchema([
 ]);
 
 const reasons = [
-  { title: "People stop to watch", desc: "A live game with real tiles draws a look from the aisle in a way a screen or a giveaway bowl cannot. People stop to watch, then stay to play." },
+  { title: "Something to watch", desc: "A live game with real tiles gives people in the aisle something to watch, and a seat if they want to play." },
   { title: "Your team gets an opening", desc: "A demo table gives your staff a natural reason to start a conversation with the person who just sat down." },
   { title: "It gets people off their feet", desc: "Show days are long and most activities keep attendees standing. A seat at a table is a reason to stay a while." },
-  { title: "It is something to remember", desc: "Visitors leave having played a game at your booth, not just having picked up a brochure." },
+  { title: "Something to remember", desc: "Visitors who sit down leave having played a game at your booth, not only having picked up a brochure." },
 ];
 
 const formats = [
@@ -63,16 +64,6 @@ const formats = [
   { title: "After-hours client event", desc: "A hosted mahjong evening for the clients you are entertaining while you are in town for the show." },
 ];
 
-const roles = [
-  { title: "Booth engagement", body: "Attendees sit and play instead of glancing and walking on." },
-  { title: "Networking", body: "Strangers at the same table start talking, and your staff are part of it." },
-  { title: "Attendee engagement", body: "A hands-on activity that attendees choose to join." },
-  { title: "A breakout", body: "Longer sessions in a suite or lounge give attendees a break from the show floor." },
-  { title: "Client entertainment", body: "A private table in your suite or after hours for the accounts that matter most." },
-  { title: "A hosted social", body: "We run the tables and handle setup and breakdown, so your booth staff can focus on visitors." },
-  { title: "Team building", body: "Your own booth team can play together after the show closes, before the flight home." },
-];
-
 const faqs = [
   {
     q: "Can a mahjong table fit in a trade show booth?",
@@ -80,7 +71,7 @@ const faqs = [
   },
   {
     q: "How does a booth session work if visitors have never played?",
-    a: "Booth sessions are short and rotating. We teach the basics on the spot, and jokers are wild, which makes early hands forgiving, so a visitor can sit down without having played before.",
+    a: "Booth sessions are short and rotating, and we teach the basics on the spot, so a visitor can sit down without having played before.",
   },
   {
     q: "Can you set up in our hospitality suite?",
@@ -92,7 +83,7 @@ const faqs = [
   },
   {
     q: "What do you bring to the show?",
-    a: "The 152-tile American Mahjong sets, racks and current NMJL cards, facilitators matched to the sessions you are running, and setup and breakdown. You provide the space.",
+    a: "The 152-tile American Mahjong sets, racks and current NMJL cards, facilitators matched to the sessions you are running, and setup and breakdown. You provide the space; tell us how it is set and we will confirm what it needs.",
   },
   {
     q: "How is a trade show activity priced?",
@@ -119,10 +110,10 @@ export default function TradeShowBoothActivitiesLasVegas() {
           <div className="container">
             <p className="section-label">Exhibitors &middot; Sponsors &middot; Hospitality Suites</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
-              Trade Show Booth Activities in <span className="accent-green">Las Vegas</span>
+              Trade Show Booth Activities in <span className="accent-green">{"Las\u00a0Vegas"}</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "660px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Give attendees a reason to stop. Las Vegas Mahjong runs short, hosted American Mahjong sessions at your booth, longer play in your hospitality suite, and tables in a lounge you sponsor, so people sit down, play and talk with your team.
+              Give attendees a reason to stop. Las Vegas Mahjong runs short, hosted American Mahjong sessions at your booth, longer play in your hospitality suite, and tables in a lounge you sponsor, so people have a reason to sit down, play and talk with your team.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/contact?source=trade-show" className="btn-primary">Request a Quote</a>
@@ -173,7 +164,7 @@ export default function TradeShowBoothActivitiesLasVegas() {
           <div className="container" style={{ maxWidth: "760px" }}>
             <p className="section-label">Before You Book</p>
             <h2 className="section-title">Planning the <span className="accent-pink">Space</span></h2>
-            <ul style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.9, margin: "1.5rem 0 0", paddingLeft: "1.25rem" }}>
+            <ul style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.9, margin: "1.5rem 0 0", paddingLeft: "1.25rem", listStyle: "disc" }}>
               <li>Check your show&rsquo;s exhibitor rules for booth activities and seating.</li>
               <li>Send us your booth size and layout, the show dates, and the hours you want covered.</li>
               <li>Short sessions suit the booth itself; longer, relaxed play suits a suite or lounge.</li>
@@ -183,17 +174,15 @@ export default function TradeShowBoothActivitiesLasVegas() {
         </section>
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
-          <div className="container">
+          <div className="container" style={{ maxWidth: "760px" }}>
             <p className="section-label">One Table, Several Jobs</p>
             <h2 className="section-title">What It Can Do at <span className="accent-green">the Show</span></h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
-              {roles.map((item) => (
-                <div key={item.title} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
-                  <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.4rem" }}>{item.title}</h3>
-                  <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>{item.body}</p>
-                </div>
-              ))}
-            </div>
+            <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "1.5rem 0 1rem" }}>
+              At the booth, a live table is booth engagement and attendee engagement in one, and a natural way into networking conversations for your staff. In a suite or lounge it becomes a breakout from the show floor, client entertainment for the accounts you invite, or a hosted social that we run from setup to breakdown.
+            </p>
+            <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: 0 }}>
+              As an experiential marketing activation, it gives attendees something to do in your space rather than something to carry away. And once the show closes, the same tables work as a group activity, or light team building, for your own booth team.
+            </p>
           </div>
         </section>
 

@@ -33,13 +33,14 @@ export const metadata: Metadata = {
 const serviceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": `${PAGE_URL}#service`,
   name: "Corporate Event Activities Las Vegas",
   serviceType: "Corporate event activity",
   description:
     "Hosted, facilitated American Mahjong activities for company occasions in Las Vegas: employee appreciation, client entertainment, sales meetings, leadership retreats, holiday and quarterly parties, offsites and charity events.",
   url: PAGE_URL,
   provider: { "@id": "https://www.lasvegasmahj.com/#business" },
-  areaServed: { "@type": "City", name: "Las Vegas" },
+  areaServed: { "@type": "City", name: "Las Vegas", containedInPlace: { "@type": "State", name: "Nevada" } },
   audience: { "@type": "BusinessAudience", name: "Companies planning employee, client and leadership events in Las Vegas" },
 };
 
@@ -59,12 +60,12 @@ const occasions = [
     link: { href: "/trade-show-booth-activities-las-vegas", text: "See trade show booth activities" },
   },
   {
-    title: "Sales meetings and kickoffs",
+    title: "Sales meetings",
     desc: "Break up a day of numbers with a game that rewards reading the table and adapting fast. Add a friendly tournament if the team likes to compete.",
     link: { href: "/las-vegas-meeting-planner-activities", text: "Fit it into a meeting agenda" },
   },
   {
-    title: "Leadership and executive retreats",
+    title: "Executive retreats",
     desc: "A small group and a game of strategy and judgment. It gives leaders unstructured time together, away from the slides.",
   },
   {
@@ -91,16 +92,16 @@ const roles = [
   { title: "Team building", body: "The skills that make a good player, planning, reading the table and adapting, are the ones that make a good teammate." },
   { title: "Networking", body: "Mixing departments, offices or companies at each table gets people talking who would not otherwise meet." },
   { title: "Guest engagement", body: "Guests play instead of watching, which is what separates an activity from entertainment on a stage." },
-  { title: "A breakout", body: "It can be one segment of a longer event, such as the hour after dinner, rather than the whole program." },
-  { title: "Client entertainment", body: "Hosts and clients share a table and a game, not only a conversation about the account." },
+  { title: "A breakout", body: "It can be one segment of a longer event, such as a session after dinner, rather than the whole program." },
+  { title: "Hosting clients", body: "Hosts and clients share a table and a game, not only a conversation about the account." },
   { title: "A hosted social", body: "We run it start to finish, including setup and breakdown, so the host team can relax too." },
-  { title: "A group activity", body: "We add facilitators to match the headcount, so a bigger event still gets proper instruction at every table." },
+  { title: "A group activity", body: "A bigger event still gets proper instruction at every table, because the facilitator team grows with the guest list." },
 ];
 
 const faqs = [
   {
     q: "What company events is a mahjong activity a good fit for?",
-    a: "Employee appreciation events, client entertainment, sales meetings, leadership retreats, holiday and quarterly parties, offsites and charity events. It suits any occasion where you want people doing something together rather than sitting through a program.",
+    a: "Employee appreciation events, client entertainment, sales meetings, leadership retreats, holiday and quarterly parties, offsites and charity events. It suits occasions where you want people doing something together rather than sitting through a program.",
   },
   {
     q: "Can employees and clients attend the same event?",
@@ -120,7 +121,7 @@ const faqs = [
   },
   {
     q: "How is a corporate event activity priced?",
-    a: "Pricing depends on group size, length and location, so we put together a quote for each event. Contact us with your date, headcount and venue.",
+    a: "Each event is quoted on its own: group size, length and location set the price. Contact us with your date, headcount and venue.",
   },
 ];
 
@@ -143,14 +144,14 @@ export default function CorporateEventActivitiesLasVegas() {
           <div className="container">
             <p className="section-label">Company Events &middot; Client Nights &middot; Appreciation</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
-              Corporate Event Activities in <span className="accent-green">Las Vegas</span>
+              Corporate Event Activities in <span className="accent-green">{"Las\u00a0Vegas"}</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "660px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Looking for something your people will do together, not just attend? A hosted American Mahjong activity fits the occasions companies plan most: thanking employees, hosting clients, rewarding a sales team, bringing leaders together, or celebrating the season. We bring it to your hotel, office, venue or private room.
+              Looking for something your people will do together, not just attend? A hosted American Mahjong activity fits the occasions companies plan: thanking employees, hosting clients, rewarding a sales team, bringing leaders together, or celebrating the season. We bring it to your hotel, office, venue or private room.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/contact?source=corporate-activities" className="btn-primary">Request a Quote</a>
-              <a href="/mahjong-corporate-las-vegas" className="btn-outline">How We Run Corporate Events</a>
+              <a href="/mahjong-corporate-las-vegas" className="btn-outline">How We Run Events</a>
             </div>
           </div>
         </section>
@@ -188,7 +189,7 @@ export default function CorporateEventActivitiesLasVegas() {
               ))}
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "2.5rem", maxWidth: "720px" }}>
-              Every event includes the 152-tile American Mahjong sets, racks and current NMJL cards, instruction from zero and facilitation from start to finish. You provide the space and any food or drink you would like. For group sizes, timing and what is included, see how we run{" "}
+              Every event includes the 152-tile American Mahjong sets, racks and current NMJL cards, instruction from zero and facilitation from start to finish. The space, and any food or drink, come from you. For timing and what is included, see how we run{" "}
               <a href="/mahjong-corporate-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate mahjong events</a>.
             </p>
           </div>
