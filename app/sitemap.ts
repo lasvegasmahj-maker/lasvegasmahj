@@ -75,6 +75,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: "https://www.lasvegasmahj.com/corporate-event-activities-las-vegas",
+      lastModified: new Date("2026-09-29"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: "https://www.lasvegasmahj.com/las-vegas-meeting-planner-activities",
+      lastModified: new Date("2026-09-29"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: "https://www.lasvegasmahj.com/trade-show-booth-activities-las-vegas",
+      lastModified: new Date("2026-09-29"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: "https://www.lasvegasmahj.com/incentive-group-activities-las-vegas",
+      lastModified: new Date("2026-09-29"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: "https://www.lasvegasmahj.com/about",
       lastModified: new Date("2026-05-23"),
       changeFrequency: "monthly",

@@ -392,6 +392,10 @@ export default async function PlayMahjongLasVegas() {
                 <a href="/mahjong-corporate-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>Corporate mahjong events</a>{" "}
                 for a business, conference or convention group
               </li>
+              <li>
+                <a href="/incentive-group-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>Incentive group activities</a>{" "}
+                for a company reward trip, set up at the group&rsquo;s hotel
+              </li>
             </ul>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, marginBottom: "2rem" }}>
               Tell us your dates and group size and we will plan it with you.

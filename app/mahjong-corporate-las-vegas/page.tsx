@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+import RelatedExperiences from "@/components/related-experiences";
 
 export const metadata: Metadata = {
   title: "Corporate Mahjong Events in Las Vegas",
   description:
-    "Corporate mahjong events in Las Vegas for client entertainment, company parties, incentive groups and visiting teams. We bring everything. Get a quote.",
+    "Corporate mahjong events in Las Vegas, hosted and facilitated at your office, hotel or venue. We bring the sets, cards and instruction. Get a quote.",
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas" },
   openGraph: {
     ...ogBase,
@@ -127,6 +128,22 @@ export default function MahjongCorporateLasVegas() {
             </p>
           </div>
         </section>
+
+        <RelatedExperiences
+          background="var(--navy-dark)"
+          label="Corporate and Group Experiences"
+          heading="Find the Right"
+          accent="Format"
+          links={[
+            "/corporate-event-activities-las-vegas",
+            "/corporate-team-building-las-vegas",
+            "/las-vegas-meeting-planner-activities",
+            "/conference-activities-las-vegas",
+            "/convention-activities-las-vegas",
+            "/trade-show-booth-activities-las-vegas",
+            "/incentive-group-activities-las-vegas",
+          ]}
+        />
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container" style={{ maxWidth: "680px" }}>

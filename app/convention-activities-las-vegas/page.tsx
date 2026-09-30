@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+import RelatedExperiences from "@/components/related-experiences";
 
 export const metadata: Metadata = {
   title: "Convention Activities Las Vegas",
@@ -138,6 +139,18 @@ export default function ConventionActivitiesLasVegas() {
             </p>
           </div>
         </section>
+
+        <RelatedExperiences
+          heading="More for"
+          accent="Your Convention Week"
+          background="var(--navy-dark)"
+          links={[
+            "/trade-show-booth-activities-las-vegas",
+            "/conference-activities-las-vegas",
+            "/incentive-group-activities-las-vegas",
+            "/corporate-event-activities-las-vegas",
+          ]}
+        />
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container" style={{ maxWidth: "720px" }}>

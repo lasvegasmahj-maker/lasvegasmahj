@@ -158,6 +158,14 @@ export default function CorporateTeamBuildingLasVegas() {
                 <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.4rem", color: "var(--green)" }}>Convention Activities in Las Vegas</h3>
                 <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>A memorable activity for out-of-town convention groups. Perfect for hospitality suites, booth draws, and after-hours gatherings.</p>
               </a>
+              <a href="/las-vegas-meeting-planner-activities" style={{ display: "block", textDecoration: "none", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
+                <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.4rem", color: "var(--green)" }}>Meeting Activities in Las Vegas</h3>
+                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>An icebreaker, a breakout between sessions or an evening social, fitted to the slot in your meeting agenda.</p>
+              </a>
+              <a href="/corporate-event-activities-las-vegas" style={{ display: "block", textDecoration: "none", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
+                <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.4rem", color: "var(--green)" }}>Corporate Event Activities in Las Vegas</h3>
+                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>Employee appreciation, client nights, sales meetings and holiday parties, with the format that suits each.</p>
+              </a>
             </div>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginTop: "2rem" }}>
               Want the full rundown on how we run events for companies? See our <a href="/mahjong-corporate-las-vegas" style={{ color: "var(--green)", textDecoration: "underline" }}>corporate mahjong events page</a> for formats, logistics, and what is included.

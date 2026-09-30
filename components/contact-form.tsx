@@ -23,6 +23,10 @@ const SOURCES: Record<string, { label: string; inquiry?: string }> = {
   "private-lessons": { label: "Private Lessons page", inquiry: "Private Lesson" },
   studio: { label: "Studio Page" },
   visitors: { label: "Play Mahjong for Visitors page" },
+  "meeting-planners": { label: "Meeting Planner Activities page", inquiry: "Corporate or Team Building" },
+  "corporate-activities": { label: "Corporate Event Activities page", inquiry: "Corporate or Team Building" },
+  incentive: { label: "Incentive Group Activities page", inquiry: "Corporate or Team Building" },
+  "trade-show": { label: "Trade Show Booth Activities page", inquiry: "Conference or Convention" },
 };
 
 const GENERAL_SOURCE = "General (nav, footer or direct)";

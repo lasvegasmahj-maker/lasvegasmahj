@@ -38,6 +38,10 @@ const TAGGED_PAGES: Record<string, { slug: string; count: number }> = {
   "app/private-mahjong-lessons-las-vegas/page.tsx": { slug: "private-lessons", count: 3 },
   "app/studio/page.tsx": { slug: "studio", count: 1 },
   "app/play-mahjong-las-vegas/page.tsx": { slug: "visitors", count: 1 },
+  "app/las-vegas-meeting-planner-activities/page.tsx": { slug: "meeting-planners", count: 2 },
+  "app/corporate-event-activities-las-vegas/page.tsx": { slug: "corporate-activities", count: 2 },
+  "app/incentive-group-activities-las-vegas/page.tsx": { slug: "incentive", count: 2 },
+  "app/trade-show-booth-activities-las-vegas/page.tsx": { slug: "trade-show", count: 2 },
 };
 
 // The nav and the footer are deliberately left bare. They are one shared component each,
@@ -80,7 +84,7 @@ test.describe("source attribution vocabulary", () => {
     // Bidirectional: a slug the CTAs never use is dead code, and a slug the form does not
     // know silently degrades that page's leads to "General".
     expect(inForm).toEqual(inCtas);
-    expect(inForm).toHaveLength(8);
+    expect(inForm).toHaveLength(12);
   });
 
   test("every honoured slug is lowercase, hyphenated and URL safe", () => {
@@ -109,7 +113,7 @@ test.describe("source attribution vocabulary", () => {
       // A prefill that is not an option would render the required select as blank.
       expect(types, `${label} prefills an inquiry type that does not exist`).toContain(inquiry);
     }
-    expect(prefills, "the six commercial pages still prefill").toBe(6);
+    expect(prefills, "the ten commercial pages prefill").toBe(10);
   });
 
   test("the studio slug attributes without touching the visitor's inquiry choice", () => {
