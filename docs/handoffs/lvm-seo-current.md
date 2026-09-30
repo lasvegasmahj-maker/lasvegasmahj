@@ -1,8 +1,61 @@
 # Handoff: Las Vegas Mahjong competitive SEO
 
 Rounds 1, 2, 3 and the contact consistency cleanup are all CLOSED, MERGED and LIVE. Their
-records are preserved below and must not be edited or re-litigated. **Round 4 is OPEN** on
-branch `seo/play-mahjong-visitors`, awaiting the owner's merge.
+records are preserved below and must not be edited or re-litigated. **Rounds 4 and 5 are
+OPEN** on branch `seo/play-mahjong-visitors` (PR #117), awaiting the owner's merge.
+
+---
+
+# ROUND 5: corporate and group landing pages (OPEN, same PR #117)
+
+**Date:** 2026-09-29. Same branch and worktree as round 4.
+
+## Architecture (one buyer question per page)
+
+| Page | Owns | Parent |
+|---|---|---|
+| `/mahjong-corporate-las-vegas` | how we run corporate events (the service) | root, nav "Corporate" |
+| `/corporate-event-activities-las-vegas` (new) | occasions: appreciation, client entertainment, sales meetings, executive retreats, holiday parties, offsites, charity | hub |
+| `/corporate-team-building-las-vegas` | team building, offsites | hub |
+| `/las-vegas-meeting-planner-activities` (new) | any meeting, by agenda slot | hub |
+| `/conference-activities-las-vegas` | conferences and conference networking | hub |
+| `/convention-activities-las-vegas` | convention organizers and attendee groups | hub |
+| `/trade-show-booth-activities-las-vegas` (new) | exhibitors and sponsors: booth, hospitality suite, sponsored lounge, experiential | convention |
+| `/incentive-group-activities-las-vegas` (new) | reward trips, DMC programs, VIP groups | hub |
+| `/play-mahjong-las-vegas` (round 4) | visitors who already play | studio |
+
+**Not built, on purpose:** `/conference-networking-activities-las-vegas` (the conference page
+already is it), and standalone offsite, client entertainment, employee appreciation, executive
+retreat, sales meeting, hospitality suite, DMC and experiential marketing pages (each is a
+section of a page above). Do not add them without Search Console evidence of separate demand.
+
+`components/related-experiences.tsx` is the contextual link system: each corporate page picks
+its next-step cards. The primary nav, footer and homepage are untouched. The hub shows six
+cards; the booth page is reached through convention, conference and the occasions page.
+
+## Rules this round held (tests in `tests/seo-round5-corporate.*`)
+
+- Venues named come only from the owner's list: hotels, conference rooms, ballrooms, corporate
+  venues, convention settings, hospitality suites, private rooms, offsite events.
+- No capacity, client, price, statistic, testimonial, result or response time on the new pages.
+  Corporate hosting is never placed at the studio (only Social Open Play and private lessons are).
+- Every new page conveys the seven roles (team building, networking, engagement, breakout,
+  client entertainment, hosted social, group activity) without identical copy across pages.
+- Titles, descriptions (155 max), serviceTypes and FAQ questions are unique across the cluster.
+
+## Owner decisions left open
+
+1. Who supplies tables and chairs at hotels and venues. Pages say "we will confirm what the
+   space needs" until answered.
+2. DMC terms (commission, proof of insurance) before promoting to DMCs.
+3. Hub and team building still share their opening line and four "why mahjong" cards
+   (on production today). Needs the owner's wording.
+4. `/mahjong-open-play-las-vegas` is thin (about 300 words) with out-of-date venue text.
+5. Older unsourced lines: "Las Vegas hosts thousands of conventions per year" (hub), "top
+   convention city in the country" (convention), "Scales to 100+" (conference body).
+
+Architecture record in Drive: LVM/Marketing, "LVM SEO Content Architecture - Corporate, Group
+and Visitor Clusters (2026-09-29)".
 
 ---
 
