@@ -30,6 +30,7 @@ export interface CourseSummary {
   span: string;
   price?: string;
   salesClosed?: boolean;
+  started?: boolean;
 }
 
 const FEED_URL =
@@ -179,7 +180,8 @@ export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
   // Course detection reads third-party HTML; if it ever throws, the schedule keeps every session.
   try {
     events.push(...(await groupCourses(bookwhen, fetchBookwhenPage, Date.now())));
-  } catch {
+  } catch (err) {
+    console.warn("schedule: course detection failed, showing every session", err);
     events.push(...bookwhen);
   }
 
@@ -501,13 +503,18 @@ async function fetchBookwhenPage(url: string): Promise<string | null> {
         next: { revalidate: COURSE_PAGE_REVALIDATE_SECONDS, tags: [BOOKWHEN_CACHE_TAG] },
         headers: { "user-agent": "LasVegasMahjongSchedule/1.0 (+https://www.lasvegasmahj.com/schedule)" },
       });
+      if (!res.ok) console.warn(`schedule: Bookwhen page ${url} answered ${res.status}`);
       return res.ok ? await res.text() : null;
     } catch {
+      console.warn(`schedule: Bookwhen page ${url} could not be read`);
       return null;
     }
   })();
   const timeout = new Promise<null>((resolve) => {
-    timer = setTimeout(() => resolve(null), 8000);
+    timer = setTimeout(() => {
+      console.warn(`schedule: Bookwhen page ${url} timed out`);
+      resolve(null);
+    }, 8000);
   });
   const html = await Promise.race([read, timeout]);
   clearTimeout(timer);
@@ -589,7 +596,7 @@ export async function groupCourses(
     if (listed.length === 0) {
       if (!opts.keepClosed) continue;
       const card = courseCard(page, [...page.tickets].sort(byPrice)[0], members, todayKey);
-      card.course = { ...card.course!, salesClosed: true };
+      card.course = { ...card.course!, salesClosed: true, started: Math.floor(keyOf(page.dates[0]) / 10000) <= todayKey };
       placed.push({ e: card, at: feedOrder.get(members[0])! });
       continue;
     }
@@ -608,5 +615,10 @@ export function pickLeagues(grouped: ScheduleEvent[]): ScheduleEvent[] {
 
 export async function getLeagues(): Promise<ScheduleEvent[]> {
   const sessions = await readBookwhenSessions(todayInPacific());
-  return pickLeagues(await groupCourses(sessions, fetchBookwhenPage, Date.now(), { keepClosed: true }));
+  try {
+    return pickLeagues(await groupCourses(sessions, fetchBookwhenPage, Date.now(), { keepClosed: true }));
+  } catch (err) {
+    console.warn("leagues: course detection failed", err);
+    return [];
+  }
 }

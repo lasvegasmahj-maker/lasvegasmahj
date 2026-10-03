@@ -63,9 +63,12 @@ export default async function MahjongLeaguesLasVegas() {
             {leagues.length === 0 ? (
               <div style={{ marginTop: "2.5rem", textAlign: "center", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "2.5rem 1.5rem" }}>
                 <p style={{ color: "rgba(255,255,255,0.75)", lineHeight: 1.75, marginBottom: "1.5rem" }}>
-                  No league is open for sign-up right now. New seasons go on the schedule as soon as they open.
+                  No league is listed here right now. New seasons go on the schedule as soon as they open, and everything open for booking is on our booking page.
                 </p>
-                <a href="/schedule" className="btn-primary">See the Schedule</a>
+                <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+                  <a href="/schedule" className="btn-primary">See the Schedule</a>
+                  <a href="https://bookwhen.com/lasvegasmahjong" target="_blank" rel="noopener" className="btn-outline">View Booking Page</a>
+                </div>
               </div>
             ) : (
               <div style={{ display: "grid", gap: "1.5rem", marginTop: "2.5rem" }}>
@@ -84,7 +87,7 @@ export default async function MahjongLeaguesLasVegas() {
                       )}
                       {e.course!.salesClosed ? (
                         <p style={{ color: "var(--gold)", fontWeight: 700, fontSize: "0.95rem", margin: "1.25rem 0 0" }}>
-                          Season in progress. Sign-ups for this season are closed.
+                          {e.course!.started ? "Season in progress. Sign-ups for this season are closed." : "Sign-ups for this season are closed."}
                         </p>
                       ) : (
                         <a
@@ -92,7 +95,7 @@ export default async function MahjongLeaguesLasVegas() {
                           target="_blank"
                           rel="noopener"
                           className="btn-primary"
-                          aria-label={`Book ${e.title} on Bookwhen (opens in a new tab)`}
+                          aria-label={`Book This League: ${e.title}, on Bookwhen (opens in a new tab)`}
                           style={{ display: "inline-block", marginTop: "1.25rem" }}
                         >
                           Book This League

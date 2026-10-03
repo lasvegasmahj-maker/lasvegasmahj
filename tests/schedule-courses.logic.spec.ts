@@ -299,6 +299,16 @@ test.describe("the leagues page", () => {
     expect(pickLeagues(await groupCourses([], fetchPage, Date.parse("2026-12-16T09:00:00-08:00"), { keepClosed: true }))).toEqual([]);
   });
 
+  test("between the sales close and the first session it says closed, not in progress", async () => {
+    const { fetchPage } = fakeBookwhen();
+    const nov9noon = Date.parse("2026-11-09T12:00:00-08:00");
+    const card = pickLeagues(await groupCourses(league(), fetchPage, nov9noon, { keepClosed: true }))[0];
+    expect([card.course?.salesClosed, card.course?.started]).toEqual([true, false]);
+    const nov12 = Date.parse("2026-11-12T09:00:00-08:00");
+    const later = pickLeagues(await groupCourses(league().slice(1), fetchPage, nov12, { keepClosed: true }))[0];
+    expect(later.course?.started).toBe(true);
+  });
+
   test("a course without League in its title is not listed", async () => {
     const renamed = league().map((e) => ({ ...e, title: "Winter Strategy Series" }));
     expect(pickLeagues(await groupCourses(renamed, async () => COURSE_HTML, OCT_3, { keepClosed: true }))).toEqual([]);
