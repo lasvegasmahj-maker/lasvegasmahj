@@ -125,14 +125,7 @@ function classify(title: string): { tone: Tone; room: string | null } {
 }
 
 function todayInPacific(): number {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Los_Angeles",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).formatToParts(new Date());
-  const get = (t: string) => Number(parts.find((p) => p.type === t)?.value);
-  return get("year") * 10000 + get("month") * 100 + get("day");
+  return pacificDayKey(Date.now());
 }
 
 async function readBookwhenSessions(cutoff: number): Promise<ScheduleEvent[]> {
@@ -596,7 +589,9 @@ export async function groupCourses(
     if (listed.length === 0) {
       if (!opts.keepClosed) continue;
       const card = courseCard(page, [...page.tickets].sort(byPrice)[0], members, todayKey);
-      card.course = { ...card.course!, salesClosed: true, started: Math.floor(keyOf(page.dates[0]) / 10000) <= todayKey };
+      const first = page.dates[0];
+      const started = nowMs >= Date.parse(pacificIso(first.y, first.mo, first.d, first.h, first.mi));
+      card.course = { ...card.course!, salesClosed: true, started };
       placed.push({ e: card, at: feedOrder.get(members[0])! });
       continue;
     }

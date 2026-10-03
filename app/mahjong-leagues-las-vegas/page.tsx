@@ -46,7 +46,7 @@ export default async function MahjongLeaguesLasVegas() {
               Mahjong <span className="accent-pink">Leagues</span> in Las Vegas
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "640px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Play a full season of weekly games with the same group of players. Pick the league that fits your week, book once, and your seat is held for every session.
+              Play a full season of weekly games with the same group of players. Pick the league that fits your week, book once, and we hold your seat for every session.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="#leagues" className="btn-primary">See the Leagues</a>
@@ -63,7 +63,7 @@ export default async function MahjongLeaguesLasVegas() {
             {leagues.length === 0 ? (
               <div style={{ marginTop: "2.5rem", textAlign: "center", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "2.5rem 1.5rem" }}>
                 <p style={{ color: "rgba(255,255,255,0.75)", lineHeight: 1.75, marginBottom: "1.5rem" }}>
-                  No league is listed here right now. New seasons go on the schedule as soon as they open, and everything open for booking is on our booking page.
+                  There are no leagues to show here right now. New seasons go on the schedule as soon as they open, and our booking page lists everything open for booking.
                 </p>
                 <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
                   <a href="/schedule" className="btn-primary">See the Schedule</a>
@@ -76,7 +76,7 @@ export default async function MahjongLeaguesLasVegas() {
                   const details = e.sessions?.[0]?.description ?? "";
                   return (
                     <article key={e.uid} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "1.5rem 1.5rem 1.75rem" }}>
-                      <h3 style={{ fontWeight: 700, fontSize: "1.3rem", color: "#fff", margin: 0 }}>{e.title}</h3>
+                      <h3 style={{ fontFamily: "var(--font-nav)", fontWeight: 700, fontSize: "1.3rem", color: "#fff", margin: 0 }}>{e.title}</h3>
                       <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.95rem", margin: "0.35rem 0 0" }}>{e.course!.dayTime}</p>
                       <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.95rem", margin: "0.5rem 0 0" }}>{e.course!.span}</p>
                       {e.course!.price && (
@@ -104,11 +104,11 @@ export default async function MahjongLeaguesLasVegas() {
                     </article>
                   );
                 })}
+                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", textAlign: "center", marginTop: "0.5rem" }}>
+                  Times shown in Pacific. One booking covers every session in the season.
+                </p>
               </div>
             )}
-            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", textAlign: "center", marginTop: "2rem" }}>
-              Times shown in Pacific. One booking covers every session in the season.
-            </p>
           </div>
         </section>
 
