@@ -38,8 +38,8 @@ const FEED_URL =
 // edit in Bookwhen reaches the site. The tag lets /api/refresh-schedule expire them at once.
 export const BOOKWHEN_REVALIDATE_SECONDS = 300;
 // Course pages (dates, ticket, price) rarely change and there are about 20 of them per render,
-// so they are re-read less often; a closed sale is still hidden on time because that check
-// uses the clock, not the cache.
+// so they are re-read less often. Whether a sale has closed is checked against the render-time
+// clock, so it lags by at most one page refresh, not by this interval.
 export const COURSE_PAGE_REVALIDATE_SECONDS = 1800;
 export const BOOKWHEN_CACHE_TAG = "bookwhen";
 
@@ -171,7 +171,12 @@ export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
     // Bookwhen unreachable: still show partner events below.
   }
 
-  events.push(...(await groupCourses(bookwhen, fetchBookwhenPage, Date.now())));
+  // Course detection reads third-party HTML; if it ever throws, the schedule keeps every session.
+  try {
+    events.push(...(await groupCourses(bookwhen, fetchBookwhenPage, Date.now())));
+  } catch {
+    events.push(...bookwhen);
+  }
 
   for (const p of PARTNER_EVENTS) {
     const ev = buildPartnerEvent(p);
