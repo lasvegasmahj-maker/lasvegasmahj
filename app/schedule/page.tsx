@@ -46,7 +46,8 @@ export default async function Schedule() {
     (acc[e.monthLabel] ||= []).push(e);
     return acc;
   }, {});
-  const eventSchema = buildScheduleEventSchema(events);
+  // A course card stands for several dated sessions; the schema keeps describing each session.
+  const eventSchema = buildScheduleEventSchema(events.flatMap((e) => e.sessions ?? [e]));
 
   return (
     <>
@@ -110,6 +111,16 @@ export default async function Schedule() {
                               <div style={{ color: "var(--pink)", fontWeight: 800, fontSize: "0.72rem", letterSpacing: "0.06em" }}>{e.day}</div>
                               <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.7rem", lineHeight: 1, color: "#fff" }}>{e.num}</div>
                             </div>
+                            {e.course ? (
+                            <div className="sched-body" style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ fontWeight: 700, fontSize: "1.05rem", color: "#fff" }}>{e.title}</div>
+                              <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.85rem", marginTop: "0.15rem" }}>{e.course.dayTime}</div>
+                              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.9rem", marginTop: "0.45rem" }}>{e.course.span}</div>
+                              {e.course.price && (
+                                <div style={{ color: c, fontWeight: 700, fontSize: "0.9rem", marginTop: "0.15rem" }}>{e.course.price}</div>
+                              )}
+                            </div>
+                            ) : (
                             <div className="sched-body" style={{ flex: 1, minWidth: 0 }}>
                               <div style={{ fontWeight: 700, fontSize: "1.05rem", color: "#fff" }}>{e.title}</div>
                               <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.85rem", marginTop: "0.15rem" }}>
@@ -120,6 +131,7 @@ export default async function Schedule() {
                                 <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem", lineHeight: 1.6, marginTop: "0.6rem", marginBottom: 0 }}>{e.description}</p>
                               )}
                             </div>
+                            )}
                             <div className="sched-book" style={{ flex: "none", textAlign: "right" }}>
                               <a href={e.url} target="_blank" rel="noopener" className="btn-primary" style={{ padding: "0.5rem 1.1rem", fontSize: "0.85rem" }}>{e.bookLabel}</a>
                             </div>

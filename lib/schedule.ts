@@ -19,6 +19,17 @@ export interface ScheduleEvent {
   endIso?: string;
   venueKind: "studio" | "partner" | "unknown";
   venueName: string;
+  // Set only on a course card: one card that stands in for every session of a Bookwhen course.
+  course?: CourseSummary;
+  // The individual Bookwhen sessions a course card stands for. The Event schema is still built
+  // from these, so search engines see the same dated sessions they saw before.
+  sessions?: ScheduleEvent[];
+}
+
+export interface CourseSummary {
+  dayTime: string; // "Tuesdays, 11 AM - 1 PM"
+  span: string; // "5 weeks, Nov 10 to Dec 15"
+  price?: string; // "$150 for the season"
 }
 
 const FEED_URL =
@@ -116,6 +127,7 @@ function todayInPacific(): number {
 
 export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
   const events: ScheduleEvent[] = [];
+  const bookwhen: ScheduleEvent[] = [];
   const cutoff = todayInPacific();
 
   try {
@@ -131,7 +143,7 @@ export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
         if (line === "END:VEVENT") {
           if (cur) {
             const ev = buildEvent(cur);
-            if (ev && Math.floor(ev.sortKey / 10000) >= cutoff) events.push(ev);
+            if (ev && Math.floor(ev.sortKey / 10000) >= cutoff) bookwhen.push(ev);
           }
           cur = null;
           continue;
@@ -148,6 +160,10 @@ export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
   } catch {
     // Bookwhen unreachable: still show partner events below.
   }
+
+  // Bookwhen's feed lists every session of a course separately. Collapse each course into one
+  // card; anything that cannot be confirmed as a course stays exactly as the feed gave it.
+  events.push(...(await groupCourses(bookwhen, fetchBookwhenPage, Date.now())));
 
   for (const p of PARTNER_EVENTS) {
     const ev = buildPartnerEvent(p);
@@ -240,4 +256,238 @@ function buildEvent(fields: Record<string, string>): ScheduleEvent | null {
     venueKind: atStudio ? "studio" : "unknown",
     venueName: atStudio ? "Lucky Hare" : (venue || "Lucky Hare"),
   };
+}
+
+/* ── COURSES ──
+   Bookwhen's public iCal feed carries no ticket data, so it cannot say which sessions belong to
+   a course: every session has its own unrelated event id, exactly like a drop-in session. The
+   event's own Bookwhen page does say it. A course session's page has a "Course dates" section
+   listing every session, and its ticket is marked "Course ticket - for all N dates". That ticket
+   id is shared by every session of the course (ti-euw0-t2d5u for the fall daytime league),
+   while a single-ticket entry such as Social Open Play gets a new ticket per date. Grouping is
+   driven by that Bookwhen data, never by words in the title. */
+
+export interface CourseDate {
+  y: number;
+  mo: number;
+  d: number;
+  h: number;
+  mi: number;
+  eh?: number;
+  emi?: number;
+}
+
+export interface CoursePage {
+  ticketId: string;
+  ticketName: string;
+  priceCents: number | null;
+  dates: CourseDate[];
+  availableUntil: string | null; // as printed, e.g. "Mon 9 Nov 11am"
+  unavailable: boolean;
+}
+
+const MON_ABBR = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const DAY_PLURAL = ["Sundays", "Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays"];
+const BOOKWHEN_EVENT_URL = /^https:\/\/bookwhen\.com\/lasvegasmahjong\/e\/ev-[a-z0-9]+-\d{14}$/;
+
+function decodeHtml(v: string): string {
+  return v
+    .replace(/&nbsp;/g, " ")
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&");
+}
+
+const stripTags = (v: string) => decodeHtml(v.replace(/<[^>]*>/g, " ")).replace(/\s+/g, " ").trim();
+
+function clock(hour: string, minute: string | undefined, ampm: string): { h: number; mi: number } {
+  let h = Number(hour) % 12;
+  if (ampm.toLowerCase() === "pm") h += 12;
+  return { h, mi: minute ? Number(minute) : 0 };
+}
+
+// "anchorYear" is the year of the feed session the page belongs to. Bookwhen prints a two-digit
+// year on course dates ("Tue, 10 Nov '26"); if it ever drops it, the date nearest the anchor wins.
+function parseCourseDate(text: string, anchorYear: number): CourseDate | null {
+  const m = text.match(/(\d{1,2})\s+([A-Za-z]{3})[a-z]*\.?\s*(?:'(\d{2})|(\d{4}))?/);
+  const t = text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)\s*[–-]\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i)
+    ?? text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i);
+  if (!m || !t) return null;
+  const mo = MON_ABBR.findIndex((x) => x.toLowerCase() === m[2].toLowerCase()) + 1;
+  if (mo === 0) return null;
+  const year = m[3] ? 2000 + Number(m[3]) : m[4] ? Number(m[4]) : anchorYear;
+  const start = clock(t[1], t[2], t[3]);
+  const out: CourseDate = { y: year, mo, d: Number(m[1]), h: start.h, mi: start.mi };
+  if (t[4] && t[6]) {
+    const end = clock(t[4], t[5], t[6]);
+    out.eh = end.h;
+    out.emi = end.mi;
+  }
+  return out;
+}
+
+// Returns null unless the page offers a Bookwhen course ticket and lists the course dates.
+export function parseBookwhenCoursePage(html: string, anchorYear: number): CoursePage | null {
+  const rows = html.match(/<tr class="ticket">[\s\S]*?<\/tr>/g) ?? [];
+  const row = rows.find((r) => /<strong>\s*Course ticket\s*<\/strong>/i.test(r));
+  if (!row) return null;
+
+  const section = html.match(/class="section connected_events"[\s\S]*?<\/ul>/);
+  if (!section) return null;
+  const dates = (section[0].match(/<li>[\s\S]*?<\/li>/g) ?? [])
+    .map((li) => parseCourseDate(stripTags(li), anchorYear))
+    .filter((d): d is CourseDate => d !== null)
+    .sort((a, b) => keyOf(a) - keyOf(b));
+  if (dates.length === 0) return null;
+
+  const ticketId = row.match(/data-item="(ti-[a-z0-9-]+)"/)?.[1];
+  if (!ticketId) return null;
+  const name = row.match(/ticket-summary-title__title">([\s\S]*?)<\/h4>/);
+  const price = row.match(/currency_symbol">\$<\/span>\s*([\d,]+)(?:\.(\d{2}))?/);
+  const until = row.match(/Available until\s*<span[^>]*>([^<]+)<\/span>/);
+  const attrs = decodeHtml(row.match(/data-attrs="([^"]*)"/)?.[1] ?? "");
+
+  return {
+    ticketId,
+    ticketName: name ? stripTags(name[1]) : "",
+    priceCents: price ? Number(price[1].replace(/,/g, "")) * 100 + Number(price[2] ?? 0) : null,
+    dates,
+    availableUntil: until ? decodeHtml(until[1]).trim() : null,
+    unavailable: /"(unavailable|cancelled)":\s*true/.test(attrs),
+  };
+}
+
+const keyOf = (c: CourseDate) => c.y * 100000000 + c.mo * 1000000 + c.d * 10000 + c.h * 100 + c.mi;
+
+// "Mon 9 Nov 11am" carries no year. It is the sales close for a course, so it is the latest
+// such date on or before the first session.
+export function courseSalesCloseMs(text: string, firstSession: CourseDate): number | null {
+  const m = text.match(/(\d{1,2})\s+([A-Za-z]{3})[a-z]*\.?(?:\s+(\d{4}))?\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i);
+  if (!m) return null;
+  const mo = MON_ABBR.findIndex((x) => x.toLowerCase() === m[2].toLowerCase()) + 1;
+  if (mo === 0) return null;
+  const { h, mi } = clock(m[4], m[5], m[6]);
+  const d = Number(m[1]);
+  let y = m[3] ? Number(m[3]) : firstSession.y;
+  if (!m[3] && y * 100000000 + mo * 1000000 + d * 10000 + h * 100 + mi > keyOf(firstSession)) y -= 1;
+  return Date.parse(pacificIso(y, mo, d, h, mi));
+}
+
+function sameStart(c: CourseDate, e: ScheduleEvent): boolean {
+  return keyOf(c) === e.sortKey;
+}
+
+function courseSummary(page: CoursePage): CourseSummary {
+  const ds = page.dates;
+  const first = ds[0];
+  const last = ds[ds.length - 1];
+  const weekday = (c: CourseDate) => new Date(Date.UTC(c.y, c.mo - 1, c.d)).getUTCDay();
+  const sameDay = ds.every((c) => weekday(c) === weekday(first));
+  const sameTime = ds.every((c) => c.h === first.h && c.mi === first.mi && c.eh === first.eh && c.emi === first.emi);
+
+  let hours = fmtClock(first.h, first.mi);
+  if (first.eh !== undefined) hours += " - " + fmtClock(first.eh, first.emi ?? 0);
+  const dayTime = sameDay ? `${DAY_PLURAL[weekday(first)]}, ${hours}` : sameTime ? hours : `Starts ${hours}`;
+
+  const n = ds.length;
+  const unit = sameDay ? (n === 1 ? "week" : "weeks") : n === 1 ? "session" : "sessions";
+  const label = (c: CourseDate, withYear: boolean) => `${MON_ABBR[c.mo - 1]} ${c.d}${withYear ? `, ${c.y}` : ""}`;
+  const crossYear = first.y !== last.y;
+  const span = n === 1
+    ? `1 ${unit}, ${label(first, false)}`
+    : `${n} ${unit}, ${label(first, crossYear)} to ${label(last, crossYear)}`;
+
+  let price: string | undefined;
+  if (page.priceCents !== null) {
+    const dollars = page.priceCents % 100 === 0
+      ? `$${(page.priceCents / 100).toLocaleString("en-US")}`
+      : `$${(page.priceCents / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
+    price = /season/i.test(page.ticketName) ? `${dollars} for the season` : `${dollars} for all ${n} ${n === 1 ? "session" : "sessions"}`;
+  }
+  return { dayTime, span, price };
+}
+
+function courseCard(page: CoursePage, members: ScheduleEvent[], todayKey: number): ScheduleEvent {
+  const lead = members[0];
+  const first = page.dates[0];
+  // The card sits on the date of the first session. If that date has already gone by while
+  // tickets are still on sale, it sits on the next session instead, so it stays on the list.
+  const anchor = Math.floor(keyOf(first) / 10000) >= todayKey ? first : null;
+  return {
+    ...lead,
+    uid: `course-${page.ticketId}`,
+    sortKey: anchor ? keyOf(anchor) : lead.sortKey,
+    day: anchor ? DOW[new Date(Date.UTC(anchor.y, anchor.mo - 1, anchor.d)).getUTCDay()] : lead.day,
+    num: anchor ? String(anchor.d) : lead.num,
+    monthLabel: anchor ? `${MONTHS[anchor.mo - 1]} ${anchor.y}` : lead.monthLabel,
+    description: "",
+    url: lead.url,
+    bookLabel: "Book",
+    course: courseSummary(page),
+    sessions: members,
+  };
+}
+
+export type FetchPage = (url: string) => Promise<string | null>;
+
+async function fetchBookwhenPage(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(url, {
+      next: { revalidate: 1800 },
+      headers: { "user-agent": "LasVegasMahjongSchedule/1.0 (+https://www.lasvegasmahj.com/schedule)" },
+      signal: AbortSignal.timeout(8000),
+    });
+    return res.ok ? await res.text() : null;
+  } catch {
+    return null;
+  }
+}
+
+function pacificDayKey(ms: number): number {
+  const p = Object.fromEntries(PACIFIC_PARTS.formatToParts(new Date(ms)).map((x) => [x.type, x.value]));
+  return Number(p.year) * 10000 + Number(p.month) * 100 + Number(p.day);
+}
+
+// One page fetch per Bookwhen entry, not per session: sessions are bucketed by title and
+// description (a course's sessions share both), and only the earliest session in each bucket is
+// looked up. If that page is not a course, the bucket is left untouched. If it is, the course's
+// own date list decides which sessions join the card; leftovers are checked again in case a
+// second run of the same course is on sale. Any failure leaves the sessions as they were.
+export async function groupCourses(events: ScheduleEvent[], fetchPage: FetchPage, nowMs: number): Promise<ScheduleEvent[]> {
+  const todayKey = pacificDayKey(nowMs);
+  const buckets = new Map<string, ScheduleEvent[]>();
+  const out: ScheduleEvent[] = [];
+  for (const e of events) {
+    if (!BOOKWHEN_EVENT_URL.test(e.url)) {
+      out.push(e);
+      continue;
+    }
+    const key = `${e.title}\n${e.description}`;
+    if (!buckets.has(key)) buckets.set(key, []);
+    buckets.get(key)!.push(e);
+  }
+
+  const resolved = await Promise.all(
+    [...buckets.values()].map(async (bucket) => {
+      const result: ScheduleEvent[] = [];
+      let remaining = [...bucket].sort((a, b) => a.sortKey - b.sortKey);
+      while (remaining.length > 0) {
+        const lead = remaining[0];
+        const html = await fetchPage(lead.url);
+        const page = html ? parseBookwhenCoursePage(html, Math.floor(lead.sortKey / 100000000)) : null;
+        if (!page || !page.dates.some((c) => sameStart(c, lead))) break;
+        const members = remaining.filter((e) => page.dates.some((c) => sameStart(c, e)));
+        remaining = remaining.filter((e) => !members.includes(e));
+        const closeMs = page.availableUntil ? courseSalesCloseMs(page.availableUntil, page.dates[0]) : null;
+        const closed = page.unavailable || (closeMs !== null && nowMs >= closeMs);
+        // Once ticket sales close the course is hidden: no card, and no stray single sessions.
+        if (!closed) result.push(courseCard(page, members, todayKey));
+      }
+      return [...result, ...remaining];
+    }),
+  );
+  for (const list of resolved) out.push(...list);
+  return out;
 }
