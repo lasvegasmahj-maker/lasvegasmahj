@@ -375,15 +375,17 @@ function parseTicketRow(row: string): CourseTicket | null {
   if (!id) return null;
   const name = row.match(/ticket-summary-title__title">([\s\S]*?)<\/h4>/);
   const price = row.match(/currency_symbol">\$<\/span>\s*([\d,]+)(?:\.(\d{2}))?/);
-  const from = row.match(/Available from\s*<span[^>]*>([^<]+)<\/span>/);
-  const until = row.match(/Available until\s*<span[^>]*>([^<]+)<\/span>/);
+  // With both ends set, Bookwhen prints "Available between <span>A</span> and <span>B</span>".
+  const between = row.match(/Available between\s*<span[^>]*>([^<]+)<\/span>\s*and\s*<span[^>]*>([^<]+)<\/span>/);
+  const from = between?.[1] ?? row.match(/Available from\s*<span[^>]*>([^<]+)<\/span>/)?.[1];
+  const until = between?.[2] ?? row.match(/Available until\s*<span[^>]*>([^<]+)<\/span>/)?.[1];
   const attrs = decodeHtml(row.match(/data-attrs="([^"]*)"/)?.[1] ?? "");
   return {
     id,
     name: name ? stripTags(name[1]) : "",
     priceCents: price ? Number(price[1].replace(/,/g, "")) * 100 + Number(price[2] ?? 0) : null,
-    availableFrom: from ? decodeHtml(from[1]).trim() : null,
-    availableUntil: until ? decodeHtml(until[1]).trim() : null,
+    availableFrom: from ? decodeHtml(from).trim() : null,
+    availableUntil: until ? decodeHtml(until).trim() : null,
     unavailable: /"(unavailable|cancelled)":\s*true/.test(attrs),
   };
 }

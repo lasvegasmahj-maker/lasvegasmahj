@@ -187,6 +187,18 @@ test.describe("grouping on the schedule", () => {
     expect((await groupCourses(league(), async () => notYet, sept)).filter((e) => e.course)).toHaveLength(1);
   });
 
+  test("a sales window printed as 'Available between' is read at both ends", async () => {
+    // Bookwhen's wording when a ticket has both an opening and a closing time.
+    const window = COURSE_HTML
+      .replace(/<div class="fact">Available until <span class="">Mon 9 Nov 11am<\/span><\/div>/,
+        '<div class="fact">Available between <span class="notice_me">Thu 15 Oct 9am</span> and <span class="">Mon 9 Nov 11am</span></div>')
+      .replace("&quot;unavailable&quot;:false", "&quot;unavailable&quot;:true");
+    const page = parseBookwhenCoursePage(window, NOV_10)!;
+    expect([page.tickets[0].availableFrom, page.tickets[0].availableUntil]).toEqual(["Thu 15 Oct 9am", "Mon 9 Nov 11am"]);
+    expect((await groupCourses(league(), async () => window, OCT_3)).filter((e) => e.course)).toHaveLength(1);
+    expect(await groupCourses(league(), async () => window, Date.parse("2026-11-09T11:00:00-08:00"))).toEqual([]);
+  });
+
   test("Bookwhen marking the ticket unavailable hides the course", async () => {
     const closedHtml = COURSE_HTML.replace("&quot;unavailable&quot;:false", "&quot;unavailable&quot;:true");
     expect(await groupCourses(league(), async () => closedHtml, OCT_3)).toEqual([]);
