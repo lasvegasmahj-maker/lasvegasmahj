@@ -39,6 +39,7 @@ Non-negotiable. When any other instruction conflicts with this section, this sec
 ### Pricing
 - Group lessons: $60 per person. Group size is 4-8 people. Show this on lesson pages only.
 - Private lessons, parties, and corporate events: say "contact for pricing." Never show a dollar amount for these.
+- Leagues: the season price from Bookwhen ("$150 for the season" in fall 2026) may show on league cards on `/schedule` and `/mahjong-leagues-las-vegas`. The owner approved this on 2026-10-03. It shows only when the Bookwhen course ticket name includes "season".
 
 ### Data honesty
 - Never present seed or sample data as real.
@@ -118,6 +119,7 @@ American Mahjong facts that MUST be correct in every page, blog post, email, and
 
 - Group lessons: $60 per person. Group size is 4-8 people. Show this only on lesson pages.
 - Private lessons, parties, and corporate events: "contact for pricing." Never show a dollar amount for these.
+- Leagues: the Bookwhen season price may show on league cards on `/schedule` and `/mahjong-leagues-las-vegas` (owner approved 2026-10-03).
 
 ## No Hallucinated or Dead Links
 
