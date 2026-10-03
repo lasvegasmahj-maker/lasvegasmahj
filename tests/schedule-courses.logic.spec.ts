@@ -186,3 +186,13 @@ test.describe("grouping on the schedule", () => {
     expect(after).toEqual(before);
   });
 });
+
+test.describe("how fresh the schedule is", () => {
+  test("Bookwhen is re-read every 5 minutes, with one tag for the refresh link", () => {
+    const src = fs.readFileSync(path.join(__dirname, "..", "lib", "schedule.ts"), "utf8");
+    expect(src).toContain("export const BOOKWHEN_REVALIDATE_SECONDS = 300;");
+    // Both Bookwhen reads (the feed and the course pages) use the shared interval and tag.
+    expect(src.match(/next: \{ revalidate: BOOKWHEN_REVALIDATE_SECONDS, tags: \[BOOKWHEN_CACHE_TAG\] \}/g)).toHaveLength(2);
+    expect(src).not.toMatch(/revalidate: 1800/);
+  });
+});

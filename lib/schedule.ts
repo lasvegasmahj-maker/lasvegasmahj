@@ -19,21 +19,25 @@ export interface ScheduleEvent {
   endIso?: string;
   venueKind: "studio" | "partner" | "unknown";
   venueName: string;
-  // Set only on a course card: one card that stands in for every session of a Bookwhen course.
   course?: CourseSummary;
-  // The individual Bookwhen sessions a course card stands for. The Event schema is still built
-  // from these, so search engines see the same dated sessions they saw before.
+  // The Event schema is built from these, so a course card leaves the dated sessions that
+  // search engines see unchanged.
   sessions?: ScheduleEvent[];
 }
 
 export interface CourseSummary {
-  dayTime: string; // "Tuesdays, 11 AM - 1 PM"
-  span: string; // "5 weeks, Nov 10 to Dec 15"
-  price?: string; // "$150 for the season"
+  dayTime: string;
+  span: string;
+  price?: string;
 }
 
 const FEED_URL =
   "https://feeds.bookwhen.com/ical/3gqc90ysul98/sx0z7q/public.ics";
+
+// Bookwhen serves its feed and pages uncached, so this interval is the whole delay before an
+// edit in Bookwhen reaches the site. The tag lets /api/refresh-schedule expire them at once.
+export const BOOKWHEN_REVALIDATE_SECONDS = 300;
+export const BOOKWHEN_CACHE_TAG = "bookwhen";
 
 const DOW = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const MONTHS = [
@@ -131,7 +135,9 @@ export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
   const cutoff = todayInPacific();
 
   try {
-    const res = await fetch(FEED_URL, { next: { revalidate: 1800 } });
+    const res = await fetch(FEED_URL, {
+      next: { revalidate: BOOKWHEN_REVALIDATE_SECONDS, tags: [BOOKWHEN_CACHE_TAG] },
+    });
     if (res.ok) {
       const lines = unfold(await res.text()).split(/\r?\n/);
       let cur: Record<string, string> | null = null;
@@ -161,8 +167,7 @@ export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
     // Bookwhen unreachable: still show partner events below.
   }
 
-  // Bookwhen's feed lists every session of a course separately. Collapse each course into one
-  // card; anything that cannot be confirmed as a course stays exactly as the feed gave it.
+  // Anything that cannot be confirmed as a course stays exactly as the feed gave it.
   events.push(...(await groupCourses(bookwhen, fetchBookwhenPage, Date.now())));
 
   for (const p of PARTNER_EVENTS) {
@@ -259,13 +264,11 @@ function buildEvent(fields: Record<string, string>): ScheduleEvent | null {
 }
 
 /* ── COURSES ──
-   Bookwhen's public iCal feed carries no ticket data, so it cannot say which sessions belong to
-   a course: every session has its own unrelated event id, exactly like a drop-in session. The
-   event's own Bookwhen page does say it. A course session's page has a "Course dates" section
-   listing every session, and its ticket is marked "Course ticket - for all N dates". That ticket
-   id is shared by every session of the course (ti-euw0-t2d5u for the fall daytime league),
-   while a single-ticket entry such as Social Open Play gets a new ticket per date. Grouping is
-   driven by that Bookwhen data, never by words in the title. */
+   The iCal feed carries no ticket data: every course session has its own unrelated event id,
+   just like a drop-in session. Each session's Bookwhen page does mark the course, with a
+   "Course dates" list and a ticket labelled "Course ticket - for all N dates" whose id is shared
+   by every session (a drop-in entry such as Social Open Play gets a new ticket per date). So
+   courses are found from that page, never from words in the title. */
 
 export interface CourseDate {
   y: number;
@@ -282,7 +285,7 @@ export interface CoursePage {
   ticketName: string;
   priceCents: number | null;
   dates: CourseDate[];
-  availableUntil: string | null; // as printed, e.g. "Mon 9 Nov 11am"
+  availableUntil: string | null;
   unavailable: boolean;
 }
 
@@ -312,7 +315,7 @@ function clock(hour: string, minute: string | undefined, ampm: string): { h: num
 // year on course dates ("Tue, 10 Nov '26"); if it ever drops it, the date nearest the anchor wins.
 function parseCourseDate(text: string, anchorYear: number): CourseDate | null {
   const m = text.match(/(\d{1,2})\s+([A-Za-z]{3})[a-z]*\.?\s*(?:'(\d{2})|(\d{4}))?/);
-  const t = text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)\s*[–-]\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i)
+  const t = text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)\s*[\u2013-]\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i)
     ?? text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i);
   if (!m || !t) return null;
   const mo = MON_ABBR.findIndex((x) => x.toLowerCase() === m[2].toLowerCase()) + 1;
@@ -328,7 +331,6 @@ function parseCourseDate(text: string, anchorYear: number): CourseDate | null {
   return out;
 }
 
-// Returns null unless the page offers a Bookwhen course ticket and lists the course dates.
 export function parseBookwhenCoursePage(html: string, anchorYear: number): CoursePage | null {
   const rows = html.match(/<tr class="ticket">[\s\S]*?<\/tr>/g) ?? [];
   const row = rows.find((r) => /<strong>\s*Course ticket\s*<\/strong>/i.test(r));
@@ -435,7 +437,7 @@ export type FetchPage = (url: string) => Promise<string | null>;
 async function fetchBookwhenPage(url: string): Promise<string | null> {
   try {
     const res = await fetch(url, {
-      next: { revalidate: 1800 },
+      next: { revalidate: BOOKWHEN_REVALIDATE_SECONDS, tags: [BOOKWHEN_CACHE_TAG] },
       headers: { "user-agent": "LasVegasMahjongSchedule/1.0 (+https://www.lasvegasmahj.com/schedule)" },
       signal: AbortSignal.timeout(8000),
     });
@@ -450,11 +452,10 @@ function pacificDayKey(ms: number): number {
   return Number(p.year) * 10000 + Number(p.month) * 100 + Number(p.day);
 }
 
-// One page fetch per Bookwhen entry, not per session: sessions are bucketed by title and
-// description (a course's sessions share both), and only the earliest session in each bucket is
-// looked up. If that page is not a course, the bucket is left untouched. If it is, the course's
-// own date list decides which sessions join the card; leftovers are checked again in case a
-// second run of the same course is on sale. Any failure leaves the sessions as they were.
+// Sessions of one entry share a title and description, so bucketing by those keeps it to one
+// page read per entry instead of one per session. The course's own date list, not the bucket,
+// decides which sessions join a card; leftovers are checked again in case a second run of the
+// same course is on sale.
 export async function groupCourses(events: ScheduleEvent[], fetchPage: FetchPage, nowMs: number): Promise<ScheduleEvent[]> {
   const todayKey = pacificDayKey(nowMs);
   const buckets = new Map<string, ScheduleEvent[]>();
@@ -482,7 +483,7 @@ export async function groupCourses(events: ScheduleEvent[], fetchPage: FetchPage
         remaining = remaining.filter((e) => !members.includes(e));
         const closeMs = page.availableUntil ? courseSalesCloseMs(page.availableUntil, page.dates[0]) : null;
         const closed = page.unavailable || (closeMs !== null && nowMs >= closeMs);
-        // Once ticket sales close the course is hidden: no card, and no stray single sessions.
+        // Owner's choice: once sales close the course is hidden, with no stray single sessions.
         if (!closed) result.push(courseCard(page, members, todayKey));
       }
       return [...result, ...remaining];
