@@ -239,6 +239,13 @@ test.describe("grouping on the schedule", () => {
     expect(out.map((e) => (e.course ? "card" : e.uid))).toEqual([oneOff.uid, "card"]);
   });
 
+  test("a price shows only for a season ticket", async () => {
+    const other = COURSE_HTML.replace("Full season (5 weeks)", "Strategy series");
+    const card = (await groupCourses(league(), async () => other, OCT_3))[0];
+    expect(card.course?.price).toBeUndefined();
+    expect(card.course?.span).toBe("5 weeks, Nov 10 to Dec 15");
+  });
+
   test("labels say weeks only for a weekly run, and flag a session with different hours", async () => {
     const monthly = COURSE_HTML.replace("Tue, 17 Nov &#39;26", "Tue, 5 Jan &#39;27").replace("Tue, 1 Dec &#39;26", "Tue, 2 Feb &#39;27")
       .replace("Tue, 8 Dec &#39;26", "Tue, 2 Mar &#39;27").replace("Tue, 15 Dec &#39;26", "Tue, 6 Apr &#39;27");

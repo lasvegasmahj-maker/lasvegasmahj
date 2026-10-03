@@ -447,7 +447,9 @@ function courseSummary(page: CoursePage, ticket: CourseTicket): CourseSummary {
     const amount = ticket.priceCents % 100 === 0
       ? `$${(ticket.priceCents / 100).toLocaleString("en-US")}`
       : `$${(ticket.priceCents / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
-    price = /season/i.test(ticket.name) ? `${amount} for the season` : n === 1 ? amount : `${amount} for all ${n} sessions`;
+    // The owner approved a price on the card for season tickets only; site rules keep other
+    // prices off the schedule.
+    if (/season/i.test(ticket.name)) price = `${amount} for the season`;
   }
   return { dayTime, span, price };
 }

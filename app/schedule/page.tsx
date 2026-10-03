@@ -117,7 +117,10 @@ export default async function Schedule() {
                             {e.course ? (
                             <div className="sched-body" style={{ flex: 1, minWidth: 0 }}>
                               <div style={{ fontWeight: 700, fontSize: "1.05rem", color: "#fff" }}>{e.title}</div>
-                              <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.85rem", marginTop: "0.15rem" }}>{e.course.dayTime}</div>
+                              <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.85rem", marginTop: "0.15rem" }}>
+                                {e.course.dayTime}
+                                <span style={{ display: "inline-block", fontSize: "0.68rem", fontWeight: 700, padding: "1px 8px", borderRadius: "999px", marginLeft: "8px", color: c, border: "1px solid " + c }}>{e.room}</span>
+                              </div>
                               <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.9rem", marginTop: "0.45rem" }}>{e.course.span}</div>
                               {e.course.price && (
                                 <div style={{ color: "#fff", fontWeight: 700, fontSize: "0.9rem", marginTop: "0.15rem" }}>{e.course.price}</div>
