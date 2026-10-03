@@ -37,6 +37,10 @@ const FEED_URL =
 // Bookwhen serves its feed and pages uncached, so this interval is the whole delay before an
 // edit in Bookwhen reaches the site. The tag lets /api/refresh-schedule expire them at once.
 export const BOOKWHEN_REVALIDATE_SECONDS = 300;
+// Course pages (dates, ticket, price) rarely change and there are about 20 of them per render,
+// so they are re-read less often; a closed sale is still hidden on time because that check
+// uses the clock, not the cache.
+export const COURSE_PAGE_REVALIDATE_SECONDS = 1800;
 export const BOOKWHEN_CACHE_TAG = "bookwhen";
 
 const DOW = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -167,7 +171,6 @@ export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
     // Bookwhen unreachable: still show partner events below.
   }
 
-  // Anything that cannot be confirmed as a course stays exactly as the feed gave it.
   events.push(...(await groupCourses(bookwhen, fetchBookwhenPage, Date.now())));
 
   for (const p of PARTNER_EVENTS) {
@@ -406,7 +409,8 @@ export function parseBookwhenCoursePage(html: string, near: Day): CoursePage | n
   return { key: tickets.map((t) => t.id).sort().join("+"), tickets, dates };
 }
 
-// A ticket not on sale yet still lists the course; one past its close, or unavailable, does not.
+// Bookwhen marks a ticket unavailable before its sales window opens as well as after it closes;
+// only the second should hide a course.
 function ticketListed(t: CourseTicket, first: CourseDate, nowMs: number): boolean {
   const until = t.availableUntil ? bookwhenTimeMs(t.availableUntil, first) : null;
   if (until !== null && nowMs >= until) return false;
@@ -484,7 +488,7 @@ async function fetchBookwhenPage(url: string): Promise<string | null> {
   const read = (async () => {
     try {
       const res = await fetch(url, {
-        next: { revalidate: BOOKWHEN_REVALIDATE_SECONDS, tags: [BOOKWHEN_CACHE_TAG] },
+        next: { revalidate: COURSE_PAGE_REVALIDATE_SECONDS, tags: [BOOKWHEN_CACHE_TAG] },
         headers: { "user-agent": "LasVegasMahjongSchedule/1.0 (+https://www.lasvegasmahj.com/schedule)" },
       });
       return res.ok ? await res.text() : null;

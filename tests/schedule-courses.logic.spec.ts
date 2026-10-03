@@ -73,7 +73,6 @@ function fakeBookwhen(opts: { fail?: boolean; course?: string } = {}) {
 
 const withUntil = (text: string) => COURSE_HTML.replace("Mon 9 Nov 11am", text);
 const OCT_3 = Date.parse("2026-10-03T12:00:00-07:00");
-const byKey = (a: ScheduleEvent, b: ScheduleEvent) => a.sortKey - b.sortKey;
 
 test.describe("reading a Bookwhen event page", () => {
   test("the league page is a course: shared ticket, five dates, price and sales close", () => {
@@ -270,7 +269,10 @@ test.describe("how fresh the schedule is", () => {
   test("Bookwhen is re-read every 5 minutes, with one tag for the refresh link", () => {
     const src = fs.readFileSync(path.join(__dirname, "..", "lib", "schedule.ts"), "utf8");
     expect(src).toContain("export const BOOKWHEN_REVALIDATE_SECONDS = 300;");
-    expect(src.match(/next: \{ revalidate: BOOKWHEN_REVALIDATE_SECONDS, tags: \[BOOKWHEN_CACHE_TAG\] \}/g)).toHaveLength(2);
+    expect(src).toContain("export const COURSE_PAGE_REVALIDATE_SECONDS = 1800;");
+    // The feed (titles, descriptions, locations) is re-read every 5 minutes; course pages less often.
+    expect(src.match(/next: \{ revalidate: BOOKWHEN_REVALIDATE_SECONDS, tags: \[BOOKWHEN_CACHE_TAG\] \}/g)).toHaveLength(1);
+    expect(src.match(/next: \{ revalidate: COURSE_PAGE_REVALIDATE_SECONDS, tags: \[BOOKWHEN_CACHE_TAG\] \}/g)).toHaveLength(1);
     expect(src).not.toMatch(/revalidate: 1800/);
   });
 });
