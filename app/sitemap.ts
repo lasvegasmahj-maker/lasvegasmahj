@@ -45,6 +45,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.85,
     },
     {
+      url: "https://www.lasvegasmahj.com/mahjong-leagues-las-vegas",
+      lastModified: new Date("2026-10-03"),
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    {
       url: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas",
       lastModified: new Date("2026-05-23"),
       changeFrequency: "monthly",

@@ -1,8 +1,10 @@
 import { test, expect } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
+import sitemap from "../app/sitemap";
 import {
   groupCourses,
+  pickLeagues,
   parseBookwhenCoursePage,
   bookwhenTimeMs,
   pacificIso,
@@ -274,5 +276,38 @@ test.describe("how fresh the schedule is", () => {
     expect(src.match(/next: \{ revalidate: BOOKWHEN_REVALIDATE_SECONDS, tags: \[BOOKWHEN_CACHE_TAG\] \}/g)).toHaveLength(1);
     expect(src.match(/next: \{ revalidate: COURSE_PAGE_REVALIDATE_SECONDS, tags: \[BOOKWHEN_CACHE_TAG\] \}/g)).toHaveLength(1);
     expect(src).not.toMatch(/revalidate: 1800/);
+  });
+});
+
+test.describe("the leagues page", () => {
+  test("lists each league as one card, in date order, and nothing else", async () => {
+    const { fetchPage } = fakeBookwhen();
+    const grouped = await groupCourses([...openPlay(), ...league(), ...mahj101()], fetchPage, OCT_3, { keepClosed: true });
+    const leagues = pickLeagues(grouped);
+    expect(leagues.map((e) => e.title)).toEqual(["Tuesday Fall Daytime League"]);
+    expect(leagues[0].sessions?.[0].description).toBe(LEAGUE_DESC);
+  });
+
+  test("a league whose sign-ups closed stays listed, marked closed, until its season ends", async () => {
+    const { fetchPage } = fakeBookwhen();
+    const nov12 = Date.parse("2026-11-12T09:00:00-08:00");
+    const remaining = league().filter((e) => e.sortKey > 202611120000);
+    const kept = pickLeagues(await groupCourses(remaining, fetchPage, nov12, { keepClosed: true }));
+    expect(kept).toHaveLength(1);
+    expect(kept[0].course?.salesClosed).toBe(true);
+    expect(await groupCourses(remaining, fetchPage, nov12)).toEqual([]);
+    expect(pickLeagues(await groupCourses([], fetchPage, Date.parse("2026-12-16T09:00:00-08:00"), { keepClosed: true }))).toEqual([]);
+  });
+
+  test("a course without League in its title is not listed", async () => {
+    const renamed = league().map((e) => ({ ...e, title: "Winter Strategy Series" }));
+    expect(pickLeagues(await groupCourses(renamed, async () => COURSE_HTML, OCT_3, { keepClosed: true }))).toEqual([]);
+  });
+
+  test("the page is in the sitemap and the refresh link refreshes it too", () => {
+    expect(sitemap().map((e) => e.url)).toContain("https://www.lasvegasmahj.com/mahjong-leagues-las-vegas");
+    const route = fs.readFileSync(path.join(__dirname, "..", "app", "api", "refresh-schedule", "route.ts"), "utf8");
+    expect(route).toContain('revalidatePath("/schedule");');
+    expect(route).toContain('revalidatePath("/mahjong-leagues-las-vegas");');
   });
 });

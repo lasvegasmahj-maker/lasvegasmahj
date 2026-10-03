@@ -28,9 +28,10 @@ export async function GET(request: Request) {
 
   revalidateTag(BOOKWHEN_CACHE_TAG, { expire: 0 });
   revalidatePath("/schedule");
+  revalidatePath("/mahjong-leagues-las-vegas");
 
   return new Response(
-    "Done. The schedule will re-read Bookwhen on its next visit. Open https://www.lasvegasmahj.com/schedule and reload once.\n",
+    "Done. The schedule and leagues pages will re-read Bookwhen on their next visit. Open https://www.lasvegasmahj.com/schedule and reload once.\n",
     { headers: { "content-type": "text/plain; charset=utf-8", ...NO_STORE } },
   );
 }

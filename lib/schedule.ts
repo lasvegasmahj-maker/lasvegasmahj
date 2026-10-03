@@ -29,6 +29,7 @@ export interface CourseSummary {
   dayTime: string;
   span: string;
   price?: string;
+  salesClosed?: boolean;
 }
 
 const FEED_URL =
@@ -133,11 +134,8 @@ function todayInPacific(): number {
   return get("year") * 10000 + get("month") * 100 + get("day");
 }
 
-export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
-  const events: ScheduleEvent[] = [];
+async function readBookwhenSessions(cutoff: number): Promise<ScheduleEvent[]> {
   const bookwhen: ScheduleEvent[] = [];
-  const cutoff = todayInPacific();
-
   try {
     const res = await fetch(FEED_URL, {
       next: { revalidate: BOOKWHEN_REVALIDATE_SECONDS, tags: [BOOKWHEN_CACHE_TAG] },
@@ -168,8 +166,15 @@ export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
       }
     }
   } catch {
-    // Bookwhen unreachable: still show partner events below.
+    // Bookwhen unreachable: the schedule still shows partner events.
   }
+  return bookwhen;
+}
+
+export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
+  const events: ScheduleEvent[] = [];
+  const cutoff = todayInPacific();
+  const bookwhen = await readBookwhenSessions(cutoff);
 
   // Course detection reads third-party HTML; if it ever throws, the schedule keeps every session.
   try {
@@ -542,7 +547,12 @@ async function findCourses(bucket: ScheduleEvent[], fetchPage: FetchPage) {
   return { found, rest: remaining };
 }
 
-export async function groupCourses(events: ScheduleEvent[], fetchPage: FetchPage, nowMs: number): Promise<ScheduleEvent[]> {
+export async function groupCourses(
+  events: ScheduleEvent[],
+  fetchPage: FetchPage,
+  nowMs: number,
+  opts: { keepClosed?: boolean } = {},
+): Promise<ScheduleEvent[]> {
   const todayKey = pacificDayKey(nowMs);
   const feedOrder = new Map(events.map((e, i) => [e, i]));
   const placed: { e: ScheduleEvent; at: number }[] = [];
@@ -572,14 +582,31 @@ export async function groupCourses(events: ScheduleEvent[], fetchPage: FetchPage
 
   for (const { page, members } of courses.values()) {
     members.sort((a, b) => a.sortKey - b.sortKey);
-    const listed = page.tickets
-      .filter((t) => ticketListed(t, page.dates[0], nowMs))
-      .sort((a, b) => (a.priceCents ?? Infinity) - (b.priceCents ?? Infinity));
-    // Owner's choice: once sales close the course is hidden, with no stray single sessions.
-    if (listed.length === 0) continue;
+    const byPrice = (a: CourseTicket, b: CourseTicket) => (a.priceCents ?? Infinity) - (b.priceCents ?? Infinity);
+    const listed = page.tickets.filter((t) => ticketListed(t, page.dates[0], nowMs)).sort(byPrice);
+    // Owner's choice: once sales close the schedule hides the course, with no stray single
+    // sessions. The leagues page keeps it, marked closed, until its last session has passed.
+    if (listed.length === 0) {
+      if (!opts.keepClosed) continue;
+      const card = courseCard(page, [...page.tickets].sort(byPrice)[0], members, todayKey);
+      card.course = { ...card.course!, salesClosed: true };
+      placed.push({ e: card, at: feedOrder.get(members[0])! });
+      continue;
+    }
     placed.push({ e: courseCard(page, listed[0], members, todayKey), at: feedOrder.get(members[0])! });
   }
 
   // Back in feed order, so sessions that start at the same minute keep the order they had.
   return placed.sort((a, b) => a.at - b.at).map((x) => x.e);
+}
+
+// A league is a Bookwhen course with "League" in its title. Grouping itself never looks at the
+// title; this only decides which courses the leagues page lists.
+export function pickLeagues(grouped: ScheduleEvent[]): ScheduleEvent[] {
+  return grouped.filter((e) => e.course && /league/i.test(e.title)).sort((a, b) => a.sortKey - b.sortKey);
+}
+
+export async function getLeagues(): Promise<ScheduleEvent[]> {
+  const sessions = await readBookwhenSessions(todayInPacific());
+  return pickLeagues(await groupCourses(sessions, fetchBookwhenPage, Date.now(), { keepClosed: true }));
 }

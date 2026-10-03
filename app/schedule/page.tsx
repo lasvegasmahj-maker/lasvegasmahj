@@ -32,6 +32,13 @@ const bookOptions = [
     body: "Come play in a friendly, no-pressure room. Social Open Play welcomes all levels, from brand-new players to regulars building their game. Two hours at the table with help when you want it.",
   },
   {
+    title: "Leagues",
+    accent: "accent-green" as const,
+    body: "Play a full season of weekly games with the same group. One booking holds your seat for every session of the season.",
+    href: "/mahjong-leagues-las-vegas",
+    cta: "See the Leagues",
+  },
+  {
     title: "Private & Parties",
     accent: "accent-pink" as const,
     body: "Private lessons, birthday celebrations, and group parties, hosted for your people. Available upon request, contact for pricing and we will build the event around your group.",
@@ -75,7 +82,7 @@ export default async function Schedule() {
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "640px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
               See everything coming up in one place, at{" "}
               <a href="/studio" style={{ color: "var(--green)", fontWeight: 600 }}>the studio</a>{" "}
-              and out around town. Classes, open play, special events, and partner nights at local spots, all here. Studio spots are limited, with an automatic waitlist when a session fills.
+              and out around town. Classes, open play, leagues, special events, and partner nights at local spots, all here. Studio spots are limited, with an automatic waitlist when a session fills.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="#calendar" className="btn-primary">See the Calendar</a>
@@ -167,6 +174,9 @@ export default async function Schedule() {
                     <span className={opt.accent}>{opt.title}</span>
                   </h3>
                   <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.75 }}>{opt.body}</p>
+                  {"href" in opt && (
+                    <a href={opt.href} style={{ color: "var(--green)", fontWeight: 600, display: "inline-block", marginTop: "0.75rem" }}>{opt.cta}</a>
+                  )}
                 </div>
               ))}
             </div>
