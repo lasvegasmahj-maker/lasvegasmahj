@@ -46,8 +46,11 @@ export default async function Schedule() {
     (acc[e.monthLabel] ||= []).push(e);
     return acc;
   }, {});
-  // A course card stands for several dated sessions; the schema keeps describing each session.
-  const eventSchema = buildScheduleEventSchema(events.flatMap((e) => e.sessions ?? [e]));
+  // A course card stands for several dated sessions; the schema keeps describing each session,
+  // in date order as before.
+  const eventSchema = buildScheduleEventSchema(
+    events.flatMap((e) => e.sessions ?? [e]).sort((a, b) => a.sortKey - b.sortKey),
+  );
 
   return (
     <>
@@ -117,7 +120,7 @@ export default async function Schedule() {
                               <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.85rem", marginTop: "0.15rem" }}>{e.course.dayTime}</div>
                               <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.9rem", marginTop: "0.45rem" }}>{e.course.span}</div>
                               {e.course.price && (
-                                <div style={{ color: c, fontWeight: 700, fontSize: "0.9rem", marginTop: "0.15rem" }}>{e.course.price}</div>
+                                <div style={{ color: "#fff", fontWeight: 700, fontSize: "0.9rem", marginTop: "0.15rem" }}>{e.course.price}</div>
                               )}
                             </div>
                             ) : (
