@@ -28,7 +28,8 @@ const JOURNEYS: Journey[] = [
   { name: "false mahjong", question: "What is a false mahjong?", answer: /no penalty/i, contradiction: /set by house rules/i, page: /play continues with no penalty/, expectLink: true, label: /Standard rule/ },
   { name: "jokerless hand", question: "What is a joker-free hand and what does it pay?", answer: /Singles and Pairs/i, contradiction: /no exception/i, page: /The one exception is Singles and Pairs hands/, expectLink: true, label: /Standard rule/ },
   { name: "printed digits", question: "What do the numbers on the card mean?", answer: /tile's number/i, contradiction: /tell you how many identical tiles/i, page: /A digit printed in a hand on the card is usually the tile's number/, expectLink: true, label: /Standard rule/ },
-  { name: "unknown rule", question: "What happens if my elbow knocks over the rack?", answer: /cannot verify/i, expectLink: false, label: /Not verified/ },
+  // No rule fits, so the helper asks which part of the game it is about instead of refusing.
+  { name: "unknown rule", question: "What happens if my elbow knocks over the rack?", answer: /Which part of the game/i, contradiction: /cannot verify/i, expectLink: false, label: /Quick check/ },
   { name: "house-rule question", question: "How does payment work in a wall game?", answer: /house rule/i, page: /wall game/i, expectLink: true, label: /Can vary by house rule/ },
 ];
 
@@ -63,10 +64,11 @@ JOURNEYS.forEach((j, index) => {
     // Every follow-up chip must lead to a verified answer that does not contradict this rule.
     // Deployed hosts see one real IP for the whole run, so the chip probes run locally only.
     const deployed = /vercel\.app|lasvegasmahj\.com/.test(process.env.PLAYWRIGHT_BASE_URL ?? "");
-    const chips = card.locator(".ask-followups .ask-chip");
+    // Clarification options are answers to a question, not questions; only follow-up chips are probed.
+    const chips = card.locator(".ask-followups:not(.ask-clarify) .ask-chip");
     const chipCount = deployed ? 0 : await chips.count();
     for (let i = 0; i < chipCount && i < 3; i++) {
-      const label = (await card.locator(".ask-followups .ask-chip").nth(i).textContent())!.trim();
+      const label = (await chips.nth(i).textContent())!.trim();
       const res = await request.post("/api/ask", { data: { question: label }, headers: { "x-forwarded-for": `203.0.113.${(isMobile ? 140 : 80) + index}` } });
       const body = await res.json();
       expect(body.ok, `${j.name}: chip "${label}"`).toBe(true);
