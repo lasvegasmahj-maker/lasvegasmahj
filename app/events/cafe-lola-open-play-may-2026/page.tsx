@@ -37,6 +37,13 @@ const EVENT = {
   eventStatus: "https://schema.org/EventScheduled",
 };
 
+// The event is over and the page body already says so. These tags make the
+// search and social previews say so too, instead of reading as an open invite
+// to a party that happened in May. Event facts and body copy are unchanged.
+const RECAP_TITLE = "Recap: Cafe Lola Open Play Mahjong Party, May 31, 2026";
+const RECAP_DESCRIPTION =
+  "Recap of the Las Vegas Mahjong open play party at Cafe Lola on May 31, 2026. This event has ended. See our events page for upcoming open play sessions.";
+
 export const metadata: Metadata = {
   ...buildEventMetadata({
     name: EVENT.name,
@@ -45,6 +52,21 @@ export const metadata: Metadata = {
     startDate: EVENT.startDate,
     imageUrl: EVENT.imageUrl,
   }),
+  title: RECAP_TITLE,
+  description: RECAP_DESCRIPTION,
+  openGraph: {
+    title: `${RECAP_TITLE} | Las Vegas Mahjong`,
+    description: RECAP_DESCRIPTION,
+    url: EVENT.canonicalUrl,
+    type: "website",
+    images: [EVENT.imageUrl],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${RECAP_TITLE} | Las Vegas Mahjong`,
+    description: RECAP_DESCRIPTION,
+    images: [EVENT.imageUrl],
+  },
   // Hidden until the next live event: keep the page but out of search.
   robots: { index: false, follow: false },
 };
