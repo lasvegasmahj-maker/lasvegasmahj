@@ -8,13 +8,13 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Lessons in Las Vegas",
   description:
-    "Learn mahjong from a certified Oh My Mahjong instructor. MAHJ101 for beginners, MAHJ102 for intermediate players. Group lessons are $60 per person.",
+    "Vegas mahjong lessons for beginners and experienced players. Learn American Mahjong at our Las Vegas studio with certified instruction, small classes and private lessons.",
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas" },
   openGraph: {
     ...ogBase,
     title: "Mahjong Lessons Las Vegas | Certified Instructor | Las Vegas Mahjong",
     description:
-      "Book beginner or intermediate mahjong lessons in Las Vegas with a certified Oh My Mahjong instructor. $60 per person, serving Summerlin, Henderson & the whole Valley.",
+      "Vegas mahjong lessons for beginners and experienced players. Learn American Mahjong at our Las Vegas studio with certified instruction, small classes and private lessons.",
     url: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas",
     images: ["https://www.lasvegasmahj.com/shauna.jpg"],
   },
@@ -70,7 +70,7 @@ export default function MahjongLessonsLasVegas() {
               Mahjong <span className="accent-pink">Lessons</span> in Las Vegas
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Learn American Mahjong from a certified Oh My Mahjong instructor. Beginner-friendly, patient, and genuinely fun. Most students are playing confidently after just one session.
+              Las Vegas Mahjong offers in-person American Mahjong lessons at our Las Vegas studio, taught by a certified Oh My Mahjong instructor. Beginner-friendly, patient, and genuinely fun. Most students are playing confidently after just one session.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/#classes" className="btn-primary">Book a Lesson</a>
