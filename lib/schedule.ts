@@ -128,10 +128,16 @@ function todayInPacific(): number {
   return pacificDayKey(Date.now());
 }
 
+class BookwhenUnavailable extends Error {}
+
 async function readBookwhenSessions(cutoff: number): Promise<ScheduleEvent[]> {
   const bookwhen: ScheduleEvent[] = [];
   try {
     const feed = await readBookwhen(FEED_URL, BOOKWHEN_REVALIDATE_SECONDS);
+    // During a live rebuild, a missing feed should leave the last good page up (Next keeps it
+    // and retries) rather than cache a schedule with no Bookwhen sessions. A deploy must not
+    // fail because Bookwhen is down, so the build itself carries on without them.
+    if (feed === null && process.env.NEXT_PHASE !== "phase-production-build") throw new BookwhenUnavailable();
     if (feed !== null) {
       const lines = unfold(feed).split(/\r?\n/);
       let cur: Record<string, string> | null = null;
@@ -157,8 +163,8 @@ async function readBookwhenSessions(cutoff: number): Promise<ScheduleEvent[]> {
         cur[`${key}__params`] = head.slice(key.length);
       }
     }
-  } catch {
-    // Bookwhen unreachable: the schedule still shows partner events.
+  } catch (err) {
+    if (err instanceof BookwhenUnavailable) throw err;
   }
   return bookwhen;
 }
@@ -494,6 +500,7 @@ async function readBookwhen(url: string, revalidate: number): Promise<string | n
       const res = await fetch(url, {
         next: { revalidate, tags: [BOOKWHEN_CACHE_TAG] },
         headers: { "user-agent": "LasVegasMahjongSchedule/1.0 (+https://www.lasvegasmahj.com/schedule)" },
+        signal: AbortSignal.timeout(8000),
       });
       if (!res.ok) console.warn(`schedule: Bookwhen ${url} answered ${res.status}`);
       return res.ok ? await res.text() : null;
@@ -514,17 +521,17 @@ async function readBookwhen(url: string, revalidate: number): Promise<string | n
 }
 
 // Bookwhen slows down when one server asks for a dozen pages at once, so a rebuild reads a few at
-// a time, and stops starting new reads once its budget is spent. Anything not read in time falls
-// back to one row per session, which still renders.
-export function limitReads(read: FetchPage, concurrency: number, budgetMs: number, clock: () => number = Date.now): FetchPage {
-  const until = clock() + budgetMs;
+// a time and stops starting new reads once its budget is spent. Anything not read in time falls
+// back to one row per session, which still renders. Worst case: 8s feed, 30s budget, 8s last read.
+export function limitReads(read: FetchPage, concurrency: number, budgetMs: number, now: () => number = Date.now): FetchPage {
+  const until = now() + budgetMs;
   let free = concurrency;
   const queue: (() => void)[] = [];
   return async (url) => {
     if (free > 0) free--;
     else await new Promise<void>((resolve) => queue.push(resolve));
     try {
-      return clock() >= until ? null : await read(url);
+      return now() >= until ? null : await read(url);
     } finally {
       const next = queue.shift();
       if (next) next();
@@ -534,7 +541,7 @@ export function limitReads(read: FetchPage, concurrency: number, budgetMs: numbe
 }
 
 const coursePageReader = (): FetchPage =>
-  limitReads((url) => readBookwhen(url, COURSE_PAGE_REVALIDATE_SECONDS), 4, 20000);
+  limitReads((url) => readBookwhen(url, COURSE_PAGE_REVALIDATE_SECONDS), 4, 30000);
 
 function pacificDayKey(ms: number): number {
   const p = Object.fromEntries(PACIFIC_PARTS.formatToParts(new Date(ms)).map((x) => [x.type, x.value]));
@@ -589,7 +596,10 @@ export async function groupCourses(
     buckets.get(key)!.push(e);
   }
 
-  const results = await Promise.all([...buckets.values()].map((b) => findCourses(b, fetchPage)));
+  // Entries with several sessions (every course) are looked up first, so if the read budget runs
+  // out it runs out on single sessions, which need no grouping anyway.
+  const ordered = [...buckets.values()].sort((a, b) => b.length - a.length);
+  const results = await Promise.all(ordered.map((b) => findCourses(b, fetchPage)));
   // Sessions of one course land in different buckets if one session's title or details are
   // edited on their own; the shared ticket brings them back together.
   const courses = new Map<string, { page: CoursePage; members: ScheduleEvent[] }>();
@@ -632,10 +642,24 @@ export function pickLeagues(grouped: ScheduleEvent[]): ScheduleEvent[] {
 
 export async function getLeagues(): Promise<ScheduleEvent[]> {
   const sessions = await readBookwhenSessions(todayInPacific());
+  const reader = coursePageReader();
+  let failed = false;
+  const read: FetchPage = async (url) => {
+    const html = await reader(url);
+    if (html === null) failed = true;
+    return html;
+  };
+  let leagues: ScheduleEvent[] = [];
   try {
-    return pickLeagues(await groupCourses(sessions, coursePageReader(), Date.now(), { keepClosed: true }));
+    leagues = pickLeagues(await groupCourses(sessions, read, Date.now(), { keepClosed: true }));
   } catch (err) {
     console.warn("leagues: course detection failed", err);
-    return [];
+    failed = true;
   }
+  // No league because a Bookwhen read failed is not the same as no league: keep the last good
+  // page (Next retries on the next visit) rather than cache the empty state.
+  if (leagues.length === 0 && failed && process.env.NEXT_PHASE !== "phase-production-build") {
+    throw new BookwhenUnavailable();
+  }
+  return leagues;
 }

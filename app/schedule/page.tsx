@@ -5,8 +5,8 @@ import Footer from "@/components/footer";
 import { getScheduleEvents } from "@/lib/schedule";
 import { buildScheduleEventSchema } from "@/lib/schema";
 
-// A rebuild reads Bookwhen; Vercel's default limit can cut it off, and a cut-off rebuild leaves
-// the old page in place indefinitely.
+// A rebuild reads Bookwhen (worst case about 46s with the read caps in lib/schedule.ts). A rebuild
+// that hits the platform's time limit leaves the old page in place, so the limit is set to fit.
 export const maxDuration = 60;
 
 export const metadata: Metadata = {
