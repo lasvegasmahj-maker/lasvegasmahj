@@ -36,6 +36,13 @@ const bookOptions = [
     link: { lead: "Visiting Las Vegas?", text: "Play mahjong while you are in town", href: "/play-mahjong-las-vegas" },
   },
   {
+    title: "Leagues",
+    accent: "accent-green" as const,
+    body: "Play a full season of weekly games with the same group. One booking holds your seat for every session of the season.",
+    href: "/mahjong-leagues-las-vegas",
+    cta: "See the Leagues",
+  },
+  {
     title: "Private & Parties",
     accent: "accent-pink" as const,
     body: "Private lessons, birthday celebrations, and group parties, hosted for your people. Available upon request, contact for pricing and we will build the event around your group.",
@@ -50,7 +57,11 @@ export default async function Schedule() {
     (acc[e.monthLabel] ||= []).push(e);
     return acc;
   }, {});
-  const eventSchema = buildScheduleEventSchema(events);
+  // A course card stands for several dated sessions; the schema keeps describing each session,
+  // in date order as before.
+  const eventSchema = buildScheduleEventSchema(
+    events.flatMap((e) => e.sessions ?? [e]).sort((a, b) => a.sortKey - b.sortKey),
+  );
 
   return (
     <>
@@ -75,7 +86,7 @@ export default async function Schedule() {
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "640px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
               See everything coming up in one place, at{" "}
               <a href="/studio" style={{ color: "var(--green)", fontWeight: 600 }}>the studio</a>{" "}
-              and out around town. Classes, open play, special events, and partner nights at local spots, all here. Studio spots are limited, with an automatic waitlist when a session fills.
+              and out around town. Classes, open play, leagues, special events, and partner nights at local spots, all here. Studio spots are limited, with an automatic waitlist when a session fills.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="#calendar" className="btn-primary">See the Calendar</a>
@@ -114,6 +125,19 @@ export default async function Schedule() {
                               <div style={{ color: "var(--pink)", fontWeight: 800, fontSize: "0.72rem", letterSpacing: "0.06em" }}>{e.day}</div>
                               <div style={{ fontFamily: "var(--font-heading)", fontWeight: 800, fontSize: "1.7rem", lineHeight: 1, color: "#fff" }}>{e.num}</div>
                             </div>
+                            {e.course ? (
+                            <div className="sched-body" style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ fontWeight: 700, fontSize: "1.05rem", color: "#fff" }}>{e.title}</div>
+                              <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.85rem", marginTop: "0.15rem" }}>
+                                {e.course.dayTime}
+                                <span style={{ display: "inline-block", fontSize: "0.68rem", fontWeight: 700, padding: "1px 8px", borderRadius: "999px", marginLeft: "8px", color: c, border: "1px solid " + c }}>{e.room}</span>
+                              </div>
+                              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.9rem", marginTop: "0.45rem" }}>{e.course.span}</div>
+                              {e.course.price && (
+                                <div style={{ color: "#fff", fontWeight: 700, fontSize: "0.9rem", marginTop: "0.15rem" }}>{e.course.price}</div>
+                              )}
+                            </div>
+                            ) : (
                             <div className="sched-body" style={{ flex: 1, minWidth: 0 }}>
                               <div style={{ fontWeight: 700, fontSize: "1.05rem", color: "#fff" }}>{e.title}</div>
                               <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.85rem", marginTop: "0.15rem" }}>
@@ -124,6 +148,7 @@ export default async function Schedule() {
                                 <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem", lineHeight: 1.6, marginTop: "0.6rem", marginBottom: 0 }}>{e.description}</p>
                               )}
                             </div>
+                            )}
                             <div className="sched-book" style={{ flex: "none", textAlign: "right" }}>
                               <a href={e.url} target="_blank" rel="noopener" className="btn-primary" style={{ padding: "0.5rem 1.1rem", fontSize: "0.85rem" }}>{e.bookLabel}</a>
                             </div>
@@ -161,6 +186,9 @@ export default async function Schedule() {
                       </>
                     )}
                   </p>
+                  {"href" in opt && (
+                    <a href={opt.href} style={{ color: "var(--green)", fontWeight: 600, display: "inline-block", marginTop: "0.75rem" }}>{opt.cta}</a>
+                  )}
                 </div>
               ))}
             </div>
