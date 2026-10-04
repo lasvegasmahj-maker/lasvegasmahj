@@ -27,7 +27,6 @@ export const metadata: Metadata = {
   description:
     "Our mahjong studio is now open inside Lucky Hare at 8687 W. Sahara Ave. Two rooms: Lucky Wishbone for classes and events, Lucky Sevens for open play.",
   alternates: { canonical: "https://www.lasvegasmahj.com/studio" },
-  robots: { index: true, follow: true },
   openGraph: {
     ...ogBase,
     title: "Our Mahjong Studio in Las Vegas | Las Vegas Mahjong",
@@ -71,7 +70,7 @@ const studioSchema = {
           "@id": "https://www.lasvegasmahj.com/studio#lucky-sevens",
           name: "Lucky Sevens",
           description:
-            "The open play room at the Las Vegas Mahjong studio, for social American Mahjong at every level.",
+            "The open play room at the Las Vegas Mahjong studio, for social American Mahjong among players who already know the game.",
         },
       ],
     },
@@ -230,16 +229,19 @@ export default function Studio() {
                 </h3>
                 <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, marginBottom: "1rem" }}>
                   Lucky Sevens is the playing room. This is where Social Open Play
-                  happens: you show up, sit down, and play. Nobody is keeping score
-                  of how new you are. Come on your own or bring a friend, and
+                  happens: book a seat, sit down, and play. It is for players who
+                  already know the game, including Mahj 101 graduates. Come on your own or bring a friend, and
                   expect to leave knowing a few more names than when you walked in.
                 </p>
                 <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: 0 }}>
-                  New to it? Here is how{" "}
+                  Want the details? Here is how{" "}
                   <a href="/mahjong-open-play-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>
                     open play
                   </a>{" "}
-                  works.
+                  works. Visiting from out of town? See how to{" "}
+                  <a href="/play-mahjong-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>
+                    play mahjong while you are in Las Vegas
+                  </a>.
                 </p>
               </div>
             </div>

@@ -1,7 +1,168 @@
 # Handoff: Las Vegas Mahjong competitive SEO
 
 Rounds 1, 2, 3 and the contact consistency cleanup are all CLOSED, MERGED and LIVE. Their
-records are preserved below and must not be edited or re-litigated. There is no active round.
+records are preserved below and must not be edited or re-litigated. **Rounds 4 and 5 are
+OPEN** on branch `seo/play-mahjong-visitors` (PR #117), awaiting the owner's merge.
+
+---
+
+# ROUND 5: corporate and group landing pages (OPEN, same PR #117)
+
+**Date:** 2026-09-29. Same branch and worktree as round 4.
+
+## Architecture (one buyer question per page)
+
+| Page | Owns | Parent |
+|---|---|---|
+| `/mahjong-corporate-las-vegas` | how we run corporate events (the service) | root, nav "Corporate" |
+| `/corporate-event-activities-las-vegas` (new) | occasions: appreciation, client entertainment, sales meetings, executive retreats, holiday parties, offsites, charity | hub |
+| `/corporate-team-building-las-vegas` | team building, offsites | hub |
+| `/las-vegas-meeting-planner-activities` (new) | any meeting, by agenda slot | hub |
+| `/conference-activities-las-vegas` | conferences and conference networking | hub |
+| `/convention-activities-las-vegas` | convention organizers and attendee groups | hub |
+| `/trade-show-booth-activities-las-vegas` (new) | exhibitors and sponsors: booth, hospitality suite, sponsored lounge, experiential | convention |
+| `/incentive-group-activities-las-vegas` (new) | reward trips, DMC programs, VIP groups | hub |
+| `/play-mahjong-las-vegas` (round 4) | visitors who already play | studio |
+
+**Not built, on purpose:** `/conference-networking-activities-las-vegas` (the conference page
+already is it), and standalone offsite, client entertainment, employee appreciation, executive
+retreat, sales meeting, hospitality suite, DMC and experiential marketing pages (each is a
+section of a page above). Do not add them without Search Console evidence of separate demand.
+
+`components/related-experiences.tsx` is the contextual link system: each corporate page picks
+its next-step cards. The primary nav, footer and homepage are untouched. The hub shows six
+cards; the booth page is reached through convention, conference and the occasions page.
+
+## Rules this round held (tests in `tests/seo-round5-corporate.*`)
+
+- Venues named come only from the owner's list: hotels, conference rooms, ballrooms, corporate
+  venues, convention settings, hospitality suites, private rooms, offsite events.
+- No capacity, client, price, statistic, testimonial, result or response time on the new pages.
+  Corporate hosting is never placed at the studio (only Social Open Play and private lessons are).
+- Every new page conveys the seven roles (team building, networking, engagement, breakout,
+  client entertainment, hosted social, group activity) without identical copy across pages.
+- Titles, descriptions (155 max), serviceTypes and FAQ questions are unique across the cluster.
+
+## Owner decisions made in the final pass (2026-09-29), now standing rules
+
+1. **Furniture:** the client, hotel or venue provides the event space, tables and chairs. Las
+   Vegas Mahjong provides the mahjong equipment, game materials and facilitation. Never write
+   "we bring everything", "we fill the room with tables" or anything implying we supply
+   furniture. Tests enforce it on all eight corporate pages.
+2. **DMC terms:** only "Partner and referral arrangements are available for DMCs and event
+   professionals. Contact us to discuss your program." No commission rate, no insurance or
+   COI claim.
+3. **Hub vs team building:** the hub answers what we provide, how an event comes together,
+   which programs we support and how to book. Team building answers why mahjong works for a
+   team and what happens at the table. Different openings, cards and closing sections.
+4. **Open Play** (`/mahjong-open-play-las-vegas`): primarily Lucky Sevens; social play, not a
+   lesson; for players who already know the game, including Mahj 101 graduates; solo or with
+   friends; advance registration; bring your current NMJL card (never say cards are
+   provided); $20 a session, $85 for a 5-pack. **Prices live only in `lib/pricing.ts`.** The
+   visitor page, schedule card, studio Lucky Sevens copy and schema no longer invite complete
+   beginners to Open Play.
+5. **Legacy claims removed:** "thousands of conventions", "top convention city", "Scales to
+   100+", "10 to 100+", "any size" / "no matter how big", and reply-time promises on the
+   corporate pages, contact, parties and private lessons.
+
+## Still open (outside this PR's scope, owner's call)
+
+- Homepage (unchanged by instruction): FAQ "we'll have extras" for NMJL cards, studio banner
+  "every level at the same tables", "Groups of any size", inquiry pop-up "within 24 hours".
+- Summerlin and Henderson (owner deferred rewrites): "We respond within 24 hours", Henderson
+  "open play events across the Las Vegas Valley", Summerlin "we bring everything".
+- Parties page: "We bring everything", "large corporate events of 50+", "any size group".
+- Footer (sitewide, homepage too): "open play events, leagues, tournaments ... entire Las Vegas
+  Valley".
+- Bookwhen listings (owner-side): Social Open Play says "Drop in and play"; the Halloween
+  special says "All levels welcome"; booking pages show her phone and gmail.
+
+Architecture record in Drive: LVM/Marketing, "LVM SEO Content Architecture - Corporate, Group
+and Visitor Clusters (2026-09-29)".
+
+---
+
+# ROUND 4: visiting players page and corporate cluster (OPEN, awaiting owner merge)
+
+**Date:** 2026-09-29. **Branch:** `seo/play-mahjong-visitors` off `origin/main` at `cb28ed6`,
+built in the worktree `~/Projects/lvm-seo-visitors`.
+
+## What shipped on the branch
+
+- **New page `/play-mahjong-las-vegas`** for visitors who ALREADY play American Mahjong. Owner's
+  title (absolute, no brand suffix) and H1. Studio inside Lucky Hare, Social Open Play in Lucky
+  Sevens, solo or with friends, no table of four needed, advance registration, American Mahjong
+  with the NMJL card and not Riichi, honest level guidance (all levels welcome, Mahj 101 is the
+  better first step for someone who has never played). 11-question FAQ with FAQPage JSON-LD
+  generated from the same array as the visible FAQ. Breadcrumb. No Event markup (that stays on
+  `/schedule`). Private groups go to private lessons, parties, corporate, or
+  `/contact?source=visitors` (new attribution slug, no inquiry prefill).
+- **The page lists the next four regular Social Open Play sessions from the Bookwhen feed.**
+  Filter: studio venue, title starts with "Social Open Play", no price in the title, and the
+  session has not already ended today (the feed only drops past DAYS; `/schedule` still shows a
+  session that ended earlier today with a Book button, pre-existing).
+- **`/mahjong-open-play-las-vegas`** no longer competes with it: description rewritten (it still
+  said "across Summerlin and Henderson"), title made absolute (was 68 characters and cut off),
+  OG title and image fixed, and the SportsOrganization node (a rival organization with a
+  city-only address) replaced by a Service. One link sentence to the new page.
+- **Sitewide LocalBusiness:** `containedInPlace` names Lucky Hare by the `#studio` @id (no second
+  address, tests enforce one PostalAddress); description now states the real offering, no
+  "premier"; `knowsAbout` adds American Mah Jongg, NMJL card, open play; Social Open Play offer
+  added. **`OPEN_PLAY_SERVICE` in `lib/schema.ts` is the single node** used by both the offer
+  catalog and the open play page (`#service` @id). WebSite description also lost "premier".
+- **`/schedule` and `/studio` no longer set a page-level `robots` object.** In Next it replaces
+  the root object, which silently dropped `max-image-preview:large` and `max-snippet:-1`.
+  `/schedule` also got a real title ("Mahjong Class & Open Play Schedule"), a description and its
+  first share image, plus one link sentence in the Open Play card.
+- **Corporate cluster:** titles deliberately KEPT (exact match, within length, no ranking data to
+  justify a change). Descriptions trimmed under 155 and differentiated. `serviceType` on each
+  Service. Summerlin City to Place. Hub H2 no longer duplicates the team building H2. Conference
+  and convention link to each other. One FAQ on the hub (incentive trip / visiting company
+  group) and one on team building (corporate offsite), each sourced from claims already on
+  those pages.
+- **Sitemap:** new URL at 0.85; lastmod updated only on pages whose content changed.
+
+## Visible changes on existing pages (everything else verified identical to production)
+
+Open play page: one sentence. Studio: one sentence in the Lucky Sevens card. Schedule: one
+sentence in the Open Play card. Corporate hub: H2 wording and one FAQ. Team building: one FAQ.
+Conference and convention: one cross-link sentence each. Homepage: NONE (head JSON-LD only).
+
+## Verification
+
+Three independent reviewers (facts against Bookwhen and site copy; technical SEO and schema;
+visual diff against production at 1280 and 390, plus 320/360). Fixed from their findings: the
+NMJL card answer (Bookwhen says "Bring your 2026 NMJL card"; the homepage FAQ's "we'll have
+extras" does NOT apply to open play), a past session showing a Book button, specials leaking
+into a list whose copy says two hours in Lucky Sevens, an unconditional "you can play" promise,
+buttons breaking apart at 360px, a third inbound link, and the duplicate open play service.
+Tests: `tests/seo-round4-visitors.logic.spec.ts` and `tests/seo-round4-visitors.spec.ts`.
+
+## Owner decisions left open (not done, on purpose)
+
+1. **Bookwhen pages publish her phone number and gmail** in their footer, and every Book button
+   leads there. Bookwhen account settings, not site code.
+2. **Homepage FAQ says "we'll have extras" for NMJL cards**, Bookwhen says bring your own for
+   open play. Homepage is protected; owner wording.
+3. **Open play page body copy is stale:** hero label "Summerlin · Henderson · The Whole Valley",
+   "great venues across the Valley", "restaurants, wine bars". Every feed event is at Lucky Hare.
+4. **Footer link to `/play-mahjong-las-vegas`** would take it from 3 to ~30 inbound links, but it
+   changes the footer on every page including the homepage.
+5. **Corporate hub and team building still share copy** (opening lines, the four "why mahjong"
+   cards). Conference still has a booth-draw format and "Conventions" in its label.
+6. **Apex domain redirects with a 307** (temporary) to www. Vercel domain setting on
+   `lasvegasmahj-h1iz`, should be 308.
+7. Pre-existing schema nits: `courseMode` on Course (schema.org allows it on CourseInstance),
+   `areaServed` on the /about Person, sitewide Course markup on every page, unsourced
+   `paymentAccepted`, footer Facebook uses the numeric profile URL while `sameAs` uses the vanity URL.
+
+## Proposed pages (recommendation, NOT built)
+
+`/conference-networking-activities-las-vegas` SKIP (the conference page already is that page).
+`/corporate-offsite-las-vegas` MERGE into team building (done via FAQ and description).
+`/meeting-planner-las-vegas-activities` MERGE into conference and the hub.
+`/incentive-travel-las-vegas-activities` BUILD LATER, only once the owner supplies real
+incentive or DMC facts (a program run, capacity, lead time). Without them it would be thin.
 
 ---
 

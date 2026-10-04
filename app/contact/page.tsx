@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     ...ogBase,
     title: "Contact Las Vegas Mahjong",
     description:
-      "Questions about mahjong lessons, a private party, or a corporate event in Las Vegas? Send a message and we will get back to you within 24 hours.",
+      "Questions about mahjong lessons, a private party, or a corporate event in Las Vegas? Send a message and we will get back to you.",
     url: "https://www.lasvegasmahj.com/contact",
     images: ["https://www.lasvegasmahj.com/shauna.jpg"],
   },
@@ -76,7 +76,7 @@ export default function Contact() {
               Contact <span className="accent-pink">Las Vegas Mahjong</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", lineHeight: 1.75 }}>
-              Have a question about a lesson, a private party, or a corporate event? Send a message and we will get back to you within 24 hours. Tell us what you are planning, how many people you have, and the dates that work, and we will take it from there.
+              Have a question about a lesson, a private party, or a corporate event? Send a message and we will get back to you. Tell us what you are planning, how many people you have, and the dates that work, and we will take it from there.
             </p>
           </div>
         </section>
@@ -125,7 +125,7 @@ export default function Contact() {
                   </a>
                 </p>
                 <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>
-                  We answer within 24 hours.
+                  We read every message and follow up.
                 </p>
               </div>
             </div>

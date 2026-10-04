@@ -1,3 +1,5 @@
+import { OPEN_PLAY_PRICES } from "./pricing";
+
 /**
  * Schema.org JSON-LD helpers for Las Vegas Mahjong.
  * Import these in page.tsx files and render via:
@@ -117,6 +119,32 @@ export const STUDIO_PLACE = {
     postalCode: "89117",
     addressCountry: "US",
   },
+};
+
+// One node for Social Open Play, shared by the sitewide offer catalog and the open play page,
+// so both describe the same service under one @id instead of two same-named services.
+export const OPEN_PLAY_SERVICE = {
+  "@type": "Service",
+  "@id": "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas#service",
+  name: "Social Open Play",
+  serviceType: "American Mahjong open play",
+  description:
+    "Two-hour social American Mahjong sessions, primarily in the Lucky Sevens room at the Las Vegas Mahjong studio inside Lucky Hare. For players who already know how to play, including Mahj 101 graduates; locals and visitors welcome. Advance registration required.",
+  url: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas",
+  offers: [
+    {
+      "@type": "Offer",
+      name: "Social Open Play session",
+      price: OPEN_PLAY_PRICES.session.toFixed(2),
+      priceCurrency: "USD",
+    },
+    {
+      "@type": "Offer",
+      name: "Social Open Play 5-pack",
+      price: OPEN_PLAY_PRICES.fivePack.toFixed(2),
+      priceCurrency: "USD",
+    },
+  ],
 };
 
 export interface ScheduleEventInput {

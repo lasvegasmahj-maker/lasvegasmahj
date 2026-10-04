@@ -39,6 +39,7 @@ Non-negotiable. When any other instruction conflicts with this section, this sec
 ### Pricing
 - Group lessons: $60 per person. Group size is 4-8 people. Show this on lesson pages only.
 - Private lessons, parties, and corporate events: say "contact for pricing." Never show a dollar amount for these.
+- Social Open Play: $20 per session, $85 for a 5-pack (owner, 2026-09-29). The numbers live only in `lib/pricing.ts`; pages and schema read them from there, never hard-code them.
 - Leagues: the season price from Bookwhen ("$150 for the season" in fall 2026) may show on league cards on `/schedule` and `/mahjong-leagues-las-vegas`. The owner approved this on 2026-10-03. It shows only when the Bookwhen course ticket name includes "season".
 
 ### Data honesty

@@ -4,19 +4,22 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import { getScheduleEvents } from "@/lib/schedule";
 import { buildScheduleEventSchema } from "@/lib/schema";
+import { SEVENS_OPEN_PLAY } from "@/lib/studio-photos";
 
 export const metadata: Metadata = {
-  title: "Schedule & Booking",
+  title: "Mahjong Class & Open Play Schedule",
   description:
-    "See the upcoming Las Vegas Mahjong schedule of classes, open play, and special events, and book your spot online.",
+    "Upcoming American Mahjong classes, Social Open Play and special events at our Las Vegas studio inside Lucky Hare. See the dates and book your seat online.",
   alternates: { canonical: "https://www.lasvegasmahj.com/schedule" },
-  robots: { index: true, follow: true },
   openGraph: {
     ...ogBase,
-    title: "Schedule & Booking | Las Vegas Mahjong",
+    title: "Mahjong Class & Open Play Schedule | Las Vegas Mahjong",
     description:
       "Upcoming classes, open play, and special events at the Las Vegas Mahjong studio. Reserve your seat online.",
     url: "https://www.lasvegasmahj.com/schedule",
+    // A page-level openGraph object replaces the parent's, so without this the share card
+    // had no image at all.
+    images: [`https://www.lasvegasmahj.com${SEVENS_OPEN_PLAY.src}`],
   },
 };
 
@@ -29,7 +32,8 @@ const bookOptions = [
   {
     title: "Open Play",
     accent: "accent-green" as const,
-    body: "Come play in a friendly, no-pressure room. Social Open Play welcomes all levels, from brand-new players to regulars building their game. Two hours at the table with help when you want it.",
+    body: "Come play in a friendly, no-pressure room. Social Open Play is for players who already know the game, from Mahj 101 graduates to regulars building their game. Two hours at the table with help when you want it.",
+    link: { lead: "Visiting Las Vegas?", text: "Play mahjong while you are in town", href: "/play-mahjong-las-vegas" },
   },
   {
     title: "Leagues",
@@ -173,7 +177,15 @@ export default async function Schedule() {
                   <h3 className="section-title" style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
                     <span className={opt.accent}>{opt.title}</span>
                   </h3>
-                  <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.75 }}>{opt.body}</p>
+                  <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.75 }}>
+                    {opt.body}
+                    {opt.link && (
+                      <>
+                        {" "}{opt.link.lead}{" "}
+                        <a href={opt.link.href} style={{ color: "var(--green)", fontWeight: 600 }}>{opt.link.text}</a>.
+                      </>
+                    )}
+                  </p>
                   {"href" in opt && (
                     <a href={opt.href} style={{ color: "var(--green)", fontWeight: 600, display: "inline-block", marginTop: "0.75rem" }}>{opt.cta}</a>
                   )}

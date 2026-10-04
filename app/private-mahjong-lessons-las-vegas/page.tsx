@@ -154,7 +154,7 @@ export default function PrivateMahjongLessons() {
               Private lessons are taught at our studio inside Lucky Hare on West Sahara. It is a real table in a quiet room, set up for teaching and nothing else. The tiles are out, the racks are placed, and the cards are on the table before you arrive, so the session starts the moment you sit down.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1.5rem" }}>
-              It is also the room where group classes and open play happen, which matters more than it sounds. When you are ready to play with other people, you will already know the table, the room, and the way a session runs. In home sessions are available by request.
+              It is also where group classes and open play happen, which matters more than it sounds. When you are ready to play with other people, you will already know the table, the room, and the way a session runs. In home sessions are available by request.
             </p>
             <address style={{ fontStyle: "normal", color: "rgba(255,255,255,0.6)", lineHeight: 1.8, borderLeft: "3px solid var(--pink)", paddingLeft: "1.25rem" }}>
               <strong style={{ color: "rgba(255,255,255,0.85)" }}>Las Vegas Mahjong Studio</strong>
@@ -171,9 +171,11 @@ export default function PrivateMahjongLessons() {
             <p className="section-label">Pricing</p>
             <h2 className="section-title">Contact for <span className="accent-green">Pricing</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.7, marginBottom: "2rem" }}>
-              Private lessons are priced per session, and what you need shapes what it costs. Tell me what you are hoping to get out of it and I will send you the details. I answer within 24 hours.
+              Private lessons are priced per session, and what you need shapes what it costs. Tell me what you are hoping to get out of it and I will send you the details.
             </p>
-            <a href="/contact?source=private-lessons" className="btn-primary">Ask About a Private Lesson</a>
+            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+              <a href="/contact?source=private-lessons" className="btn-primary">Ask About a Private Lesson</a>
+            </div>
           </div>
         </section>
 
