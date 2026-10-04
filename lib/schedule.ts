@@ -36,9 +36,11 @@ export interface CourseSummary {
 const FEED_URL =
   "https://feeds.bookwhen.com/ical/3gqc90ysul98/sx0z7q/public.ics";
 
-// Bookwhen serves its feed and pages uncached, so this interval is the whole delay before an
-// edit in Bookwhen reaches the site. The tag lets /api/refresh-schedule mark them stale at once.
-export const BOOKWHEN_REVALIDATE_SECONDS = 300;
+// Bookwhen serves its feed and pages uncached, so this interval sets the delay before an edit in
+// Bookwhen reaches the site. A rebuild can reuse a feed copy up to this old, and the page itself
+// is rebuilt on the same interval, so an edit shows within about twice this (the owner asked for
+// about 5 minutes). The tag lets /api/refresh-schedule mark them stale at once.
+export const BOOKWHEN_REVALIDATE_SECONDS = 120;
 // Course pages (dates, ticket, price) rarely change and there are about 20 of them per render,
 // so they are re-read less often. Whether a sale has closed is checked against the render-time
 // clock, so it lags by at most one page refresh, not by this interval.
@@ -48,7 +50,7 @@ export const BOOKWHEN_CACHE_TAG = "bookwhen";
 // worst case is one feed read, then the course-read budget, then one last course read; both
 // pages' maxDuration must stay above that (a logic test checks it).
 export const BOOKWHEN_READ_TIMEOUT_MS = 8000;
-export const COURSE_READ_CONCURRENCY = 4;
+const COURSE_READ_CONCURRENCY = 4;
 export const COURSE_READ_BUDGET_MS = 30000;
 const LEAGUE_TITLE = /league/i;
 
@@ -512,7 +514,8 @@ export type FetchPage = (url: string) => Promise<string | null>;
 
 // Next drops a fetch's abort signal when it refetches a stale cache entry, so the time limit is
 // enforced here instead. A page rebuild must finish inside the platform's time limit, or Vercel
-// keeps serving the old page; a slow Bookwhen read can therefore never hold a rebuild hostage.
+// keeps serving the old page, so the render stops waiting after the limit. The request itself may
+// run on in the background until the function ends.
 // A failed read says whether it is lasting: an answer like 404 will not change on a retry,
 // while a timeout, network error, 5xx or rate limit may clear on the next rebuild.
 type BookwhenRead = { text: string } | { text: null; lasting: boolean };
@@ -565,7 +568,6 @@ export function limitReads(read: FetchPage, concurrency: number, budgetMs: numbe
   };
 }
 
-// Pages Bookwhen answered with a lasting failure are added to `gone`.
 const coursePageReader = (gone?: Set<string>): FetchPage =>
   limitReads(
     async (url) => {
@@ -676,26 +678,28 @@ export function pickLeagues(grouped: ScheduleEvent[]): ScheduleEvent[] {
 
 export async function getLeagues(): Promise<ScheduleEvent[]> {
   const sessions = await readBookwhenSessions(todayInPacific());
-  // Only a league's own pages can hide a league, so only their failures count, and a page that
-  // Bookwhen says is gone will not come back on a retry.
-  const leagueUrls = new Set(sessions.filter((e) => LEAGUE_TITLE.test(e.title)).map((e) => e.url));
+  // Only league sessions can become a league card, so only their pages are read: a handful of
+  // reads instead of one per class and open play.
+  const leagueSessions = sessions.filter((e) => LEAGUE_TITLE.test(e.title));
   const gone = new Set<string>();
   const reader = coursePageReader(gone);
   let failed = false;
   const read: FetchPage = async (url) => {
     const html = await reader(url);
-    if (html === null && leagueUrls.has(url) && !gone.has(url)) failed = true;
+    if (html === null && !gone.has(url)) failed = true;
     return html;
   };
   let leagues: ScheduleEvent[] = [];
   try {
-    leagues = pickLeagues(await groupCourses(sessions, read, Date.now(), { keepClosed: true }));
+    leagues = pickLeagues(await groupCourses(leagueSessions, read, Date.now(), { keepClosed: true }));
   } catch (err) {
-    console.warn("leagues: course detection failed", err);
-    if (leagueUrls.size > 0) failed = true;
+    // A bug rather than an outage: show the empty state, where it gets noticed, rather than hold
+    // an old page that would never update.
+    console.error("leagues: course detection failed", err);
   }
   // A league page that timed out or errored would drop that league from the page, so keep the
-  // last good page instead (Next retries on the next visit). The build carries on regardless.
+  // last good page instead (Next retries on the next visit). A page Bookwhen says is gone will
+  // not come back, so it does not count. The build carries on regardless.
   if (failed && !building()) {
     console.error("leagues: KEEPING PREVIOUS PAGE, a Bookwhen league page did not answer");
     throw new BookwhenUnavailable();

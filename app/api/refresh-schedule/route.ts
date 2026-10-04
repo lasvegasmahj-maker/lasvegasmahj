@@ -32,7 +32,7 @@ export async function GET(request: Request) {
   revalidateTag(BOOKWHEN_CACHE_TAG, "max");
 
   return new Response(
-    "Done. Open https://www.lasvegasmahj.com/schedule (that visit starts the update), wait about 15 seconds, then reload. The leagues page works the same way.\n",
+    "Done. Open https://www.lasvegasmahj.com/schedule (that visit starts the update), wait about 30 seconds, then reload. If it still shows the old version, wait a minute and reload again. For leagues, do the same with https://www.lasvegasmahj.com/mahjong-leagues-las-vegas\n",
     { headers: { "content-type": "text/plain; charset=utf-8", ...NO_STORE } },
   );
 }

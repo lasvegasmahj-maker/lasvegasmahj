@@ -271,9 +271,9 @@ test.describe("grouping on the schedule", () => {
 });
 
 test.describe("how fresh the schedule is", () => {
-  test("Bookwhen is re-read every 5 minutes, with one tag for the refresh link", () => {
+  test("Bookwhen is re-read every 2 minutes, so edits show within about 5, with one tag for the refresh link", () => {
     const src = fs.readFileSync(path.join(__dirname, "..", "lib", "schedule.ts"), "utf8");
-    expect(src).toContain("export const BOOKWHEN_REVALIDATE_SECONDS = 300;");
+    expect(src).toContain("export const BOOKWHEN_REVALIDATE_SECONDS = 120;");
     expect(src).toContain("export const COURSE_PAGE_REVALIDATE_SECONDS = 1800;");
     // Every Bookwhen read goes through one capped reader that carries the refresh tag.
     expect(src.match(/await fetch\(/g)).toHaveLength(1);
