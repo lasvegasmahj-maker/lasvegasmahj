@@ -1,5 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { BOOKWHEN_CACHE_TAG } from "@/lib/schedule";
 import { ipOf, SlidingWindow } from "@/lib/ask/rate-limit";
 
@@ -26,12 +26,13 @@ export async function GET(request: Request) {
     return new Response("Not found", { status: 404, headers: NO_STORE });
   }
 
-  revalidateTag(BOOKWHEN_CACHE_TAG, { expire: 0 });
-  revalidatePath("/schedule");
-  revalidatePath("/mahjong-leagues-las-vegas");
+  // Stale, not expired: the next visit still gets the current page and starts a rebuild, which
+  // waits for fresh Bookwhen data. If Bookwhen is down then, the current page simply stays up,
+  // where an expired page would leave visitors with an error until Bookwhen answers.
+  revalidateTag(BOOKWHEN_CACHE_TAG, "max");
 
   return new Response(
-    "Done. The schedule and leagues pages will re-read Bookwhen on their next visit. Open https://www.lasvegasmahj.com/schedule and reload once.\n",
+    "Done. Open https://www.lasvegasmahj.com/schedule (that visit starts the update), wait about 30 seconds, then reload. If it still shows the old version, wait a minute and reload again. For leagues, do the same with https://www.lasvegasmahj.com/mahjong-leagues-las-vegas\n",
     { headers: { "content-type": "text/plain; charset=utf-8", ...NO_STORE } },
   );
 }

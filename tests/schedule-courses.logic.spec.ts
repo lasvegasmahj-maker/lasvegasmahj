@@ -4,6 +4,9 @@ import path from "node:path";
 import sitemap from "../app/sitemap";
 import {
   groupCourses,
+  limitReads,
+  BOOKWHEN_READ_TIMEOUT_MS,
+  COURSE_READ_BUDGET_MS,
   pickLeagues,
   parseBookwhenCoursePage,
   bookwhenTimeMs,
@@ -268,14 +271,57 @@ test.describe("grouping on the schedule", () => {
 });
 
 test.describe("how fresh the schedule is", () => {
-  test("Bookwhen is re-read every 5 minutes, with one tag for the refresh link", () => {
+  test("Bookwhen is re-read every 2 minutes, so edits show within about 5, with one tag for the refresh link", () => {
     const src = fs.readFileSync(path.join(__dirname, "..", "lib", "schedule.ts"), "utf8");
-    expect(src).toContain("export const BOOKWHEN_REVALIDATE_SECONDS = 300;");
+    expect(src).toContain("export const BOOKWHEN_REVALIDATE_SECONDS = 120;");
     expect(src).toContain("export const COURSE_PAGE_REVALIDATE_SECONDS = 1800;");
-    // The feed (titles, descriptions, locations) is re-read every 5 minutes; course pages less often.
-    expect(src.match(/next: \{ revalidate: BOOKWHEN_REVALIDATE_SECONDS, tags: \[BOOKWHEN_CACHE_TAG\] \}/g)).toHaveLength(1);
-    expect(src.match(/next: \{ revalidate: COURSE_PAGE_REVALIDATE_SECONDS, tags: \[BOOKWHEN_CACHE_TAG\] \}/g)).toHaveLength(1);
-    expect(src).not.toMatch(/revalidate: 1800/);
+    // Every Bookwhen read goes through one capped reader that carries the refresh tag.
+    expect(src.match(/await fetch\(/g)).toHaveLength(1);
+    expect(src).toContain("next: { revalidate, tags: [BOOKWHEN_CACHE_TAG] }");
+    expect(src).toContain("readBookwhen(FEED_URL, BOOKWHEN_REVALIDATE_SECONDS)");
+    expect(src).toContain("readBookwhen(url, COURSE_PAGE_REVALIDATE_SECONDS)");
+  });
+
+  test("both Bookwhen pages may run long enough to finish a rebuild", () => {
+    // Worst case: the feed read, then the course-read budget, then one last course read, with
+    // 10 seconds to spare for rendering.
+    const worstMs = BOOKWHEN_READ_TIMEOUT_MS + COURSE_READ_BUDGET_MS + BOOKWHEN_READ_TIMEOUT_MS;
+    for (const page of ["app/schedule/page.tsx", "app/mahjong-leagues-las-vegas/page.tsx"]) {
+      const m = fs.readFileSync(path.join(__dirname, "..", page), "utf8").match(/export const maxDuration = (\d+);/);
+      expect(m, page).not.toBeNull();
+      expect(Number(m![1]) * 1000, page).toBeGreaterThanOrEqual(worstMs + 10_000);
+    }
+  });
+
+  test("the refresh link marks Bookwhen data stale rather than expiring the pages", () => {
+    const src = fs.readFileSync(path.join(__dirname, "..", "app/api/refresh-schedule/route.ts"), "utf8");
+    expect(src).toContain('revalidateTag(BOOKWHEN_CACHE_TAG, "max")');
+    expect(src).not.toContain("expire: 0");
+    expect(src).not.toContain("revalidatePath");
+  });
+
+  test("course page reads run a few at a time", async () => {
+    let active = 0;
+    let peak = 0;
+    const slow = async (url: string) => {
+      active++;
+      peak = Math.max(peak, active);
+      await new Promise((r) => setTimeout(r, 15));
+      active--;
+      return url;
+    };
+    const read = limitReads(slow, 4, 60_000);
+    const out = await Promise.all(Array.from({ length: 13 }, (_, i) => read(`u${i}`)));
+    expect(peak).toBe(4);
+    expect(out).toEqual(Array.from({ length: 13 }, (_, i) => `u${i}`));
+  });
+
+  test("once the read budget is spent, remaining reads give up so the rebuild still finishes", async () => {
+    let now = 0;
+    const read = limitReads(async (url) => url, 4, 20_000, () => now);
+    expect(await read("first")).toBe("first");
+    now = 20_000;
+    expect(await read("late")).toBeNull();
   });
 });
 
@@ -316,8 +362,12 @@ test.describe("the leagues page", () => {
 
   test("the page is in the sitemap and the refresh link refreshes it too", () => {
     expect(sitemap().map((e) => e.url)).toContain("https://www.lasvegasmahj.com/mahjong-leagues-las-vegas");
+    // The refresh link marks the Bookwhen tag stale, and each page carries that tag because it
+    // reads Bookwhen only through lib/schedule.
     const route = fs.readFileSync(path.join(__dirname, "..", "app", "api", "refresh-schedule", "route.ts"), "utf8");
-    expect(route).toContain('revalidatePath("/schedule");');
-    expect(route).toContain('revalidatePath("/mahjong-leagues-las-vegas");');
+    expect(route).toContain("revalidateTag(BOOKWHEN_CACHE_TAG");
+    const read = (f: string) => fs.readFileSync(path.join(__dirname, "..", "app", f, "page.tsx"), "utf8");
+    expect(read("schedule")).toContain('import { getScheduleEvents } from "@/lib/schedule";');
+    expect(read("mahjong-leagues-las-vegas")).toContain('import { getLeagues } from "@/lib/schedule";');
   });
 });

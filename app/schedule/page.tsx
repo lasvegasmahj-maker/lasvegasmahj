@@ -6,6 +6,10 @@ import { getScheduleEvents } from "@/lib/schedule";
 import { buildScheduleEventSchema } from "@/lib/schema";
 import { SEVENS_OPEN_PLAY } from "@/lib/studio-photos";
 
+// A rebuild reads Bookwhen within the read caps in lib/schedule.ts. A rebuild that hits the
+// platform's time limit leaves the old page in place, so the limit is set above those caps.
+export const maxDuration = 60;
+
 export const metadata: Metadata = {
   title: "Mahjong Class & Open Play Schedule",
   description:
