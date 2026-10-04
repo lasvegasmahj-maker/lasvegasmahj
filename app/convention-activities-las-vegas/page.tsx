@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -88,6 +89,19 @@ export default function ConventionActivitiesLasVegas() {
               <a href="/contact?source=convention" className="btn-primary">Request a Quote</a>
               <a href="/corporate-team-building-las-vegas" className="btn-outline">Corporate Team Building</a>
             </div>
+          </div>
+        </section>
+
+        <section style={{ padding: "0 2rem 4rem", background: "var(--navy-dark)" }}>
+          <div className="container" style={{ maxWidth: "900px" }}>
+            <Image
+              src="/lvm-tables-ready.jpg"
+              alt="An empty room set with several mahjong tables, each with a decorative mat, a small lamp and tiles arranged and ready for play"
+              width={1800}
+              height={1308}
+              sizes="(max-width: 900px) 100vw, 900px"
+              style={{ width: "100%", height: "auto", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.1)", display: "block" }}
+            />
           </div>
         </section>
 

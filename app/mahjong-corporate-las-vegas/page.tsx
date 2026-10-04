@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -104,24 +105,36 @@ export default function MahjongCorporateLasVegas() {
         </section>
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
-          <div className="container" style={{ maxWidth: "680px" }}>
-            <p className="section-label">How It Works</p>
-            <h2 className="section-title">How a Corporate Mahjong Event <span className="accent-green">Comes Together</span></h2>
-            <div style={{ marginTop: "2.5rem" }}>
-              {[
-                { title: "Tell us about the program", desc: "Share the date, venue, headcount and time slot, and what you want the session to do: connect a team, entertain clients or fill a breakout." },
-                { title: "We shape the format", desc: "We suggest the length and format that fit your agenda and follow up with a custom quote." },
-                { title: "Your venue sets the room", desc: "The hotel or venue provides the event space, tables and chairs. We arrive with the sets, racks, cards and game materials and set up the game." },
-                { title: "We teach and facilitate", desc: "We teach from the first tile, facilitate every table until the last hand, and clear the game when you are done." },
-              ].map((item, i) => (
-                <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
-                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--green)", opacity: 0.35, flexShrink: 0, lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</div>
-                  <div>
-                    <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.3rem" }}>{item.title}</h3>
-                    <p style={{ color: "rgba(255,255,255,0.55)", lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
-                  </div>
+          <div className="container" style={{ maxWidth: "1040px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "start" }}>
+              <div>
+                <p className="section-label">How It Works</p>
+                <h2 className="section-title">How a Corporate Mahjong Event <span className="accent-green">Comes Together</span></h2>
+                <div style={{ marginTop: "2.5rem" }}>
+                  {[
+                    { title: "Tell us about the program", desc: "Share the date, venue, headcount and time slot, and what you want the session to do: connect a team, entertain clients or fill a breakout." },
+                    { title: "We shape the format", desc: "We suggest the length and format that fit your agenda and follow up with a custom quote." },
+                    { title: "Your venue sets the room", desc: "The hotel or venue provides the event space, tables and chairs. We arrive with the sets, racks, cards and game materials and set up the game." },
+                    { title: "We teach and facilitate", desc: "We teach from the first tile, facilitate every table until the last hand, and clear the game when you are done." },
+                  ].map((item, i) => (
+                    <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
+                      <div style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--green)", opacity: 0.35, flexShrink: 0, lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</div>
+                      <div>
+                        <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.3rem" }}>{item.title}</h3>
+                        <p style={{ color: "rgba(255,255,255,0.55)", lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+              <Image
+                src="/lvm-shauna-facilitating.jpg"
+                alt="Shauna standing beside a table of guests, explaining the game mid-session while everyone focuses on the tiles and racks in front of them"
+                width={1800}
+                height={1391}
+                sizes="(max-width: 760px) 100vw, 496px"
+                style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
+              />
             </div>
           </div>
         </section>

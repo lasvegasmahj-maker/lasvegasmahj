@@ -161,14 +161,24 @@ export default function MahjongPartiesLasVegas() {
 
         {/* TESTIMONIAL */}
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
-          <div className="container" style={{ maxWidth: "680px" }}>
-            <p className="section-label">What Guests Say</p>
-            <blockquote style={{ borderLeft: "3px solid var(--pink)", paddingLeft: "1.5rem", margin: "2rem 0" }}>
-              <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, fontStyle: "italic", marginBottom: "1rem" }}>
-                &ldquo;Shauna came to my house for a birthday Mahj session. She came fully prepared with a birthday-themed mat and her beautiful set. She was an excellent teacher and truly passionate about teaching mahjong. We are having her come again today, it was such a blast!&rdquo;
-              </p>
-              <cite style={{ fontFamily: "var(--font-nav)", fontSize: "0.9rem", color: "var(--pink)", fontStyle: "normal", fontWeight: 700 }}>Amy G.</cite>
-            </blockquote>
+          <div className="container" style={{ maxWidth: "820px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "center" }}>
+            <div>
+              <p className="section-label">What Guests Say</p>
+              <blockquote style={{ borderLeft: "3px solid var(--pink)", paddingLeft: "1.5rem", margin: "2rem 0 0" }}>
+                <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, fontStyle: "italic", marginBottom: "1rem" }}>
+                  &ldquo;Shauna came to my house for a birthday Mahj session. She came fully prepared with a birthday-themed mat and her beautiful set. She was an excellent teacher and truly passionate about teaching mahjong. We are having her come again today, it was such a blast!&rdquo;
+                </p>
+                <cite style={{ fontFamily: "var(--font-nav)", fontSize: "0.9rem", color: "var(--pink)", fontStyle: "normal", fontWeight: 700 }}>Amy G.</cite>
+              </blockquote>
+            </div>
+            <Image
+              src="/lvm-just-won-mahjong.jpg"
+              alt="A smiling woman holding a sign that reads I just won Mahjong, with the Las Vegas Mahjong logo, while other guests keep playing behind her"
+              width={1800}
+              height={1440}
+              sizes="(max-width: 768px) 100vw, 380px"
+              style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
+            />
           </div>
         </section>
 

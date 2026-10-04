@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -140,25 +141,37 @@ export default function LasVegasMeetingPlannerActivities() {
         </section>
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
-          <div className="container" style={{ maxWidth: "680px" }}>
-            <p className="section-label">By Agenda Slot</p>
-            <h2 className="section-title">Where It Fits in <span className="accent-pink">Your Agenda</span></h2>
-            <div style={{ marginTop: "2.5rem" }}>
-              {slots.map((item, i) => (
-                <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < slots.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
-                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--green)", opacity: 0.35, flexShrink: 0, lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</div>
-                  <div>
-                    <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.3rem" }}>{item.title}</h3>
-                    <p style={{ color: "rgba(255,255,255,0.55)", lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
-                  </div>
+          <div className="container" style={{ maxWidth: "1040px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "start" }}>
+              <div>
+                <p className="section-label">By Agenda Slot</p>
+                <h2 className="section-title">Where It Fits in <span className="accent-pink">Your Agenda</span></h2>
+                <div style={{ marginTop: "2.5rem" }}>
+                  {slots.map((item, i) => (
+                    <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < slots.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
+                      <div style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--green)", opacity: 0.35, flexShrink: 0, lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</div>
+                      <div>
+                        <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.3rem" }}>{item.title}</h3>
+                        <p style={{ color: "rgba(255,255,255,0.55)", lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+                <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "2rem" }}>
+                  Running a full conference rather than a single meeting? Our{" "}
+                  <a href="/conference-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>conference activities in Las Vegas</a>{" "}
+                  page covers networking breaks, receptions and general sessions.
+                </p>
+              </div>
+              <Image
+                src="/lvm-hands-on-tiles.jpg"
+                alt="Four women playing mahjong around a table, with their tiles, racks and a colorful patterned mat laid out in front of them"
+                width={1800}
+                height={1440}
+                sizes="(max-width: 760px) 100vw, 496px"
+                style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
+              />
             </div>
-            <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "2rem" }}>
-              Running a full conference rather than a single meeting? Our{" "}
-              <a href="/conference-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>conference activities in Las Vegas</a>{" "}
-              page covers networking breaks, receptions and general sessions.
-            </p>
           </div>
         </section>
 

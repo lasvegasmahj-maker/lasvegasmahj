@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -116,27 +117,39 @@ export default function CorporateTeamBuildingLasVegas() {
         </section>
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
-          <div className="container" style={{ maxWidth: "680px" }}>
-            <p className="section-label">The Team Experience</p>
-            <h2 className="section-title">What Happens at <span className="accent-green">the Table</span></h2>
-            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginTop: "1.5rem" }}>
-              Here is how a session unfolds for a team, from the first tile to the final hand.
-            </p>
-            <div style={{ marginTop: "2.5rem" }}>
-              {[
-                { title: "First Tiles, Together", desc: "We teach the whole group at once, so the opening minutes are a shared puzzle rather than a presentation." },
-                { title: "Learning Side by Side", desc: "The tiles, the card and how a hand comes together. Tablemates ask questions out loud and help each other through the first hands." },
-                { title: "Reading the Table", desc: "Once play gets going, everyone watches discards, plans a hand and changes course when the tiles do not cooperate, with mistakes that cost nothing." },
-                { title: "Play, Connect, and Compete", desc: "The room comes alive once people are playing. Add a friendly tournament format if your team likes a little competition, or keep it relaxed and social." },
-              ].map((item, i) => (
-                <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
-                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--green)", opacity: 0.35, flexShrink: 0, lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</div>
-                  <div>
-                    <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.3rem" }}>{item.title}</h3>
-                    <p style={{ color: "rgba(255,255,255,0.55)", lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
-                  </div>
+          <div className="container" style={{ maxWidth: "1040px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "start" }}>
+              <div>
+                <p className="section-label">The Team Experience</p>
+                <h2 className="section-title">What Happens at <span className="accent-green">the Table</span></h2>
+                <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginTop: "1.5rem" }}>
+                  Here is how a session unfolds for a team, from the first tile to the final hand.
+                </p>
+                <div style={{ marginTop: "2.5rem" }}>
+                  {[
+                    { title: "First Tiles, Together", desc: "We teach the whole group at once, so the opening minutes are a shared puzzle rather than a presentation." },
+                    { title: "Learning Side by Side", desc: "The tiles, the card and how a hand comes together. Tablemates ask questions out loud and help each other through the first hands." },
+                    { title: "Reading the Table", desc: "Once play gets going, everyone watches discards, plans a hand and changes course when the tiles do not cooperate, with mistakes that cost nothing." },
+                    { title: "Play, Connect, and Compete", desc: "The room comes alive once people are playing. Add a friendly tournament format if your team likes a little competition, or keep it relaxed and social." },
+                  ].map((item, i) => (
+                    <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
+                      <div style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--green)", opacity: 0.35, flexShrink: 0, lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</div>
+                      <div>
+                        <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.3rem" }}>{item.title}</h3>
+                        <p style={{ color: "rgba(255,255,255,0.55)", lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+              <Image
+                src="/lvm-cheers-toast.jpg"
+                alt="A group of smiling women clinking wine glasses together above a mahjong table mid-game"
+                width={1800}
+                height={1201}
+                sizes="(max-width: 760px) 100vw, 496px"
+                style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
+              />
             </div>
           </div>
         </section>
