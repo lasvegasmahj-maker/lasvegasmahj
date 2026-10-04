@@ -4,6 +4,7 @@ import path from "node:path";
 import sitemap from "../app/sitemap";
 import {
   groupCourses,
+  limitReads,
   pickLeagues,
   parseBookwhenCoursePage,
   bookwhenTimeMs,
@@ -272,10 +273,41 @@ test.describe("how fresh the schedule is", () => {
     const src = fs.readFileSync(path.join(__dirname, "..", "lib", "schedule.ts"), "utf8");
     expect(src).toContain("export const BOOKWHEN_REVALIDATE_SECONDS = 300;");
     expect(src).toContain("export const COURSE_PAGE_REVALIDATE_SECONDS = 1800;");
-    // The feed (titles, descriptions, locations) is re-read every 5 minutes; course pages less often.
-    expect(src.match(/next: \{ revalidate: BOOKWHEN_REVALIDATE_SECONDS, tags: \[BOOKWHEN_CACHE_TAG\] \}/g)).toHaveLength(1);
-    expect(src.match(/next: \{ revalidate: COURSE_PAGE_REVALIDATE_SECONDS, tags: \[BOOKWHEN_CACHE_TAG\] \}/g)).toHaveLength(1);
-    expect(src).not.toMatch(/revalidate: 1800/);
+    // Every Bookwhen read goes through one capped reader that carries the refresh tag.
+    expect(src.match(/await fetch\(/g)).toHaveLength(1);
+    expect(src).toContain("next: { revalidate, tags: [BOOKWHEN_CACHE_TAG] }");
+    expect(src).toContain("readBookwhen(FEED_URL, BOOKWHEN_REVALIDATE_SECONDS)");
+    expect(src).toContain("readBookwhen(url, COURSE_PAGE_REVALIDATE_SECONDS)");
+  });
+
+  test("both Bookwhen pages may run long enough to finish a rebuild", () => {
+    for (const page of ["app/schedule/page.tsx", "app/mahjong-leagues-las-vegas/page.tsx"]) {
+      expect(fs.readFileSync(path.join(__dirname, "..", page), "utf8"), page).toContain("export const maxDuration = 60;");
+    }
+  });
+
+  test("course page reads run a few at a time", async () => {
+    let active = 0;
+    let peak = 0;
+    const slow = async (url: string) => {
+      active++;
+      peak = Math.max(peak, active);
+      await new Promise((r) => setTimeout(r, 15));
+      active--;
+      return url;
+    };
+    const read = limitReads(slow, 4, 60_000);
+    const out = await Promise.all(Array.from({ length: 13 }, (_, i) => read(`u${i}`)));
+    expect(peak).toBe(4);
+    expect(out).toEqual(Array.from({ length: 13 }, (_, i) => `u${i}`));
+  });
+
+  test("once the read budget is spent, remaining reads give up so the rebuild still finishes", async () => {
+    let now = 0;
+    const read = limitReads(async (url) => url, 4, 20_000, () => now);
+    expect(await read("first")).toBe("first");
+    now = 20_000;
+    expect(await read("late")).toBeNull();
   });
 });
 

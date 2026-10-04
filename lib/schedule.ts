@@ -131,11 +131,9 @@ function todayInPacific(): number {
 async function readBookwhenSessions(cutoff: number): Promise<ScheduleEvent[]> {
   const bookwhen: ScheduleEvent[] = [];
   try {
-    const res = await fetch(FEED_URL, {
-      next: { revalidate: BOOKWHEN_REVALIDATE_SECONDS, tags: [BOOKWHEN_CACHE_TAG] },
-    });
-    if (res.ok) {
-      const lines = unfold(await res.text()).split(/\r?\n/);
+    const feed = await readBookwhen(FEED_URL, BOOKWHEN_REVALIDATE_SECONDS);
+    if (feed !== null) {
+      const lines = unfold(feed).split(/\r?\n/);
       let cur: Record<string, string> | null = null;
       for (const line of lines) {
         if (line === "BEGIN:VEVENT") {
@@ -172,7 +170,7 @@ export async function getScheduleEvents(): Promise<ScheduleEvent[]> {
 
   // Course detection reads third-party HTML; if it ever throws, the schedule keeps every session.
   try {
-    events.push(...(await groupCourses(bookwhen, fetchBookwhenPage, Date.now())));
+    events.push(...(await groupCourses(bookwhen, coursePageReader(), Date.now())));
   } catch (err) {
     console.warn("schedule: course detection failed, showing every session", err);
     events.push(...bookwhen);
@@ -487,32 +485,56 @@ function courseCard(page: CoursePage, ticket: CourseTicket, members: ScheduleEve
 export type FetchPage = (url: string) => Promise<string | null>;
 
 // Next drops a fetch's abort signal when it refetches a stale cache entry, so the time limit is
-// enforced here instead; a slow page then costs only its own entry.
-async function fetchBookwhenPage(url: string): Promise<string | null> {
+// enforced here instead. A page rebuild must finish inside the platform's time limit, or Vercel
+// keeps serving the old page; a slow Bookwhen read can therefore never hold a rebuild hostage.
+async function readBookwhen(url: string, revalidate: number): Promise<string | null> {
   let timer: ReturnType<typeof setTimeout> | undefined;
   const read = (async () => {
     try {
       const res = await fetch(url, {
-        next: { revalidate: COURSE_PAGE_REVALIDATE_SECONDS, tags: [BOOKWHEN_CACHE_TAG] },
+        next: { revalidate, tags: [BOOKWHEN_CACHE_TAG] },
         headers: { "user-agent": "LasVegasMahjongSchedule/1.0 (+https://www.lasvegasmahj.com/schedule)" },
       });
-      if (!res.ok) console.warn(`schedule: Bookwhen page ${url} answered ${res.status}`);
+      if (!res.ok) console.warn(`schedule: Bookwhen ${url} answered ${res.status}`);
       return res.ok ? await res.text() : null;
     } catch {
-      console.warn(`schedule: Bookwhen page ${url} could not be read`);
+      console.warn(`schedule: Bookwhen ${url} could not be read`);
       return null;
     }
   })();
   const timeout = new Promise<null>((resolve) => {
     timer = setTimeout(() => {
-      console.warn(`schedule: Bookwhen page ${url} timed out`);
+      console.warn(`schedule: Bookwhen ${url} timed out`);
       resolve(null);
     }, 8000);
   });
-  const html = await Promise.race([read, timeout]);
+  const text = await Promise.race([read, timeout]);
   clearTimeout(timer);
-  return html;
+  return text;
 }
+
+// Bookwhen slows down when one server asks for a dozen pages at once, so a rebuild reads a few at
+// a time, and stops starting new reads once its budget is spent. Anything not read in time falls
+// back to one row per session, which still renders.
+export function limitReads(read: FetchPage, concurrency: number, budgetMs: number, clock: () => number = Date.now): FetchPage {
+  const until = clock() + budgetMs;
+  let free = concurrency;
+  const queue: (() => void)[] = [];
+  return async (url) => {
+    if (free > 0) free--;
+    else await new Promise<void>((resolve) => queue.push(resolve));
+    try {
+      return clock() >= until ? null : await read(url);
+    } finally {
+      const next = queue.shift();
+      if (next) next();
+      else free++;
+    }
+  };
+}
+
+const coursePageReader = (): FetchPage =>
+  limitReads((url) => readBookwhen(url, COURSE_PAGE_REVALIDATE_SECONDS), 4, 20000);
 
 function pacificDayKey(ms: number): number {
   const p = Object.fromEntries(PACIFIC_PARTS.formatToParts(new Date(ms)).map((x) => [x.type, x.value]));
@@ -611,7 +633,7 @@ export function pickLeagues(grouped: ScheduleEvent[]): ScheduleEvent[] {
 export async function getLeagues(): Promise<ScheduleEvent[]> {
   const sessions = await readBookwhenSessions(todayInPacific());
   try {
-    return pickLeagues(await groupCourses(sessions, fetchBookwhenPage, Date.now(), { keepClosed: true }));
+    return pickLeagues(await groupCourses(sessions, coursePageReader(), Date.now(), { keepClosed: true }));
   } catch (err) {
     console.warn("leagues: course detection failed", err);
     return [];

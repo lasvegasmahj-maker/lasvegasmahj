@@ -5,6 +5,10 @@ import Footer from "@/components/footer";
 import { getScheduleEvents } from "@/lib/schedule";
 import { buildScheduleEventSchema } from "@/lib/schema";
 
+// A rebuild reads Bookwhen; Vercel's default limit can cut it off, and a cut-off rebuild leaves
+// the old page in place indefinitely.
+export const maxDuration = 60;
+
 export const metadata: Metadata = {
   title: "Schedule & Booking",
   description:
