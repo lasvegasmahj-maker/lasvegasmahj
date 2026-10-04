@@ -184,14 +184,26 @@ export default function MahjongCorporateLasVegas() {
         />
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
-          <div className="container" style={{ maxWidth: "680px" }}>
-            <p className="section-label">Corporate Testimonial</p>
-            <blockquote style={{ borderLeft: "3px solid var(--green)", paddingLeft: "1.5rem", margin: "2rem 0" }}>
-              <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, fontStyle: "italic", marginBottom: "1rem" }}>
-                &ldquo;We worked with Shauna for a mahjong-oriented corporate event in early 2026. Shauna was easy to work with and her team was engaging with all of our guests. We got some of the best guest feedback we&rsquo;ve ever received from this event, and we hope to work with Shauna again on a future mahjong social!&rdquo;
-              </p>
-              <cite style={{ fontFamily: "var(--font-nav)", fontSize: "0.9rem", color: "var(--green)", fontStyle: "normal", fontWeight: 700 }}>Kristi, Northmarq</cite>
-            </blockquote>
+          <div className="container" style={{ maxWidth: "1040px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "center" }}>
+              <div>
+                <p className="section-label">Corporate Testimonial</p>
+                <blockquote style={{ borderLeft: "3px solid var(--green)", paddingLeft: "1.5rem", margin: "2rem 0 0" }}>
+                  <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, fontStyle: "italic", marginBottom: "1rem" }}>
+                    &ldquo;We worked with Shauna for a mahjong-oriented corporate event in early 2026. Shauna was easy to work with and her team was engaging with all of our guests. We got some of the best guest feedback we&rsquo;ve ever received from this event, and we hope to work with Shauna again on a future mahjong social!&rdquo;
+                  </p>
+                  <cite style={{ fontFamily: "var(--font-nav)", fontSize: "0.9rem", color: "var(--green)", fontStyle: "normal", fontWeight: 700 }}>Kristi, Northmarq</cite>
+                </blockquote>
+              </div>
+              <Image
+                src="/lvm-shauna-hosting-table.jpg"
+                alt="Shauna standing beside a table, hand on hip, talking with three seated guests as they play mahjong with drinks set out beside the tiles"
+                width={1800}
+                height={1391}
+                sizes="(max-width: 760px) 100vw, 496px"
+                style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
+              />
+            </div>
           </div>
         </section>
 

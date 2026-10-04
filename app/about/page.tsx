@@ -166,14 +166,24 @@ export default function About() {
           <div className="container">
             <p className="section-label">Students Say</p>
             <h2 className="section-title">Real <span className="accent-pink">Words</span></h2>
-            <Image
-              src="/lvm-just-won-mahjong-2.jpg"
-              alt="A smiling woman holding a sign that reads I just won Mahjong, with the Las Vegas Mahjong logo, seated at a table with her tiles and a drink"
-              width={1800}
-              height={1440}
-              sizes="(max-width: 480px) 100vw, 420px"
-              style={{ width: "100%", maxWidth: "420px", height: "auto", borderRadius: "8px", display: "block", margin: "2rem 0 0" }}
-            />
+            <div className="about-winners-grid" style={{ marginTop: "2rem" }}>
+              {[
+                { src: "/lvm-just-won-mahjong-2.jpg", alt: "A smiling woman holding a sign that reads I just won Mahjong, with the Las Vegas Mahjong logo, seated at a table with her tiles and a drink" },
+                { src: "/lvm-winner-portrait.jpg", alt: "A smiling woman holding a sign that reads I just won Mahjong, with the Las Vegas Mahjong logo, seated at a table with her mahjong card and tiles" },
+                { src: "/lvm-winner-group-room.jpg", alt: "A smiling woman holding a sign that reads I just won Mahjong, with the Las Vegas Mahjong logo, while other guests play mahjong at nearby tables" },
+                { src: "/lvm-winner-sign-raised.jpg", alt: "A smiling woman holding a sign overhead that reads I just won Mahjong, with the Las Vegas Mahjong logo, in a room full of other players" },
+              ].map((photo) => (
+                <div key={photo.src} style={{ position: "relative", aspectRatio: "1 / 1", borderRadius: "8px", overflow: "hidden" }}>
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 260px"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+              ))}
+            </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
               {[
                 { name: "Tamar", text: "I was on the verge of giving up on learning to play Mahjong. Then Shauna taught me. I got it straight away, after having tried for months. If it wasn't for Shauna, I wouldn't be playing Mahjong today and LOVING it!" },
