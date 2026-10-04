@@ -5,8 +5,8 @@ import Footer from "@/components/footer";
 import { getScheduleEvents } from "@/lib/schedule";
 import { buildScheduleEventSchema } from "@/lib/schema";
 
-// A rebuild reads Bookwhen (worst case about 46s with the read caps in lib/schedule.ts). A rebuild
-// that hits the platform's time limit leaves the old page in place, so the limit is set to fit.
+// A rebuild reads Bookwhen within the read caps in lib/schedule.ts. A rebuild that hits the
+// platform's time limit leaves the old page in place, so the limit is set above those caps.
 export const maxDuration = 60;
 
 export const metadata: Metadata = {

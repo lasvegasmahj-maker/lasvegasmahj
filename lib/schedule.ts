@@ -37,13 +37,27 @@ const FEED_URL =
   "https://feeds.bookwhen.com/ical/3gqc90ysul98/sx0z7q/public.ics";
 
 // Bookwhen serves its feed and pages uncached, so this interval is the whole delay before an
-// edit in Bookwhen reaches the site. The tag lets /api/refresh-schedule expire them at once.
+// edit in Bookwhen reaches the site. The tag lets /api/refresh-schedule mark them stale at once.
 export const BOOKWHEN_REVALIDATE_SECONDS = 300;
 // Course pages (dates, ticket, price) rarely change and there are about 20 of them per render,
 // so they are re-read less often. Whether a sale has closed is checked against the render-time
 // clock, so it lags by at most one page refresh, not by this interval.
 export const COURSE_PAGE_REVALIDATE_SECONDS = 1800;
 export const BOOKWHEN_CACHE_TAG = "bookwhen";
+// How long one Bookwhen request may take, and how course-page lookups are paced. A rebuild's
+// worst case is one feed read, then the course-read budget, then one last course read; both
+// pages' maxDuration must stay above that (a logic test checks it).
+export const BOOKWHEN_READ_TIMEOUT_MS = 8000;
+export const COURSE_READ_CONCURRENCY = 4;
+export const COURSE_READ_BUDGET_MS = 30000;
+const LEAGUE_TITLE = /league/i;
+
+// A rebuild that throws this keeps the last good page up; Next retries on the next visit.
+class BookwhenUnavailable extends Error {}
+
+function building(): boolean {
+  return process.env.NEXT_PHASE === "phase-production-build";
+}
 
 const DOW = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const MONTHS = [
@@ -128,18 +142,24 @@ function todayInPacific(): number {
   return pacificDayKey(Date.now());
 }
 
-class BookwhenUnavailable extends Error {}
-
 async function readBookwhenSessions(cutoff: number): Promise<ScheduleEvent[]> {
   const bookwhen: ScheduleEvent[] = [];
   try {
     const feed = await readBookwhen(FEED_URL, BOOKWHEN_REVALIDATE_SECONDS);
-    // During a live rebuild, a missing feed should leave the last good page up (Next keeps it
-    // and retries) rather than cache a schedule with no Bookwhen sessions. A deploy must not
-    // fail because Bookwhen is down, so the build itself carries on without them.
-    if (feed === null && process.env.NEXT_PHASE !== "phase-production-build") throw new BookwhenUnavailable();
-    if (feed !== null) {
-      const lines = unfold(feed).split(/\r?\n/);
+    if (feed.text === null) {
+      if (feed.lasting) {
+        // An answer like 404 will not fix itself (for example the feed address changed), so the
+        // schedule shows without Bookwhen sessions, where the problem is visible.
+        console.error("schedule: the Bookwhen feed address no longer works, showing no Bookwhen sessions");
+      } else if (!building()) {
+        // A slow or failing feed should leave the last good page up rather than cache a schedule
+        // with no Bookwhen sessions. A deploy must not fail because Bookwhen is down, so the
+        // build itself carries on without them.
+        console.error("schedule: KEEPING PREVIOUS PAGE, the Bookwhen feed did not answer");
+        throw new BookwhenUnavailable();
+      }
+    } else {
+      const lines = unfold(feed.text).split(/\r?\n/);
       let cur: Record<string, string> | null = null;
       for (const line of lines) {
         if (line === "BEGIN:VEVENT") {
@@ -493,36 +513,41 @@ export type FetchPage = (url: string) => Promise<string | null>;
 // Next drops a fetch's abort signal when it refetches a stale cache entry, so the time limit is
 // enforced here instead. A page rebuild must finish inside the platform's time limit, or Vercel
 // keeps serving the old page; a slow Bookwhen read can therefore never hold a rebuild hostage.
-async function readBookwhen(url: string, revalidate: number): Promise<string | null> {
+// A failed read says whether it is lasting: an answer like 404 will not change on a retry,
+// while a timeout, network error, 5xx or rate limit may clear on the next rebuild.
+type BookwhenRead = { text: string } | { text: null; lasting: boolean };
+
+async function readBookwhen(url: string, revalidate: number): Promise<BookwhenRead> {
   let timer: ReturnType<typeof setTimeout> | undefined;
-  const read = (async () => {
+  const read = (async (): Promise<BookwhenRead> => {
     try {
       const res = await fetch(url, {
         next: { revalidate, tags: [BOOKWHEN_CACHE_TAG] },
         headers: { "user-agent": "LasVegasMahjongSchedule/1.0 (+https://www.lasvegasmahj.com/schedule)" },
-        signal: AbortSignal.timeout(8000),
+        signal: AbortSignal.timeout(BOOKWHEN_READ_TIMEOUT_MS),
       });
-      if (!res.ok) console.warn(`schedule: Bookwhen ${url} answered ${res.status}`);
-      return res.ok ? await res.text() : null;
+      if (res.ok) return { text: await res.text() };
+      console.warn(`schedule: Bookwhen ${url} answered ${res.status}`);
+      return { text: null, lasting: res.status >= 400 && res.status < 500 && ![408, 425, 429].includes(res.status) };
     } catch {
       console.warn(`schedule: Bookwhen ${url} could not be read`);
-      return null;
+      return { text: null, lasting: false };
     }
   })();
-  const timeout = new Promise<null>((resolve) => {
+  const timeout = new Promise<BookwhenRead>((resolve) => {
     timer = setTimeout(() => {
       console.warn(`schedule: Bookwhen ${url} timed out`);
-      resolve(null);
-    }, 8000);
+      resolve({ text: null, lasting: false });
+    }, BOOKWHEN_READ_TIMEOUT_MS);
   });
-  const text = await Promise.race([read, timeout]);
+  const result = await Promise.race([read, timeout]);
   clearTimeout(timer);
-  return text;
+  return result;
 }
 
 // Bookwhen slows down when one server asks for a dozen pages at once, so a rebuild reads a few at
 // a time and stops starting new reads once its budget is spent. Anything not read in time falls
-// back to one row per session, which still renders. Worst case: 8s feed, 30s budget, 8s last read.
+// back to one row per session, which still renders.
 export function limitReads(read: FetchPage, concurrency: number, budgetMs: number, now: () => number = Date.now): FetchPage {
   const until = now() + budgetMs;
   let free = concurrency;
@@ -540,8 +565,17 @@ export function limitReads(read: FetchPage, concurrency: number, budgetMs: numbe
   };
 }
 
-const coursePageReader = (): FetchPage =>
-  limitReads((url) => readBookwhen(url, COURSE_PAGE_REVALIDATE_SECONDS), 4, 30000);
+// Pages Bookwhen answered with a lasting failure are added to `gone`.
+const coursePageReader = (gone?: Set<string>): FetchPage =>
+  limitReads(
+    async (url) => {
+      const page = await readBookwhen(url, COURSE_PAGE_REVALIDATE_SECONDS);
+      if (page.text === null && page.lasting) gone?.add(url);
+      return page.text;
+    },
+    COURSE_READ_CONCURRENCY,
+    COURSE_READ_BUDGET_MS,
+  );
 
 function pacificDayKey(ms: number): number {
   const p = Object.fromEntries(PACIFIC_PARTS.formatToParts(new Date(ms)).map((x) => [x.type, x.value]));
@@ -637,16 +671,20 @@ export async function groupCourses(
 // A league is a Bookwhen course with "League" in its title. Grouping itself never looks at the
 // title; this only decides which courses the leagues page lists.
 export function pickLeagues(grouped: ScheduleEvent[]): ScheduleEvent[] {
-  return grouped.filter((e) => e.course && /league/i.test(e.title)).sort((a, b) => a.sortKey - b.sortKey);
+  return grouped.filter((e) => e.course && LEAGUE_TITLE.test(e.title)).sort((a, b) => a.sortKey - b.sortKey);
 }
 
 export async function getLeagues(): Promise<ScheduleEvent[]> {
   const sessions = await readBookwhenSessions(todayInPacific());
-  const reader = coursePageReader();
+  // Only a league's own pages can hide a league, so only their failures count, and a page that
+  // Bookwhen says is gone will not come back on a retry.
+  const leagueUrls = new Set(sessions.filter((e) => LEAGUE_TITLE.test(e.title)).map((e) => e.url));
+  const gone = new Set<string>();
+  const reader = coursePageReader(gone);
   let failed = false;
   const read: FetchPage = async (url) => {
     const html = await reader(url);
-    if (html === null) failed = true;
+    if (html === null && leagueUrls.has(url) && !gone.has(url)) failed = true;
     return html;
   };
   let leagues: ScheduleEvent[] = [];
@@ -654,11 +692,12 @@ export async function getLeagues(): Promise<ScheduleEvent[]> {
     leagues = pickLeagues(await groupCourses(sessions, read, Date.now(), { keepClosed: true }));
   } catch (err) {
     console.warn("leagues: course detection failed", err);
-    failed = true;
+    if (leagueUrls.size > 0) failed = true;
   }
-  // No league because a Bookwhen read failed is not the same as no league: keep the last good
-  // page (Next retries on the next visit) rather than cache the empty state.
-  if (leagues.length === 0 && failed && process.env.NEXT_PHASE !== "phase-production-build") {
+  // A league page that timed out or errored would drop that league from the page, so keep the
+  // last good page instead (Next retries on the next visit). The build carries on regardless.
+  if (failed && !building()) {
+    console.error("leagues: KEEPING PREVIOUS PAGE, a Bookwhen league page did not answer");
     throw new BookwhenUnavailable();
   }
   return leagues;
