@@ -25,7 +25,7 @@ const jsonLd = {
   "@type": "Course",
   name: "Mahjong Lessons Las Vegas",
   description:
-    "Certified American Mahjong lessons in Las Vegas for all skill levels. MAHJ101 for complete beginners and MAHJ102 for intermediate players.",
+    "Certified American Mahjong lessons in Las Vegas for all skill levels. MAHJ101 for complete beginners, MAHJ102 for intermediate players, and MAHJ103 for confident, independent play.",
   provider: {
     "@type": "LocalBusiness",
     "@id": "https://www.lasvegasmahj.com/#business",
@@ -49,7 +49,7 @@ const faqs = [
   { q: "How much do mahjong lessons cost in Las Vegas?", a: "Group lessons are $60 per person. Private lessons and events are available upon request; contact us for pricing." },
   { q: "Do I need experience to take mahjong lessons?", a: "No experience needed at all. MAHJ101 starts completely from scratch: we cover everything from sorting the tiles to playing your first hand." },
   { q: "Where are mahjong lessons held in Las Vegas?", a: "Group lessons and open play are held at our studio inside Lucky Hare at 8687 W. Sahara Ave., Suite 200, Las Vegas. Private lessons are held at the studio, with in-home available by request." },
-  { q: "What is the difference between MAHJ101 and MAHJ102?", a: "MAHJ101 is for complete beginners; we start from zero. MAHJ102 builds on that foundation with more hands, strategy, and game time. We recommend taking 101 first." },
+  { q: "What is the difference between MAHJ101, MAHJ102, and MAHJ103?", a: "MAHJ101 is for complete beginners; we start from zero. MAHJ102 builds on that foundation with more hands, strategy, and game time. MAHJ103 is for confident, independent play: the Charleston, defensive strategy, and knowing the rules cold. We recommend taking them in order, starting with 101." },
   { q: "What version of mahjong do you teach?", a: "We teach American Mahjong using the National Mah Jongg League (NMJL) card, the most popular version played across the US." },
 ];
 
