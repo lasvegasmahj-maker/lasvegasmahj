@@ -25,6 +25,8 @@ const jsonLd = {
   author: { "@type": "Person", "@id": "https://www.lasvegasmahj.com/about#shauna", name: "Shauna", url: "https://www.lasvegasmahj.com/about" },
   publisher: { "@type": "Organization", "@id": "https://www.lasvegasmahj.com/#business", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
   mainEntityOfPage: "https://www.lasvegasmahj.com/learn-mahjong",
+  datePublished: "2025-01-01",
+  dateModified: "2026-06-08",
 };
 
 const affiliates = [
