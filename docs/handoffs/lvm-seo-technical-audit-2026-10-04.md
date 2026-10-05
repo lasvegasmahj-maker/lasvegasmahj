@@ -88,8 +88,9 @@ changes. Bookwhen-fed pages use the last template or copy change, never the feed
   build freeze lifts: `SISTER_SITE` and five literals to `https://www.lasvegasmahj.com`.
 - Bookwhen: the Evening Thursday Fall League description repeats a sentence (shows on
   /mahjong-leagues-las-vegas and in /schedule Event schema).
-- Google Business Profile: confirm its address matches the studio address in schema (the
-  memory notes a different ZIP; not verifiable from here).
+- Google Business Profile: confirm its address matches the studio address in schema (an
+  earlier local-SEO note records ZIP 89138 for the listing, while the studio is 89117; the
+  listing itself could not be checked from the repo).
 
 **Strategic or wording decisions (need owner approval or Search Console evidence)**
 - /mahjong-leagues-las-vegas has **one** inbound link (/schedule). Lowest-risk option: link the
