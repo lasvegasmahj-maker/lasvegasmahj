@@ -1,16 +1,15 @@
 # Handoff: Las Vegas Mahjong competitive SEO
 
-Rounds 1 through 7 and the contact consistency cleanup are all CLOSED, MERGED and LIVE
-(Round 4/5 as PR #117, Round 6 as PR #120, Round 7 as PR #124 on 2026-10-05 UTC, `main` at
-`d7a8212`). Their records are preserved below and must not be edited or re-litigated.
-**The technical SEO audit of 2026-10-04 is OPEN** as PR #126 on branch
-`seo/technical-audit-2026-10`, awaiting the owner's review. Full report:
-`docs/handoffs/lvm-seo-technical-audit-2026-10-04.md`. Opened in parallel and also awaiting
-review: **Round 8, stale claim cleanup** (PR #125, branch `seo/accuracy-sweep`), which has its
-own section in that branch. The two PRs touch different lines; only this banner conflicts.
-The analysis-only "LVM SEO Gap Audit" (Drive, LVM/Marketing, 2026-10-04) covers intent,
-cannibalization and internal-link proposals; this audit implements its A1 (red CI guard) and
-the leagues robots and share-image fixes, and leaves its link proposals to the owner.
+Rounds 1 through 8 and the contact consistency cleanup are all CLOSED, MERGED and LIVE
+(Round 4/5 as PR #117, Round 6 as PR #120, Round 7 as PR #124 on 2026-10-05 01:09 UTC,
+Round 8 as PR #125 on 2026-10-05 17:11 UTC; the CI guard fix as PR #127 on 2026-10-05
+16:43 UTC; `main` at `599e5f7`). Their records are preserved below and must not be edited or
+re-litigated. **The technical SEO audit of 2026-10-04 is OPEN** as PR #126 on branch
+`seo/technical-audit-2026-10` (rebased onto `599e5f7`), awaiting the owner's review. Full
+report: `docs/handoffs/lvm-seo-technical-audit-2026-10-04.md`. The analysis-only "LVM SEO Gap
+Audit" (Drive, LVM/Marketing, 2026-10-04) covers intent, cannibalization and internal-link
+proposals; its A1 (red CI guard) shipped as PR #127, this audit carries the leagues robots and
+share-image fixes, and its link proposals stay with the owner.
 
 ---
 
@@ -32,9 +31,11 @@ of 33 wrong sitemap `lastModified` dates; the 404's `og:url` of `/404`; an off-p
 the /about Person; Summerlin typed `City` on the parties page; no BreadcrumbList on
 /schedule; missing `fetchpriority="high"` on LCP images (Next 16's `priority` only
 preloads); lazy LCP images on /about and convention; two two-column sections that never stacked on
-phones; 300px grid minimums clipping at 320px; a 102KB partner logo. Also **CI on `main` was
-red since PR #121** because a Round 5 guard read `width: "100%"` as a statistic; the guard now
-ignores inline style objects.
+phones; 300px grid minimums clipping at 320px; a 102KB partner logo. The audit also found
+that **CI on `main` was red from PR #121 on**, because a Round 5 guard read `width: "100%"` as
+a statistic. That test-only fix shipped on its own as PR #127; after the rebase it is no
+longer part of this PR. Rebasing onto Round 8 also moved the sitemap dates of the four routes
+whose copy #125 changed (/, parties, Summerlin, Henderson) to 2026-10-05.
 
 **Status changes to items recorded in earlier rounds (as of 2026-10-04):**
 - `lasvegasmahj.vercel.app` (Contact consistency "LIVE AND UNFIXED", Round 2 surviving finding
@@ -48,6 +49,8 @@ ignores inline style objects.
 - Parties birthday grid that never stacks (Round 2 known issue 5): fixed in this PR.
   `.btn-primary` display (Round 2 next action 2) is still reserved for the owner.
 - Apex 307 (Round 4 item 6): still 307 on 2026-10-04.
+- The Round 5 "Still open" claim list (homepage, Summerlin, Henderson, parties, footer): fixed
+  by Round 8 (PR #125). This PR adds no copy and reintroduces none of that wording.
 
 **New owner items:** the favicon is the stock Next.js/Vercel triangle (needs an approved
 square mark; same blocker for a schema `logo`); `lasvegasmahj-h1iz.vercel.app` serves an
@@ -64,7 +67,7 @@ no page-level `robots` object on an indexable page; a page-level `openGraph` bri
 
 ---
 
-# ROUND 8: stale claim cleanup (OPEN, DO NOT MERGE)
+# ROUND 8: stale claim cleanup (MERGED as PR #125, 2026-10-05 UTC)
 
 **Date:** 2026-10-04. **Branch:** `seo/accuracy-sweep` off `origin/main`, built in the
 worktree `~/Projects/lvm-seo-accuracy-sweep`.
@@ -133,7 +136,7 @@ mobile. `seo-round4-visitors.spec.ts` and the one studio photo-fetch check in
 regression by re-running against a freshly built, idle `origin/main` worktree, where they
 passed immediately.
 
-**DO NOT MERGE** until Shauna reviews the current-vs-proposed copy.
+Merged as PR #125 (`599e5f7`, 2026-10-05 17:11 UTC) and live on www.
 
 ---
 

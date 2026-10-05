@@ -4,7 +4,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: "https://www.lasvegasmahj.com",
-      lastModified: new Date("2026-10-04"),
+      lastModified: new Date("2026-10-05"),
       changeFrequency: "weekly",
       priority: 1,
     },
@@ -34,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas",
-      lastModified: new Date("2026-10-04"),
+      lastModified: new Date("2026-10-05"),
       changeFrequency: "monthly",
       priority: 0.9,
     },
@@ -118,13 +118,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: "https://www.lasvegasmahj.com/mahjong-lessons-summerlin",
-      lastModified: new Date("2026-08-07"),
+      lastModified: new Date("2026-10-05"),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: "https://www.lasvegasmahj.com/mahjong-lessons-henderson",
-      lastModified: new Date("2026-08-07"),
+      lastModified: new Date("2026-10-05"),
       changeFrequency: "monthly",
       priority: 0.8,
     },

@@ -2,11 +2,13 @@
 
 **Scope:** every route on `main` at `d7a8212` (after PR #124). Technical SEO only: no new pages,
 no copy or keyword rewrites, no pricing or business facts, no Bookwhen changes, no photo swaps.
-**Fix PR:** branch `seo/technical-audit-2026-10`, PR #126 (open, NOT merged).
-**Related, opened in parallel:** PR #125 (Round 8, stale and unsourced claims on the homepage,
-footer, Summerlin, Henderson and parties copy) and the analysis-only "LVM SEO Gap Audit"
-(Drive, LVM/Marketing), which covers intent mapping, cannibalization and internal-link
-proposals. This audit stays on technical defects and does not duplicate either.
+**Fix PR:** branch `seo/technical-audit-2026-10`, PR #126 (open, NOT merged). Rebased on
+2026-10-05 onto `main` at `599e5f7`, after PR #127 and PR #125 merged, and re-verified there.
+**Related, merged before this PR:** PR #127 (the CI guard fix this audit found, shipped on its
+own) and PR #125 (Round 8, stale and unsourced claims on the homepage, footer, Summerlin,
+Henderson and parties copy). The analysis-only "LVM SEO Gap Audit" (Drive, LVM/Marketing)
+covers intent mapping, cannibalization and internal-link proposals. This audit stays on
+technical defects and does not duplicate any of them.
 **Method:** we crawled a local production build of `d7a8212` with JavaScript off (52 URLs:
 every sitemap URL, every app route, legacy redirects, a 404, URL variants and 38 assets). Eight
 independent lenses then audited it: head metadata, indexability, sitemap, internal links,
@@ -23,8 +25,8 @@ reviewed the finished branch.
 **No critical issues.** No accidental noindex, no canonical poisoning, no broken internal links,
 no orphan pages, no redirect chains on `www`, no duplicate titles or descriptions, no route
 missing from the sitemap, and FAQ schema matches the visible FAQ on all 23 pages that carry it.
-Every defect we found was low severity. The most consequential one is outside SEO: **CI on
-`main` has been red since PR #121** (see below).
+Every defect we found was low severity. The most consequential one was outside SEO: **CI on
+`main` was red from PR #121 on.** Its fix shipped separately as PR #127 (see below).
 
 ## Fixed in the PR
 
@@ -44,7 +46,12 @@ Every defect we found was low severity. The most consequential one is outside SE
 | 12 | Inline `1fr 1fr` grids never stacked on phones: 131px columns, one or two words per line, "Book a Birthday Party" broken into 3 fragments, and 1200w images fetched for 131px slots | /about story, /mahjong-parties-las-vegas birthday section | Joined the existing 768px single-column rule (`.split-stack`); desktop unchanged |
 | 13 | `minmax(300px, 1fr)` auto-fit grids overflowed narrow phones: 44px past their container (12px of sideways page scroll) at 320px, a 4px clip at 360px | parties testimonial, corporate hub (x2), team building, meeting planner | `minmax(min(300px, 100%), 1fr)`; layout identical from about 364px up |
 | 14 | Mini Mahjer shop logo was a 102KB 600x777 PNG in a 120px-tall slot | / | 6.7KB WebP at 3x the slot. The old PNG stays in `public/` so pages cached before the deploy still load it; remove it with the other unreferenced public files later |
-| 15 | **CI red on `main` since PR #121 (3cb2e43):** the Round 5 "invents nothing" guard read the meeting planner image's `width: "100%"` as a percentage claim | test only | Percentage check now ignores inline style objects; a percentage in copy still fails (mutation-tested) |
+
+**CI on `main`, fixed separately:** the Round 5 "invents nothing" guard read the meeting
+planner image's `width: "100%"` as a percentage claim, so the checks job failed on every push
+to `main` from PR #121 (3cb2e43) on. The percentage check now ignores inline style objects; a
+percentage in copy still fails (mutation-tested). This PR first carried that commit; it
+merged on its own as PR #127 (8429b9e, 2026-10-05) and dropped out of this PR in the rebase.
 
 Nothing in the PR changes a title, H1, canonical, visible sentence, link, price or photograph.
 Visible changes are limited to phone layout (12, 13) and are shown below.
@@ -60,11 +67,11 @@ browser spec pins two columns at desktop for every changed section.
 
 | Date | URLs | Source commit |
 |---|---|---|
-| 2026-10-04 | /, /mahjong-lessons-las-vegas, /about, /mahjong-parties-las-vegas, /corporate-team-building-las-vegas, /convention-activities-las-vegas, /las-vegas-meeting-planner-activities, /mahjong-corporate-las-vegas (unchanged) | #120, #121, #123, #124 |
+| 2026-10-05 | /, /mahjong-parties-las-vegas, /mahjong-lessons-summerlin, /mahjong-lessons-henderson | #125 (merged 2026-10-05 PT) |
+| 2026-10-04 | /mahjong-lessons-las-vegas, /about, /corporate-team-building-las-vegas, /convention-activities-las-vegas, /las-vegas-meeting-planner-activities, /mahjong-corporate-las-vegas (unchanged) | #120, #121, #123, #124 |
 | 2026-10-03 | /studio, /schedule, /private-mahjong-lessons-las-vegas, /play-mahjong-las-vegas, /mahjong-open-play-las-vegas, /conference-activities-las-vegas, /corporate-event-activities-las-vegas, /trade-show-booth-activities-las-vegas, /incentive-group-activities-las-vegas, /contact, /learn-mahjong, /mahjong-leagues-las-vegas (unchanged) | #117 (merged 10-03 PT), #118 |
 | 2026-08-29 | the 8 /rules/* topics | #86, #87 |
 | 2026-08-26 | /rules, /ask (unchanged) | #85 |
-| 2026-08-07 | /mahjong-lessons-summerlin, /mahjong-lessons-henderson | 9e092ec |
 | 2026-07-26 | /mahjong-sets-guide | cb2b75d |
 
 Sitewide nav/footer edits and head-only or schema-only commits were not counted as content
@@ -160,18 +167,18 @@ text on 23 of 23 pages; no horizontal overflow at 390px on any route.
 - FAQPage, HowTo and Course markup earn no Google rich results here; keep FAQPage for
   consistency, do not add HowTo or Course expecting a rich result.
 
-## Test results (final commit)
+## Test results (after the rebase onto `599e5f7`)
 
 | Check | Result |
 |---|---|
 | `npx tsc --noEmit` | clean |
 | `pnpm build` | success, 43 routes |
-| `pnpm test:logic` | 494 passed, 7 skipped, 1 failed: the Find My Mahj drift check (local-only, skips in CI). Main before this PR: 480 passed, 2 failed (that check plus the CI-blocking meeting-planner guard) |
+| `pnpm test:logic` | 506 passed, 7 skipped, 1 failed: the Find My Mahj drift check, which needs the sister repo on disk and skips in CI (pre-existing; nothing else fails since PR #127) |
 | Browser, desktop-chromium + mobile, local production build | 530 passed, 12 skipped, 2 failed: `studio.spec.ts:173` fetches photos from a hardcoded `http://localhost:3000`, which on this Mac is another session's debug server returning 500; the same photos return 200 from this build, and the test passes in CI |
 | New `tests/seo-technical-audit.{logic.,}spec.ts` | 13 logic + 16 browser passed (2 skips are the phone-only and desktop-only cases); 7 mutations (each defect reintroduced) all caught |
-| `scripts/lint-regression.mjs origin/main` | no new errors in 21 changed files |
+| `scripts/lint-regression.mjs origin/main` | no new errors in 20 changed files (base `599e5f7`) |
 | `pnpm lint` (advisory) | 15 errors, 2 warnings, identical to `main` |
-| Internal-link crawl of the fixed build vs `main` | 52 URLs, 0 broken links; titles, descriptions, canonicals, H1s and every link identical on all routes; robots, OG, JSON-LD types and image attributes changed only where listed above |
+| Internal-link crawl of the fixed build vs production (`main` at `599e5f7`) | 52 URLs, 0 broken links; titles, descriptions, canonicals, H1s, H2s, every link and every word count identical on all routes; only the leagues robots/OG, the 404 OG, JSON-LD on 7 routes and image attributes on 5 routes differ |
 
 ## Route inventory
 
@@ -181,12 +188,12 @@ sitemap.
 
 | URL | Primary intent | Title (chars) | H1 | Canonical | Page schema (plus sitewide LocalBusiness, Course x2, WebSite) | Inbound pages (all / contextual), depth | Sitemap lastmod | Fixed here / still open |
 |---|---|---|---|---|---|---|---|---|
-| / | Brand + money query 'mahjong lessons las vegas' (ranks ~#1); every service | Las Vegas Mahjong \| Lessons, Events & Open Play (47) | Las VegasMahjong | self | none | 32/3, d0 | 2026-10-04 | FIXED hero fetchpriority, lastmod. OPEN (protected): .reveal text at opacity 0 until JS (CR-4), H1 textContent 'Las VegasMahjong' (CR-5, CI-pinned), no <main> (CR-6), multi-area OG text (HM-8) |
+| / | Brand + money query 'mahjong lessons las vegas' (ranks ~#1); every service | Las Vegas Mahjong \| Lessons, Events & Open Play (47) | Las VegasMahjong | self | none | 32/3, d0 | 2026-10-05 | FIXED hero fetchpriority, lastmod. OPEN (protected): .reveal text at opacity 0 until JS (CR-4), H1 textContent 'Las VegasMahjong' (CR-5, CI-pinned), no <main> (CR-6), multi-area OG text (HM-8) |
 | /studio | Studio location: where we play, Lucky Hare address | Mahjong Studio in Las Vegas \| Las Vegas Mahjong (47) | Our Mahjong Studio in Las Vegas | self | Place, BreadcrumbList | 32/7, d1 | 2026-10-03 | FIXED LCP fetchpriority, lastmod |
 | /schedule | Upcoming classes, open play, leagues (Bookwhen feed) | Mahjong Class & Open Play Schedule \| Las Vegas Mahjong (54) | Class & Open Play Schedule | self | BreadcrumbList, Event | 32/8, d1 | 2026-10-03 | FIXED BreadcrumbList (JSON-LD only), lastmod. OPEN: league session Event text not visible (SP-3), Bookwhen duplicate sentence (SP-12), 'PMin' text join (CR-11) |
 | /mahjong-lessons-las-vegas | Money page: group lessons, MAHJ ladder, $60 | Mahjong Lessons in Las Vegas \| Las Vegas Mahjong (48) | Mahjong Lessons in Las Vegas | self | Course (its own, a third Course node), FAQPage, BreadcrumbList | 32/23, d1 | 2026-10-04 | FIXED lastmod. OPEN (protected, CI-locked): description 170 chars (HM-7), hero 'Learn More' to / (IL-5), texture is LCP (IMG-7) |
 | /private-mahjong-lessons-las-vegas | Private lessons at the studio, contact for pricing | Private Mahjong Lessons at Our Las Vegas Studio \| Las Vegas Mahjong (67) | Private Mahjong Lessons at Our Studio | self | Service, BreadcrumbList, FAQPage | 32/3, d1 | 2026-10-03 | FIXED lastmod. OPEN: title 67 chars (HM-6), 3 contextual inbound |
-| /mahjong-parties-las-vegas | Birthday and private parties | Mahjong Parties Las Vegas \| Las Vegas Mahjong (45) | Mahjong Parties in Las Vegas | self | Service, BreadcrumbList, FAQPage | 32/4, d1 | 2026-10-04 | FIXED phone stacking, Summerlin Place, 320px clip, lastmod. OPEN: stale capacity and furniture claims (addressed in PR #125) |
+| /mahjong-parties-las-vegas | Birthday and private parties | Mahjong Parties Las Vegas \| Las Vegas Mahjong (45) | Mahjong Parties in Las Vegas | self | Service, BreadcrumbList, FAQPage | 32/4, d1 | 2026-10-05 | FIXED phone stacking, Summerlin Place, 320px clip, lastmod. Stale capacity and furniture claims fixed by #125 (merged) |
 | /play-mahjong-las-vegas | Visitors who already play | Play Mahjong in Las Vegas \| Open Play for Visitors (50) | Looking for a Mahjong Game While Visiting Las Vegas? | self | FAQPage, BreadcrumbList | 4/4, d2 | 2026-10-03 | FIXED LCP fetchpriority, lastmod. OPEN: 4 contextual inbound, not in nav/footer (Round 4 item 4) |
 | /mahjong-open-play-las-vegas | Social Open Play (Lucky Sevens) | Mahjong Open Play Las Vegas \| Social American Mahjong (53) | Mahjong Open Play in Las Vegas | self | Service, BreadcrumbList, FAQPage | 32/6, d1 | 2026-10-03 | FIXED lastmod. OPEN: stale Summerlin/Henderson body copy (Round 4 item 3) |
 | /mahjong-leagues-las-vegas | Season leagues (Bookwhen feed) | Mahjong Leagues in Las Vegas \| Las Vegas Mahjong (48) | Mahjong Leagues in Las Vegas | self | BreadcrumbList | 1/1, d2 | 2026-10-03 | FIXED robots dropped preview directives, no share image. OPEN: 1 inbound link (IL-1), thin when no season listed (IDX-8) |
@@ -200,8 +207,8 @@ sitemap.
 | /incentive-group-activities-las-vegas | Spoke: reward trips, DMC, VIP groups | Incentive Group Activities in Las Vegas \| Las Vegas Mahjong (59) | Incentive Group Activities in Las Vegas | self | Service, BreadcrumbList, FAQPage | 7/7, d2 | 2026-10-03 | FIXED lastmod |
 | /about | Founder credibility (E-E-A-T) | About Shauna \| Certified Mahjong Instructor \| Las Vegas Mahjong (63) | Meet Shauna | self | Person, BreadcrumbList | 32/0, d1 | 2026-10-04 | FIXED phone stacking, lazy LCP, Person areaServed, lastmod. OPEN: title 63 chars (HM-6), 0 contextual inbound (IL-4), Person sameAs = business accounts (owner question) |
 | /contact | Inquiry form, every buyer | Contact Las Vegas Mahjong \| Lessons, Parties, Events (52) | Contact Las Vegas Mahjong | self | BreadcrumbList, ContactPage | 32/12, d1 | 2026-10-03 | FIXED lastmod |
-| /mahjong-lessons-summerlin | Local lessons, Summerlin | Mahjong Lessons in Summerlin, NV \| Las Vegas Mahjong (52) | Mahjong Lessons in Summerlin | self | Service, BreadcrumbList, FAQPage | 32/0, d1 | 2026-08-07 | FIXED lastmod. OPEN (owner-deferred): 251 words, templated with Henderson, in-home pitch, 0 contextual inbound (CR-8); stale claims in PR #125 |
-| /mahjong-lessons-henderson | Local lessons, Henderson | Mahjong Lessons in Henderson, NV \| Las Vegas Mahjong (52) | Mahjong Lessons in Henderson | self | Service, BreadcrumbList, FAQPage | 32/0, d1 | 2026-08-07 | FIXED lastmod. OPEN (owner-deferred): 305 words, 'we come to you' OG text (CR-8, HM-8), 0 contextual inbound; stale claims in PR #125 |
+| /mahjong-lessons-summerlin | Local lessons, Summerlin | Mahjong Lessons in Summerlin, NV \| Las Vegas Mahjong (52) | Mahjong Lessons in Summerlin | self | Service, BreadcrumbList, FAQPage | 32/0, d1 | 2026-10-05 | FIXED lastmod. OPEN (owner-deferred): 251 words, templated with Henderson, in-home pitch, 0 contextual inbound (CR-8); stale claims fixed by #125 (merged) |
+| /mahjong-lessons-henderson | Local lessons, Henderson | Mahjong Lessons in Henderson, NV \| Las Vegas Mahjong (52) | Mahjong Lessons in Henderson | self | Service, BreadcrumbList, FAQPage | 32/0, d1 | 2026-10-05 | FIXED lastmod. OPEN (owner-deferred): 305 words, 'we come to you' OG text (CR-8, HM-8), 0 contextual inbound; stale claims fixed by #125 (merged) |
 | /learn-mahjong | Beginner guide (informational) | How to Learn American Mahjong \| Las Vegas Mahjong (49) | How to Learn American Mahjong | self | Article, BreadcrumbList | 32/1, d1 | 2026-10-03 | FIXED off-page HowTo removed, author entity, lastmod. OPEN: no link to /rules (IL-3), og:type website (HM-11) |
 | /ask | Rules Q&A tool | Ask a Mahjong Rule \| Las Vegas Mahjong (38) | Ask Las Vegas Mahjong | self | WebPage, BreadcrumbList | 32/5, d1 | 2026-08-26 | OPEN: thin by design (CR-9), H1 'Ask Las Vegas Mahjong' vs title (CR-13) |
 | /mahjong-sets-guide | Buying guide, affiliate | Best Mahjong Sets 2026 \| Buying Guide \| Las Vegas Mahjong (57) | Best Mahjong Sets 2026 | self | Article, BreadcrumbList | 32/0, d1 | 2026-07-26 | FIXED author entity, lastmod. OPEN: '2026' in title/H1 (CR-10), 0 contextual inbound (IL-4), Maven spelling (IL-9) |
