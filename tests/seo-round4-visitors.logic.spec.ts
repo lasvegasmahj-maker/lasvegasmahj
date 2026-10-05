@@ -267,7 +267,14 @@ test.describe("the corporate cluster keeps its intents apart", () => {
   });
 
   test("Summerlin is a Place everywhere, matching the sitewide entity", () => {
-    for (const rel of [...Object.values(CLUSTER), "app/layout.tsx"]) {
+    // Every source file, not only the cluster: the parties page slipped past a narrower list.
+    const walk = (dir: string): string[] =>
+      fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true }).flatMap((e) =>
+        e.isDirectory() ? walk(`${dir}/${e.name}`) : /\.tsx?$/.test(e.name) ? [`${dir}/${e.name}`] : [],
+      );
+    const files = ["app", "components", "lib"].flatMap(walk);
+    expect(files).toContain("app/mahjong-parties-las-vegas/page.tsx");
+    for (const rel of files) {
       expect(read(rel), rel).not.toMatch(/"@type": "City", name: "Summerlin"/);
     }
   });
