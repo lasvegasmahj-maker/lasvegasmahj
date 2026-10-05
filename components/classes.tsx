@@ -78,9 +78,13 @@ export default function Classes() {
               Book a <span style={{ color: "var(--green)" }}>Lesson</span>
             </h3>
             <p>
-              Group and private mahjong lessons at our studio inside Lucky Hare,
-              8687 W. Sahara Ave. Suite 200. All levels welcome, from absolute
-              beginners to experienced players.
+              Group and private{" "}
+              <a href="/mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>
+                mahjong lessons in Las Vegas
+              </a>{" "}
+              at our studio inside Lucky Hare, 8687 W. Sahara Ave. Suite 200.
+              All levels welcome, from absolute beginners to experienced
+              players.
             </p>
             <div className="price-row">
               <span>Group Lesson (4-8 people)</span>
