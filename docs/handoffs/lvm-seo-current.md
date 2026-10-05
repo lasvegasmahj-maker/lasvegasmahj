@@ -3,7 +3,7 @@
 Rounds 1 through 7 and the contact consistency cleanup are all CLOSED, MERGED and LIVE
 (Round 4/5 as PR #117, Round 6 as PR #120, Round 7 as PR #124 on 2026-10-05 UTC, `main` at
 `d7a8212`). Their records are preserved below and must not be edited or re-litigated.
-**The technical SEO audit of 2026-10-04 is OPEN** as PR #PRNUM on branch
+**The technical SEO audit of 2026-10-04 is OPEN** as PR #126 on branch
 `seo/technical-audit-2026-10`, awaiting the owner's review. Full report:
 `docs/handoffs/lvm-seo-technical-audit-2026-10-04.md`. Opened in parallel and also awaiting
 review: **Round 8, stale claim cleanup** (PR #125, branch `seo/accuracy-sweep`), which has its
@@ -14,7 +14,7 @@ the leagues robots and share-image fixes, and leaves its link proposals to the o
 
 ---
 
-# TECHNICAL SEO AUDIT, 2026-10-04 (OPEN, PR #PRNUM, DO NOT MERGE)
+# TECHNICAL SEO AUDIT, 2026-10-04 (OPEN, PR #126, DO NOT MERGE)
 
 **Scope:** every route on `main` at `d7a8212`, technical SEO only. No new pages, no copy or
 keyword rewrites, no pricing, Bookwhen or photo changes. Built in the worktree

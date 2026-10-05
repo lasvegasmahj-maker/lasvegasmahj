@@ -2,7 +2,7 @@
 
 **Scope:** every route on `main` at `d7a8212` (after PR #124). Technical SEO only: no new pages,
 no copy or keyword rewrites, no pricing or business facts, no Bookwhen changes, no photo swaps.
-**Fix PR:** branch `seo/technical-audit-2026-10`, PR #PRNUM (open, NOT merged).
+**Fix PR:** branch `seo/technical-audit-2026-10`, PR #126 (open, NOT merged).
 **Related, opened in parallel:** PR #125 (Round 8, stale and unsourced claims on the homepage,
 footer, Summerlin, Henderson and parties copy) and the analysis-only "LVM SEO Gap Audit"
 (Drive, LVM/Marketing), which covers intent mapping, cannibalization and internal-link
