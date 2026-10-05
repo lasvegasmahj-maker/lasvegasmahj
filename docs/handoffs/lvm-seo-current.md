@@ -1,12 +1,75 @@
 # Handoff: Las Vegas Mahjong competitive SEO
 
-Rounds 1, 2, 3 and the contact consistency cleanup are all CLOSED, MERGED and LIVE. Their
-records are preserved below and must not be edited or re-litigated. **Rounds 4 and 5 are
-OPEN** on branch `seo/play-mahjong-visitors` (PR #117), awaiting the owner's merge.
+Rounds 1, 2, 3, 4, 5 and the contact consistency cleanup are all CLOSED, MERGED and LIVE
+(Round 4/5 merged as PR #117 on 2026-10-04; confirmed via `gh pr view 117`). Round 6
+(lessons page strengthening, PR #120) also merged. Their records are preserved below and
+must not be edited or re-litigated. **Round 7 is OPEN** on branch
+`seo/corporate-hub-strengthen` (PR #124), awaiting the owner's review. See that section
+immediately below.
 
 ---
 
-# ROUND 5: corporate and group landing pages (OPEN, same PR #117)
+# ROUND 7: corporate hub strengthening (OPEN, PR #124, DO NOT MERGE)
+
+**Date:** 2026-10-04. **Branch:** `seo/corporate-hub-strengthen` off `origin/main`, built in
+the worktree `~/Projects/lvm-seo-corporate-hub`.
+
+## Why
+
+Search Console shows `/mahjong-corporate-las-vegas` getting impressions mostly for generic
+terms (las vegas mahjong, mahjong lessons las vegas, mahjong casino las vegas, mahjong las
+vegas, vegas mahjong lessons), not corporate-intent queries. The owner asked for the page to
+read more clearly as the corporate service hub without cannibalizing the Round 5 cluster.
+
+## What changed (hub page only; the six supporting pages already linked back to the hub
+## with descriptive anchor text, so none of them needed edits)
+
+- **Title kept** (no ranking data yet to justify changing an exact-match title, per the
+  Round 4 decision already on record).
+- **H1**: "Corporate Mahjong in Las Vegas" -> "Corporate Mahjong Events in Las Vegas", now
+  matching the title.
+- **Meta/OG/Twitter descriptions** and the **Service schema** description/audience now name
+  company events, employee events, client entertainment and meeting/convention groups. The
+  visible meta description still avoids "client entertainment", "company parties" and
+  "incentive", which `tests/seo-round5-corporate.logic.spec.ts` reserves for the occasions
+  page's description.
+- **Hero paragraph** leads with the corporate-intent phrasing instead of starting mid-service
+  description.
+- **Internal links added**: the Corporate Team Building, Conference and Convention Groups,
+  and Incentive and Visiting Groups cards in the "What We Do for Organizations" section each
+  gained an inline, descriptive link to their dedicated page (mirroring the pattern the
+  Client Entertainment/occasions card already used). One new bridge sentence links to the
+  meeting-planner page, which previously had no contextual link from the hub's body copy
+  (only the generic related-experiences card grid).
+- Trade show booth activities is deliberately still not linked directly from the hub
+  (unchanged architecture: reached via convention, conference and the occasions page).
+- Sitemap `lastModified` bumped for the hub only.
+
+## Cannibalization map (unchanged from Round 5, restated for this audit)
+
+Hub = how we run corporate events (what we provide, how it works, the programs, how to
+book). Occasions page = which occasion. Team building = why mahjong works for a team, what
+happens at the table. Conference/convention = conference vs. convention buyer. Meeting
+planner = any meeting, by agenda slot. Incentive = reward trips, DMC/VIP. Trade show booth =
+exhibitors/sponsors, reached through convention/conference/occasions, not the hub.
+
+## Verification
+
+`npx tsc --noEmit` clean. `node scripts/lint-regression.mjs`: no new errors in either changed
+file. `pnpm build` succeeds. Logic suite (seo-round5-corporate, seo-round6-owner-wording,
+seo-round4-visitors, seo-round2, round3-contact, studio): 210 passed, 1 pre-existing failure
+on `/las-vegas-meeting-planner-activities` (a `width: "100%"` inline style misread as a
+percentage claim by a regex guard) that reproduces identically on `origin/main` and is
+unrelated to this PR. Browser suite (seo-round5-corporate, seo-round2, round3-contact) on
+desktop-chromium and mobile against a local production build: 168 passed, including every
+internal link on the page resolving and the hub still linking to all five pages Round 5
+required.
+
+**DO NOT MERGE** until Shauna reviews the current-vs-proposed copy.
+
+---
+
+# ROUND 5: corporate and group landing pages (MERGED as part of PR #117)
 
 **Date:** 2026-09-29. Same branch and worktree as round 4.
 
@@ -82,7 +145,7 @@ and Visitor Clusters (2026-09-29)".
 
 ---
 
-# ROUND 4: visiting players page and corporate cluster (OPEN, awaiting owner merge)
+# ROUND 4: visiting players page and corporate cluster (MERGED as part of PR #117)
 
 **Date:** 2026-09-29. **Branch:** `seo/play-mahjong-visitors` off `origin/main` at `cb28ed6`,
 built in the worktree `~/Projects/lvm-seo-visitors`.
