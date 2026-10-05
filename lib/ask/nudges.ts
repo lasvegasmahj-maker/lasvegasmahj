@@ -1,5 +1,4 @@
-import type { KnowledgeEntry } from "./knowledge";
-import type { Turn } from "./engine";
+import type { CanonicalRule as KnowledgeEntry, Turn } from "@/lib/ask-core/index.ts";
 
 // Occasional, context-aware next steps into Las Vegas Mahjong. At most one per
 // conversation, never on the first answer, never attached to an unverified answer.

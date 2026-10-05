@@ -102,6 +102,7 @@ test.describe("/ask page", () => {
     await askAndWait(page, "Can I use a joker in a pair?");
     const answer = page.locator(".ask-turn-failed");
     await expect(answer).toContainText("taking a break");
+    await expect(answer.locator(".ask-label")).toHaveCount(0);
     await expect(answer.locator("a[href='/rules']")).toBeVisible();
     await expect(page.getByLabel("Your American Mahjong rules question")).toBeEnabled();
   });
@@ -203,6 +204,38 @@ test.describe("entry points", () => {
       await page.goto(path);
       await expect(page.locator('main a[href="/ask"]').first()).toBeVisible();
     }
+  });
+});
+
+test.describe("deterministic clarification", () => {
+  test("the player sees the clarifying question, picks an option, and gets the rule; Never mind cancels", async ({ page }) => {
+    await page.goto("/ask");
+    await askAndWait(page, "Can I call that tile?");
+    const last = page.locator(".ask-turn-answer:not(.ask-thinking)").last();
+    await expect(last).toContainText("Are you calling it to make an exposure, or would it complete mahjong?");
+    await expect(last.locator(".ask-label")).toHaveText("Quick check");
+    await expect(page.getByRole("button", { name: "Reply" })).toBeVisible();
+    const options = page.getByTestId("ask-clarify").getByRole("button").filter({ hasNotText: "Never mind" });
+    await expect(options).toHaveCount(2);
+    await options.filter({ hasText: "It would complete mahjong" }).click();
+    await expect(page.locator(".ask-turn-answer:not(.ask-thinking)").last()).toContainText(/except a discarded joker|complete a winning hand/i);
+    await expect(page.getByTestId("ask-clarify")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Ask", exact: true })).toBeVisible();
+
+    await askAndWait(page, "Can I pass?");
+    await expect(page.getByTestId("ask-clarify")).toBeVisible();
+    await page.getByRole("button", { name: "Never mind" }).click();
+    await expect(page.getByTestId("ask-clarify")).toHaveCount(0);
+    await expect(page.locator(".ask-turn-answer:not(.ask-thinking)").last()).toContainText("No problem");
+  });
+
+  test("a pending answer shows the review note and no Read more link", async ({ page }) => {
+    await page.goto("/ask");
+    await askAndWait(page, "Can I pick up a discarded joker?");
+    const last = page.locator(".ask-turn-answer:not(.ask-thinking)").last();
+    await expect(last.locator(".ask-label")).toHaveText("Pending instructor review");
+    await expect(last.locator(".ask-pending-note")).toBeVisible();
+    await expect(last.locator("a[href^='/rules']")).toHaveCount(0);
   });
 });
 
