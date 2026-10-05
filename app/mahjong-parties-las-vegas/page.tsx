@@ -12,14 +12,14 @@ export const metadata: Metadata = {
   openGraph: {
     ...ogBase,
     title: "Mahjong Party Las Vegas | Birthdays, Showers & Celebrations",
-    description: "Skip the same old party. Book a private mahjong experience in Las Vegas for birthdays, girls nights and group celebrations. Certified instructor, any size group. Custom quote.",
+    description: "Skip the same old party. Book a private mahjong experience in Las Vegas for birthdays, girls nights and group celebrations. Certified instructor, custom quote for your group.",
     url: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Mahjong Party Las Vegas | Birthdays, Showers & Celebrations",
-    description: "Book a private mahjong experience in Las Vegas. Birthday parties, girls nights, showers and group celebrations. Certified instructor, any size group. Custom quote.",
+    description: "Book a private mahjong experience in Las Vegas. Birthday parties, girls nights, showers and group celebrations. Certified instructor, custom quote for your group.",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
@@ -40,7 +40,7 @@ const eventTypes = [
   { icon: "🏢", title: "Corporate Team Building", desc: "Break the ice and build real connections. Mahjong requires communication, strategy, and teamwork, perfect for any group size." },
   { icon: "🎂", title: "Birthday Celebrations", desc: "Special birthday mats, a personalized experience, and a celebration the birthday girl will actually remember. Skip the dinner reservation." },
   { icon: "❤️", title: "Charity & Fundraisers", desc: "Host a mahjong tournament or social to raise funds and bring your community together for a great cause." },
-  { icon: "🥂", title: "Girls' Night Out", desc: "The ultimate girls' night: tiles, laughter, drinks, and zero screen time. We bring everything. You bring the crew." },
+  { icon: "🥂", title: "Girls' Night Out", desc: "The ultimate girls' night: tiles, laughter, drinks, and zero screen time. We bring the mahjong equipment. You bring the crew." },
   { icon: "🎰", title: "Vegas Visitor Experiences", desc: "Visiting Las Vegas? Try something you can't do anywhere else. A hands-on mahjong experience you'll take home with you." },
   { icon: "💒", title: "Bridal Showers", desc: "An elegant, interactive activity for the bride-to-be and her closest friends. Something different, something memorable." },
   { icon: "🏫", title: "School & Community Groups", desc: "Community organizations, neighborhood associations, book clubs: we bring mahjong to you wherever you are." },
@@ -48,7 +48,7 @@ const eventTypes = [
 
 const faqs = [
   { q: "How much does a private mahjong event cost in Las Vegas?", a: "Every event is custom. Pricing depends on what you need -- group size, what we're bringing, and what we're doing. Reach out and we'll put together a quote that works for you." },
-  { q: "How big can the group be?", a: "We can host groups of all sizes, from intimate gatherings of 4 to large corporate events of 50+. For very large events we bring additional support." },
+  { q: "How big can the group be?", a: "We can host groups of all sizes, from intimate gatherings of 4 to large corporate events. For larger groups, we bring additional support to match your headcount." },
   { q: "Do guests need to know how to play?", a: "Not at all. We teach everyone from scratch. Most groups are complete beginners, and that's half the fun." },
   { q: "Where do you host private events?", a: "We can come to your home, a rented venue, a restaurant, a hotel suite, or your office. We bring all the equipment: tiles, racks, cards, everything." },
   { q: "How far in advance should I book?", a: "We recommend booking at least 2 weeks in advance, especially for weekends. Popular dates fill up fast, so reach out early and we'll make it work." },

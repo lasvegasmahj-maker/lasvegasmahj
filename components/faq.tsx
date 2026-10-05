@@ -13,7 +13,7 @@ const faqs = [
   },
   {
     q: "What do I need to bring?",
-    a: "Just yourself! We provide the tiles, racks, and everything else you need. If you have your own NMJL card, feel free to bring it; otherwise we\u2019ll have extras.",
+    a: "For a lesson, just yourself! We provide the tiles, racks, and extra NMJL cards if you don\u2019t have one. Social Open Play is different: bring your own current NMJL card, since cards aren\u2019t provided there.",
   },
   {
     q: "Can I come alone, or do I need a group?",

@@ -63,7 +63,7 @@ export default function MahjongLessonsSummerlin() {
               Mahjong Lessons in <span className="accent-pink">Summerlin</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              A certified Oh My Mahjong instructor with 18 years of experience teaches group and private lessons throughout Summerlin. We come to you, we bring everything, and beginners are our specialty.
+              A certified Oh My Mahjong instructor with 18 years of experience teaches group and private lessons throughout Summerlin. We come to you, bring the mahjong equipment, and beginners are our specialty.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/#classes" className="btn-primary">Book a Lesson</a>
@@ -107,7 +107,7 @@ export default function MahjongLessonsSummerlin() {
           <div className="container">
             <h2 className="section-title">Book Your <span className="accent-pink">Summerlin Lesson</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "480px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
-              Ready to learn mahjong in Summerlin? Reach out to book your group or private lesson. We respond within 24 hours.
+              Ready to learn mahjong in Summerlin? Reach out to book your group or private lesson. We will get back to you.
             </p>
             <a href="/#classes" className="btn-primary">Book Now</a>
           </div>

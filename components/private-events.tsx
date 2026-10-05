@@ -99,7 +99,7 @@ export default function PrivateEvents({ onInquiryOpen }: PrivateEventsProps) {
               marginBottom: "1.5rem",
             }}
           >
-            Groups of any size &middot; Venues across the Valley or your location
+            Custom quote for your group size &middot; Venues across the Valley or your location
           </p>
           <button
             className="btn-primary"

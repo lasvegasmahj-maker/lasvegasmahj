@@ -156,9 +156,9 @@ export default function Footer() {
 
       <div className="footer-seo" style={{ padding: "1.5rem 2rem 0", maxWidth: "900px", margin: "0 auto" }}>
         <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.2)", lineHeight: 1.7, textAlign: "center" }}>
-          Las Vegas Mahjong offers mahjong lessons, open play events, leagues,
-          tournaments, and private events at our studio inside Lucky Hare on West
-          Sahara Avenue, serving Las Vegas, Summerlin, Henderson, Green Valley,
+          Las Vegas Mahjong offers open play events, leagues, and tournaments at
+          our studio inside Lucky Hare on West Sahara Avenue, plus mahjong lessons
+          and private events serving Las Vegas, Summerlin, Henderson, Green Valley,
           Anthem, and the entire Las Vegas Valley. Certified Oh My Mahjong
           instructor. Whether you&rsquo;re looking for beginner mahjong classes,
           corporate team building, birthday party activities, or just a fun
