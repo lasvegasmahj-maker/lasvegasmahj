@@ -4,8 +4,82 @@ Rounds 1, 2, 3, 4, 5 and the contact consistency cleanup are all CLOSED, MERGED 
 (Round 4/5 merged as PR #117 on 2026-10-04; confirmed via `gh pr view 117`). Round 6
 (lessons page strengthening, PR #120) also merged. Their records are preserved below and
 must not be edited or re-litigated. **Round 7 is OPEN** on branch
-`seo/corporate-hub-strengthen` (PR #124), awaiting the owner's review. See that section
+`seo/corporate-hub-strengthen` (PR #124), awaiting the owner's review. **Round 8 is OPEN**
+on branch `seo/accuracy-sweep`, also awaiting the owner's review. See those sections
 immediately below.
+
+---
+
+# ROUND 8: stale claim cleanup (OPEN, DO NOT MERGE)
+
+**Date:** 2026-10-04. **Branch:** `seo/accuracy-sweep` off `origin/main`, built in the
+worktree `~/Projects/lvm-seo-accuracy-sweep`.
+
+## Why
+
+This closes out the items the Round 5 handoff listed under "Still open (outside this PR's
+scope, owner's call)" below: six claims on the homepage, Summerlin, Henderson and the
+parties page, plus one on the sitewide footer, that were either unsourced (an invented
+response time or capacity number) or had already been superseded by a standing rule fixed
+elsewhere on the site (who supplies furniture vs. equipment; Open Play requires a current
+NMJL card and is studio-only, not sitewide).
+
+## What changed (one sentence or phrase per claim, nothing else on each page touched)
+
+| Page | Was | Now |
+|---|---|---|
+| Homepage FAQ (`components/faq.tsx`) | "otherwise we'll have extras" (NMJL cards, unscoped) | Scoped: lessons get extra cards; Open Play requires your own current card |
+| Homepage studio banner (`components/studio-banner.tsx`) | "every level at the same tables" (Lucky Sevens/Open Play) | "for players who already know the game," matching `/studio`, `/mahjong-open-play-las-vegas` and `/play-mahjong-las-vegas` |
+| Homepage private events teaser (`components/private-events.tsx`) | "Groups of any size" | "Custom quote for your group size" |
+| Homepage inquiry pop-up (`components/inquiry-modal.tsx`) | "I'll be in touch within 24 hours" (x2) | "I'll be in touch soon" |
+| Sitewide footer (`components/footer.tsx`) | One sentence attached open play/leagues/tournaments to "the entire Las Vegas Valley" | Re-scoped: open play/leagues/tournaments are at the studio; lessons and private events serve the Valley |
+| Summerlin (`app/mahjong-lessons-summerlin/page.tsx`) | "we bring everything"; "We respond within 24 hours" | "bring the mahjong equipment"; "We will get back to you" |
+| Henderson (`app/mahjong-lessons-henderson/page.tsx`) | "open play events across the Las Vegas Valley"; "We respond within 24 hours" | "open play at our studio inside Lucky Hare"; "We will get back to you" |
+| Parties page (`app/mahjong-parties-las-vegas/page.tsx`) | "any size group" (meta x2); "We bring everything" (Girls' Night); "large corporate events of 50+" (FAQ) | "custom quote for your group" (meta x2); "bring the mahjong equipment"; "large corporate events" with the invented number dropped |
+
+Not changed on the parties page: "we bring all the equipment: tiles, racks, cards,
+everything" (the "where do you host" FAQ, which correctly scopes "everything" to mahjong
+equipment, not furniture) was not in the owner's named list and is not objectively false, so
+it was left alone.
+
+## Follow-up (2026-10-05, same PR): two more capacity claims on the parties page
+
+Before approving, the owner flagged that "perfect for any group size" (Corporate Team
+Building card) and "We can host groups of all sizes" (the "how big can the group be?" FAQ)
+are the same unsupported-capacity-claim category as the ones this round already removed, and
+asked for them revised too, with no numeric capacity invented.
+
+| Was | Now |
+|---|---|
+| "...communication, strategy, and teamwork, perfect for any group size." | "...communication, strategy, and teamwork." (capacity phrase dropped, nothing invented in its place) |
+| "We can host groups of all sizes, from intimate gatherings of 4 to large corporate events. For larger groups, we bring additional support to match your headcount." | "Group sizes vary widely, from intimate gatherings of 4 to large corporate events. Tell us your headcount and we'll bring additional support to match." |
+
+`tests/seo-round8-stale-claims.logic.spec.ts` gained a test guarding against "groups of all
+sizes" and "any group size" on this page, alongside the eight original guards.
+
+## Tests
+
+New file `tests/seo-round8-stale-claims.logic.spec.ts` pins all eight fixes so a future
+session does not reintroduce any of them.
+
+## Verification
+
+`npx tsc --noEmit` clean. `node scripts/lint-regression.mjs origin/main`: no new errors in
+the 9 changed files (2 pre-existing `no-html-link-for-pages` errors on untouched lines in the
+Summerlin/Henderson files, unrelated). `pnpm build` succeeds, still 43 routes, no new pages.
+Logic suite: all passing except the two pre-existing failures already on `origin/main`
+(the Find My Mahj drift check, and the `/las-vegas-meeting-planner-activities` width:100%
+false positive the Round 7 handoff already documented), both confirmed to reproduce
+identically on a clean `origin/main` checkout in an isolated worktree. Browser suites
+(room-cards, seo-round2, round3-contact, contact-consistency, seo-round5-corporate,
+site-regression) against a local production build: all passing on desktop-chromium and
+mobile. `seo-round4-visitors.spec.ts` and the one studio photo-fetch check in
+`studio.spec.ts` were flaky under heavy concurrent load from other sessions on this machine
+(Playwright navigation timeouts on a page this PR does not touch); confirmed not a
+regression by re-running against a freshly built, idle `origin/main` worktree, where they
+passed immediately.
+
+**DO NOT MERGE** until Shauna reviews the current-vs-proposed copy.
 
 ---
 
@@ -130,13 +204,10 @@ cards; the booth page is reached through convention, conference and the occasion
 
 ## Still open (outside this PR's scope, owner's call)
 
-- Homepage (unchanged by instruction): FAQ "we'll have extras" for NMJL cards, studio banner
-  "every level at the same tables", "Groups of any size", inquiry pop-up "within 24 hours".
-- Summerlin and Henderson (owner deferred rewrites): "We respond within 24 hours", Henderson
-  "open play events across the Las Vegas Valley", Summerlin "we bring everything".
-- Parties page: "We bring everything", "large corporate events of 50+", "any size group".
-- Footer (sitewide, homepage too): "open play events, leagues, tournaments ... entire Las Vegas
-  Valley".
+- **Homepage, Summerlin, Henderson, parties page and footer claims: FIXED in Round 8** (see
+  that section above). The six-bullet list that used to live here (homepage FAQ/studio
+  banner/private events/inquiry pop-up, Summerlin, Henderson, the parties page, and the
+  footer) is now the "What changed" table in Round 8. Do not re-add any of the old wording.
 - Bookwhen listings (owner-side): Social Open Play says "Drop in and play"; the Halloween
   special says "All levels welcome"; booking pages show her phone and gmail.
 

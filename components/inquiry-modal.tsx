@@ -23,7 +23,7 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
           Plan Your Mahjong <span style={{ color: "var(--green)" }}>Experience</span>
         </h3>
         <p className="modal-desc">
-          Fill out the form below and I&rsquo;ll be in touch within 24 hours! Prefer email?
+          Fill out the form below and I&rsquo;ll be in touch soon! Prefer email?
           Write to{" "}
           <a href="mailto:hello@lasvegasmahj.com" style={{ color: "var(--green)", fontWeight: 600 }}>
             hello@lasvegasmahj.com
@@ -37,7 +37,7 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
         <ContactForm
           source="Homepage Plan Your Event"
           successTitle={"You\u2019re on my radar!"}
-          successBody={"Thanks for reaching out. I\u2019ll be in touch within 24 hours. Get ready to play!"}
+          successBody={"Thanks for reaching out. I\u2019ll be in touch soon. Get ready to play!"}
         />
       </div>
     </div>

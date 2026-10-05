@@ -83,7 +83,7 @@ export default function MahjongLessonsHenderson() {
               Whether you&rsquo;re a book club looking for something new, a group of neighbors who have always been curious about mahjong, or a friend group ready to learn together, we&rsquo;ll come to you with all the tiles, racks, and instruction you need.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85 }}>
-              Henderson residents can also join open play events across the Las Vegas Valley to keep practicing after their first lesson.
+              Henderson residents can also join open play at our studio inside Lucky Hare to keep practicing after their first lesson.
             </p>
           </div>
         </section>
@@ -120,7 +120,7 @@ export default function MahjongLessonsHenderson() {
           <div className="container">
             <h2 className="section-title">Book Your <span className="accent-pink">Henderson Lesson</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "480px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
-              Ready to learn mahjong in Henderson? Book a group or private lesson and we&rsquo;ll come to you. We respond within 24 hours.
+              Ready to learn mahjong in Henderson? Book a group or private lesson and we&rsquo;ll come to you. We will get back to you.
             </p>
             <a href="/#classes" className="btn-primary">Book Now</a>
           </div>

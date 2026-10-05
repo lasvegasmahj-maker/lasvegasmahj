@@ -37,8 +37,8 @@ export default function StudioBanner() {
               >
                 <h3>Lucky Sevens</h3>
                 <p>
-                  The playing room. Open play, social play, and every level at
-                  the same tables.
+                  The playing room. Social open play for players who already
+                  know the game.
                 </p>
                 <span className="studio-room-cue">
                   Book Open Play<span aria-hidden="true"> &rarr;</span>
