@@ -23,7 +23,7 @@ test.describe("homepage: Open Play room card matches the operating facts", () =>
   test("studio-banner.tsx no longer invites every level to Open Play", () => {
     const src = read("components/studio-banner.tsx");
     expect(src).not.toMatch(/every level/i);
-    expect(src).toMatch(/already know the game/i);
+    expect(src).toMatch(/already\s+know the game/i);
   });
 });
 
