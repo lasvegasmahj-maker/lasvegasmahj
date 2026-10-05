@@ -8,19 +8,19 @@ import RelatedExperiences from "@/components/related-experiences";
 export const metadata: Metadata = {
   title: "Corporate Mahjong Events in Las Vegas",
   description:
-    "Corporate mahjong events in Las Vegas, hosted and facilitated at your office, hotel or venue. We bring the sets, cards and instruction. Get a quote.",
+    "Corporate mahjong events in Las Vegas for company events, meetings and conventions, hosted at your office, hotel or venue. Get a quote.",
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas" },
   openGraph: {
     ...ogBase,
     title: "Corporate Mahjong Events in Las Vegas | Las Vegas Mahjong",
-    description: "Corporate mahjong events in Las Vegas, hosted and facilitated at your office, hotel or venue. We bring the sets, cards and instruction. Contact for a custom quote.",
+    description: "Corporate mahjong events in Las Vegas for company events, meetings and conventions, hosted and facilitated at your office, hotel or venue. Contact for a custom quote.",
     url: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Corporate Mahjong Events in Las Vegas | Las Vegas Mahjong",
-    description: "Corporate mahjong events in Las Vegas, hosted and facilitated at your office, hotel or venue. We bring the sets, cards and instruction. Contact for a quote.",
+    description: "Corporate mahjong events in Las Vegas for company events, meetings and conventions, hosted and facilitated at your office, hotel or venue. Contact for a quote.",
     images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
   },
 };
@@ -30,7 +30,7 @@ const jsonLd = {
   "@type": "Service",
   name: "Corporate Mahjong Events Las Vegas",
   serviceType: "Corporate mahjong event hosting",
-  description: "Corporate mahjong events in Las Vegas, hosted and facilitated at the client's office, hotel or venue, with all tiles, racks, NMJL cards and instruction provided.",
+  description: "Corporate mahjong events in Las Vegas for company events, employee events, client entertainment and meeting or convention groups, hosted and facilitated at the client's office, hotel or venue, with all tiles, racks, NMJL cards and instruction provided.",
   provider: {
     "@type": "LocalBusiness",
     name: "Las Vegas Mahjong",
@@ -38,7 +38,7 @@ const jsonLd = {
     "@id": "https://www.lasvegasmahj.com/#business",
   },
   areaServed: { "@type": "City", name: "Las Vegas" },
-  audience: { "@type": "BusinessAudience", name: "Corporate teams, conference and convention groups, incentive trips, and corporate retreats in Las Vegas" },
+  audience: { "@type": "BusinessAudience", name: "Companies planning corporate events, employee events, client entertainment, meeting and convention groups, and incentive trips in Las Vegas" },
   offers: { "@type": "Offer", availability: "https://schema.org/InStock", url: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas" },
 };
 
@@ -74,10 +74,10 @@ export default function MahjongCorporateLasVegas() {
           <div className="container">
             <p className="section-label">Corporate Events · Planners · Group Programs</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
-              Corporate Mahjong in <span className="accent-green">Las Vegas</span>
+              Corporate Mahjong Events in <span className="accent-green">Las Vegas</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "640px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Las Vegas Mahjong brings facilitated American Mahjong experiences to hotels, conference rooms, ballrooms, corporate venues, hospitality suites, private rooms and offsite events. We provide the mahjong equipment, game materials and instruction; your venue provides the event space, tables and chairs.
+              From corporate events and employee events to meeting and convention groups, Las Vegas Mahjong brings a facilitated, portable American Mahjong experience to hotels, conference rooms, ballrooms, corporate venues, hospitality suites, private rooms and offsite events across Las Vegas. We provide the mahjong equipment, game materials and instruction; your venue provides the event space, tables and chairs.
             </p>
             <a href="/contact?source=corporate" className="btn-primary">Request a Quote</a>
           </div>
@@ -143,20 +143,35 @@ export default function MahjongCorporateLasVegas() {
           <div className="container" style={{ maxWidth: "680px" }}>
             <p className="section-label">Event Types</p>
             <h2 className="section-title">What We Do for <span className="accent-green">Organizations</span></h2>
+            <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "1.5rem", fontSize: "0.95rem" }}>
+              These are the corporate group activities and company events we run most often for organizations in Las Vegas.
+            </p>
             <div style={{ marginTop: "2.5rem" }}>
               {[
-                { title: "Corporate Team Building", desc: "Full event facilitation for company teams. Strategy-based, social, and fun. Works for any department, any industry." },
-                { title: "Client Entertainment", desc: "Impress clients with an experience they haven't done before. A private mahjong session is a conversation starter that lasts." },
-                { title: "Conference and Convention Groups", desc: "An evening or afternoon session for groups in town for a conference or convention, in a meeting room, ballroom or hospitality suite." },
-                { title: "Holiday and Quarterly Parties", desc: "Skip the standard holiday dinner. Give your team an event they'll associate with your company in the best possible way." },
-                { title: "Charity and Fundraiser Events", desc: "We partner with nonprofits to produce mahjong fundraisers, tournaments, and awareness events. Custom format for your organization's goals." },
-                { title: "Incentive and Visiting Groups", desc: "Hosted sessions for reward trips and company groups visiting Las Vegas, set up at the group's hotel." },
+                { title: "Corporate Team Building", desc: "Full event facilitation for company teams. Strategy-based, social, and fun. Works for any department, any industry.", links: [{ href: "/corporate-team-building-las-vegas", text: "corporate team building" }] },
+                { title: "Client Entertainment", desc: "Impress clients with an experience they haven't done before. A private mahjong session is a conversation starter that lasts.", links: [] },
+                { title: "Conference and Convention Groups", desc: "An evening or afternoon session for groups in town for a conference or convention, in a meeting room, ballroom or hospitality suite.", links: [{ href: "/conference-activities-las-vegas", text: "conference activities" }, { href: "/convention-activities-las-vegas", text: "convention activities" }] },
+                { title: "Holiday and Quarterly Parties", desc: "Skip the standard holiday dinner. Give your team an event they'll associate with your company in the best possible way.", links: [] },
+                { title: "Charity and Fundraiser Events", desc: "We partner with nonprofits to produce mahjong fundraisers, tournaments, and awareness events. Custom format for your organization's goals.", links: [] },
+                { title: "Incentive and Visiting Groups", desc: "Hosted sessions for reward trips and company groups visiting Las Vegas, set up at the group's hotel.", links: [{ href: "/incentive-group-activities-las-vegas", text: "incentive group activities" }] },
               ].map((item, i) => (
                 <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < 5 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
                   <div style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--green)", opacity: 0.35, flexShrink: 0, lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</div>
                   <div>
                     <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.3rem" }}>{item.title}</h3>
                     <p style={{ color: "rgba(255,255,255,0.55)", lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
+                    {item.links.length > 0 && (
+                      <p style={{ margin: "0.6rem 0 0", fontSize: "0.85rem" }}>
+                        See{" "}
+                        {item.links.map((l, idx) => (
+                          <span key={l.href}>
+                            <a href={l.href} style={{ color: "var(--green)", fontWeight: 600 }}>{l.text}</a>
+                            {idx < item.links.length - 1 ? " or " : ""}
+                          </span>
+                        ))}
+                        .
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
@@ -164,6 +179,11 @@ export default function MahjongCorporateLasVegas() {
             <p style={{ marginTop: "2rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.8, fontSize: "0.95rem" }}>
               Looking for ideas by occasion, from client nights to employee appreciation and holiday parties? See{" "}
               <a href="/corporate-event-activities-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate event activities in Las Vegas</a>.
+            </p>
+            <p style={{ marginTop: "1rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.8, fontSize: "0.95rem" }}>
+              Filling a single meeting or agenda slot instead of planning a full event? See{" "}
+              <a href="/las-vegas-meeting-planner-activities" style={{ color: "var(--green)", fontWeight: 600 }}>Las Vegas meeting planner activities</a>{" "}
+              for icebreakers, breakouts and evening socials by time slot.
             </p>
           </div>
         </section>
