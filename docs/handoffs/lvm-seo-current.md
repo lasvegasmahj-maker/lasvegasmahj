@@ -37,10 +37,25 @@ NMJL card and is studio-only, not sitewide).
 | Henderson (`app/mahjong-lessons-henderson/page.tsx`) | "open play events across the Las Vegas Valley"; "We respond within 24 hours" | "open play at our studio inside Lucky Hare"; "We will get back to you" |
 | Parties page (`app/mahjong-parties-las-vegas/page.tsx`) | "any size group" (meta x2); "We bring everything" (Girls' Night); "large corporate events of 50+" (FAQ) | "custom quote for your group" (meta x2); "bring the mahjong equipment"; "large corporate events" with the invented number dropped |
 
-Not changed on the parties page: "perfect for any group size" (Corporate Team Building
-card) and "we bring all the equipment: tiles, racks, cards, everything" (the "where do you
-host" FAQ, which correctly scopes "everything" to mahjong equipment, not furniture) were not
-in the owner's named list and are not objectively false, so they were left alone.
+Not changed on the parties page: "we bring all the equipment: tiles, racks, cards,
+everything" (the "where do you host" FAQ, which correctly scopes "everything" to mahjong
+equipment, not furniture) was not in the owner's named list and is not objectively false, so
+it was left alone.
+
+## Follow-up (2026-10-05, same PR): two more capacity claims on the parties page
+
+Before approving, the owner flagged that "perfect for any group size" (Corporate Team
+Building card) and "We can host groups of all sizes" (the "how big can the group be?" FAQ)
+are the same unsupported-capacity-claim category as the ones this round already removed, and
+asked for them revised too, with no numeric capacity invented.
+
+| Was | Now |
+|---|---|
+| "...communication, strategy, and teamwork, perfect for any group size." | "...communication, strategy, and teamwork." (capacity phrase dropped, nothing invented in its place) |
+| "We can host groups of all sizes, from intimate gatherings of 4 to large corporate events. For larger groups, we bring additional support to match your headcount." | "Group sizes vary widely, from intimate gatherings of 4 to large corporate events. Tell us your headcount and we'll bring additional support to match." |
+
+`tests/seo-round8-stale-claims.logic.spec.ts` gained a test guarding against "groups of all
+sizes" and "any group size" on this page, alongside the eight original guards.
 
 ## Tests
 

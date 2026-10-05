@@ -81,4 +81,10 @@ test.describe("parties page drops the unsourced capacity and furniture claims", 
   test("Girls' Night Out no longer claims we bring everything", () => {
     expect(read(page("/mahjong-parties-las-vegas"))).not.toMatch(/we bring everything/i);
   });
+
+  test("no 'all sizes' or 'any group size' capacity claim either", () => {
+    const src = read(page("/mahjong-parties-las-vegas"));
+    expect(src).not.toMatch(/groups of all sizes/i);
+    expect(src).not.toMatch(/any group size/i);
+  });
 });
