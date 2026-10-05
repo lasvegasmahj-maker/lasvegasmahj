@@ -88,7 +88,8 @@ test.describe("the four new corporate and group pages", () => {
       const code = readCode(rel);
       expect(code).not.toMatch(/\$\s?\d/);
       expect(code).not.toMatch(/\d+\s?\+/);
-      expect(code).not.toMatch(/\d+\s?%/);
+      // A CSS value in an inline style, such as width: "100%", is layout, not a statistic.
+      expect(code.replace(/style=\{\{[^}]*\}\}/g, "")).not.toMatch(/\d+\s?%/);
       expect(code).not.toMatch(/\b(up to|as many as|over) \d/i);
       expect(code).not.toMatch(/<blockquote|testimonial|Northmarq/i);
       expect(code).not.toMatch(/guarantee|increase[sd]? (booth )?traffic|leads? per|\bROI\b/i);
