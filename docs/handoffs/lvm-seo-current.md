@@ -1,12 +1,66 @@
 # Handoff: Las Vegas Mahjong competitive SEO
 
-Rounds 1, 2, 3, 4, 5 and the contact consistency cleanup are all CLOSED, MERGED and LIVE
-(Round 4/5 merged as PR #117 on 2026-10-04; confirmed via `gh pr view 117`). Round 6
-(lessons page strengthening, PR #120) also merged. Their records are preserved below and
-must not be edited or re-litigated. **Round 7 is OPEN** on branch
-`seo/corporate-hub-strengthen` (PR #124), awaiting the owner's review. **Round 8 is OPEN**
-on branch `seo/accuracy-sweep`, also awaiting the owner's review. See those sections
-immediately below.
+Rounds 1 through 7 and the contact consistency cleanup are all CLOSED, MERGED and LIVE
+(Round 4/5 as PR #117, Round 6 as PR #120, Round 7 as PR #124 on 2026-10-05 UTC, `main` at
+`d7a8212`). Their records are preserved below and must not be edited or re-litigated.
+**The technical SEO audit of 2026-10-04 is OPEN** as PR #PRNUM on branch
+`seo/technical-audit-2026-10`, awaiting the owner's review. Full report:
+`docs/handoffs/lvm-seo-technical-audit-2026-10-04.md`. Opened in parallel and also awaiting
+review: **Round 8, stale claim cleanup** (PR #125, branch `seo/accuracy-sweep`), which has its
+own section in that branch. The two PRs touch different lines; only this banner conflicts.
+The analysis-only "LVM SEO Gap Audit" (Drive, LVM/Marketing, 2026-10-04) covers intent,
+cannibalization and internal-link proposals; this audit implements its A1 (red CI guard) and
+the leagues robots and share-image fixes, and leaves its link proposals to the owner.
+
+---
+
+# TECHNICAL SEO AUDIT, 2026-10-04 (OPEN, PR #PRNUM, DO NOT MERGE)
+
+**Scope:** every route on `main` at `d7a8212`, technical SEO only. No new pages, no copy or
+keyword rewrites, no pricing, Bookwhen or photo changes. Built in the worktree
+`~/Projects/lvm-seo-tech-audit`. Report with the route-by-route inventory:
+`docs/handoffs/lvm-seo-technical-audit-2026-10-04.md`.
+
+**Verdict:** no critical issues. No accidental noindex, canonical poisoning, broken internal
+link, orphan, redirect chain on www, duplicate title or description, or missing sitemap route.
+FAQ schema matches visible text on all 23 FAQ pages.
+
+**Fixed in the PR (objective defects only):** the leagues page's page-level `robots` (dropped
+the root preview directives; regression of the Round 4 fix) and its missing share image; 30
+of 33 wrong sitemap `lastModified` dates; the 404's `og:url` of `/404`; an off-page HowTo on
+/learn-mahjong; anonymous Article/CollectionPage authors (now `about#shauna`); `areaServed` on
+the /about Person; Summerlin typed `City` on the parties page; no BreadcrumbList on
+/schedule; missing `fetchpriority="high"` on LCP images (Next 16's `priority` only
+preloads); lazy LCP images on /about and convention; two two-column sections that never stacked on
+phones; 300px grid minimums clipping at 320px; a 102KB partner logo. Also **CI on `main` was
+red since PR #121** because a Round 5 guard read `width: "100%"` as a statistic; the guard now
+ignores inline style objects.
+
+**Status changes to items recorded in earlier rounds (as of 2026-10-04):**
+- `lasvegasmahj.vercel.app` (Contact consistency "LIVE AND UNFIXED", Round 2 surviving finding
+  1) now returns **503 DEPLOYMENT_PAUSED** on every path. The phone-number exposure is no
+  longer served. Deleting that project, or a 301 to www, would make it permanent.
+- `/schedule` and `/studio` robots (Round 2 surviving finding 2): fixed in Round 4, and the
+  same bug on `/mahjong-leagues-las-vegas` is fixed in this PR. A test now forbids a
+  page-level robots object on any indexable page.
+- Round 4 schema nits (item 7): `areaServed` on the /about Person is fixed. Sitewide Course,
+  `courseMode`, `paymentAccepted` and the footer Facebook URL remain open (see the report).
+- Parties birthday grid that never stacks (Round 2 known issue 5): fixed in this PR.
+  `.btn-primary` display (Round 2 next action 2) is still reserved for the owner.
+- Apex 307 (Round 4 item 6): still 307 on 2026-10-04.
+
+**New owner items:** the favicon is the stock Next.js/Vercel triangle (needs an approved
+square mark; same blocker for a schema `logo`); `lasvegasmahj-h1iz.vercel.app` serves an
+indexable mirror (canonicals neutralize it); FMG links to the apex host; the Thursday league's
+Bookwhen description repeats a sentence; the /about Person `sameAs` lists the business's
+accounts (keep only if they also represent Shauna); /mahjong-leagues-las-vegas has a single
+inbound link.
+
+**Rules going forward:** any PR that changes a route's visible content sets its sitemap
+`lastModified` to the go-live date (Bookwhen-fed pages use the last template or copy change;
+head-only, schema-only and layout-only CSS changes do not count);
+no page-level `robots` object on an indexable page; a page-level `openGraph` brings its own
+`images`; FAQPage, HowTo and Course markup earn no Google rich results here.
 
 ---
 
@@ -83,7 +137,7 @@ passed immediately.
 
 ---
 
-# ROUND 7: corporate hub strengthening (OPEN, PR #124, DO NOT MERGE)
+# ROUND 7: corporate hub strengthening (MERGED as PR #124, 2026-10-05 UTC)
 
 **Date:** 2026-10-04. **Branch:** `seo/corporate-hub-strengthen` off `origin/main`, built in
 the worktree `~/Projects/lvm-seo-corporate-hub`.
@@ -139,7 +193,7 @@ desktop-chromium and mobile against a local production build: 168 passed, includ
 internal link on the page resolving and the hub still linking to all five pages Round 5
 required.
 
-**DO NOT MERGE** until Shauna reviews the current-vs-proposed copy.
+Merged as PR #124 (`d7a8212`, 2026-10-05 01:09 UTC) and live on www.
 
 ---
 
