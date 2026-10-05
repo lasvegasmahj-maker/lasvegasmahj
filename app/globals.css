@@ -914,6 +914,12 @@ section {
   gap: 1.2rem;
 }
 
+.about-winners-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
 .testimonial {
   background: rgba(255,255,255,0.03);
   border-left: 3px solid var(--pink);
@@ -1922,6 +1928,9 @@ footer {
   /* Testimonials */
   .testimonials-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
   .testimonial p { font-size: 0.95rem !important; }
+
+  /* About: winner photo gallery */
+  .about-winners-grid { grid-template-columns: 1fr 1fr; gap: 0.85rem; }
 
   /* Shop grid */
   .shop-grid { grid-template-columns: 1fr !important; }
