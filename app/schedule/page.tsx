@@ -3,7 +3,7 @@ import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import { getScheduleEvents } from "@/lib/schedule";
-import { buildScheduleEventSchema } from "@/lib/schema";
+import { buildBreadcrumbSchema, buildScheduleEventSchema } from "@/lib/schema";
 import { SEVENS_OPEN_PLAY } from "@/lib/studio-photos";
 
 // A rebuild reads Bookwhen within the read caps in lib/schedule.ts. A rebuild that hits the
@@ -53,6 +53,10 @@ const bookOptions = [
   },
 ];
 
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: "Schedule", url: "https://www.lasvegasmahj.com/schedule" },
+]);
+
 const toneColor = (tone: string) => (tone === "green" ? "var(--green)" : tone === "gold" ? "var(--gold)" : "var(--pink)");
 
 export default async function Schedule() {
@@ -69,6 +73,12 @@ export default async function Schedule() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
+        }}
+      />
       {eventSchema.length > 0 && (
         <script
           type="application/ld+json"

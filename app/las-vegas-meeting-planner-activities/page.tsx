@@ -142,7 +142,7 @@ export default function LasVegasMeetingPlannerActivities() {
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container" style={{ maxWidth: "1040px" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "start" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "3rem", alignItems: "start" }}>
               <div>
                 <p className="section-label">By Agenda Slot</p>
                 <h2 className="section-title">Where It Fits in <span className="accent-pink">Your Agenda</span></h2>

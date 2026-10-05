@@ -22,23 +22,9 @@ const jsonLd = {
   "@type": "Article",
   headline: "How to Learn American Mahjong: A Complete Beginner's Guide",
   description: "The complete beginner's guide to learning American Mahjong: tiles, the NMJL card, how to play, and how to find lessons near you.",
-  author: { "@type": "Person", name: "Shauna", jobTitle: "Certified Oh My Mahjong Instructor" },
+  author: { "@type": "Person", "@id": "https://www.lasvegasmahj.com/about#shauna", name: "Shauna", url: "https://www.lasvegasmahj.com/about" },
   publisher: { "@type": "Organization", "@id": "https://www.lasvegasmahj.com/#business", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
   mainEntityOfPage: "https://www.lasvegasmahj.com/learn-mahjong",
-};
-
-const howToSchema = {
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  name: "How to Learn American Mahjong",
-  description: "Step-by-step guide to learning American Mahjong for complete beginners.",
-  step: [
-    { "@type": "HowToStep", name: "Get a Mahjong Set", text: "You need a 152-piece American Mahjong set and a current NMJL card. Sets range from $50 to $300+." },
-    { "@type": "HowToStep", name: "Learn the Tiles", text: "American Mahjong has three suits (Bams, Craks, Dots), plus winds, dragons, flowers, and jokers." },
-    { "@type": "HowToStep", name: "Read the NMJL Card", text: "The card changes every year and contains the winning hands. Learning to read it is the foundation of the game." },
-    { "@type": "HowToStep", name: "Play Your First Hand", text: "Start with a guided lesson or join a beginner-friendly open play session. Playing with others is the fastest way to learn." },
-    { "@type": "HowToStep", name: "Keep Playing", text: "Practice is everything. Join a weekly group, find open play near you, or take a follow-up lesson to keep improving." },
-  ],
 };
 
 const affiliates = [
@@ -54,7 +40,6 @@ export default function LearnMahjong() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema).replace(/</g, "\\u003c") }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Learn Mahjong", item: "https://www.lasvegasmahj.com/learn-mahjong" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 

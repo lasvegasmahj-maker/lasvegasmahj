@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
@@ -7,11 +8,13 @@ export const metadata: Metadata = {
   title: { absolute: "Page Not Found | Las Vegas Mahjong" },
   description:
     "That page does not exist. Find mahjong lessons, open play, and events at the Las Vegas Mahjong studio instead.",
+  // No og:url: /404 is not a real address, and a 404 has no canonical to point at.
   openGraph: {
+    ...ogBase,
     title: "Page Not Found | Las Vegas Mahjong",
     description: "That page does not exist.",
-    url: "https://www.lasvegasmahj.com/404",
   },
+  twitter: { card: "summary" },
 };
 
 export default function NotFound() {

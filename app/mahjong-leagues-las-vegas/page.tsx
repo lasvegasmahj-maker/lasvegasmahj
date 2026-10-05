@@ -3,6 +3,7 @@ import { ogBase } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import { getLeagues } from "@/lib/schedule";
+import { PLAYERS_AT_TABLE } from "@/lib/studio-photos";
 
 const PAGE_URL = "https://www.lasvegasmahj.com/mahjong-leagues-las-vegas";
 
@@ -15,13 +16,22 @@ export const metadata: Metadata = {
   description:
     "Join a mahjong league in Las Vegas. Play weekly games with the same group for a full season at our studio inside Lucky Hare. See open leagues and book.",
   alternates: { canonical: PAGE_URL },
-  robots: { index: true, follow: true },
   openGraph: {
     ...ogBase,
     title: "Mahjong Leagues in Las Vegas | Las Vegas Mahjong",
     description:
       "Weekly league play for a full season with the same group. See the leagues open for sign-up and book your seat.",
     url: PAGE_URL,
+    // A page-level openGraph object replaces the parent's, so without this the share card
+    // had no image at all.
+    images: [
+      {
+        url: `https://www.lasvegasmahj.com${PLAYERS_AT_TABLE.src}`,
+        width: PLAYERS_AT_TABLE.width,
+        height: PLAYERS_AT_TABLE.height,
+        alt: PLAYERS_AT_TABLE.alt,
+      },
+    ],
   },
 };
 

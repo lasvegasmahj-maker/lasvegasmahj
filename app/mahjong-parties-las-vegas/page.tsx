@@ -32,7 +32,7 @@ const jsonLd = {
   name: "Private Mahjong Events Las Vegas",
   description: "Fully hosted private mahjong parties and events in Las Vegas for birthdays, corporate team building, girls nights, charity events, and more.",
   provider: { "@type": "LocalBusiness", "@id": "https://www.lasvegasmahj.com/#business", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
-  areaServed: [{ "@type": "City", name: "Las Vegas" }, { "@type": "City", name: "Henderson" }, { "@type": "City", name: "Summerlin" }],
+  areaServed: [{ "@type": "City", name: "Las Vegas" }, { "@type": "City", name: "Henderson" }, { "@type": "Place", name: "Summerlin" }],
   offers: { "@type": "Offer", availability: "https://schema.org/InStock", url: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas" },
 };
 
@@ -99,7 +99,7 @@ export default function MahjongPartiesLasVegas() {
 
         {/* BIRTHDAY SPOTLIGHT */}
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
-          <div className="container" style={{ maxWidth: "820px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
+          <div className="container split-stack" style={{ maxWidth: "820px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
             <div>
               <p className="section-label">Birthday Parties</p>
               <h2 className="section-title" style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)" }}>Make Her Feel Like the <span className="accent-pink">Queen of the Table</span></h2>
@@ -161,7 +161,7 @@ export default function MahjongPartiesLasVegas() {
 
         {/* TESTIMONIAL */}
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
-          <div className="container" style={{ maxWidth: "820px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "center" }}>
+          <div className="container" style={{ maxWidth: "820px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "3rem", alignItems: "center" }}>
             <div>
               <p className="section-label">What Guests Say</p>
               <blockquote style={{ borderLeft: "3px solid var(--pink)", paddingLeft: "1.5rem", margin: "2rem 0 0" }}>

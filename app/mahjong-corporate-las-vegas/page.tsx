@@ -106,7 +106,7 @@ export default function MahjongCorporateLasVegas() {
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
           <div className="container" style={{ maxWidth: "1040px" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "start" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "3rem", alignItems: "start" }}>
               <div>
                 <p className="section-label">How It Works</p>
                 <h2 className="section-title">How a Corporate Mahjong Event <span className="accent-green">Comes Together</span></h2>
@@ -205,7 +205,7 @@ export default function MahjongCorporateLasVegas() {
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container" style={{ maxWidth: "1040px" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "center" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "3rem", alignItems: "center" }}>
               <div>
                 <p className="section-label">Corporate Testimonial</p>
                 <blockquote style={{ borderLeft: "3px solid var(--green)", paddingLeft: "1.5rem", margin: "2rem 0 0" }}>
