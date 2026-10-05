@@ -39,7 +39,6 @@ const jsonLd = {
     url: "https://www.lasvegasmahj.com",
   },
   knowsAbout: "American Mahjong, NMJL card, mahjong instruction, mahjong events",
-  areaServed: "Las Vegas, NV",
 };
 
 const breadcrumb = {
@@ -83,7 +82,7 @@ export default function About() {
 
         {/* STORY */}
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
-          <div className="container" style={{ maxWidth: "760px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "start" }}>
+          <div className="container split-stack" style={{ maxWidth: "760px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "start" }}>
             <div>
               {/* One line, not a second media section: /studio carries the full coverage. */}
               <p style={{ fontFamily: "var(--font-nav)", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "0.9rem" }}>
@@ -97,7 +96,9 @@ export default function About() {
                 alt={SHAUNA_NEON.alt}
                 width={SHAUNA_NEON.width}
                 height={SHAUNA_NEON.height}
-                sizes="(max-width: 760px) 100vw, 380px"
+                priority
+                fetchPriority="high"
+                sizes="(max-width: 768px) 100vw, 380px"
                 style={{ width: "100%", height: "auto", borderRadius: "8px", display: "block" }}
               />
             </div>

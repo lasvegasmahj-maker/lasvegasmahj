@@ -100,7 +100,7 @@ const shopItems = [
     site: "minimahjer.com",
     desc: "Mahjong made easy! Accessible sets and accessories designed for families, beginners, and the next generation of players.",
     cta: "Shop Now \u00B7 10% Off \u2197",
-    logo: "/logos/minimahjer.png",
+    logo: "/logos/minimahjer.webp",
   },
 ];
 

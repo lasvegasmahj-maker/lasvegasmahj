@@ -191,6 +191,7 @@ export default async function PlayMahjongLasVegas() {
                 width={SEVENS_OPEN_PLAY.width}
                 height={SEVENS_OPEN_PLAY.height}
                 priority
+                fetchPriority="high"
                 sizes="(max-width: 760px) 100vw, 48vw"
                 style={{ width: "100%", height: "auto", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.1)", display: "block" }}
               />

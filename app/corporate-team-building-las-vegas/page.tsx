@@ -118,7 +118,7 @@ export default function CorporateTeamBuildingLasVegas() {
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
           <div className="container" style={{ maxWidth: "1040px" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "start" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "3rem", alignItems: "start" }}>
               <div>
                 <p className="section-label">The Team Experience</p>
                 <h2 className="section-title">What Happens at <span className="accent-green">the Table</span></h2>

@@ -24,7 +24,7 @@ const schema = {
   name: "American Mahjong Rules Guide",
   description: "Complete American Mahjong rules guide by certified instructor Shauna of Las Vegas Mahjong.",
   url: "https://www.lasvegasmahj.com/rules",
-  author: { "@type": "Person", name: "Shauna", jobTitle: "Certified Oh My Mahjong Instructor" },
+  author: { "@type": "Person", "@id": "https://www.lasvegasmahj.com/about#shauna", name: "Shauna", url: "https://www.lasvegasmahj.com/about" },
   publisher: { "@type": "Organization", "@id": "https://www.lasvegasmahj.com/#business", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
 };
 

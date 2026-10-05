@@ -8,6 +8,7 @@ export default function Hero() {
         alt="Mahjong tiles at a Las Vegas Mahjong event"
         fill
         priority
+        fetchPriority="high"
         sizes="100vw"
         style={{ objectFit: "cover", zIndex: 0 }}
       />

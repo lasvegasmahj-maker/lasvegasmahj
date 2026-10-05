@@ -99,6 +99,8 @@ export default function ConventionActivitiesLasVegas() {
               alt="An empty room set with several mahjong tables, each with a decorative mat, a small lamp and tiles arranged and ready for play"
               width={1800}
               height={1308}
+              priority
+              fetchPriority="high"
               sizes="(max-width: 900px) 100vw, 900px"
               style={{ width: "100%", height: "auto", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.1)", display: "block" }}
             />

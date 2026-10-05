@@ -22,7 +22,7 @@ const jsonLd = {
   "@type": "Article",
   headline: "Best American Mahjong Sets 2026: A Certified Instructor's Guide",
   description: "An honest guide to the best American mahjong sets and accessories, written by a certified Oh My Mahjong instructor.",
-  author: { "@type": "Person", name: "Shauna", jobTitle: "Certified Oh My Mahjong Instructor" },
+  author: { "@type": "Person", "@id": "https://www.lasvegasmahj.com/about#shauna", name: "Shauna", url: "https://www.lasvegasmahj.com/about" },
   publisher: { "@type": "Organization", "@id": "https://www.lasvegasmahj.com/#business", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
   mainEntityOfPage: "https://www.lasvegasmahj.com/mahjong-sets-guide",
 };
