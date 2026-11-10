@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "Winning Rules in American Mahjong | Las Vegas Mahjong",
     description: "What makes a valid mahjong? What is a wall game? What is false mahjong? All winning rules answered.",
     url: "https://www.lasvegasmahj.com/rules/winning",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "How to Learn American Mahjong | Complete Beginner's Guide",
     description: "Everything you need to start playing American Mahjong: the tiles, the card, your first hand, and where to find lessons near you. Written by a certified instructor.",
     url: "https://www.lasvegasmahj.com/learn-mahjong",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

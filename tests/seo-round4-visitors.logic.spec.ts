@@ -224,7 +224,7 @@ test.describe("pages that dropped the preview directives get them back", () => {
   test("the schedule has a descriptive title and a share image", () => {
     const src = read("app/schedule/page.tsx");
     expect(src).toContain('title: "Mahjong Class & Open Play Schedule"');
-    expect(src).toContain("images: [`https://www.lasvegasmahj.com${SEVENS_OPEN_PLAY.src}`]");
+    expect(src).toContain("images: [studioOgImage(SEVENS_OPEN_PLAY)]");
   });
 });
 

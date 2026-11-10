@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, studioOgImage } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import Image from "next/image";
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: "Mahjong Open Play Las Vegas | Social American Mahjong",
     description: "Social American Mahjong in the Lucky Sevens room at the Las Vegas Mahjong Studio, for players who already know the game. Come solo or with friends.",
     url: "https://www.lasvegasmahj.com/mahjong-open-play-las-vegas",
-    images: [`https://www.lasvegasmahj.com${SEVENS_OPEN_PLAY.src}`],
+    images: [studioOgImage(SEVENS_OPEN_PLAY)],
   },
 };
 

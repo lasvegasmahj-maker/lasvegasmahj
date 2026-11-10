@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ogBase } from "@/lib/og";
+import { ogBase, studioOgImage } from "@/lib/og";
 import {
   WISHBONE_ROOM,
   SEVENS_OPEN_PLAY,
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     url: "https://www.lasvegasmahj.com/studio",
     // A page-level openGraph object replaces the parent's rather than merging, so this has
     // to be stated or the share card has no image at all.
-    images: [`https://www.lasvegasmahj.com${WISHBONE_ROOM.src}`],
+    images: [studioOgImage(WISHBONE_ROOM)],
   },
 };
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "Reading the NMJL Mahjong Card | Las Vegas Mahjong",
     description: "How to read the NMJL mahjong card: set sizes, any like number, consecutive numbers, open vs. closed hands. Explained by a certified instructor.",
     url: "https://www.lasvegasmahj.com/rules/the-card",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

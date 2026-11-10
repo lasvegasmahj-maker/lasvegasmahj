@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "Scoring and Payment Rules in American Mahjong | Las Vegas Mahjong",
     description: "Who pays when someone wins? What is joker-free double? How does a wall game settle? Scoring rules explained.",
     url: "https://www.lasvegasmahj.com/rules/scoring",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

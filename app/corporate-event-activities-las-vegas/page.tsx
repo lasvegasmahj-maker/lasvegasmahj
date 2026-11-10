@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import RelatedExperiences from "@/components/related-experiences";
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description:
       "Thanking employees, hosting clients, rewarding a sales team or celebrating the season: a hosted American Mahjong activity that fits the occasion.",
     url: PAGE_URL,
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

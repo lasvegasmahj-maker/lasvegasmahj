@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "Calling Tiles Rules in American Mahjong | Las Vegas Mahjong",
     description: "Who has priority when two players call? Can I call any discard? What is out of turn? Calling tile rules explained.",
     url: "https://www.lasvegasmahj.com/rules/calling-tiles",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

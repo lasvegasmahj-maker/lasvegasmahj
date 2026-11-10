@@ -231,7 +231,7 @@ test.describe("nothing unsourceable ships", () => {
     const src = readCode(STUDIO_PAGE);
     const og = src.match(/images:\s*\[([^\]]*)\]/);
     expect(og, "/studio needs a share image: a page-level openGraph replaces the parent's").not.toBeNull();
-    expect(og![1], "the share card should come from the manifest").toContain("WISHBONE_ROOM.src");
+    expect(og![1], "the share card should come from the manifest").toContain("studioOgImage(WISHBONE_ROOM)");
     // schema.org photo means "this image depicts this Place", so only room photographs qualify.
     const photoBlock = src.match(/photo:\s*\[([\s\S]*?)\]/);
     expect(photoBlock, "the Place should carry its verified photographs").not.toBeNull();

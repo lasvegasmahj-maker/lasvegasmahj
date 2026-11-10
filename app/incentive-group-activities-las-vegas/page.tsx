@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import RelatedExperiences from "@/components/related-experiences";
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     description:
       "A hosted, facilitated American Mahjong experience for incentive trips and DMC programs, brought to the resort, ballroom or suite your group has booked.",
     url: PAGE_URL,
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

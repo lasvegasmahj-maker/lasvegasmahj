@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import RelatedExperiences from "@/components/related-experiences";
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description:
       "An icebreaker, a breakout between sessions or a hosted evening social, fitted to the slot you need to fill. We bring the mahjong equipment and facilitation to your meeting room.",
     url: PAGE_URL,
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

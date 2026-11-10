@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: "American Mahjong Rules Guide | Las Vegas Mahjong",
     description: "Every common American Mahjong rules question, answered by a certified Oh My Mahjong instructor. Jokers, charleston, scoring, dead hands, and more.",
     url: "https://www.lasvegasmahj.com/rules",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

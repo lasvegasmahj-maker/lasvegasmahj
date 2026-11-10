@@ -13,6 +13,51 @@ share-image fixes, and its link proposals stay with the owner.
 
 ---
 
+# ROUND 9: invisible share-card and Service schema fixes (LOCAL BRANCH, NOT PUSHED, 2026-11-10)
+
+**Branch:** `seo/invisible-technical-fixes`, worktree `~/Projects/lvm-seo-invisible`, built on
+`main` at `089a729`. Note: PR #126 (the technical audit below) is MERGED; `089a729` is its
+merge commit, so the "OPEN" wording in the paragraph above is out of date.
+
+**Owner rule for this round:** nothing may visibly change. No copy, layout, link, page, price
+or claim. Verified by crawling a production build before and after: the body HTML of all 36
+crawled routes is identical, and every title, description, canonical, robots directive,
+`og:url`, H1 and FAQ is unchanged.
+
+**Search data:** the repository holds no Search Console export or SEO report file. The only
+performance data is the owner-supplied three-month query table in the Round 1 record below.
+This round makes no ranking or traffic claim.
+
+**Re-verified clean on `089a729`:** sitemap (33 URLs, all 200, all self-canonical), robots.txt,
+the 410, the three 301s, the trailing-slash 308, 404 handling, FAQ markup against visible text
+on 23 of 23 pages, breadcrumb targets, one title and one H1 per page.
+
+**Fixed (2 defects):**
+1. **Share images lost their size and alt text on 32 routes.** The root layout publishes
+   `og:image:width`, `height`, `alt` and `type`, but a page-level `openGraph` replaces the root
+   object, and those pages passed a bare URL. Every page except the homepage and leagues
+   shipped a share image with no dimensions and no alt text, on both card formats. Pages now
+   use `OG_HERO`, `OG_SHAUNA` or `studioOgImage(photo)` from `lib/og.ts`. Sizes are checked
+   against the JPEG files; alt text is the wording the root layout and `lib/studio-photos.ts`
+   already publish.
+2. **Four corporate Service nodes were anonymous.** The hub, team building, conference and
+   convention pages published a `Service` with no `@id` or `url`, while the four newer
+   corporate pages tie theirs to the page. All eight now carry `@id` `<canonical>#service`
+   and `url` `<canonical>`. No description, area or audience changed.
+
+**Tests:** `tests/seo-round9-share-schema.logic.spec.ts` (4) and
+`tests/seo-round9-share-schema.spec.ts` (36 across desktop and phone). Two older assertions
+that pinned the bare-URL source text now pin the helper call.
+
+**Rule going forward:** a page-level share image is a descriptor from `lib/og.ts`, never a
+bare URL string (test-enforced).
+
+**Left for the owner (each needs a visible or wording change, or a business fact):** see the
+"Documented, not changed" list in the technical audit report; nothing new was added to it
+except: /learn-mahjong and /mahjong-sets-guide publish Article schema with `og:type` website.
+
+---
+
 # TECHNICAL SEO AUDIT, 2026-10-04 (OPEN, PR #126, DO NOT MERGE)
 
 **Scope:** every route on `main` at `d7a8212`, technical SEO only. No new pages, no copy or

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_SHAUNA } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Mahjong Lessons in Henderson, NV | Las Vegas Mahjong",
     description: "Certified mahjong instructor serving Henderson, Nevada. We come to you. Green Valley, Anthem, and all of Henderson.",
     url: "https://www.lasvegasmahj.com/mahjong-lessons-henderson",
-    images: ["https://www.lasvegasmahj.com/shauna.jpg"],
+    images: [OG_SHAUNA],
   },
 };
 

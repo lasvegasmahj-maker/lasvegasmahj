@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     title: "Mahjong Party Las Vegas | Birthdays, Showers & Celebrations",
     description: "Skip the same old party. Book a private mahjong experience in Las Vegas for birthdays, girls nights and group celebrations. Certified instructor, custom quote for your group.",
     url: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
   twitter: {
     card: "summary_large_image",
     title: "Mahjong Party Las Vegas | Birthdays, Showers & Celebrations",
     description: "Book a private mahjong experience in Las Vegas. Birthday parties, girls nights, showers and group celebrations. Certified instructor, custom quote for your group.",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_SHAUNA } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Mahjong Lessons in Summerlin | Las Vegas Mahjong",
     description: "Certified mahjong instructor serving Summerlin, NV. Group and private lessons for all skill levels.",
     url: "https://www.lasvegasmahj.com/mahjong-lessons-summerlin",
-    images: ["https://www.lasvegasmahj.com/shauna.jpg"],
+    images: [OG_SHAUNA],
   },
 };
 

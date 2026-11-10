@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import RelatedExperiences from "@/components/related-experiences";
@@ -14,19 +14,21 @@ export const metadata: Metadata = {
     title: "Conference Activities in Las Vegas | Mahjong Networking Break",
     description: "A mahjong break-out and networking activity for conference attendees in Las Vegas, set up in your hotel meeting room or ballroom. Contact for a quote.",
     url: "https://www.lasvegasmahj.com/conference-activities-las-vegas",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
   twitter: {
     card: "summary_large_image",
     title: "Conference Activities in Las Vegas | Mahjong Networking Break",
     description: "A mahjong break-out and networking activity for conference attendees in Las Vegas, set up in your hotel meeting room or ballroom. Contact for a quote.",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": "https://www.lasvegasmahj.com/conference-activities-las-vegas#service",
+  url: "https://www.lasvegasmahj.com/conference-activities-las-vegas",
   name: "Conference Activities Las Vegas",
   serviceType: "Conference networking activity",
   description: "A mahjong networking and break-out activity for conferences and conference attendee groups in Las Vegas. Runs in a hotel meeting room, ballroom or on-site venue, no experience needed.",

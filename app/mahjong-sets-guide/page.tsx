@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Best Mahjong Sets 2026 | A Certified Instructor's Guide",
     description: "A certified instructor's honest guide to the best American mahjong sets and accessories, with exclusive discount codes. All budgets covered.",
     url: "https://www.lasvegasmahj.com/mahjong-sets-guide",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

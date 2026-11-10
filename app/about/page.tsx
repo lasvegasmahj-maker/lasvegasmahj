@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { SHAUNA_NEON } from "@/lib/studio-photos";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_SHAUNA } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "About Shauna | Las Vegas Mahjong",
     description: "A certified Oh My Mahjong instructor with 18 years of experience, a passion for teaching, and a community built one tile at a time.",
     url: "https://www.lasvegasmahj.com/about",
-    images: ["https://www.lasvegasmahj.com/shauna.jpg"],
+    images: [OG_SHAUNA],
   },
 };
 

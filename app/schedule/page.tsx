@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, studioOgImage } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import { getScheduleEvents } from "@/lib/schedule";
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     url: "https://www.lasvegasmahj.com/schedule",
     // A page-level openGraph object replaces the parent's, so without this the share card
     // had no image at all.
-    images: [`https://www.lasvegasmahj.com${SEVENS_OPEN_PLAY.src}`],
+    images: [studioOgImage(SEVENS_OPEN_PLAY)],
   },
 };
 

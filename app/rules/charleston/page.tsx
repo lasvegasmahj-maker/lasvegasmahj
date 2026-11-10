@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "The Charleston Rules in American Mahjong | Las Vegas Mahjong",
     description: "How many passes? Can I stop early? What is a blind pass? All your charleston questions answered by a certified instructor.",
     url: "https://www.lasvegasmahj.com/rules/charleston",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

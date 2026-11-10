@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import RelatedExperiences from "@/components/related-experiences";
@@ -15,19 +15,21 @@ export const metadata: Metadata = {
     title: "Convention Activities Las Vegas | Las Vegas Mahjong",
     description: "A social mahjong activity for convention groups in Las Vegas: attendee engagement sessions and group downtime at your venue or hotel. Contact for a quote.",
     url: "https://www.lasvegasmahj.com/convention-activities-las-vegas",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
   twitter: {
     card: "summary_large_image",
     title: "Convention Activities Las Vegas | Las Vegas Mahjong",
     description: "A social mahjong activity for convention groups in Las Vegas: attendee engagement sessions and group downtime. Contact for a quote.",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": "https://www.lasvegasmahj.com/convention-activities-las-vegas#service",
+  url: "https://www.lasvegasmahj.com/convention-activities-las-vegas",
   name: "Convention Activities Las Vegas",
   serviceType: "Convention attendee engagement activity",
   description: "Mahjong convention activities and attendee experiences in Las Vegas. A social, hands-on activity for convention organizers and attendee groups.",

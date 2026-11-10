@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
@@ -14,19 +14,21 @@ export const metadata: Metadata = {
     title: "Corporate Team Building Las Vegas",
     description: "Mahjong team building in Las Vegas: colleagues learn a new game side by side, then read the table and compete. For teams, departments and offsites.",
     url: "https://www.lasvegasmahj.com/corporate-team-building-las-vegas",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
   twitter: {
     card: "summary_large_image",
     title: "Corporate Team Building Las Vegas",
     description: "Mahjong team building in Las Vegas: colleagues learn a new game side by side, then read the table and compete. For teams, departments and offsites.",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": "https://www.lasvegasmahj.com/corporate-team-building-las-vegas#service",
+  url: "https://www.lasvegasmahj.com/corporate-team-building-las-vegas",
   name: "Corporate Team Building Las Vegas",
   serviceType: "Corporate team building",
   description: "Mahjong-based corporate team building in Las Vegas. A strategic, social, and genuinely different activity for teams, departments, and offsites. We bring the mahjong equipment and facilitation to your office, hotel, or venue.",

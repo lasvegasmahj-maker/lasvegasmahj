@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import RelatedExperiences from "@/components/related-experiences";
@@ -15,19 +15,21 @@ export const metadata: Metadata = {
     title: "Corporate Mahjong Events in Las Vegas | Las Vegas Mahjong",
     description: "Corporate mahjong events in Las Vegas for company events, meetings and conventions, hosted and facilitated at your office, hotel or venue. Contact for a custom quote.",
     url: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
   twitter: {
     card: "summary_large_image",
     title: "Corporate Mahjong Events in Las Vegas | Las Vegas Mahjong",
     description: "Corporate mahjong events in Las Vegas for company events, meetings and conventions, hosted and facilitated at your office, hotel or venue. Contact for a quote.",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas#service",
+  url: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas",
   name: "Corporate Mahjong Events Las Vegas",
   serviceType: "Corporate mahjong event hosting",
   description: "Corporate mahjong events in Las Vegas for company events, employee events, client entertainment and meeting or convention groups, hosted and facilitated at the client's office, hotel or venue, with all tiles, racks, NMJL cards and instruction provided.",

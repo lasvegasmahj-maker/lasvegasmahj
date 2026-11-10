@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "Mahjong Table Etiquette and Disputes | Las Vegas Mahjong",
     description: "Can I take back a discard? What counts as table talk? How are disputes resolved? Etiquette rules for American Mahjong.",
     url: "https://www.lasvegasmahj.com/rules/etiquette",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

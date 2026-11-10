@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import RelatedExperiences from "@/components/related-experiences";
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description:
       "A live American Mahjong table for exhibitors and sponsors: short sessions at the booth, hosted play in your hospitality suite, or hosted play in a sponsored lounge.",
     url: PAGE_URL,
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
