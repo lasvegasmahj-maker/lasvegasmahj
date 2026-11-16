@@ -488,6 +488,33 @@ section {
   background: rgba(255,255,255,0.06);
 }
 
+/* The lessons page's curriculum cards are whole-card links. The box repeats the values the
+   cards had as plain panels, so nothing on the page moved; hover and focus follow the studio
+   room cards. */
+.lesson-card {
+  display: block;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 2rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.lesson-card:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(57,230,57,0.55);
+  transform: translateY(-2px);
+}
+
+.lesson-card:focus-visible {
+  outline: 3px solid var(--white);
+  outline-offset: 3px;
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(57,230,57,0.55);
+}
+
 .studio-room-cue {
   display: inline-block;
   margin-top: 0.85rem;
@@ -2103,4 +2130,6 @@ footer {
   .reveal { opacity: 1; transform: none; transition: none; }
   .hero-eyebrow, .hero-title, .hero-sub, .hero-btns { opacity: 1; animation: none; }
   .scroll-hint { animation: none; }
+  .lesson-card { transition: none; }
+  .lesson-card:hover { transform: none; }
 }

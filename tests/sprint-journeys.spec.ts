@@ -52,7 +52,7 @@ test.describe("the homepage Plan Your Event modal is a real dialog", () => {
     await page.fill("#contact-phone", "702-555-0100");
     await page.selectOption("#contact-inquiry", "Private Party or Celebration");
     await dialog.getByRole("button", { name: "Send Message" }).click();
-    await expect(dialog.getByText("on my radar")).toBeVisible();
+    await expect(dialog.getByText("on our radar")).toBeVisible();
     await page.keyboard.press("Tab");
     await expect(dialog.getByRole("button", { name: "Close" })).toBeFocused();
     for (let i = 0; i < 3; i++) {

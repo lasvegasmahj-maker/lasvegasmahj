@@ -211,3 +211,91 @@ test("Learn Mahjong shows the two approved sentences and no one-lesson promise",
   await expect(main).toContainText("Start with MAHJ101 and build your skills through practice and our follow-on classes.");
   await expect(main).not.toContainText(/within one lesson|reading it confidently|after their first session/i);
 });
+
+// Every Formspree call below is intercepted, so no test sends a real message.
+const FORMSPREE = "https://formspree.io/**";
+
+test("the contact page's confirmation speaks as the team", async ({ page }) => {
+  await page.route(FORMSPREE, (route) => route.fulfill({ status: 200, contentType: "application/json", body: "{}" }));
+  await page.goto("/contact");
+  await page.fill("#contact-name", "Team Voice");
+  await page.fill("#contact-email", "teamvoice@example.com");
+  await page.fill("#contact-phone", "(702) 555-0123");
+  await page.selectOption("#contact-inquiry", "Something Else");
+  await page.getByRole("button", { name: "Send Message" }).click();
+  await expect(page.locator(".form-success h4")).toHaveText("Message Sent!");
+  await expect(page.locator(".form-success p")).toHaveText("Thanks for reaching out. We’ll be in touch soon!");
+});
+
+test("the homepage pop-up's confirmation speaks as the team", async ({ page }) => {
+  await page.route(FORMSPREE, (route) => route.fulfill({ status: 200, contentType: "application/json", body: "{}" }));
+  await page.goto("/");
+  const cta = page.getByRole("button", { name: "Plan Your Event", exact: true }).first();
+  await expect(cta).toBeVisible();
+  await cta.click();
+  const modal = page.locator(".modal-content");
+  await expect(modal).toBeVisible();
+  await modal.locator("#contact-name").fill("Team Voice");
+  await modal.locator("#contact-email").fill("teamvoice@example.com");
+  await modal.locator("#contact-phone").fill("(702) 555-0123");
+  await modal.locator("#contact-inquiry").selectOption("Something Else");
+  await modal.getByRole("button", { name: "Send Message" }).click();
+  await expect(modal.locator(".form-success h4")).toHaveText("You’re on our radar!");
+  await expect(modal.locator(".form-success p")).toHaveText("Thanks for reaching out. We’ll be in touch soon. Get ready to play!");
+});
+
+test("each curriculum card on the lessons page is one link, by keyboard and by pointer", async ({ page }) => {
+  await page.goto("/mahjong-lessons-las-vegas");
+  const cards = page.locator("a.lesson-card");
+  await expect(cards).toHaveCount(4);
+  const expected = [
+    { num: "MAHJ101", title: "Absolute Beginners", price: "$60 per lesson", href: "/schedule#calendar" },
+    { num: "MAHJ102", title: "Beyond the Basics", price: "$60 per lesson", href: "/schedule#calendar" },
+    { num: "MAHJ103", title: "Confident Play", price: "$60 per lesson", href: "/schedule#calendar" },
+    { num: "Private", title: "Private Lessons", price: "Contact for pricing", href: "/private-mahjong-lessons-las-vegas" },
+  ];
+  for (const [i, want] of expected.entries()) {
+    const card = cards.nth(i);
+    await expect(card).toHaveAttribute("href", want.href);
+    await expect(card.locator("h3")).toHaveText(want.title);
+    await expect(card).toContainText(want.num);
+    await expect(card).toContainText(want.price);
+    await expect(card.locator("li")).toHaveCount(5);
+    // A link may not hold another link, button or field.
+    await expect(card.locator("a, button, input, select, textarea, [tabindex]"), want.num).toHaveCount(0);
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+
+  // Keyboard: Tab reaches the card, a ring shows, Enter follows it.
+  let reached = false;
+  for (let i = 0; i < 80 && !reached; i++) {
+    await page.keyboard.press("Tab");
+    reached = await page.evaluate(() => document.activeElement?.classList.contains("lesson-card") ?? false);
+  }
+  expect(reached, "Tab never reached a curriculum card").toBe(true);
+  const ring = await page.evaluate(() => {
+    const style = getComputedStyle(document.activeElement as Element);
+    return { style: style.outlineStyle, width: style.outlineWidth };
+  });
+  expect(ring).toEqual({ style: "solid", width: "3px" });
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/schedule#calendar$/);
+  await expect(page.locator("#calendar")).toBeVisible();
+
+  // Pointer: a press anywhere in the card follows the link, not only on its title.
+  await page.goto("/mahjong-lessons-las-vegas");
+  await page.locator("a.lesson-card").nth(3).locator("li").first().click();
+  await expect(page).toHaveURL(/\/private-mahjong-lessons-las-vegas$/);
+});
+
+test("a curriculum card shows it is a link when the pointer is over it", async ({ page, isMobile }) => {
+  test.skip(isMobile, "a touch screen has no hover");
+  await page.goto("/mahjong-lessons-las-vegas");
+  const card = page.locator("a.lesson-card").first();
+  await card.scrollIntoViewIfNeeded();
+  const border = () => card.evaluate((el) => getComputedStyle(el).borderTopColor);
+  const before = await border();
+  await card.hover();
+  await expect.poll(border).not.toBe(before);
+  expect(await card.evaluate((el) => getComputedStyle(el).cursor)).toBe("pointer");
+});

@@ -192,7 +192,7 @@ export default function ContactForm({ source: fixedSource, successTitle, success
         <h4 ref={revealStatus} tabIndex={-1}>
           {successTitle ?? "Message Sent!"}
         </h4>
-        <p>{successBody ?? "Thanks for reaching out. I\u2019ll be in touch soon!"}</p>
+        <p>{successBody ?? "Thanks for reaching out. We\u2019ll be in touch soon!"}</p>
       </div>
     );
   }

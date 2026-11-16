@@ -203,16 +203,31 @@ site.
   that date instead, it is a separate, checked update.
 - **Draft pull request:** the branch is proposed for `main` as a draft. A draft cannot go live
   by accident; merging it needs your approval. The check results are in its description.
-- **Vercel is not receiving changes (needs you):** since some day after 2026-10-05, Vercel has
-  not received this website's code changes. The likely cause is that the Vercel app on GitHub
-  no longer has access to the website's code. Two effects: the Friendsgiving listing is not on the live site
-  yet, and this branch gets no preview link. See Section 4.
+- **Vercel access restored (2026-11-15):** for some weeks after 2026-10-05 Vercel did not
+  receive this website's code changes, because the Vercel app on GitHub had lost access to the
+  website's code. Access is back, so each update to this branch now gets a preview link (it
+  needs a Vercel login). Restoring access published nothing. Automatic publishing to `www` is
+  switched off, by your choice. The Friendsgiving listing is still not on the live site; see
+  Section 4.
 - **Contact form, early Send (your decision of 2026-11-15):** if someone presses Send before
   the page has finished loading, the message now goes straight to the form service. They
   should then see the form service's own thank-you page; it may first ask them to confirm
   they are not a robot. The phone number is still checked. Once the page has loaded, the form
   works exactly as before. One real test on a preview is still to do (handoff, remaining
   steps).
+- **Thank-you messages speak as the team (your decision of 2026-11-15, after the preview):**
+  after someone sends the contact form they now read "Thanks for reaching out. We'll be in
+  touch soon!" (it said "I'll"). The homepage pop-up form now says "You're on our radar!" and
+  "Thanks for reaching out. We'll be in touch soon. Get ready to play!" (they said "my radar"
+  and "I'll"). Your own first-person biography and page wording are unchanged. One line above
+  the pop-up form still says "I'll"; see Section 4.
+- **Lesson cards are links (same decision):** on the lessons page, under "What You'll Learn",
+  the whole MAHJ101, MAHJ102, MAHJ103 and Private Lessons cards can now be clicked or tapped,
+  or opened from the keyboard. The three group cards open the schedule calendar; the website
+  has one calendar and no separate address for each class level, so none was made up. Private
+  Lessons opens the private lessons page. The words and the layout are the same. A card
+  brightens and gains a green border under the pointer, and shows a white outline for
+  keyboard users.
 
 ## 2. Business facts to keep in sync
 
@@ -261,15 +276,19 @@ site.
 ### Before anything goes live
 
 You approve the current versus proposed wording or pictures; the typecheck, tests and two
-reviewer checks run; merging to `main` publishes the site once Vercel is connected again (as of
-2026-11-15 it is not; see Section 4). If the release lands on a later day than the sitemap
-dates, updating them to that day is a separate, checked update before the merge.
+reviewer checks run; then the change is merged to `main`. Since 2026-11-15 automatic publishing
+to `www` is switched off in Vercel, so after the merge the new version also has to be promoted
+in Vercel with your team's login before visitors see it. If the release lands on a later day
+than the sitemap dates, updating them to that day is a separate, checked update before the
+merge.
 
 ## 4. Waiting for your approval
 
 | Item | Where to look |
 | --- | --- |
-| Vercel access (new, urgent): Vercel has not received this website's code changes since some day after 2026-10-05, so nothing new can go live and no preview link is made. The Friendsgiving listing (event on 2026-11-18) is waiting on this. It needs your GitHub login and your go-ahead: in GitHub's settings, look at the Vercel app first (the likely cause is that it no longer has access to the website's code), then give it access again. If it already has access, or the app shows as suspended, stop and tell me: the cause is something else. Do not disconnect and reconnect inside Vercel. Once access is back, the next change to `main` goes live straight away | Handoff "RELEASE CANDIDATE 2026-11-15", "Found during this step" |
+| Friendsgiving listing is not live (new, time-sensitive): Vercel's access was restored on 2026-11-15, and restoring it published nothing. The listing (event on 2026-11-18) is in `main` but not on the live site. Publishing it is your decision, separate from this branch: `main` holds the listing and one small test fix, and nothing from this branch. It needs a deployment of `main` started in Vercel and then promoted | Handoff "RELEASE CANDIDATE 2026-11-15", "Vercel" |
+| Automatic publishing (new): it is switched off on the project that serves `www`. Decide whether it goes back on after this release, or stays off so that every release waits for a Promote | Handoff "RELEASE CANDIDATE 2026-11-15", "Vercel" |
+| Pop-up form intro (new): above the homepage pop-up form it still says "Fill out the form below and I'll be in touch soon! Prefer email?", while the thank-you message below it now says "We'll". It is not a thank-you message, so it was not changed. Proposed, not changed: "we'll" | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
 | Friendsgiving listing wording (new): it says "guests should already know the basics", which is looser than your open play wording. It is your event text, already merged, so it was not changed | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
 | Five-pack (future task): set it up in Bookwhen when you are ready. Until then the website shows only "$20 per session" everywhere and no longer mentions the five-pack | Handoff "CONSISTENCY PASS 2026-11-15", item 1 |
 | Wide link-preview picture: a wide crop of your neon-sign photo (the sign and your face) is ready for you to approve or skip. Nothing is installed | `~/Projects/.lvm-approvals-2026-11-15/photo-c/share-crop-review.png` |

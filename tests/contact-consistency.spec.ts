@@ -225,7 +225,7 @@ test.describe("the homepage Plan Your Event flow", () => {
     await page.selectOption("#contact-inquiry", "Private Party or Celebration");
     await page.selectOption("#contact-group-size", "9-20 people");
     await page.getByRole("button", { name: "Send Message" }).click();
-    await expect(page.getByText("on my radar")).toBeVisible();
+    await expect(page.getByText("on our radar")).toBeVisible();
     const sent = payload as unknown as Record<string, string>;
     expect(sent.source).toBe("Homepage Plan Your Event");
     expect(sent.phone).toBe("702-555-1212");

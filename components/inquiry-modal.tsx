@@ -108,8 +108,8 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
             because there is no query string to read on the homepage. */}
         <ContactForm
           source="Homepage Plan Your Event"
-          successTitle={"You\u2019re on my radar!"}
-          successBody={"Thanks for reaching out. I\u2019ll be in touch soon. Get ready to play!"}
+          successTitle={"You\u2019re on our radar!"}
+          successBody={"Thanks for reaching out. We\u2019ll be in touch soon. Get ready to play!"}
         />
       </div>
     </div>

@@ -105,37 +105,78 @@ This section's steps replace the release steps in the section below.
      still shows the site's own message; `tests/round3-contact.logic.spec.ts`,
      `tests/contact-consistency.logic.spec.ts` and `tests/seo-round10-visible.logic.spec.ts`
      pin the form tag, the single address and the one pattern.
+7. Confirmations after a sent form, by her instruction of 2026-11-15 after she reviewed the
+   preview: what a visitor reads once a form is sent speaks as the team. The shared default in
+   `components/contact-form.tsx`, which `/contact` shows, was "Thanks for reaching out. I'll be
+   in touch soon!" and is now her sentence, "Thanks for reaching out. We'll be in touch soon!"
+   The homepage pop-up (`components/inquiry-modal.tsx`) passes its own two lines: "You're on my
+   radar!" is now "You're on our radar!", and "Thanks for reaching out. I'll be in touch soon.
+   Get ready to play!" is now "Thanks for reaching out. We'll be in touch soon. Get ready to
+   play!" No other confirmation spoke as "I": the newsletter confirmations
+   (`lib/use-mailchimp.ts`) never did. Her first-person biography and her first-person page
+   copy are unchanged, and so is one line above the pop-up's form (open items, below).
+   - Tests: `tests/owner-approvals-2026-11-15.logic.spec.ts` pins the three lines and fails if
+     a confirmation in either file says "I", "my" or "me";
+     `tests/owner-approvals-2026-11-15.spec.ts` sends both forms (intercepted) and reads the
+     confirmation on the page.
+8. Lessons page (`app/mahjong-lessons-las-vegas/page.tsx`), "What You'll Learn", by the same
+   instruction: each of the four cards is now one link (`a.lesson-card`). MAHJ101, MAHJ102 and
+   MAHJ103 lead to `/schedule#calendar`, and Private Lessons leads to
+   `/private-mahjong-lessons-las-vegas`.
+   - Why the three group cards share one address: she asked for each to lead to its own
+     current class dates where the existing booking functionality supports it, and otherwise
+     to the schedule calendar, with no invented booking address and no event that expires.
+     The schedule page has one calendar and no address per class level, and a class's own
+     Bookwhen address ends with that class. So all three use the calendar address that the
+     page's other schedule links already use.
+   - The words, their order and the layout are unchanged. Measured before and after on a
+     desktop and a phone screen, the four cards and the 32 elements inside them keep the same
+     position, size, text and style. The card's look moved from inline styles to
+     `.lesson-card` in `app/globals.css`, which adds a brighter background, a green border and
+     a 2px lift on hover, a white 3px outline for keyboard focus, and no movement for visitors
+     who ask for reduced motion. No card holds another link, button or field.
+   - This is a surgical edit on a protected page: no title, heading, paragraph or structured
+     data changed, and the page's sitemap date was already 2026-11-15. Once analytics is on, a
+     click on a group card counts as `schedule_link_click` from this page, like any other link
+     to the schedule; the Private Lessons card sends no event.
+   - Tests: `tests/owner-approvals-2026-11-15.logic.spec.ts` pins the four addresses and the
+     hover and focus rules, and fails on a Bookwhen address in the page;
+     `tests/owner-approvals-2026-11-15.spec.ts` checks each card on desktop and phone (address,
+     unchanged title, price and five bullets, nothing interactive inside, no sideways scroll),
+     reaches a card with Tab, checks the outline, follows it with Enter, follows the fourth
+     with a press on its text, and on desktop checks the hover change.
+     `tests/seo-round1.logic.spec.ts` now counts three links to the private lessons page.
 
-**Found during this step: Vercel no longer receives this repository's commits.**
-- Evidence: on `main`'s own line of commits, all 127 from 2026-05-23 through 2026-10-05 have a
-  Vercel check on GitHub; the commits of 2026-11-14 (#128) and 2026-11-15 (#129), Las Vegas
-  dates, ran GitHub Actions but have none. GitHub's last Vercel deployment record is the
-  production deployment of `089a729` on 2026-10-05, and the live homepage has been served from
-  the same cached build for about 41 days.
-- Effect today: the Friendsgiving listing, merged into `main` on 2026-11-14, is not on the live
-  site. The live `/schedule` does not mention it, and the event is on 2026-11-18. Earlier notes
-  that said it had gone live were wrong.
-- Effect on this release: pushing this branch creates no Vercel preview, and merging to `main`
-  publishes nothing until access is restored.
-- Likely cause, from a separate read-only check of Vercel's settings and GitHub's commit
-  records on 2026-11-15 (its record is kept outside this repository): the Vercel app on the
-  repository owner's GitHub account appears to be limited to selected repositories, without
-  this one. GitHub's own settings page has not been opened yet, so that look comes first. On
-  Vercel's side both projects are still linked to this repository, with `main` as the
-  production branch.
-- The fix needs the owner's GitHub login and her go-ahead: GitHub, Settings, Applications,
-  Vercel, Configure, Repository access, add this repository. If that page shows the repository
-  already selected, or the app suspended, stop: the cause is different. Do not disconnect and
-  reconnect the repository inside Vercel, which may deploy by itself. Once access is back, the next push to
-  `main` goes live on `www` with no further step, and each push to a branch builds a preview
-  (previews need a Vercel login). `main` does not contain this branch, so deploying `main`
-  publishes the Friendsgiving listing and nothing else. Do not use a CLI deploy (see "Vercel
-  project mapping" below).
+**Vercel: access was lost after 2026-10-05 and restored on 2026-11-15.**
+- What happened: on `main`'s own line of commits, all 127 from 2026-05-23 through 2026-10-05
+  have a Vercel check on GitHub; the commits of 2026-11-14 (#128) and 2026-11-15 (#129), Las
+  Vegas dates, ran GitHub Actions but have none. The Vercel app on the repository owner's
+  GitHub account was limited to selected repositories, without this one.
+- Restored on the evening of 2026-11-15, with the owner's approval and for a preview only: the
+  app reaches this repository again. Restoring it deployed nothing and did not replay the
+  missed commits.
+- State read from Vercel on 2026-11-15, after the restore (read-only; the record is kept
+  outside this repository): production is still the deployment of `089a729` from 2026-10-05.
+  On the project that serves `www` (`lasvegasmahj-h1iz`) automatic domain assignment is
+  switched off, by the owner's choice. With it off, Vercel's documented behavior is that a
+  production build from `main` waits, unassigned, until someone with the team's login
+  promotes it in Vercel; this project has not built one since, so that is not yet observed
+  here. The same-team project `lasvegasmahj` still assigns automatically, so a push to `main`
+  updates its own `vercel.app` address at once.
+- Effect today: the Friendsgiving listing, merged into `main` on 2026-11-14, is still not on
+  the live site, and the event is on 2026-11-18. Earlier notes that said it had gone live were
+  wrong. `main` does not contain this branch, so publishing `main` publishes that listing and
+  the CI line, nothing else. It needs a deployment of `main` (none exists yet for its current
+  commit) and then the promotion, and it is the owner's separate decision.
+- Previews: each push to this branch builds a preview in both projects, and the link is in
+  the pull request. Previews need a Vercel login. Do not use a CLI deploy (see "Vercel project
+  mapping" below).
 
 **Commit scope:** the first commit of this step, `fd5522a`, holds everything the branch then
 changed against `main`, 116 files: 82 changed, 29 new (27 of them uncommitted until then, 2 from
-commit `dc1d628`) and 5 removed. The later commit changes the contact form, its tests and these
-documents; the pull request shows the current totals. The scope is the site, the
+commit `dc1d628`) and 5 removed. The second commit, `c630369`, changes the contact form, its
+tests and these documents. A third carries items 7 and 8 with their tests and brings this
+section's Vercel paragraphs up to date; the pull request shows the current totals. The scope is the site, the
 tests, the gate file, `CLAUDE.md` and these documents (the build needs
 `components/track-clicks.tsx`, `app/privacy/` and the two icon files). The five removed files
 are the old backup page and four retired photos. Not in the commit and not in the repository: the
@@ -145,9 +186,10 @@ private photo originals, the approval screenshots and galleries, test and build 
 **Checks and gate for this release candidate:** they run on exactly the tree that is committed,
 after this section was written, so their results are recorded in the description of draft pull
 request #130, not here. Nothing is pushed unless they pass. The first commit of this step,
-`fd5522a`, was pushed on 2026-11-15 after they passed. A later commit carries the contact form
-change (item 6), corrects small points in these documents and widens one test, under the same
-checks.
+`fd5522a`, was pushed on 2026-11-15 after they passed. The second, `c630369`, carries the
+contact form change (item 6), corrects small points in these documents and widens one test,
+and was pushed the same evening under the same checks. The third (items 7 and 8) is pushed
+only if the same checks and the gate pass on it.
 
 **Open items for the owner:** the list in the section below stands, with these changes.
 - Item 8: the card sentence is approved and applied (item 1 above). Still open on that page:
@@ -169,22 +211,30 @@ checks.
 - New: the Friendsgiving listing (`lib/partner-events.ts`, from `main`, unchanged here) says
   "guests should already know the basics", which is looser than her open play wording. It is
   her approved event text, already merged into `main`, so it was not edited.
-- New: restore the Vercel app's access to this repository (above). It blocks every release,
-  this one included.
+- Vercel: access is restored (above). Hers to decide: when to publish `main`'s Friendsgiving
+  listing, which is not live, and whether automatic domain assignment goes back on after this
+  release.
+- New, one line above the pop-up's form (`components/inquiry-modal.tsx`): "Fill out the form
+  below and I'll be in touch soon! Prefer email?" It is an invitation, not a confirmation, so
+  her instruction did not cover it, and it now sits above a confirmation that says "We'll".
+  Proposed, not changed: "we'll".
+- For a later session: first-person page copy elsewhere is hers and was not touched (the
+  instructor sections, the private lessons page, and single lines on the studio, Learn
+  Mahjong, rules and sets guide pages). Do not "fix" it to match the confirmations.
 
 **Remaining steps before production (none started):**
-1. Restore the Vercel app's access to this repository on GitHub (above). A preview of this
-   branch then needs one more push to it, or a deployment started in Vercel.
-2. The owner reviews the draft pull request and the preview. On a preview the contact form
-   sends to the real form service, so a test message there reaches the inbox.
-3. Check the early contact form path on the real service: look at the form's spam protection
+1. The owner reviews the draft pull request and the preview (the link is in the pull request;
+   it needs a Vercel login). On a preview the contact form sends to the real form service, so
+   a test message there reaches the inbox.
+2. Check the early contact form path on the real service: look at the form's spam protection
    setting in the Formspree account, then send one message from a preview with scripts turned
    off. Record that it arrived and what the visitor saw.
-4. If the release date calls for it, set the go-live date on the 24 changed pages and on the
+3. If the release date calls for it, set the go-live date on the 24 changed pages and on the
    privacy page's "Last updated" line as a separate update, with its own checks and gate run.
-5. Only on her approval: mark the pull request ready, merge it, confirm the production
-   deployment, and smoke-check the key pages.
-6. After release: analytics stays off until a GA4 Measurement ID is set in Vercel and event
+4. Only on her approval: mark the pull request ready and merge it. While automatic domain
+   assignment is off, the production build then has to be promoted in Vercel with the team's
+   login. Confirm that `www` serves the new deployment, and smoke-check the key pages.
+5. After release: analytics stays off until a GA4 Measurement ID is set in Vercel and event
    delivery is verified. Before that, confirm Vercel has no Tag Manager or Meta Pixel setting
    (owner item 6 below).
 

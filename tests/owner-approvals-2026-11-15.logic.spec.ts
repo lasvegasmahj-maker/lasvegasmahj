@@ -200,3 +200,35 @@ test("the privacy page says we do not sell what visitors send, and promises noth
   expect(src).toContain("This website does not target children under 13.");
   expect(src).not.toMatch(/minimum age|must be (at least )?\d+|\d+ (years? )?or older|adults only/i);
 });
+
+test("confirmations after a sent form speak as the team", () => {
+  // Approved by the owner in the preview review of 2026-11-15. This is only what a visitor
+  // reads after sending a form; her About biography stays in her own first person.
+  const form = read("components/contact-form.tsx");
+  expect(form).toContain('{successBody ?? "Thanks for reaching out. We\\u2019ll be in touch soon!"}');
+  const modal = read("components/inquiry-modal.tsx");
+  expect(modal).toContain('successTitle={"You\\u2019re on our radar!"}');
+  expect(modal).toContain('successBody={"Thanks for reaching out. We\\u2019ll be in touch soon. Get ready to play!"}');
+  const confirmations = ["components/contact-form.tsx", "components/inquiry-modal.tsx"]
+    .flatMap((rel) => code(rel).split("\n"))
+    .filter((line) => /success(Title|Body)\b.*"/.test(line));
+  expect(confirmations).toHaveLength(4);
+  for (const line of confirmations) expect(line).not.toMatch(/\bI(?:\\u2019|')(?:ll|m|ve|d)\b|\bmy\b|\bme\b/);
+});
+
+test("the four curriculum cards on the lessons page are whole-card links", () => {
+  // Approved by the owner in the preview review of 2026-11-15. The schedule has one calendar
+  // and no address per class, so the three group classes share it and no booking address is
+  // made up. A class address on Bookwhen expires with the class.
+  const src = read("app/mahjong-lessons-las-vegas/page.tsx");
+  for (const group of ["MAHJ101", "MAHJ102", "MAHJ103"]) {
+    expect(src, group).toMatch(new RegExp(`\\{ num: "${group}",[^\\n]*href: "/schedule#calendar" \\},`));
+  }
+  expect(src).toMatch(/\{ num: "Private",[^\n]*href: "\/private-mahjong-lessons-las-vegas" \},/);
+  expect(src).toContain('<a key={tier.num} href={tier.href} className="lesson-card">');
+  expect(src).not.toMatch(/bookwhen\.com/);
+  expect(read("app/schedule/page.tsx")).toContain('<section id="calendar"');
+  const css = read("app/globals.css");
+  expect(css).toMatch(/\.lesson-card:hover \{[^}]*border-color/);
+  expect(css).toMatch(/\.lesson-card:focus-visible \{[^}]*outline: 3px solid/);
+});

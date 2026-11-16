@@ -131,13 +131,15 @@ export default function MahjongLessonsLasVegas() {
             <p className="section-label">The Curriculum</p>
             <h2 className="section-title">What You&rsquo;ll <span className="accent-green">Learn</span></h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem", marginTop: "2.5rem" }}>
+              {/* Each card is one link. The schedule has a single calendar and no address per
+                  class, so the three group classes all lead to it. */}
               {[
-                { num: "MAHJ101", title: "Absolute Beginners", price: "$60 per lesson", items: ["Sorting and identifying tiles", "Reading the NMJL card", "Understanding how a hand works", "Playing your first full game", "Tips for your first open play event"] },
-                { num: "MAHJ102", title: "Beyond the Basics", price: "$60 per lesson", items: ["Quick MAHJ101 recap", "More complex hands and patterns", "Strategy and decision-making", "Speed and confidence at the table", "Preparing for open play and leagues"] },
-                { num: "MAHJ103", title: "Confident Play", price: "$60 per lesson", items: ["The Charleston and smart passing", "Defensive play and reading the table", "Using jokers and exchanges wisely", "Knowing all the rules cold", "Playing confidently on your own"] },
-                { num: "Private", title: "Private Lessons", price: "Contact for pricing", items: ["Fully customized to your pace", "At the studio, with in-home by request", "Any skill level welcome", "Great for busy schedules", "Zoom option available"] },
+                { num: "MAHJ101", title: "Absolute Beginners", price: "$60 per lesson", items: ["Sorting and identifying tiles", "Reading the NMJL card", "Understanding how a hand works", "Playing your first full game", "Tips for your first open play event"], href: "/schedule#calendar" },
+                { num: "MAHJ102", title: "Beyond the Basics", price: "$60 per lesson", items: ["Quick MAHJ101 recap", "More complex hands and patterns", "Strategy and decision-making", "Speed and confidence at the table", "Preparing for open play and leagues"], href: "/schedule#calendar" },
+                { num: "MAHJ103", title: "Confident Play", price: "$60 per lesson", items: ["The Charleston and smart passing", "Defensive play and reading the table", "Using jokers and exchanges wisely", "Knowing all the rules cold", "Playing confidently on your own"], href: "/schedule#calendar" },
+                { num: "Private", title: "Private Lessons", price: "Contact for pricing", items: ["Fully customized to your pace", "At the studio, with in-home by request", "Any skill level welcome", "Great for busy schedules", "Zoom option available"], href: "/private-mahjong-lessons-las-vegas" },
               ].map(tier => (
-                <div key={tier.num} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "2rem" }}>
+                <a key={tier.num} href={tier.href} className="lesson-card">
                   <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.4rem", color: "var(--pink)", marginBottom: "0.3rem" }}>{tier.num}</div>
                   <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.5rem" }}>{tier.title}</h3>
                   <div style={{ fontFamily: "var(--font-nav)", fontSize: "1.2rem", color: "var(--green)", fontWeight: 700, marginBottom: "1rem" }}>{tier.price}</div>
@@ -148,13 +150,12 @@ export default function MahjongLessonsLasVegas() {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </a>
               ))}
             </div>
           </div>
         </section>
 
-        {/* WHICH ONE IS RIGHT FOR YOU */}
         <section id="choose-your-lesson" style={{ padding: "5rem 2rem", background: "var(--navy-dark)", borderBottom: "1px solid rgba(233,30,140,0.15)" }}>
           <div className="container">
             <p className="section-label">Find Your Fit</p>
