@@ -32,4 +32,19 @@ export const PARTNER_EVENTS: PartnerEventInput[] = [
     description:
       "A relaxed evening of American Mahjong hosted by Las Vegas Mahjong at Honey Salt. All levels welcome. Reserve your table through Honey Salt.",
   },
+  {
+    title: "Friendsgiving Mahjong Social at Honey Salt",
+    year: 2026,
+    month: 11,
+    day: 18,
+    startHour: 17,
+    startMinute: 30,
+    endHour: 19,
+    endMinute: 30,
+    venue: "Honey Salt",
+    url: "https://honeysalt.com/event/friendsgivingmahjong/",
+    bookLabel: "Reserve at Honey Salt",
+    description:
+      "Two hours of open play in Honey Salt's private dining room, hosted by Las Vegas Mahjong. Includes a fall charcuterie spread and your choice of tea or a soft drink. Sets are provided. This is open play, not a class, so guests should already know the basics. Seats are limited.",
+  },
 ];
