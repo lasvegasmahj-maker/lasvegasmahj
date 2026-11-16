@@ -159,6 +159,17 @@ test.describe("a blank phone cannot slip through", () => {
     await page.getByRole("button", { name: "Send Message" }).click();
     await page.waitForTimeout(800);
     expect(posted, "a stale-validity phone number reached the inbox").toBe(0);
+    // The visitor is told what is wanted in the site's own words, not a browser default.
+    await expect(page.locator("#contact-phone-error")).toHaveText(
+      "Please enter a phone number we can reach you on, including the area code.",
+    );
+  });
+
+  test("once the script has loaded the phone field carries no pattern", async ({ page }) => {
+    // The digit-count pattern is for a submit made before the script loads. Left on
+    // afterwards, the browser would stop a bad number first and show its own generic message.
+    await page.goto("/contact");
+    await expect(page.locator("#contact-phone")).not.toHaveAttribute("pattern");
   });
 
   test("a real number still submits after the extra checking", async ({ page }) => {

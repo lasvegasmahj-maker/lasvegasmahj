@@ -8,7 +8,7 @@ re-litigated. **The technical SEO audit of 2026-10-04 is MERGED** as PR #126 (br
 `seo/technical-audit-2026-10`, merged 2026-10-05 17:49 UTC; `main` then at `089a729`, its merge
 commit). Rounds 9, 10, 11 and 12, the sprint of 2026-11-13 and the four sections dated
 2026-11-15 (owner approvals, consistency pass, final copy approvals, release candidate) below
-are on the branch `seo/invisible-technical-fixes`, proposed as a draft pull request into `main`:
+are on the branch `seo/invisible-technical-fixes`, proposed as draft pull request #130 into `main`:
 not merged and not live. Sentences in those sections that say "local", "uncommitted" or "not
 pushed", that PR #129 is not merged, or that sitemap dates were not changed describe the day
 each section was written. Full report:
@@ -79,6 +79,32 @@ This section's steps replace the release steps in the section below.
    in the sections below, and a few test comments and titles, were reworded to describe the
    current files only, because the repository is public. The specifics they held are recorded
    privately, outside this repository (`~/Projects/.lvm-approvals-2026-11-15/private-notes/`).
+6. Contact form (`components/contact-form.tsx`), by her instruction of 2026-11-15 after the
+   first push: a message sent before the page's script has loaded must still arrive, through
+   the existing Formspree service. The form now carries Formspree's address as its `action`,
+   so the browser's own submit goes straight there. Before this change that early submit was
+   posted to `/contact` itself, which the live host answers with "405 Method Not Allowed" and
+   an empty page, so the message was lost. Once the script has loaded nothing changes:
+   `handleSubmit` still sends the message and the visitor stays on the page.
+   - On the early path the visitor leaves this site for Formspree's own page. That should be
+     its confirmation page; if a spam check is switched on in the Formspree account, a "not a
+     robot" page comes first. Neither has been seen on the live service yet, because every
+     test intercepts the post (remaining steps, below). The message reports general traffic,
+     because the page as served cannot read `?source=` yet, and no analytics event is sent.
+   - The phone field carries the scripted rule (ten to fifteen digits) as a `pattern`, but
+     only until the script has loaded. So the early path cannot send a blank or unusable
+     number, and the loaded form checks a number exactly as before, with the site's own
+     message. The pattern counts digits and never matches a format.
+   - No underscore field was added. Round 3's rule stands: Formspree reads such fields as
+     directives and can discard a message while answering as if it had arrived. So the form
+     has no spam trap of its own, and its address can now be read in the page as served. The
+     protection is whatever is switched on in the Formspree account.
+   - Tests: `tests/round3-contact.spec.ts` sends the form with scripts off (intercepted, so
+     nothing reaches Formspree) and checks the address, the fields and the phone rule;
+     `tests/contact-consistency.spec.ts` checks that the loaded form carries no pattern and
+     still shows the site's own message; `tests/round3-contact.logic.spec.ts`,
+     `tests/contact-consistency.logic.spec.ts` and `tests/seo-round10-visible.logic.spec.ts`
+     pin the form tag, the single address and the one pattern.
 
 **Found during this step: Vercel no longer receives this repository's commits.**
 - Evidence: on `main`'s own line of commits, all 127 from 2026-05-23 through 2026-10-05 have a
@@ -91,21 +117,25 @@ This section's steps replace the release steps in the section below.
   that said it had gone live were wrong.
 - Effect on this release: pushing this branch creates no Vercel preview, and merging to `main`
   publishes nothing until access is restored.
-- Cause, from a separate read-only check of the Vercel and GitHub settings on 2026-11-15 (its
-  record is kept outside this repository): the Vercel app on the repository owner's GitHub
-  account is limited to selected repositories, and this repository is not on its list. On
+- Likely cause, from a separate read-only check of Vercel's settings and GitHub's commit
+  records on 2026-11-15 (its record is kept outside this repository): the Vercel app on the
+  repository owner's GitHub account appears to be limited to selected repositories, without
+  this one. GitHub's own settings page has not been opened yet, so that look comes first. On
   Vercel's side both projects are still linked to this repository, with `main` as the
   production branch.
 - The fix needs the owner's GitHub login and her go-ahead: GitHub, Settings, Applications,
-  Vercel, Configure, Repository access, add this repository. Do not disconnect and reconnect the
-  repository inside Vercel, which may deploy by itself. Once access is back, the next push to
+  Vercel, Configure, Repository access, add this repository. If that page shows the repository
+  already selected, or the app suspended, stop: the cause is different. Do not disconnect and
+  reconnect the repository inside Vercel, which may deploy by itself. Once access is back, the next push to
   `main` goes live on `www` with no further step, and each push to a branch builds a preview
   (previews need a Vercel login). `main` does not contain this branch, so deploying `main`
   publishes the Friendsgiving listing and nothing else. Do not use a CLI deploy (see "Vercel
   project mapping" below).
 
-**Commit scope:** everything this branch changes against `main`, 116 files: 82 changed, 29 new
-(27 of them uncommitted until now, 2 from commit `dc1d628`) and 5 removed. That is the site, the
+**Commit scope:** the first commit of this step, `fd5522a`, holds everything the branch then
+changed against `main`, 116 files: 82 changed, 29 new (27 of them uncommitted until then, 2 from
+commit `dc1d628`) and 5 removed. The later commit changes the contact form, its tests and these
+documents; the pull request shows the current totals. The scope is the site, the
 tests, the gate file, `CLAUDE.md` and these documents (the build needs
 `components/track-clicks.tsx`, `app/privacy/` and the two icon files). The five removed files
 are the old backup page and four retired photos. Not in the commit and not in the repository: the
@@ -113,8 +143,11 @@ private photo originals, the approval screenshots and galleries, test and build 
 `.env.local`, which git ignores.
 
 **Checks and gate for this release candidate:** they run on exactly the tree that is committed,
-after this section was written, so their results are recorded in the draft pull request's
-description, not here. Nothing is pushed unless they pass.
+after this section was written, so their results are recorded in the description of draft pull
+request #130, not here. Nothing is pushed unless they pass. The first commit of this step,
+`fd5522a`, was pushed on 2026-11-15 after they passed. A later commit carries the contact form
+change (item 6), corrects small points in these documents and widens one test, under the same
+checks.
 
 **Open items for the owner:** the list in the section below stands, with these changes.
 - Item 8: the card sentence is approved and applied (item 1 above). Still open on that page:
@@ -128,15 +161,11 @@ description, not here. Nothing is pushed unless they pass.
   description (`app/layout.tsx`, lines 36 and 41) still say "across Las Vegas, Summerlin, and
   Henderson" and "from Summerlin to Henderson", while the Summerlin and Henderson pages now say
   the studio is the one location.
-- Item 6, two more facts. First, a contact form sent before its script loads is a plain browser
-  POST to `/contact`. The local production server shows the page again with an empty form; the
-  live host answers a POST to that address with "405 Method Not Allowed" and an empty page
-  (checked 2026-11-15). Either way the message is not delivered. Before this branch the same
-  submit reloaded the page with the typed details in the address. It needs a decision before
-  release: send that fallback straight to the form service (with its own spam check), or keep
-  the Send button off until the script is ready. Second, the separate read-only check of the
-  Vercel settings found no analytics, Tag Manager or Pixel ID among the settings of the project
-  that serves the site (2026-11-15), which matches the live pages.
+- Item 6, two updates. The contact form's early submit is settled and fixed (item 6 of "What
+  changed in this step", above); what remains of that follow-up is the form's spam protection,
+  which is Formspree's own and unchanged here. And the separate read-only check of the Vercel
+  settings found no analytics, Tag Manager or Pixel ID among the settings of the project that
+  serves the site (2026-11-15), which matches the live pages.
 - New: the Friendsgiving listing (`lib/partner-events.ts`, from `main`, unchanged here) says
   "guests should already know the basics", which is looser than her open play wording. It is
   her approved event text, already merged into `main`, so it was not edited.
@@ -146,13 +175,16 @@ description, not here. Nothing is pushed unless they pass.
 **Remaining steps before production (none started):**
 1. Restore the Vercel app's access to this repository on GitHub (above). A preview of this
    branch then needs one more push to it, or a deployment started in Vercel.
-2. The owner reviews the draft pull request and the preview, and decides the contact form's
-   no-script fallback (open items, above).
-3. If the release date calls for it, set the go-live date on the 24 changed pages and on the
+2. The owner reviews the draft pull request and the preview. On a preview the contact form
+   sends to the real form service, so a test message there reaches the inbox.
+3. Check the early contact form path on the real service: look at the form's spam protection
+   setting in the Formspree account, then send one message from a preview with scripts turned
+   off. Record that it arrived and what the visitor saw.
+4. If the release date calls for it, set the go-live date on the 24 changed pages and on the
    privacy page's "Last updated" line as a separate update, with its own checks and gate run.
-4. Only on her approval: mark the pull request ready, merge it, confirm the production
+5. Only on her approval: mark the pull request ready, merge it, confirm the production
    deployment, and smoke-check the key pages.
-5. After release: analytics stays off until a GA4 Measurement ID is set in Vercel and event
+6. After release: analytics stays off until a GA4 Measurement ID is set in Vercel and event
    delivery is verified. Before that, confirm Vercel has no Tag Manager or Meta Pixel setting
    (owner item 6 below).
 
@@ -355,8 +387,8 @@ is not merged; the five-pack stays off the site; analytics stays approved but NO
    Vercel settings themselves could not be read from here: confirm there that neither exists at
    release and again before `NEXT_PUBLIC_GA4_ID` is set, and keep both unset until the privacy
    page describes them (a build-time guard is proposed, not added). A contact form sent before
-   its script loads still drops the message, as it did before this branch, and the form's spam
-   protection is unchanged here. The form's new `onInvalid` handler uses a React type marked deprecated
+   its script loads dropped the message when this was written (fixed on 2026-11-15: release
+   candidate section, item 6), and the form's spam protection is unchanged here. The form's new `onInvalid` handler uses a React type marked deprecated
    (type only). The Ask page's `<main>` gets its skip-link target from a script, because the
    page is off-limits (one attribute would fix it, with her OK). Tidy-ups that can ride with the
    release-day edits, before the release-tree gate: delete the section comment above "Find Your
@@ -624,8 +656,8 @@ and 6 previews.
    `icon.png` are unchanged, and the full logo stays everywhere else.
 8. P2 is not implemented: the About photo keeps `sizes="(max-width: 768px) 100vw, 380px"` and
    its quality, now pinned by a test.
-9. Other photos: `lvm-community-group.jpg` and `lvm-teaching-action.jpg` are unchanged.
-   `lvm-lesson-group.jpg`, `lvm-private-game.jpg` and `birthday-mat.jpg` are removed from
+9. Other photos: `lvm-lesson-group.jpg`, `lvm-private-game.jpg` and `birthday-mat.jpg` are
+   removed from
    `public/` after being copied, with checksums, to `~/Projects/.lvm-private-photo-originals-2026-11-15/`
    (outside the site and the repository; the originals of the two edited photos are there too). No
    page used them. The one reference was `scripts/fix-orientation.cjs`, which would have written
@@ -1292,9 +1324,9 @@ is pushed, merged or deployed.
   decide: keep it (if a fee is real), drop the four words, or use the approved lessons-page
   wording ("If you would rather learn one on one, at your own pace, I also teach private
   mahjong lessons at the studio.").
-- **The quote on the homepage and About.** If she wants it back in either place, it can
-  return in the client's exact original words; where it would sit (under "What Players Are
-  Saying" or "Students Say") is hers to decide.
+- **Where the corporate quote shows.** It stays in the one corporate block. If she ever wants
+  it shown anywhere else, it must be in the client's exact original words, and where it would
+  sit is hers to decide.
 - **Instructor wording kept, for her decision.** (a) The lessons page's share title, "Mahjong
   Lessons Las Vegas | Certified Instructor | Las Vegas Mahjong" (share titles are hers; she
   asked on 2026-11-12 that they not be changed without reason). (b) Shauna's own first-person
@@ -1357,10 +1389,8 @@ enable GA4 or GTM". The owner asked on 2026-11-13 for the remaining steps only.
 - **Published photos carry no hidden location data (invisible).** Every file in `public/` is
   served as is at its own address, metadata included, so a test fails if any image there
   carries a GPS position.
-- **Photo decisions for the owner:** made on 2026-11-15 and recorded in OWNER APPROVALS item 9
-  and CONSISTENCY PASS item 6.
-- What each of these was about is recorded privately, outside this repository
-  (`~/Projects/.lvm-approvals-2026-11-15/private-notes/`).
+- **Photo decisions for the owner:** made on 2026-11-15 and applied. They are recorded
+  privately, outside this repository (`~/Projects/.lvm-approvals-2026-11-15/private-notes/`).
 
 **Verification (2026-11-13, one build, focused checks):**
 - Production build `MlUqTtl0lFc8KqrAHuhNA` succeeded and was served on port 3417 beside the
@@ -2057,6 +2087,11 @@ A `type="tel"` input trips none of the guards, because they all need the colon i
 Digit counting (10 to 15) via `setCustomValidity`, with **no `pattern` attribute** on purpose: a
 regex rejects formats the owner explicitly asked to accept. Accepts `7025551212`,
 `702-555-1212`, `(702) 555-1212`, `+1 702 555 1212`, `702.555.1212`.
+
+Update, 2026-11-15: the field now carries one `pattern`, only until the script has loaded, for
+a submit made before then (release candidate section, item 6). It counts digits the same way and
+accepts the same five ways of writing a number. The rule above still holds for any format
+pattern, and the pattern must come off once the script is running.
 
 Both of these shipped broken in #106 and were fixed in #107. Do not reintroduce either:
 

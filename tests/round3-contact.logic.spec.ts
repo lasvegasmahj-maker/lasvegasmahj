@@ -270,8 +270,11 @@ test.describe("form fields", () => {
     const src = readCode(FORM);
     expect(src).toContain("validatePhone");
     expect(src).toContain("setCustomValidity");
-    // A brittle pattern attribute would reject formats the owner explicitly wants accepted.
-    expect(src).not.toMatch(/pattern="/);
+    // A format pattern would reject ways of writing a number the owner explicitly wants
+    // accepted. The one pattern allowed counts digits, and the field carries it only until
+    // the script has loaded, when validatePhone takes over.
+    expect(src.match(/\bpattern=/g)).toHaveLength(1);
+    expect(src).toContain("pattern={scriptReady ? undefined : PHONE_PATTERN}");
   });
 
   test("autocomplete helps with name, email and phone only", () => {
@@ -304,6 +307,30 @@ test.describe("delivery path is unchanged", () => {
     // forwarding them. A _gotcha honeypot in particular answers 200 for a discarded
     // submission, which would show the visitor "Message Sent!" for a lead that vanished.
     expect(read(FORM)).not.toMatch(/name="_/);
+  });
+
+  test("a submit made before the script loads goes to the same endpoint", () => {
+    // The fetch and the form's own action must name one address, or the early submit and
+    // the scripted one could deliver to different places.
+    const src = read(FORM);
+    expect(src).toContain("fetch(FORMSPREE, {");
+    expect(src).toContain('<form method="post" action={FORMSPREE} onSubmit={handleSubmit}>');
+    expect(src.match(/formspree\.io/g)).toHaveLength(1);
+  });
+
+  test("the phone rule the browser applies by itself agrees with the scripted one", () => {
+    // Before the script loads only HTML attributes guard the form, and "required" accepts
+    // spaces. Browsers compile a pattern attribute whole-value, with the v flag. The first
+    // five are the ways of writing a number the owner asked to have accepted.
+    const src = read(FORM);
+    const pattern = JSON.parse(src.match(/const PHONE_PATTERN = ("[^"\n]+");/)![1]) as string;
+    const rule = new RegExp(`^(?:${pattern})$`, "v");
+    for (const ok of ["7025551212", "702-555-1212", "(702) 555-1212", "+1 702 555 1212", "702.555.1212", "123456789012345"]) {
+      expect(rule.test(ok), ok).toBe(true);
+    }
+    for (const bad of ["   ", "5", "555-0123", "call me", "1234567890123456"]) {
+      expect(rule.test(bad), JSON.stringify(bad)).toBe(false);
+    }
   });
 
   test("a 200 carrying an errors body is treated as a failure", () => {

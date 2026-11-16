@@ -56,8 +56,12 @@ test("the favicon files are the owner's logo, not the stock framework icon", () 
 test("the contact form can never put what a visitor typed into the page address", () => {
   // Without method="post", a submit made before the script loads reloads /contact with the
   // name, email, phone and message in the query string. Any analytics tag records the full
-  // address on its own, so this is what keeps personal details out of analytics.
-  expect(read("components/contact-form.tsx")).toContain('<form method="post" onSubmit={handleSubmit}>');
+  // address on its own, so this is what keeps personal details out of analytics. The action
+  // sends that early submit to Formspree, so the message is delivered instead of being posted
+  // to /contact itself, which the live host answers with an error.
+  const form = read("components/contact-form.tsx");
+  expect(form).toContain('<form method="post" action={FORMSPREE} onSubmit={handleSubmit}>');
+  expect(form).toContain('const FORMSPREE = "https://formspree.io/f/mwvrnjrb";');
 });
 
 test("analytics receives only values the site defines, through one listener and the form's outcome events", () => {

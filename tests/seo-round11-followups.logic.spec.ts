@@ -155,7 +155,9 @@ const GPS_POINTER = ["2588040001000000", "8825000400000001", "25880d0001000000",
 );
 
 test("no published image carries the GPS position it was taken at", () => {
-  const images = walk("public", /\.(jpe?g|png|webp|avif|gif|heic|tiff?)$/i);
+  const image = /\.(jpe?g|png|webp|avif|gif|heic|tiff?)$/i;
+  // Next also serves the image files under app/ (icons, share images) byte for byte.
+  const images = [...walk("public", image), ...walk("app", image)];
   expect(images.length).toBeGreaterThan(30);
   for (const rel of images) {
     const bytes = fs.readFileSync(path.join(ROOT, rel));

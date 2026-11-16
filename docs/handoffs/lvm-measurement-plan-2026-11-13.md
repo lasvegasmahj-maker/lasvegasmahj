@@ -110,7 +110,7 @@ pages are the ones whose buttons carry each tag.
 | `/schedule` | `schedule` | Schedule page | none |
 | `/play-mahjong-las-vegas` | `visitors` | Play Mahjong for Visitors page | none |
 | Homepage "Plan Your Event" pop-up | no click event | Homepage Plan Your Event | none |
-| Menu, footer, search or a typed address | empty | General (nav, footer or direct) | none |
+| Menu, footer, search or a typed address; also any inquiry sent before the page has finished loading | empty | General (nav, footer or direct) | none |
 
 Inquiry Type choices (`inquiry_type`): Private Lesson, Group Lesson or Class, Private Party or
 Celebration, Corporate or Team Building, Conference or Convention, Charity or Fundraiser,
@@ -130,6 +130,9 @@ The `lessons` tag belongs to the lessons page chooser (section 4, E2), approved 
   describes.
 - A Send press stopped by a missing or invalid field. The browser shows its message and no event
   is sent, so GA4 cannot show how many people give up at that point.
+- An inquiry sent before the page has finished loading (added 2026-11-15). It reaches your inbox
+  through the form service, but no event is sent and its source reads "General (nav, footer or
+  direct)" whichever button the visitor used.
 - Opening the homepage pop-up. Only its result arrives, labelled "Homepage Plan Your Event".
 - The "Book a Lesson" and "Book Now" buttons on the lessons, Summerlin and Henderson pages. They go
   to the homepage lessons box (`/#classes`) on purpose (Round 2), so GA4 sees them only as homepage

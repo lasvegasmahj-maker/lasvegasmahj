@@ -1,7 +1,7 @@
 # Las Vegas Mahjong website: owner guide (2026-11-13)
 
-**Status:** everything below sits on the branch `seo/invisible-technical-fixes`, proposed as a
-draft pull request into `main` on 2026-11-15 (the working copy is `~/Projects/lvm-seo-invisible`).
+**Status:** everything below sits on the branch `seo/invisible-technical-fixes`, proposed as
+draft pull request #130 into `main` on 2026-11-15 (the working copy is `~/Projects/lvm-seo-invisible`).
 Nothing is published yet; the live site still runs the 2026-10-05 version. Merging and
 publishing need your separate approval. Full record: `docs/handoffs/lvm-seo-current.md`. Sprint files:
 `~/Projects/.lvm-sprint-2026-11-13/`. Pictures: `~/Projects/.lvm-seo-screens-2026-11-13/`.
@@ -114,8 +114,8 @@ site.
 - **iPhone home-screen icon:** the pink die. Browser tabs keep the pink die; the full logo stays
   everywhere else.
 - **About photo size setting (P2):** not used, as you decided.
-- **Photos:** the group photo and the teaching photo stay. The three unused photos are off the
-  website; private copies are in `~/Projects/.lvm-private-photo-originals-2026-11-15/`.
+- **Photos:** the three unused photos are off the website; private copies are in
+  `~/Projects/.lvm-private-photo-originals-2026-11-15/`.
 - **Checked:** a final build; 558 code checks pass (the known Find My Mahj check still fails
   and is skipped online); 742 page checks pass on computer and phone, and the 2 that fail are
   the same known check, which looks for another test server. Every link and picture on all 34
@@ -204,12 +204,15 @@ site.
 - **Draft pull request:** the branch is proposed for `main` as a draft. A draft cannot go live
   by accident; merging it needs your approval. The check results are in its description.
 - **Vercel is not receiving changes (needs you):** since some day after 2026-10-05, Vercel has
-  not received this website's code changes, because the Vercel app on GitHub no longer has
-  access to the website's code. Two effects: the Friendsgiving listing is not on the live site
+  not received this website's code changes. The likely cause is that the Vercel app on GitHub
+  no longer has access to the website's code. Two effects: the Friendsgiving listing is not on the live site
   yet, and this branch gets no preview link. See Section 4.
-- **Contact form, one decision before release:** if someone presses Send before the page's
-  script has loaded, the live host would show a blank error page and the message would not
-  arrive (today the page just reloads). It is rare. The two fixes are in the handoff.
+- **Contact form, early Send (your decision of 2026-11-15):** if someone presses Send before
+  the page has finished loading, the message now goes straight to the form service. They
+  should then see the form service's own thank-you page; it may first ask them to confirm
+  they are not a robot. The phone number is still checked. Once the page has loaded, the form
+  works exactly as before. One real test on a preview is still to do (handoff, remaining
+  steps).
 
 ## 2. Business facts to keep in sync
 
@@ -266,8 +269,7 @@ dates, updating them to that day is a separate, checked update before the merge.
 
 | Item | Where to look |
 | --- | --- |
-| Vercel access (new, urgent): Vercel has not received this website's code changes since some day after 2026-10-05, so nothing new can go live and no preview link is made. The Friendsgiving listing (event on 2026-11-18) is waiting on this. It needs your GitHub login and your go-ahead: in GitHub's settings, give the Vercel app access to the website's code again. Do not disconnect and reconnect inside Vercel. Once access is back, the next change to `main` goes live straight away |
-| Contact form fallback (new): decide how the form should behave when someone presses Send before the page's script has loaded (rare). Deliver the message another way, or keep the Send button off until the page is ready | Handoff "RELEASE CANDIDATE 2026-11-15", open items | Handoff "RELEASE CANDIDATE 2026-11-15", "Found during this step" |
+| Vercel access (new, urgent): Vercel has not received this website's code changes since some day after 2026-10-05, so nothing new can go live and no preview link is made. The Friendsgiving listing (event on 2026-11-18) is waiting on this. It needs your GitHub login and your go-ahead: in GitHub's settings, look at the Vercel app first (the likely cause is that it no longer has access to the website's code), then give it access again. If it already has access, or the app shows as suspended, stop and tell me: the cause is something else. Do not disconnect and reconnect inside Vercel. Once access is back, the next change to `main` goes live straight away | Handoff "RELEASE CANDIDATE 2026-11-15", "Found during this step" |
 | Friendsgiving listing wording (new): it says "guests should already know the basics", which is looser than your open play wording. It is your event text, already merged, so it was not changed | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
 | Five-pack (future task): set it up in Bookwhen when you are ready. Until then the website shows only "$20 per session" everywhere and no longer mentions the five-pack | Handoff "CONSISTENCY PASS 2026-11-15", item 1 |
 | Wide link-preview picture: a wide crop of your neon-sign photo (the sign and your face) is ready for you to approve or skip. Nothing is installed | `~/Projects/.lvm-approvals-2026-11-15/photo-c/share-crop-review.png` |
@@ -301,9 +303,9 @@ benefit below is a hypothesis, not a measured result.
    less confusion (the homepage still says private lessons can pair you with other students).
    Effort: low. Evidence: lane 4 traced each gap to the pages and the Bookwhen feed.
 4. **Review the two previews.** Done: you approved both on 2026-11-15, with your corrections, and
-   they are in the local copy (Section 1, "Your approvals, applied"). Still worth doing: watch
+   they are on the branch (Section 1, "Your approvals, applied"). Still worth doing: watch
    the protected lessons page's search position after release.
-5. **Approve the button pink.** Done: you approved it on 2026-11-15 and it is in the local copy.
+5. **Approve the button pink.** Done: you approved it on 2026-11-15 and it is on the branch.
    Every pink button now measures 4.58 to 1 against the 4.5 to 1 guideline (Section 1).
 
 Not recommended now: new pages, filler posts or more neighborhood pages (lane 7).
@@ -350,7 +352,8 @@ real and all are fixed.
 14. Open Play row: fixed. Split in two, because `lib/pricing.ts` holds only the prices.
 15. Lane 3 "still being merged": fixed. Both changes are in the local copy (`next.config.ts`
     line 8, `components/private-events.tsx` line 13); "speed gain unmeasured" stays.
-16. "Merged" with two meanings: fixed. The header says "published", Section 1 says "added to the
-    local copy", and "merging" now means publishing only.
+16. "Merged" with two meanings: fixed. The header says "published", Section 1 said "added to the
+    local copy", and "merging" now means publishing only. Done since: on 2026-11-15 the Section 1
+    headings changed to "on the branch, not live".
 17. Privacy sources file: fixed. The row names the Pictures folder. Done since: you confirmed the
     sentence on 2026-11-15, so the row is gone.

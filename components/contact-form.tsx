@@ -37,6 +37,15 @@ const SOURCES: Record<string, { label: string; inquiry?: string }> = {
 
 const GENERAL_SOURCE = "General (nav, footer or direct)";
 
+const FORMSPREE = "https://formspree.io/f/mwvrnjrb";
+
+// The same rule as validatePhone below, as a pattern the browser applies by itself: ten to
+// fifteen digits with anything between them. The field carries it only until the script has
+// loaded (see scriptReady), because on that early path "required" alone would accept spaces
+// and a pattern is the one check that works without script. It counts digits and never
+// matches a format, so every way of writing a number that validatePhone accepts still passes.
+const PHONE_PATTERN = "(?:\\D*\\d){10,15}\\D*";
+
 // type="tel" applies no native validation, so "required" alone would accept a single
 // character. Counting digits keeps every real format valid: 7025551212, 702-555-1212,
 // (702) 555-1212 and +1 702 555 1212 all pass, while a stray character or a truncated
@@ -79,6 +88,8 @@ const INQUIRY_TYPES = [
 const subscribe = () => () => {};
 const readSlug = () => new URLSearchParams(window.location.search).get("source") ?? "";
 const noSlug = () => "";
+const inBrowser = () => true;
+const asServed = () => false;
 
 interface ContactFormProps {
   /** Fixed attribution for embedded uses. Omit on /contact, which reads ?source= instead. */
@@ -119,6 +130,10 @@ export default function ContactForm({ source: fixedSource, successTitle, success
       </p>
     ) : null;
 
+  // False in the page as served, true once this component is running in the browser. From
+  // then on validatePhone owns the phone rule and its message, so the pattern comes off and
+  // the loaded form checks a number exactly as it did before the early path existed.
+  const scriptReady = useSyncExternalStore(subscribe, inBrowser, asServed);
   const slug = useSyncExternalStore(subscribe, readSlug, noSlug);
   // An own-property check, because ?source=constructor would otherwise find Object's built-in
   // and leave the lead with no attribution at all instead of the general fallback.
@@ -152,7 +167,7 @@ export default function ContactForm({ source: fixedSource, successTitle, success
     trackEvent("contact_form_attempt", lead);
 
     try {
-      const res = await fetch("https://formspree.io/f/mwvrnjrb", {
+      const res = await fetch(FORMSPREE, {
         method: "POST",
         body: data,
         headers: { Accept: "application/json" },
@@ -182,11 +197,14 @@ export default function ContactForm({ source: fixedSource, successTitle, success
     );
   }
 
-  // method="post" matters only when the script has not loaded yet: a plain form submits by
+  // method and action matter only when the script has not loaded yet. A plain form submits by
   // GET, which would reload the page with the visitor's name, email, phone and message in
   // the address, where browser history, server logs and any analytics tag would keep them.
+  // A POST with no action goes to this page itself, which the host answers with an error, so
+  // the message is lost. The action sends that early submit straight to Formspree. Once the
+  // script has loaded, handleSubmit takes over and the visitor stays on this page.
   return (
-    <form method="post" onSubmit={handleSubmit}>
+    <form method="post" action={FORMSPREE} onSubmit={handleSubmit}>
       <input type="hidden" name="source" value={source} />
 
       {/* The asterisk is for sighted visitors; `required` already tells a screen reader. */}
@@ -227,6 +245,7 @@ export default function ContactForm({ source: fixedSource, successTitle, success
           id="contact-phone"
           name="phone"
           required
+          pattern={scriptReady ? undefined : PHONE_PATTERN}
           autoComplete="tel"
           inputMode="tel"
           placeholder="(702) 555-0123"
