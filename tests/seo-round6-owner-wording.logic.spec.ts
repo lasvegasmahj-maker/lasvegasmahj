@@ -31,10 +31,24 @@ const VISITORS = page("/play-mahjong-las-vegas");
 const HUB = page("/mahjong-corporate-las-vegas");
 const TEAM = page("/corporate-team-building-las-vegas");
 
-test.describe("the venue provides the furniture, we provide the game", () => {
+// 2026-11-15: the owner replaced the 2026-09-29 rule ("the venue provides the tables and chairs")
+// with neutral wording, because who supplies the furniture is not confirmed for every event. Each
+// corporate page now says the setup is confirmed in planning and that card arrangements are
+// confirmed in the quote, and none of them assigns the furniture or promises NMJL cards.
+const SETUP = /We confirm the (venue|booth|suite), tables, chairs and setup arrangements when planning your event/;
+const ASSIGNS_FURNITURE = /tables? and chairs|room and furniture|(venue|hotel|suite|booth|you|client)[^.]{0,40}\bprovides?\b[^.]{0,40}(tables?|chairs|furniture|seating)/i;
+const PROMISES_CARDS = /NMJL cards|\bcards, everything|racks,? (and )?cards|racks, NMJL|cards? (are |is )?provided/i;
+
+test.describe("the setup and NMJL cards are confirmed per event; we provide the game", () => {
   for (const route of CORPORATE) {
-    test(`${route} says who provides tables and chairs`, () => {
-      expect(readCode(page(route))).toMatch(/tables? and chairs/i);
+    test(`${route} confirms the setup instead of saying who provides tables and chairs`, () => {
+      const code = readCode(page(route));
+      expect(code).toMatch(SETUP);
+      expect(code).not.toMatch(ASSIGNS_FURNITURE);
+    });
+
+    test(`${route} never promises NMJL cards`, () => {
+      expect(readCode(page(route))).not.toMatch(PROMISES_CARDS);
     });
 
     test(`${route} never implies we supply event furniture`, () => {
@@ -42,6 +56,15 @@ test.describe("the venue provides the furniture, we provide the game", () => {
       expect(code).not.toMatch(/bring everything|fill the room with tables|setup and breakdown|confirm what (the space|it) needs/i);
     });
   }
+
+  test("the parties page follows the same approach", () => {
+    const code = readCode(page("/mahjong-parties-las-vegas"));
+    expect(code).toMatch(SETUP);
+    expect(code).toContain("NMJL card arrangements are confirmed in your quote.");
+    expect(code).not.toMatch(ASSIGNS_FURNITURE);
+    expect(code).not.toMatch(PROMISES_CARDS);
+    expect(code).not.toMatch(/all (the )?(mahjong )?equipment|everything else|provide a thing|bring everything/i);
+  });
 });
 
 test.describe("DMC and event professional terms", () => {
@@ -114,7 +137,8 @@ test.describe("Open Play states the current operating facts", () => {
       "8687 W. Sahara Avenue, Suite 200",
       "not a lesson",
       "already know",
-      "completed Mahj 101",
+      // The owner's requirement since 2026-11-15; finishing Mahj 101 is no longer named as enough.
+      "comfortable playing independently",
       "you do not need a full table",
       "Advance registration is required",
       "current National Mah Jongg League card",
@@ -136,14 +160,23 @@ test.describe("Open Play states the current operating facts", () => {
     // The studio's own "Every level is welcome" card is about the whole calendar, Mahj 101
     // included, and stays. Its Lucky Sevens copy and schema are about Open Play and must not.
     expect(readCode(page("/studio"))).not.toMatch(/at every level|how new you are/i);
-    expect(read(VISITORS)).toContain("completed Mahj 101");
+    expect(read(VISITORS)).toContain("comfortable playing independently");
+  });
+
+  test("no page or markup presents finishing Mahj 101 as enough for Open Play", () => {
+    for (const rel of [OPEN_PLAY, VISITORS, page("/schedule"), page("/studio"), "lib/schema.ts", page("/mahjong-lessons-las-vegas")]) {
+      expect(readCode(rel), rel).not.toMatch(/completed Mahj ?101|Mahj ?101 graduates|after Mahj ?101|before Open Play/i);
+    }
+    expect(read("lib/schema.ts")).toContain("comfortable playing independently");
   });
 });
 
 test.describe("Open Play prices live in one place", () => {
   test("the owner's prices", () => {
     expect(OPEN_PLAY_PRICES).toEqual({ session: 20, fivePack: 85 });
-    expect(OPEN_PLAY_PRICE_LINE).toBe("$20 per session, or $85 for a 5-pack");
+    // The five-pack is not on sale in Bookwhen (checked 2026-11-15), so the site offers the session
+    // price only until it is.
+    expect(OPEN_PLAY_PRICE_LINE).toBe("$20 per session");
   });
 
   test("no other file writes the numbers", () => {
@@ -161,7 +194,18 @@ test.describe("Open Play prices live in one place", () => {
     expect(read(OPEN_PLAY)).toContain("OPEN_PLAY_PRICE_LINE");
     expect(read(VISITORS)).toContain("OPEN_PLAY_PRICE_LINE");
     expect(read("lib/schema.ts")).toContain("OPEN_PLAY_PRICES.session.toFixed(2)");
-    expect(read("lib/schema.ts")).toContain("OPEN_PLAY_PRICES.fivePack.toFixed(2)");
+    expect(read("lib/schema.ts")).not.toContain("fivePack");
+  });
+
+  test("no page, metadata or markup offers the five-pack while Bookwhen does not sell it", () => {
+    const walk = (dir: string): string[] =>
+      fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true }).flatMap((e) =>
+        e.isDirectory() ? walk(path.join(dir, e.name)) : /\.(tsx?|json|txt)$/.test(e.name) ? [path.join(dir, e.name)] : [],
+      );
+    const files = [...walk("app"), ...walk("components"), ...walk("lib"), ...walk("public")].filter((f) => f !== path.join("lib", "pricing.ts"));
+    for (const f of files) {
+      expect(read(f), f).not.toMatch(/5-pack|five-pack|five pack|fivePack/i);
+    }
   });
 });
 
@@ -176,4 +220,14 @@ test.describe("legacy claims with no source are gone", () => {
   test("the contact page, where every corporate CTA lands, promises no reply time", () => {
     expect(readCode(page("/contact"))).not.toMatch(/24 hours/);
   });
+});
+
+test("no lesson page promises confident play or open play after a single lesson", () => {
+  expect(read(page("/mahjong-lessons-las-vegas"))).not.toMatch(/after just one session/i);
+  expect(read(page("/mahjong-lessons-henderson"))).not.toMatch(/after their first lesson/i);
+  expect(read(page("/mahjong-lessons-henderson"))).toContain("comfortable playing independently");
+  const learn = read(page("/learn-mahjong"));
+  expect(learn).not.toMatch(/playing confidently after|after their first session|within one lesson|reading it confidently/i);
+  expect(learn).toContain("Start with MAHJ101 and build your skills through practice and our follow-on classes.");
+  expect(learn).toContain("It looks intimidating at first, but it gets easier with practice.");
 });

@@ -42,7 +42,7 @@ const goodToKnow = [
   { title: "Price", body: `${OPEN_PLAY_PRICE_LINE}.` },
   { title: "Registration", body: "Required in advance. Book your seat for a session on the schedule. Spots are limited, with a waitlist when a session fills." },
   { title: "What to bring", body: "Your current National Mah Jongg League card. Tiles, racks and mats are waiting at the studio." },
-  { title: "Who can play", body: "Players who already know American Mahjong, including anyone who has completed Mahj 101." },
+  { title: "Who can play", body: "Players who already know American Mahjong and are comfortable playing independently." },
   { title: "Come as you are", body: "On your own or with friends. You do not need to bring a full table." },
 ];
 
@@ -53,7 +53,7 @@ const faqs = [
   },
   {
     q: "Do I need to know how to play before I come?",
-    a: "Yes. Open Play is for players who already know American Mahjong. If you have completed Mahj 101, you are ready to join.",
+    a: "Yes. Open Play is for players who already know American Mahjong and are comfortable playing independently. New to the game? Start with Mahj 101.",
   },
   {
     q: "How much does Open Play cost?",
@@ -91,7 +91,7 @@ export default function MahjongOpenPlayLasVegas() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
@@ -102,7 +102,7 @@ export default function MahjongOpenPlayLasVegas() {
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
               Social American Mahjong at the Las Vegas Mahjong Studio. Book a seat, bring your current National Mah Jongg League card, and sit down to play in Lucky Sevens, our playing room. Come on your own or with friends; you do not need a full table.
             </p>
-            <a href="/schedule" className="btn-primary">See Open Play Dates</a>
+            <a href="/schedule#calendar" className="btn-primary">See Open Play Dates</a>
           </div>
         </section>
 
@@ -119,7 +119,7 @@ export default function MahjongOpenPlayLasVegas() {
               <a href="/studio" style={{ color: "var(--green)", fontWeight: 600 }}>our studio inside Lucky Hare</a>, 8687 W. Sahara Avenue, Suite 200. When you arrive, you pick a mat, racks and a set of tiles from the studio&rsquo;s collection.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
-              It is for players who already know how to play. If you have completed Mahj 101, you are ready to join. New to the game? Start with Mahj 101 in our{" "}
+              It is for players who already know American Mahjong and are comfortable playing independently. New to the game? Start with Mahj 101 in our{" "}
               <a href="/mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>mahjong lessons</a>.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8 }}>
@@ -148,10 +148,10 @@ export default function MahjongOpenPlayLasVegas() {
         {/* COMMUNITY PHOTOS */}
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)", borderTop: "1px solid rgba(57,230,57,0.15)" }}>
           <div className="container" style={{ maxWidth: "1000px" }}>
-            <p className="section-label">In Lucky Sevens</p>
+            <p className="section-label">At the Studio</p>
             <h2 className="section-title">This Is What <span className="accent-green">Open Play</span> Looks Like</h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "560px", margin: "1rem 0 2.5rem", lineHeight: 1.7 }}>
-              Real players at real tables, in the studio&rsquo;s playing room.
+              Real players at real tables during Social Open Play at the studio.
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem", alignItems: "center", maxWidth: "900px" }}>
               <Image
@@ -184,7 +184,7 @@ export default function MahjongOpenPlayLasVegas() {
                 { icon: "🧠", title: "Stay Sharp", desc: "American Mahjong is a genuinely brain-stimulating game. Strategy, memory, pattern recognition: every session works your mind." },
                 { icon: "👯", title: "Meet People", desc: "Las Vegas is a city of transplants and newcomers. Open Play is an easy way to meet other players and make friends in the Valley." },
                 { icon: "🀄", title: "Your Tablescape", desc: "Pick a mat, racks and a set of tiles from the studio's collection and set up the table you want to play at." },
-                { icon: "📈", title: "Keep Playing", desc: "More hands with more players is how your game keeps growing after Mahj 101." },
+                { icon: "📈", title: "Keep Playing", desc: "More hands with more players is how your game keeps growing." },
               ].map(item => (
                 <div key={item.title} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
                   <div style={{ fontSize: "1.8rem", marginBottom: "0.6rem" }}>{item.icon}</div>

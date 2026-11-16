@@ -24,19 +24,21 @@ export default function HomeClient() {
   return (
     <>
       <Nav />
-      <Hero />
-      <StudioBanner />
-      <PressSection />
-      <WhySection />
-      <Teacher />
-      <WhatToExpect />
-      <Classes />
-      <PrivateEvents onInquiryOpen={() => setInquiryOpen(true)} />
-      <Testimonials />
-      <FAQ />
-      <Shop />
-      <Instagram />
-      <Newsletter />
+      <main id="main-content">
+        <Hero />
+        <StudioBanner />
+        <PressSection />
+        <WhySection />
+        <Teacher />
+        <WhatToExpect />
+        <Classes />
+        <PrivateEvents onInquiryOpen={() => setInquiryOpen(true)} />
+        <Testimonials />
+        <FAQ />
+        <Shop />
+        <Instagram />
+        <Newsletter />
+      </main>
       <Footer />
       <InquiryModal
         isOpen={inquiryOpen}

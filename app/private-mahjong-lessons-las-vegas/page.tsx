@@ -4,15 +4,15 @@ import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Private Mahjong Lessons at Our Las Vegas Studio",
+  title: "Private Mahjong Lessons in Las Vegas",
   description:
-    "Private mahjong lessons at our Las Vegas studio inside Lucky Hare. One on one instruction at your own pace, on your own schedule. Contact for pricing.",
+    "Private mahjong lessons at our Las Vegas studio inside Lucky Hare. Individual or private-group instruction at your own pace and schedule. Contact for pricing.",
   alternates: { canonical: "https://www.lasvegasmahj.com/private-mahjong-lessons-las-vegas" },
   openGraph: {
     ...ogBase,
     title: "Private Mahjong Lessons at Our Las Vegas Studio | Las Vegas Mahjong",
     description:
-      "One on one mahjong instruction at the Las Vegas Mahjong studio inside Lucky Hare. Learn at your own pace with a certified Oh My Mahjong instructor. Contact for pricing.",
+      "Individual or private-group mahjong instruction at the Las Vegas Mahjong studio inside Lucky Hare. Learn at your own pace, in a quiet room. Contact for pricing.",
     url: "https://www.lasvegasmahj.com/private-mahjong-lessons-las-vegas",
     images: [OG_SHAUNA],
   },
@@ -23,12 +23,14 @@ const faqs = [
   { q: "Do I need to bring anything?", a: "No. Tiles, racks, and NMJL cards are set up and waiting when you arrive. Bring your own card if you already have one." },
   { q: "How much does a private lesson cost?", a: "Contact for pricing. Tell me what you are looking for and I will send you the details." },
   { q: "Is a private lesson the same as a mahjong party?", a: "No. A private lesson teaches you the game. A mahjong party is a hosted celebration for a larger group. If you are planning a birthday, a holiday party, or a team outing, start on the mahjong parties page instead." },
-  { q: "Can you teach at my home instead?", a: "In home sessions are available by request. The studio inside Lucky Hare is where most private lessons happen, and it is set up for teaching." },
+  { q: "Can you teach at my home or venue instead?", a: "Yes, by request. Send us an inquiry with where you are, how many people are learning, and a date you have in mind. The studio inside Lucky Hare is where most private lessons happen, and it is set up for teaching." },
 ];
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": "https://www.lasvegasmahj.com/private-mahjong-lessons-las-vegas#service",
+  url: "https://www.lasvegasmahj.com/private-mahjong-lessons-las-vegas",
   name: "Private Mahjong Lessons Las Vegas",
   description:
     "One on one and small closed group American Mahjong instruction at the Las Vegas Mahjong studio inside Lucky Hare, with in home sessions available by request. Contact for pricing.",
@@ -76,7 +78,7 @@ export default function PrivateMahjongLessons() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
@@ -85,7 +87,7 @@ export default function PrivateMahjongLessons() {
               Private <span className="accent-pink">Mahjong Lessons</span> at Our Studio
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Just you at the table, or you and the people you choose. A certified Oh My Mahjong instructor teaches at your pace, in a quiet room, with no class to keep up with and no one watching.
+              Just you at the table, or you and the people you choose. We teach at your pace, in a quiet room, with no class to keep up with and no one watching.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/contact?source=private-lessons" className="btn-primary">Ask About a Private Lesson</a>
@@ -139,8 +141,8 @@ export default function PrivateMahjongLessons() {
               A private lesson is a different thing. We stay on the Charleston for forty minutes if the Charleston is what is bothering you. We deal the same kind of hand over and over until you see the pattern without looking. You ask the question you did not want to ask in front of anyone, and we answer it properly.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85 }}>
-              Neither one is better. They are for different people, and sometimes for the same person at different times. If you would rather learn alongside other beginners, the{" "}
-              <a href="/mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>group classes on the schedule</a> are a very good place to start.
+              Neither one is better. They are for different people, and sometimes for the same person at different times. If you would rather learn alongside other beginners, our{" "}
+              <a href="/mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>group classes</a> are a very good place to start.
             </p>
           </div>
         </section>

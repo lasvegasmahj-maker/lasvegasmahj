@@ -25,7 +25,7 @@ for (const path of [...CORPORATE, "/play-mahjong-las-vegas", "/studio"]) {
   });
 }
 
-for (const path of CORPORATE) {
+for (const path of [...CORPORATE, "/mahjong-parties-las-vegas", "/private-mahjong-lessons-las-vegas", "/mahjong-lessons-summerlin", "/mahjong-lessons-henderson"]) {
   test(`${path} publishes a Service tied to its own canonical address`, async ({ page }) => {
     await page.goto(path);
     const canonical = await page.locator('link[rel="canonical"]').getAttribute("href");
@@ -37,3 +37,26 @@ for (const path of CORPORATE) {
     expect(services[0].url).toBe(canonical);
   });
 }
+
+for (const path of ["/learn-mahjong", "/mahjong-sets-guide"]) {
+  test(`${path} shares as an article, matching its Article schema`, async ({ page }) => {
+    await page.goto(path);
+    const nodes = (await page.locator('script[type="application/ld+json"]').allTextContents()).map((t) => JSON.parse(t));
+    expect(nodes.filter((n) => n["@type"] === "Article")).toHaveLength(1);
+    await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "article");
+  });
+}
+
+test("every page in the sitemap describes its share image fully: type, size and alt text", async ({ request }) => {
+  const xml = await (await request.get("/sitemap.xml")).text();
+  const paths = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname);
+  expect(paths.length).toBeGreaterThan(30);
+  const missing: string[] = [];
+  for (const p of paths) {
+    const html = await (await request.get(p)).text();
+    for (const prop of ["og:image", "og:image:type", "og:image:width", "og:image:height", "og:image:alt"]) {
+      if (!new RegExp(`<meta property="${prop}" content="[^"]+"`).test(html)) missing.push(`${p} lacks ${prop}`);
+    }
+  }
+  expect(missing).toEqual([]);
+});

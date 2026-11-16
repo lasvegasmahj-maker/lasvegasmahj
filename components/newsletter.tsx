@@ -6,7 +6,7 @@ import { useMailchimpSubscribe } from "@/lib/use-mailchimp";
 export default function Newsletter() {
   const sectionRef = useRef<HTMLElement>(null);
   const [email, setEmail] = useState("");
-  const { status, message, subscribe } = useMailchimpSubscribe();
+  const { status, message, subscribe, invalidEmail } = useMailchimpSubscribe();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -55,6 +55,8 @@ export default function Newsletter() {
               placeholder="your@email.com"
               required
               aria-label="Email address"
+              aria-invalid={invalidEmail || undefined}
+              aria-describedby={status === "error" ? "newsletter-message" : undefined}
               disabled={status === "loading"}
             />
             <button type="submit" className="btn-primary" disabled={status === "loading"}>
@@ -63,25 +65,27 @@ export default function Newsletter() {
           </div>
         </form>
 
-        {message && (
-          <p
-            role="status"
-            aria-live="polite"
-            style={{
-              marginTop: "1rem",
-              fontSize: "0.95rem",
-              fontWeight: 600,
-              color:
-                status === "error"
-                  ? "#ff8a8a"
-                  : status === "success"
-                  ? "var(--green)"
-                  : "rgba(255,255,255,0.85)",
-            }}
-          >
-            {message}
-          </p>
-        )}
+        {/* A live region is only announced reliably if it exists before its text arrives. */}
+        <div role="status" aria-live="polite">
+          {message && (
+            <p
+              id="newsletter-message"
+              style={{
+                marginTop: "1rem",
+                fontSize: "0.95rem",
+                fontWeight: 600,
+                color:
+                  status === "error"
+                    ? "#ff8a8a"
+                    : status === "success"
+                    ? "var(--green)"
+                    : "rgba(255,255,255,0.85)",
+              }}
+            >
+              {message}
+            </p>
+          )}
+        </div>
       </div>
     </section>
   );

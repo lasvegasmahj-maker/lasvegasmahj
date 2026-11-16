@@ -3,6 +3,8 @@
 import { useState, useSyncExternalStore } from "react";
 import { trackEvent } from "@/lib/analytics";
 
+type Field = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
 // An unrecognised or absent ?source= falls back to GENERAL_SOURCE: forwarding raw query
 // text would put attacker-controlled content into an inbox a human reads. `label` is what
 // lands in the email, so it reads as a phrase rather than a slug. `inquiry` pre-selects
@@ -22,11 +24,15 @@ const SOURCES: Record<string, { label: string; inquiry?: string }> = {
   parties: { label: "Private Parties page", inquiry: "Private Party or Celebration" },
   "private-lessons": { label: "Private Lessons page", inquiry: "Private Lesson" },
   studio: { label: "Studio Page" },
+  schedule: { label: "Schedule page" },
   visitors: { label: "Play Mahjong for Visitors page" },
   "meeting-planners": { label: "Meeting Planner Activities page", inquiry: "Corporate or Team Building" },
   "corporate-activities": { label: "Corporate Event Activities page", inquiry: "Corporate or Team Building" },
   incentive: { label: "Incentive Group Activities page", inquiry: "Corporate or Team Building" },
   "trade-show": { label: "Trade Show Booth Activities page", inquiry: "Conference or Convention" },
+  summerlin: { label: "Summerlin Lessons page", inquiry: "Private Lesson" },
+  henderson: { label: "Henderson Lessons page", inquiry: "Private Lesson" },
+  lessons: { label: "Lessons page", inquiry: "Private Lesson" },
 };
 
 const GENERAL_SOURCE = "General (nav, footer or direct)";
@@ -84,8 +90,39 @@ interface ContactFormProps {
 export default function ContactForm({ source: fixedSource, successTitle, successBody }: ContactFormProps = {}) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [chosenInquiry, setChosenInquiry] = useState<string | null>(null);
+  // The browser's own message for each field that failed, kept on the page and tied to the
+  // field, because the native bubble disappears after a few seconds.
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const match = SOURCES[useSyncExternalStore(subscribe, readSlug, noSlug)];
+  const recordInvalid = (e: React.FormEvent<Field>) => {
+    const { name, validationMessage } = e.currentTarget;
+    setErrors((prev) => (prev[name] === validationMessage ? prev : { ...prev, [name]: validationMessage }));
+  };
+
+  const recheck = (el: Field) => {
+    if (!(el.name in errors)) return;
+    setErrors((prev) => {
+      const next = { ...prev };
+      if (el.validity.valid) delete next[el.name];
+      else next[el.name] = el.validationMessage;
+      return next;
+    });
+  };
+
+  const errorProps = (name: string, id: string) =>
+    errors[name] ? { "aria-invalid": true, "aria-describedby": `${id}-error` } : {};
+
+  const errorText = (name: string, id: string) =>
+    errors[name] ? (
+      <p id={`${id}-error`} className="form-error">
+        {errors[name]}
+      </p>
+    ) : null;
+
+  const slug = useSyncExternalStore(subscribe, readSlug, noSlug);
+  // An own-property check, because ?source=constructor would otherwise find Object's built-in
+  // and leave the lead with no attribution at all instead of the general fallback.
+  const match = Object.prototype.hasOwnProperty.call(SOURCES, slug) ? SOURCES[slug] : undefined;
   const source = fixedSource ?? (match ? match.label : GENERAL_SOURCE);
   // The source only supplies a starting point; once the visitor picks, their choice wins.
   const inquiry = chosenInquiry ?? (fixedSource ? "" : match?.inquiry ?? "");
@@ -107,7 +144,12 @@ export default function ContactForm({ source: fixedSource, successTitle, success
     }
 
     const data = new FormData(form);
+    // Analytics gets these two values and nothing else. Both come from lists this site
+    // defines (the attribution label and the Inquiry Type options), and `data`, which holds
+    // what the visitor typed, is never passed to trackEvent.
+    const lead = { source_label: source, inquiry_type: INQUIRY_TYPES.includes(inquiry) ? inquiry : undefined };
     setStatus("sending");
+    trackEvent("contact_form_attempt", lead);
 
     try {
       const res = await fetch("https://formspree.io/f/mwvrnjrb", {
@@ -118,37 +160,68 @@ export default function ContactForm({ source: fixedSource, successTitle, success
       if (res.ok && !(await hasErrors(res))) {
         setStatus("sent");
         trackEvent("contact_submit");
+        trackEvent("contact_form_success", lead);
       } else {
         setStatus("error");
+        trackEvent("contact_form_error", lead);
       }
     } catch {
       setStatus("error");
+      trackEvent("contact_form_error", lead);
     }
   };
 
   if (status === "sent") {
     return (
       <div className="form-success">
-        <h4>{successTitle ?? "Message Sent!"}</h4>
+        <h4 ref={revealStatus} tabIndex={-1}>
+          {successTitle ?? "Message Sent!"}
+        </h4>
         <p>{successBody ?? "Thanks for reaching out. I\u2019ll be in touch soon!"}</p>
       </div>
     );
   }
 
+  // method="post" matters only when the script has not loaded yet: a plain form submits by
+  // GET, which would reload the page with the visitor's name, email, phone and message in
+  // the address, where browser history, server logs and any analytics tag would keep them.
   return (
-    <form onSubmit={handleSubmit}>
+    <form method="post" onSubmit={handleSubmit}>
       <input type="hidden" name="source" value={source} />
 
+      {/* The asterisk is for sighted visitors; `required` already tells a screen reader. */}
       <div className="form-group">
-        <label htmlFor="contact-name">Your Name *</label>
-        <input type="text" id="contact-name" name="name" required autoComplete="name" placeholder="Jane Smith" />
+        <label htmlFor="contact-name">Your Name <span aria-hidden="true">*</span></label>
+        <input
+          type="text"
+          id="contact-name"
+          name="name"
+          required
+          autoComplete="name"
+          placeholder="Jane Smith"
+          onInvalid={recordInvalid}
+          onInput={(e) => recheck(e.currentTarget)}
+          {...errorProps("name", "contact-name")}
+        />
+        {errorText("name", "contact-name")}
       </div>
       <div className="form-group">
-        <label htmlFor="contact-email">Email Address *</label>
-        <input type="email" id="contact-email" name="email" required autoComplete="email" placeholder="jane@email.com" />
+        <label htmlFor="contact-email">Email Address <span aria-hidden="true">*</span></label>
+        <input
+          type="email"
+          id="contact-email"
+          name="email"
+          required
+          autoComplete="email"
+          placeholder="jane@email.com"
+          onInvalid={recordInvalid}
+          onInput={(e) => recheck(e.currentTarget)}
+          {...errorProps("email", "contact-email")}
+        />
+        {errorText("email", "contact-email")}
       </div>
       <div className="form-group">
-        <label htmlFor="contact-phone">Phone Number *</label>
+        <label htmlFor="contact-phone">Phone Number <span aria-hidden="true">*</span></label>
         <input
           type="tel"
           id="contact-phone"
@@ -157,18 +230,29 @@ export default function ContactForm({ source: fixedSource, successTitle, success
           autoComplete="tel"
           inputMode="tel"
           placeholder="(702) 555-0123"
-          onInput={(e) => validatePhone(e.currentTarget)}
+          onInvalid={recordInvalid}
+          onInput={(e) => {
+            validatePhone(e.currentTarget);
+            recheck(e.currentTarget);
+          }}
           onBlur={(e) => validatePhone(e.currentTarget)}
+          {...errorProps("phone", "contact-phone")}
         />
+        {errorText("phone", "contact-phone")}
       </div>
       <div className="form-group">
-        <label htmlFor="contact-inquiry">What Can We Help With? *</label>
+        <label htmlFor="contact-inquiry">What Can We Help With? <span aria-hidden="true">*</span></label>
         <select
           id="contact-inquiry"
           name="inquiry_type"
           required
           value={inquiry}
-          onChange={(e) => setChosenInquiry(e.target.value)}
+          onChange={(e) => {
+            setChosenInquiry(e.target.value);
+            recheck(e.currentTarget);
+          }}
+          onInvalid={recordInvalid}
+          {...errorProps("inquiry_type", "contact-inquiry")}
         >
           <option value="" disabled>
             Select one...
@@ -179,6 +263,7 @@ export default function ContactForm({ source: fixedSource, successTitle, success
             </option>
           ))}
         </select>
+        {errorText("inquiry_type", "contact-inquiry")}
       </div>
       <div className="form-row">
         <div className="form-group">
@@ -225,7 +310,7 @@ export default function ContactForm({ source: fixedSource, successTitle, success
         {status === "sending" ? "Sending..." : "Send Message"}
       </button>
       {status === "error" && (
-        <p role="status" aria-live="polite" style={{ marginTop: "1rem", color: "#ff8a8a", fontSize: "0.9rem", lineHeight: 1.6 }}>
+        <p ref={revealStatus} tabIndex={-1} style={{ outline: "none", marginTop: "1rem", color: "#ff8a8a", fontSize: "0.9rem", lineHeight: 1.6 }}>
           Something went wrong. Please email{" "}
           <a href="mailto:hello@lasvegasmahj.com" style={{ color: "var(--green)", fontWeight: 600 }}>
             hello@lasvegasmahj.com
@@ -235,6 +320,15 @@ export default function ContactForm({ source: fixedSource, successTitle, success
       )}
     </form>
   );
+}
+
+// After a send, the success message replaces a form several screens tall and the error sits
+// under a button that was disabled while sending, so either can land out of sight with focus
+// back at the top of the page. Focus reads the message out once; the scroll brings it into
+// view. Module level, so React runs it when the message mounts rather than on every render.
+function revealStatus(el: HTMLElement | null) {
+  el?.focus({ preventScroll: true });
+  el?.scrollIntoView({ block: "center" });
 }
 
 // Formspree can answer 200 with an {"errors":[...]} body for a submission it drops, which

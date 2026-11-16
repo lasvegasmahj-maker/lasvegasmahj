@@ -1,5 +1,5 @@
 /**
- * EventPage — reusable server component for individual event SEO pages.
+ * EventPage: reusable server component for individual event SEO pages.
  *
  * Usage (in app/events/[slug]/page.tsx):
  *   import EventPage from "@/components/event-page";
@@ -27,15 +27,15 @@ export interface EventPageProps {
   endDate: string;
   /** Venue display name, e.g. "Cafe Lola" */
   venueName: string;
-  /** Street address — include if known */
+  /** Street address, if known */
   venueAddress?: string;
   /** City, defaults to "Las Vegas" */
   venueCity?: string;
   /** State, defaults to "NV" */
   venueState?: string;
-  /** Short paragraph description (1-3 sentences) — used in meta and hero */
+  /** Short paragraph description (1-3 sentences), used in meta and hero */
   description: string;
-  /** Full richtext body paragraphs — shown under the hero */
+  /** Full richtext body paragraphs, shown under the hero */
   body?: string[];
   /** Ticket or RSVP URL */
   ticketUrl?: string;
@@ -51,7 +51,7 @@ export interface EventPageProps {
   tag?: "open-play" | "tournament" | "lessons" | "charity" | "special";
   /** What to bring / what's included bullets */
   whatToKnow?: string[];
-  /** Past event recap content — shown after the event date has passed */
+  /** Past event recap content, shown after the event date has passed */
   recapBody?: string[];
   /** Testimonials collected after the event */
   testimonials?: { quote: string; name: string }[];
@@ -172,7 +172,7 @@ export default function EventPage(props: EventPageProps) {
 
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
 
         {/* ── HERO ── */}
         <section
@@ -199,7 +199,7 @@ export default function EventPage(props: EventPageProps) {
           )}
 
           <div className="container" style={{ position: "relative", zIndex: 1 }}>
-            {/* Breadcrumb — screen-reader friendly */}
+            {/* Breadcrumb, screen-reader friendly */}
             <nav aria-label="Breadcrumb" style={{ marginBottom: "1.5rem" }}>
               <ol
                 style={{
@@ -261,7 +261,7 @@ export default function EventPage(props: EventPageProps) {
             >
               {[
                 { icon: "📅", label: displayDate },
-                { icon: "🕐", label: `${startTime} – ${endTime}` },
+                { icon: "🕐", label: `${startTime} to ${endTime}` },
                 { icon: "📍", label: venueAddress ? `${venueName}, ${venueAddress}` : `${venueName}, ${venueCity}, ${venueState}` },
                 ...(price ? [{ icon: "🎟️", label: price }] : []),
               ].map(({ icon, label }) => (
@@ -566,7 +566,7 @@ export function buildEventMetadata({
   });
 
   return {
-    title: `${name} — ${date}`,
+    title: `${name}, ${date}`,
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {

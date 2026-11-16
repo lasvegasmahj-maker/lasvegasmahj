@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     ...ogBase,
     title: "Reading the NMJL Mahjong Card | Las Vegas Mahjong",
-    description: "How to read the NMJL mahjong card: set sizes, any like number, consecutive numbers, open vs. closed hands. Explained by a certified instructor.",
+    description: "How to read the NMJL mahjong card: set sizes, any like number, consecutive numbers, open vs. closed hands.",
     url: "https://www.lasvegasmahj.com/rules/the-card",
     images: [OG_HERO],
   },
@@ -37,7 +37,7 @@ export default function TheCardPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "American Mahjong Rules", item: "https://www.lasvegasmahj.com/rules" }, { "@type": "ListItem", position: 3, name: "Reading the Card", item: "https://www.lasvegasmahj.com/rules/the-card" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
             <Link href="/rules" style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.82rem", textDecoration: "none", display: "block", marginBottom: "1.5rem" }}>

@@ -75,8 +75,10 @@ const CORPORATE = [
   "incentive-group-activities-las-vegas",
 ];
 
-test("every corporate page ties its Service to its own address, so no two pages describe an anonymous service", () => {
-  for (const route of CORPORATE) {
+const OTHER_SERVICE_PAGES = ["mahjong-parties-las-vegas", "private-mahjong-lessons-las-vegas", "mahjong-lessons-summerlin", "mahjong-lessons-henderson"];
+
+test("every page with a Service ties it to its own address, so no two pages describe an anonymous service", () => {
+  for (const route of [...CORPORATE, ...OTHER_SERVICE_PAGES]) {
     const src = read(`app/${route}/page.tsx`);
     const url = `https://www.lasvegasmahj.com/${route}`;
     const start = src.indexOf('"@type": "Service"');
@@ -92,4 +94,21 @@ test("every corporate page ties its Service to its own address, so no two pages 
       expect(head, route).toContain(`url: "${url}",`);
     }
   }
+});
+
+test("a page that publishes Article schema also shares as an article, not a generic website page", () => {
+  // The page's own top-level node, not an Article nested inside a listing such as the blog index.
+  const articles = walk("app").filter((rel) => /= \{\n  "@context": "https:\/\/schema\.org",\n  "@type": "Article",/.test(read(rel)));
+  expect(articles.sort()).toEqual(["app/learn-mahjong/page.tsx", "app/mahjong-sets-guide/page.tsx"]);
+  for (const rel of articles) {
+    const src = read(rel);
+    const og = src.slice(src.indexOf("openGraph: {"), src.indexOf("},", src.indexOf("openGraph: {")));
+    expect(og, rel).toContain("...ogBase,\n    type: \"article\"");
+  }
+});
+
+test("the leagues page takes its share image from the shared helper, like every other page", () => {
+  // Its hand-built descriptor left out the image type, which made leagues the one sitemap
+  // route with no og:image:type.
+  expect(read("app/mahjong-leagues-las-vegas/page.tsx")).toContain("images: [studioOgImage(PLAYERS_AT_TABLE)]");
 });

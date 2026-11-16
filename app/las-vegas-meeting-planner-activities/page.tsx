@@ -60,7 +60,7 @@ const slots = [
   },
   {
     title: "Team or department breakout",
-    desc: "When one team inside a larger meeting needs its own time, a longer session works as team building, with a friendly tournament at the end if the group likes to compete.",
+    desc: "When one team inside a larger meeting needs its own time, a longer session works as team building.",
   },
   {
     title: "Evening hosted social",
@@ -97,7 +97,7 @@ const faqs = [
   },
   {
     q: "What do you need from the hotel or venue?",
-    a: "The event space, set with tables and chairs for your group, and the time slot. The hotel or venue provides the room and furniture; we provide the sets, racks, NMJL cards and other game materials, plus the facilitators, and we set up and clear the game. Any food or drink is yours to arrange.",
+    a: "The event space and the time slot. We confirm the venue, tables, chairs and setup arrangements when planning your event. We provide the sets, racks and other game materials, plus the facilitators, and we set up and clear the game. NMJL card arrangements are confirmed in your quote. Any food or drink is yours to arrange.",
   },
   {
     q: "Do our attendees need to know how to play?",
@@ -123,7 +123,7 @@ export default function LasVegasMeetingPlannerActivities() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
             <p className="section-label">Meeting Planners &middot; Breakouts &middot; Icebreakers</p>
@@ -198,20 +198,21 @@ export default function LasVegasMeetingPlannerActivities() {
               <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(57,230,57,0.25)", borderRadius: "8px", padding: "1.8rem" }}>
                 <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.75rem", color: "var(--green)" }}>We bring</h3>
                 <ul style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, margin: 0, paddingLeft: "1.1rem", listStyle: "disc" }}>
-                  <li>152-tile American Mahjong sets, racks and current NMJL cards</li>
+                  <li>152-tile American Mahjong sets, racks and other game materials</li>
                   <li>Instruction from the very first tile</li>
                   <li>Facilitators matched to your headcount</li>
                   <li>Setting up and clearing the game at every table</li>
                 </ul>
+                <p style={{ color: "rgba(255,255,255,0.62)", fontSize: "0.9rem", lineHeight: 1.65, margin: "0.9rem 0 0" }}>NMJL card arrangements are confirmed in your quote.</p>
               </div>
               <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(233,30,140,0.25)", borderRadius: "8px", padding: "1.8rem" }}>
                 <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.75rem" }}>You provide</h3>
                 <ul style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, margin: 0, paddingLeft: "1.1rem", listStyle: "disc" }}>
                   <li>The room: a hotel meeting room, ballroom, breakout space, hospitality suite or private room</li>
-                  <li>Tables and chairs for the group, set in the room</li>
                   <li>The time slot in your agenda</li>
                   <li>Any food or drink you would like</li>
                 </ul>
+                <p style={{ color: "rgba(255,255,255,0.62)", fontSize: "0.9rem", lineHeight: 1.65, margin: "0.9rem 0 0" }}>We confirm the venue, tables, chairs and setup arrangements when planning your event.</p>
               </div>
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "2rem" }}>

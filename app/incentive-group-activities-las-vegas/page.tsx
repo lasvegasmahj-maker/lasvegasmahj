@@ -59,13 +59,13 @@ const slots = [
   { title: "Welcome reception", desc: "A hosted session during the arrival reception gives guests something to do together on the first night besides small talk." },
   { title: "A hosted afternoon", desc: "A relaxed session between free time and the evening program, offered as one of the group's activity choices or to everyone." },
   { title: "A private VIP table", desc: "A private hosted session planned for top performers or another small group within the program." },
-  { title: "Closing night", desc: "A hosted mahjong evening as part of the farewell event, with a friendly tournament if the group likes to compete." },
+  { title: "Closing night", desc: "A hosted mahjong evening as part of the farewell event." },
 ];
 
 const faqs = [
   {
     q: "Can you run a mahjong activity at our group's resort or hotel?",
-    a: "Yes. We bring a hosted, facilitated American Mahjong experience to the hotel, ballroom, conference room, hospitality suite or private room your program has booked. The hotel or venue provides the space, tables and chairs; we provide the mahjong equipment, game materials and facilitation.",
+    a: "Yes. We bring a hosted, facilitated American Mahjong experience to the hotel, ballroom, conference room, hospitality suite or private room your program has booked. We provide the mahjong equipment, game materials and facilitation. We confirm the venue, tables, chairs and setup arrangements when planning your event.",
   },
   {
     q: "Can a DMC or incentive planner request this for a client program?",
@@ -103,7 +103,7 @@ export default function IncentiveGroupActivitiesLasVegas() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
             <p className="section-label">Incentive Travel &middot; DMC Programs &middot; VIP Groups</p>
@@ -158,7 +158,7 @@ export default function IncentiveGroupActivitiesLasVegas() {
             <p className="section-label">For DMCs and Incentive Planners</p>
             <h2 className="section-title">Building a <span className="accent-pink">Client Program?</span></h2>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "1.5rem 0 1rem" }}>
-              If you are a destination management company (DMC) or incentive planner putting together a Las Vegas program for a client, send us the program dates, the hotel, the headcount and the time slot. We quote each event individually and bring the 152-tile American Mahjong sets, racks, current NMJL cards and other game materials, plus the facilitators. The hotel or venue provides the event space, tables and chairs, and any food or drink. Partner and referral arrangements are available for DMCs and event professionals. Contact us to discuss your program.
+              If you are a destination management company (DMC) or incentive planner putting together a Las Vegas program for a client, send us the program dates, the hotel, the headcount and the time slot. We quote each event individually and bring the 152-tile American Mahjong sets, racks and other game materials, plus the facilitators. NMJL card arrangements are confirmed in your quote. We confirm the venue, tables, chairs and setup arrangements when planning your event. The hotel or venue provides any food or drink. Partner and referral arrangements are available for DMCs and event professionals. Contact us to discuss your program.
             </p>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: 0 }}>
               Planning a meeting inside the trip as well? See{" "}

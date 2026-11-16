@@ -6,12 +6,13 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Best Mahjong Sets 2026 | Buying Guide",
   description:
-    "A certified instructor's honest guide to the best American mahjong sets. Honest picks, exclusive discount codes for every budget. Updated for 2026.",
+    "An honest guide to the best American mahjong sets, with exclusive discount codes for every budget. Updated for 2026.",
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-sets-guide" },
   openGraph: {
     ...ogBase,
-    title: "Best Mahjong Sets 2026 | A Certified Instructor's Guide",
-    description: "A certified instructor's honest guide to the best American mahjong sets and accessories, with exclusive discount codes. All budgets covered.",
+    type: "article",
+    title: "Best Mahjong Sets 2026 | An Honest Buying Guide",
+    description: "An honest guide to the best American mahjong sets and accessories, with exclusive discount codes. All budgets covered.",
     url: "https://www.lasvegasmahj.com/mahjong-sets-guide",
     images: [OG_HERO],
   },
@@ -20,8 +21,8 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: "Best American Mahjong Sets 2026: A Certified Instructor's Guide",
-  description: "An honest guide to the best American mahjong sets and accessories, written by a certified Oh My Mahjong instructor.",
+  headline: "Best American Mahjong Sets 2026: An Honest Buying Guide",
+  description: "An honest guide to the best American mahjong sets and accessories, with exclusive discount codes.",
   author: { "@type": "Person", "@id": "https://www.lasvegasmahj.com/about#shauna", name: "Shauna", url: "https://www.lasvegasmahj.com/about" },
   publisher: { "@type": "Organization", "@id": "https://www.lasvegasmahj.com/#business", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
   mainEntityOfPage: "https://www.lasvegasmahj.com/mahjong-sets-guide",
@@ -121,7 +122,7 @@ export default function MahjongSetsGuide() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Best Mahjong Sets", item: "https://www.lasvegasmahj.com/mahjong-sets-guide" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
@@ -129,7 +130,7 @@ export default function MahjongSetsGuide() {
               Best Mahjong Sets <span className="accent-pink">2026</span>
             </h1>
             <p style={{ fontSize: "1.1rem", color: "rgba(255,255,255,0.7)", maxWidth: "600px", margin: "0 auto 1.5rem", lineHeight: 1.75 }}>
-              An honest guide from a certified instructor who has used them all. No fluff, just the sets I actually recommend to my students, with exclusive discount codes.
+              An honest guide from an instructor who has used them all. No fluff, just the sets I actually recommend to my students, with exclusive discount codes.
             </p>
             <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.3)" }}>
               Some links are affiliate links. I earn a small commission at no extra cost to you.

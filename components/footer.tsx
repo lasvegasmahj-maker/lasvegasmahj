@@ -5,7 +5,7 @@ import { useMailchimpSubscribe } from "@/lib/use-mailchimp";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
-  const { status, message, subscribe } = useMailchimpSubscribe();
+  const { status, message, subscribe, invalidEmail } = useMailchimpSubscribe();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -92,8 +92,9 @@ export default function Footer() {
         </div>
 
         <div className="footer-col">
-          <h5>Events</h5>
+          <h2>Events</h2>
           <ul>
+            <li><a href="/play-mahjong-las-vegas">Visiting Las Vegas?</a></li>
             <li><a href="/mahjong-open-play-las-vegas">Open Play Events</a></li>
             <li><a href="/mahjong-parties-las-vegas">Private Parties</a></li>
             <li><a href="/mahjong-corporate-las-vegas">Corporate Events</a></li>
@@ -102,7 +103,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-col">
-          <h5>Lessons</h5>
+          <h2>Lessons</h2>
           <ul>
             <li><a href="/mahjong-lessons-las-vegas">Las Vegas</a></li>
             <li><a href="/private-mahjong-lessons-las-vegas">Private Lessons</a></li>
@@ -114,16 +115,17 @@ export default function Footer() {
         </div>
 
         <div className="footer-col">
-          <h5>More</h5>
+          <h2>More</h2>
           <ul>
             <li><a href="/studio">The Studio</a></li>
             <li><a href="/about">About Shauna</a></li>
             <li><a href="/contact">Contact</a></li>
+            <li><a href="/privacy">Privacy</a></li>
           </ul>
         </div>
 
         <div className="footer-col">
-          <h5>Stay in the Loop</h5>
+          <h2>Stay in the Loop</h2>
           <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.5)", marginBottom: "0.75rem", lineHeight: 1.6 }}>
             Event announcements and open play reminders, straight to your inbox.
           </p>
@@ -139,28 +141,33 @@ export default function Footer() {
               placeholder="your@email.com"
               required
               aria-label="Email address"
+              aria-invalid={invalidEmail || undefined}
+              aria-describedby={status === "error" ? "footer-newsletter-message" : undefined}
               disabled={status === "loading"}
               style={{ padding: "0.6rem 0.75rem", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.05)", color: "#fff", fontSize: "0.9rem" }}
             />
             <button type="submit" className="btn-primary" disabled={status === "loading"} style={{ padding: "0.6rem", fontSize: "0.9rem" }}>
               {status === "loading" ? "Subscribing..." : "Subscribe"}
             </button>
+          </form>
+          {/* Outside the form's flex gap so the empty region adds no space; it must exist before
+              its text arrives to be announced. */}
+          <div role="status" aria-live="polite">
             {message && (
-              <p role="status" aria-live="polite" style={{ fontSize: "0.8rem", lineHeight: 1.5, margin: 0, color: status === "error" ? "#ff8a8a" : status === "success" ? "var(--green)" : "rgba(255,255,255,0.7)" }}>
+              <p id="footer-newsletter-message" style={{ fontSize: "0.8rem", lineHeight: 1.5, margin: "0.5rem 0 0", maxWidth: "260px", color: status === "error" ? "#ff8a8a" : status === "success" ? "var(--green)" : "rgba(255,255,255,0.7)" }}>
                 {message}
               </p>
             )}
-          </form>
+          </div>
         </div>
       </div>
 
       <div className="footer-seo" style={{ padding: "1.5rem 2rem 0", maxWidth: "900px", margin: "0 auto" }}>
-        <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.2)", lineHeight: 1.7, textAlign: "center" }}>
+        <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.7, textAlign: "center" }}>
           Las Vegas Mahjong offers open play events, leagues, and tournaments at
           our studio inside Lucky Hare on West Sahara Avenue, plus mahjong lessons
           and private events serving Las Vegas, Summerlin, Henderson, Green Valley,
-          Anthem, and the entire Las Vegas Valley. Certified Oh My Mahjong
-          instructor. Whether you&rsquo;re looking for beginner mahjong classes,
+          Anthem, and the entire Las Vegas Valley. Whether you&rsquo;re looking for beginner mahjong classes,
           corporate team building, birthday party activities, or just a fun
           girls&rsquo; night out in Las Vegas, we&rsquo;ve got a seat at the
           table for you. American Mahjong (NMJL) taught in a patient, fun, and

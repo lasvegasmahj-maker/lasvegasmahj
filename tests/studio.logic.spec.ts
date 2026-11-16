@@ -372,9 +372,10 @@ test.describe("internal linking is deliberate, not stuffed", () => {
   test("no page links to /studio more than a couple of times", () => {
     // About is allowed one more than the rest: the credentials card plus the single line of
     // FOX5 credit, which points at the coverage on /studio rather than repeating it.
-    const ALLOWANCE: Record<string, number> = { "app/about/page.tsx": 4 };
+    const ALLOWANCE: Record<string, number> = { "app/about/page.tsx": 3 };
     for (const file of LINKERS) {
-      const hits = read(file).match(/\/studio/g) ?? [];
+      // The page path only: "/studio-photos" imports and "/studio-*.jpg" photos are not links to it.
+      const hits = read(file).match(/\/studio(?![-\w])/g) ?? [];
       expect(hits.length, `${file} over-links /studio`).toBeLessThanOrEqual(ALLOWANCE[file] ?? 2);
     }
   });

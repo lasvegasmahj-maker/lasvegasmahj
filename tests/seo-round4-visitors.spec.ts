@@ -138,7 +138,8 @@ test.describe("round 4 head changes elsewhere", () => {
 
   test("the open play page links visitors to the new page", async ({ page }) => {
     await page.goto("/mahjong-open-play-las-vegas");
-    await page.locator(`a[href="${PATH}"]`).click();
+    // Scoped to the page body: the footer carries its own link to the visitor page.
+    await page.locator(`main a[href="${PATH}"]`).click();
     await expect(page).toHaveURL(new RegExp(`${PATH}$`));
   });
 });

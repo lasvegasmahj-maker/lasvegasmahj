@@ -23,10 +23,6 @@ const testimonials = [
     name: "Abby G.",
     text: "I never played before, didn't even own a card, and walked away with my own card and a solid working knowledge of the game. Shauna is patient and makes the process fun.",
   },
-  {
-    name: "Kristi, Northmarq",
-    text: "We worked with Shauna for a mahjong-oriented corporate event. She was easy to work with and her team was engaging with all of our guests. We got some of the best guest feedback we've ever received from this event.",
-  },
 ];
 
 export default function Testimonials() {

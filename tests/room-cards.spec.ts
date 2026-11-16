@@ -105,7 +105,7 @@ test.describe("the section around them is untouched", () => {
     const play = page.locator("#studio a.studio-room-card-play");
     const colour = (l: typeof teach) =>
       l.locator(".studio-room-cue").evaluate((n) => getComputedStyle(n).color);
-    expect(await colour(teach), "Wishbone lost its pink").toBe("rgb(233, 30, 140)");
+    expect(await colour(teach), "Wishbone lost its pink").toBe("rgb(255, 77, 166)");
     expect(await colour(play), "Sevens lost its green").toBe("rgb(57, 230, 57)");
 
     await expect(page.locator('#studio a.btn-primary[href="/studio"]')).toHaveText("See the Studio");

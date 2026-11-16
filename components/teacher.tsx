@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { SHAUNA_NEON } from "@/lib/studio-photos";
 
 export default function Teacher() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -38,10 +39,10 @@ export default function Teacher() {
           <div className="reveal">
             <div className="teacher-photo-wrapper">
               <Image
-                src="/shauna.jpg"
-                alt="Shauna, founder of Las Vegas Mahjong"
-                width={1774}
-                height={2000}
+                src={SHAUNA_NEON.src}
+                alt={SHAUNA_NEON.alt}
+                width={SHAUNA_NEON.width}
+                height={SHAUNA_NEON.height}
                 sizes="(max-width: 768px) 100vw, 600px"
                 style={{ width: "100%", height: "auto", display: "block" }}
               />
@@ -63,9 +64,8 @@ export default function Teacher() {
               set, and I&rsquo;ve been playing ever since.
             </p>
             <p>
-              Over the years I started teaching friends, and in 2025 I became
-              a certified Oh My Mahjong instructor and turned that passion into
-              Las Vegas Mahjong. My goal is simple: to share this beautiful,
+              Over the years I started teaching friends, and in 2025 I turned
+              that passion into Las Vegas Mahjong. My goal is simple: to share this beautiful,
               brain-stimulating, friendship-building game with as many people
               across the Las Vegas Valley as possible. I&rsquo;d love to be your
               mahjong teacher.

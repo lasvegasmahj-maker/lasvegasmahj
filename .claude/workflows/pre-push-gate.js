@@ -7,7 +7,10 @@ export const meta = {
   ],
 }
 
-const REPO = '/Users/shaunabruckman/Projects/lasvegasmahj'
+// The gate reviews the checkout it is run for, never a fixed folder. This used to name the main
+// checkout, so a branch built in a worktree was typechecked and reviewed against other code.
+// Pass { repo: "/absolute/path" } to name the checkout; without it the session's own checkout is used.
+let REPO = args && typeof args === 'object' && typeof args.repo === 'string' ? args.repo : ''
 
 const REVIEW_SCHEMA = {
   type: 'object',
@@ -32,6 +35,27 @@ const REVIEW_SCHEMA = {
 
 phase('Typecheck')
 
+if (!REPO) {
+  const located = await agent(
+    'Run `git rev-parse --show-toplevel` in your current working directory and return the absolute path it prints as path. Do not change directory first and do not guess. Also return the "name" field of the package.json in that folder as packageName (an empty string if there is none). Run nothing else.',
+    {
+      label: 'locate-checkout',
+      schema: {
+        type: 'object',
+        properties: { path: { type: 'string' }, packageName: { type: 'string' } },
+        required: ['path', 'packageName'],
+      },
+    }
+  )
+  // A session opened outside the site (the home folder is its own git repository) must stop
+  // here with a clear message, not fail later inside the typecheck.
+  if (!located || located.packageName !== 'lasvegasmahj-next') {
+    throw new Error(`The gate was run from ${located ? located.path : 'an unknown folder'}, which is not a lasvegasmahj checkout. Open the session in the checkout, or pass { repo: "/absolute/path" }.`)
+  }
+  REPO = located.path
+}
+log(`Gate checkout: ${REPO}`)
+
 const typecheck = await agent(
   `In ${REPO}, run \`npx tsc --noEmit\` and report the exact result. ` +
   `Return clean=true only if there are zero type errors. Put the raw error output (if any) in errors.`,
@@ -49,7 +73,9 @@ phase('Review')
 
 const diffInstr =
   `You are reviewing uncommitted and unpushed changes in ${REPO}. ` +
-  `First run \`git diff main\` and \`git status\` (also \`git diff\` for unstaged) to see exactly what changed. ` +
+  // The whole branch change: the local main ref can be stale or ahead of the branch's base, and
+  // plain git diff never shows untracked files, which are new in full.
+  `First find the base with \`git merge-base HEAD origin/main\` (use \`main\` if there is no origin/main). Run \`git diff <base>\` (the working tree against the base, so committed, staged and unstaged changes are all included) and \`git status\`, then read every untracked file listed by \`git ls-files --others --exclude-standard\`: each one is new in full and is part of the change. ` +
   `Review ONLY the changed lines and their direct blast radius, not the whole repo.`
 
 const [technical, brand] = await parallel([
@@ -72,10 +98,10 @@ const [technical, brand] = await parallel([
       `You are the BRAND and CONTENT reviewer. Check for:\n` +
       `- No em dashes or en dashes anywhere in changed copy (use commas, periods, parentheses). This is a blocker.\n` +
       `- Active voice, plain language, no emojis unless the change is explicitly about emojis.\n` +
-      `- Design system: dark navy theme (--navy #1a1b6e, --navy-dark #11124a, --pink #e91e8c, --green #39e639, --gold #ffd700), Bebas Neue logo, Montserrat headings, DM Sans body. Subpages use SubpageNav + Footer and main has paddingTop 80px.\n` +
+      `- Design system: dark navy theme (--navy #1a1b6e, --navy-dark #11124a, --pink #e91e8c for headings and heading accents, --pink-button #dd1d85 for button backgrounds only (owner, 2026-11-15), --pink-light #ff4da6 for small pink text such as section labels, review names and the Explore Lessons cue (raised for contrast in the 2026-11-13 sprint and shown in the gallery screenshots the owner approved on 2026-11-15), --green #39e639, --gold #ffd700), Bebas Neue logo, Montserrat headings, DM Sans body. Subpages use SubpageNav + Footer and main has paddingTop 80px.\n` +
       `- Mobile: any new layout works at narrow width.\n` +
       `- Mahjong fact accuracy against CLAUDE.md hard rules (152 tiles, dragons Red=Crak/Green=Bam/White=Soap, flowers interchangeable, card releases every spring, 13 tiles except East=14, set sizes as numbers not letter codes, open vs closed hands).\n` +
-      `- PRICING (blocker if wrong): group lessons show $50/person with $200 minimum on lesson pages only; private/parties/corporate say "contact for pricing" with NO dollar amount.\n` +
+      `- PRICING (blocker if wrong): group lessons show $60 per person, group size 4-8, on lesson pages only; private lessons, parties and corporate events say "contact for pricing" with NO dollar amount; Social Open Play shows $20 per session, read from lib/pricing.ts and never hard-coded (the $85 five-pack is not on sale in Bookwhen as of 2026-11-15, so no page, metadata or structured data may show it until the owner says it is on sale); the Bookwhen league season price may show on league cards on /schedule and /mahjong-leagues-las-vegas only.\n` +
       `- Affiliate links: if any of the 6 affiliate links or the LASVEGASMAHJ code changed, the new URL must be verified live (expect 200).\n` +
       `Mark a shipped mahjong factual error, a pricing violation, or an em dash in user-facing copy as severity "blocker". Return structured findings.`,
       { label: 'brand', phase: 'Review', schema: REVIEW_SCHEMA }

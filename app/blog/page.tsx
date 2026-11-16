@@ -7,7 +7,7 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: { absolute: "Mahjong Blog | Las Vegas Mahjong" },
   description:
-    "Mahjong tips and ideas for players in Las Vegas from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
+    "Mahjong tips and ideas for players in Las Vegas from Las Vegas Mahjong.",
   alternates: {
     canonical: "https://www.lasvegasmahj.com/blog",
   },
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Mahjong Blog | Las Vegas Mahjong",
     description:
-      "Mahjong tips and ideas for players in Las Vegas from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
+      "Mahjong tips and ideas for players in Las Vegas from Las Vegas Mahjong.",
     url: "https://www.lasvegasmahj.com/blog",
     type: "website",
     siteName: "Las Vegas Mahjong",
@@ -47,7 +47,7 @@ export default function BlogPage() {
       )}
       <SubpageNav />
 
-      <main>
+      <main id="main-content">
         <section
           style={{
             background: "var(--navy-dark)",

@@ -9,6 +9,8 @@
   --navy-light: #252699;
   --pink: #e91e8c;
   --pink-light: #ff4da6;
+  /* White text needs 4.5:1; on --pink it reaches only 4.17:1. Button backgrounds only (owner, 2026-11-15). */
+  --pink-button: #dd1d85;
   --green: #39e639;
   --green-light: #66ff66;
   --white: #ffffff;
@@ -48,6 +50,41 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+/* Zero specificity on purpose: anything with its own focus style or corner radius keeps it. */
+:where(a:focus-visible) {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+:where(button:focus-visible) {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.6rem;
+  left: 0.6rem;
+  z-index: 1002;
+  padding: 0.75rem 1.1rem;
+  background: var(--navy-dark);
+  color: var(--white);
+  font-family: var(--font-nav);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 3px;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus { transform: none; }
+
+/* The skip link focuses <main> so the next Tab starts inside it; the region itself is not a control. */
+main[tabindex="-1"]:focus { outline: none; }
 
 img {
   max-width: 100%;
@@ -114,7 +151,7 @@ nav.scrolled {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: var(--pink);
+  background: var(--pink-button);
   color: white !important;
   -webkit-text-fill-color: white;
   border: none;
@@ -125,15 +162,18 @@ nav.scrolled {
   transition: background 0.2s, transform 0.1s;
 }
 
-.nav-cta:hover { background: var(--pink-light); transform: translateY(-1px); }
+/* Hover keeps the button pink: --pink-light under white text is 3.06:1. */
+.nav-cta:hover { background: var(--pink-button); transform: translateY(-1px); }
 
-/* Mobile nav toggle */
+/* Mobile nav toggle. 10px padding makes a 44x46 tap area; the -2px margin keeps the bar's
+   height and the icon's position exactly as they were with 8px padding. */
 .nav-toggle {
   display: none;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 10px;
+  margin: -2px;
   z-index: 1001;
 }
 
@@ -166,7 +206,9 @@ nav.scrolled {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 6rem 2rem 4rem;
+  /* The bottom padding keeps the buttons clear of the scroll hint (2rem up, about 60px tall):
+     in short windows the content fills the hero and used to slide under it. */
+  padding: 6rem 2rem 6.5rem;
   position: relative;
   overflow: hidden;
 }
@@ -244,7 +286,7 @@ nav.scrolled {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: var(--pink);
+  background: var(--pink-button);
   color: white;
   border: none;
   padding: 1rem 2.2rem;
@@ -317,6 +359,7 @@ nav.scrolled {
   text-transform: uppercase;
   animation: pulse 2s infinite;
   z-index: 2;
+  pointer-events: none;
 }
 
 .scroll-hint-line {
@@ -356,7 +399,8 @@ section {
   font-weight: 700;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--pink);
+  /* --pink is 4.16:1 on navy-dark and 3.53:1 on navy at this size; --pink-light holds 4.5:1 on both. */
+  color: var(--pink-light);
   margin-bottom: 0.8rem;
 }
 
@@ -454,7 +498,7 @@ section {
   text-transform: uppercase;
 }
 
-.studio-room-card-teach .studio-room-cue { color: var(--pink); }
+.studio-room-card-teach .studio-room-cue { color: var(--pink-light); }
 .studio-room-card-play .studio-room-cue { color: var(--green); }
 
 .studio-room-card:hover .studio-room-cue { text-decoration: underline; }
@@ -587,7 +631,7 @@ section {
 
 .press-card-date {
   font-size: 0.82rem;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.55);
 }
 
 .press-card-cta {
@@ -612,7 +656,7 @@ section {
    the segment it links to. */
 .press-credit {
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.55);
   text-align: center;
   margin: 1.5rem auto 0;
   max-width: 620px;
@@ -849,7 +893,8 @@ section {
   font-family: var(--font-heading);
   font-size: 1.2rem;
   color: var(--green);
-  opacity: 0.4;
+  /* The class names are text, not decoration: 0.77 is the lowest opacity that holds 4.5:1 over the tile texture. */
+  opacity: 0.8;
   min-width: 5rem;
 }
 
@@ -863,7 +908,7 @@ section {
 
 .tier p {
   font-size: 1rem;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.6);
   line-height: 1.5;
 }
 
@@ -920,6 +965,31 @@ section {
   gap: 1.25rem;
 }
 
+/* /about "Why Work With Me": the same columns as repeat(auto-fit, minmax(240px, 1fr)) with a
+   1.5rem gap, but an unfilled last row is centred instead of leaving an empty slot. Columns
+   switch on the grid's own width where auto-fit gains a column (two cards plus one gap, three
+   plus two), not the viewport's, so page padding and scrollbars cannot move the switch. The
+   gap is in rem, so a larger browser text size moves the switch exactly as it moved the grid's.
+   min-width: 0 keeps a long word from widening a card past its column, as the grid did. */
+.about-experience-grid {
+  container-type: inline-size;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.about-experience-grid > * { flex: 0 0 100%; min-width: 0; }
+
+@container (min-width: calc(480px + 1.5rem)) {
+  .about-experience-grid > * { flex-basis: calc((100% - 1.5rem) / 2); }
+}
+
+@container (min-width: calc(720px + 3rem)) {
+  .about-experience-grid > * { flex-basis: calc((100% - 3rem) / 3); }
+}
+
 .testimonial {
   background: rgba(255,255,255,0.03);
   border-left: 3px solid var(--pink);
@@ -938,7 +1008,7 @@ section {
 .testimonial-author {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--pink);
+  color: var(--pink-light);
   letter-spacing: 0.06em;
 }
 
@@ -1026,6 +1096,9 @@ section {
   color: rgba(0,0,0,0.4);
 }
 
+/* Shop cards set a near-white header inline; the default .event-meta white would be 1:1 on it. */
+.shop-grid .event-card-header .event-meta { color: rgba(0,0,0,0.6); }
+
 .shop-card-logo {
   width: 100%;
   height: auto;
@@ -1075,7 +1148,8 @@ section {
   transition: border-color 0.2s;
 }
 
-.newsletter-form input:focus { border-color: var(--green); }
+.newsletter-form input:focus { border-color: var(--green); box-shadow: 0 0 0 1px var(--green); }
+.newsletter-form input[aria-invalid="true"] { border-color: #ff8a8a; }
 .newsletter-form input::placeholder { color: rgba(255,255,255,0.35); }
 
 /* ── FOOTER ── */
@@ -1107,7 +1181,7 @@ footer {
 
 .footer-brand p {
   font-size: 1rem;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.5);
   line-height: 1.7;
   margin-bottom: 1.2rem;
 }
@@ -1135,7 +1209,7 @@ footer {
 
 .social-link:hover { border-color: var(--pink); color: var(--pink); }
 
-.footer-col h5 {
+.footer-col h2 {
   font-family: var(--font-nav);
   font-size: 0.72rem;
   font-weight: 700;
@@ -1154,7 +1228,8 @@ footer {
 
 .footer-col ul li a {
   font-size: 1rem;
-  color: rgba(255,255,255,0.45);
+  /* 0.49 is the lowest alpha that holds 4.5:1 contrast over the lightest parts of the tile texture. */
+  color: rgba(255,255,255,0.49);
   text-decoration: none;
   transition: color 0.2s;
 }
@@ -1170,7 +1245,7 @@ footer {
   padding-top: 1.5rem;
   border-top: 1px solid rgba(255,255,255,0.06);
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.5);
 }
 
 /* ── FAQ ── */
@@ -1195,20 +1270,27 @@ footer {
   background: rgba(255,255,255,0.02);
 }
 
+.faq-heading { margin: 0; }
+
 .faq-question {
   display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   padding: 1.4rem 0;
   gap: 1rem;
+  background: none;
+  border: 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
-.faq-question h3 {
+.faq-question-text {
   font-family: var(--font-nav);
   font-size: 1.05rem;
   font-weight: 600;
   color: var(--white);
-  margin: 0;
 }
 
 .faq-toggle {
@@ -1382,7 +1464,7 @@ footer {
 
 .instagram-card p {
   font-size: 0.85rem;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.5);
   margin: 0;
 }
 
@@ -1521,12 +1603,25 @@ footer {
   font-size: 1.05rem;
   outline: none;
   transition: border-color 0.2s;
+  /* A failed submit scrolls the first invalid field to the top edge, under the fixed nav;
+     this keeps the field and its label in view below it. */
+  scroll-margin-top: 6rem;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
   border-color: var(--green);
+  box-shadow: 0 0 0 1px var(--green);
+}
+
+.form-group [aria-invalid="true"] { border-color: #ff8a8a; }
+
+.form-error {
+  color: #ff8a8a;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-top: 0.4rem;
 }
 
 .form-group textarea {
@@ -1575,6 +1670,9 @@ footer {
   font-size: 1.05rem;
   color: rgba(255,255,255,0.6);
 }
+
+/* Focus lands on the heading by script so the result is read out; it is not a control. */
+.form-success [tabindex="-1"]:focus { outline: none; }
 
 /* ── ASK A MAHJONG RULE ── */
 .ask-hero {
@@ -1833,8 +1931,11 @@ footer {
 
 /* ── RESPONSIVE ── */
 /* Eight links plus the CTA need one row: tighten first, then hand tablets the menu button
-   rather than letting the links wrap into a second or third line. */
-@media (max-width: 1439px) {
+   rather than letting the links wrap into a second or third line. Each nav query has an em
+   twin: the bar is sized in rem, so a visitor who raises the browser's text size gets the
+   menu button at a proportionally wider window instead of links running off the screen.
+   At the default text size the two halves are the same width. */
+@media (max-width: 1439px), (max-width: 89.9375em) {
   nav { padding: 1rem 1.5rem; }
   .nav-links { gap: 1rem; }
   .nav-links a { font-size: 0.72rem; letter-spacing: 0.06em; }
@@ -1844,7 +1945,7 @@ footer {
    tuned to this one wrapped the bar onto a second row on CI, so the cutoff carries real
    headroom rather than sitting on the measured minimum. Tests read this number out of this
    file, so moving it moves them too. NAV_BREAKPOINT */
-@media (max-width: 1279px) {
+@media (max-width: 1279px), (max-width: 79.9375em) {
   .nav-links { display: none; }
   .nav-toggle { display: block; }
 
@@ -1891,7 +1992,7 @@ footer {
   section { padding: 3.5rem 1.2rem; }
 
   /* Hero */
-  .hero { padding: 5rem 1.2rem 3rem; min-height: 90vh; }
+  .hero { padding: 5rem 1.2rem 6.5rem; min-height: 90vh; }
   .hero-title .line1,
   .hero-title .line2 { font-size: clamp(3rem, 18vw, 6rem); }
   .hero-sub { font-size: 0.95rem; }
@@ -1943,7 +2044,7 @@ footer {
   .instagram-grid { grid-template-columns: 1fr; }
 
   /* FAQ */
-  .faq-question h3 { font-size: 0.95rem; }
+  .faq-question-text { font-size: 0.95rem; }
 
   /* Ask a Mahjong Rule */
   .ask-hero { padding: 2.5rem 1.2rem 1.2rem; }
@@ -1994,4 +2095,12 @@ footer {
   .form-row { grid-template-columns: 1fr; }
   .modal-content { padding: 1.5rem; }
   .btn-primary, .btn-outline { min-height: 44px; }
+}
+
+/* Last in the file so it wins over the animation rules above at equal specificity. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .hero-eyebrow, .hero-title, .hero-sub, .hero-btns { opacity: 1; animation: none; }
+  .scroll-hint { animation: none; }
 }

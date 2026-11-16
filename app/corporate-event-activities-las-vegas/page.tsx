@@ -61,7 +61,7 @@ const occasions = [
   },
   {
     title: "Sales meetings",
-    desc: "Break up a day of numbers with a game that rewards reading the table and adapting fast. Add a friendly tournament if the team likes to compete.",
+    desc: "Break up a day of numbers with a game that rewards reading the table and adapting fast.",
     link: { href: "/las-vegas-meeting-planner-activities", text: "Fit it into a meeting agenda" },
   },
   {
@@ -79,7 +79,7 @@ const occasions = [
   },
   {
     title: "Charity and fundraiser events",
-    desc: "A mahjong fundraiser, tournament or awareness event built around your organization's goals.",
+    desc: "A mahjong fundraiser or awareness event built around your organization's goals.",
   },
   {
     title: "Visiting teams and reward trips",
@@ -109,11 +109,11 @@ const faqs = [
   },
   {
     q: "Can the activity be competitive?",
-    a: "It can. Some groups keep it relaxed and social; others finish with a friendly tournament. Tell us which your group prefers and we will set it up that way.",
+    a: "It can. Some groups keep it relaxed and social; others like a little competition. Tell us which your group prefers and we will plan the session around it.",
   },
   {
     q: "Where can a corporate mahjong activity take place?",
-    a: "We bring it to you: a hotel meeting room or ballroom, a conference room, your office, a corporate venue, a hospitality suite, a private room or an offsite location. The venue provides the space, tables and chairs; we bring the game.",
+    a: "We bring it to you: a hotel meeting room or ballroom, a conference room, your office, a corporate venue, a hospitality suite, a private room or an offsite location. We confirm the venue, tables, chairs and setup arrangements when planning your event.",
   },
   {
     q: "Can mahjong be one part of a larger event?",
@@ -121,7 +121,7 @@ const faqs = [
   },
   {
     q: "How is a corporate event activity priced?",
-    a: "Each event is quoted on its own: group size, length and location set the price. Contact us with your date, headcount and venue.",
+    a: "Each event is quoted on its own: group size and length set the price. Contact us with your date, headcount and venue.",
   },
 ];
 
@@ -139,7 +139,7 @@ export default function CorporateEventActivitiesLasVegas() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
             <p className="section-label">Company Events &middot; Client Nights &middot; Appreciation</p>
@@ -189,7 +189,7 @@ export default function CorporateEventActivitiesLasVegas() {
               ))}
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "2.5rem", maxWidth: "720px" }}>
-              Every event includes the 152-tile American Mahjong sets, racks and current NMJL cards, instruction from zero and facilitation from start to finish. The event space, tables and chairs, and any food or drink come from you or your venue. For timing and what is included, see how we run{" "}
+              Every event includes the 152-tile American Mahjong sets, racks and other game materials, instruction from zero and facilitation from start to finish. NMJL card arrangements are confirmed in your quote. We confirm the venue, tables, chairs and setup arrangements when planning your event. Any food or drink comes from you or your venue. For timing and what is included, see how we run{" "}
               <a href="/mahjong-corporate-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>corporate mahjong events</a>.
             </p>
           </div>

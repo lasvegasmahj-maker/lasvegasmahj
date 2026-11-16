@@ -175,7 +175,7 @@ export default function Shop() {
           <p
             style={{
               fontSize: "0.8rem",
-              color: "rgba(255,255,255,0.35)",
+              color: "rgba(255,255,255,0.55)",
               maxWidth: "580px",
               lineHeight: 1.6,
               marginBottom: "1rem",
@@ -202,7 +202,7 @@ export default function Shop() {
                 fontWeight: 700,
                 letterSpacing: "0.15em",
                 textTransform: "uppercase" as const,
-                color: "rgba(255,255,255,0.5)",
+                color: "rgba(255,255,255,0.55)",
               }}
             >
               Use code &middot;{" "}

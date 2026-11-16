@@ -166,7 +166,10 @@ test.describe("/private-mahjong-lessons-las-vegas", () => {
     expect(html).toContain("Private Mahjong Lessons at Our Las Vegas Studio");
     expect(html).toContain('<link rel="canonical" href="https://www.lasvegasmahj.com/private-mahjong-lessons-las-vegas"/>');
     expect(html).toContain("Private lessons are taught at our studio inside Lucky Hare");
-    expect(html).toContain("In home sessions are available by request");
+    // Reworded 2026-11-13 to "home or venue", still by request and still studio-first.
+    expect(html).toContain("Can you teach at my home or venue instead?");
+    expect(html).toContain("Yes, by request.");
+    expect(html).toContain("The studio inside Lucky Hare is where most private lessons happen");
     expect(withoutScripts(html)).not.toMatch(/\$\d/);
   });
 

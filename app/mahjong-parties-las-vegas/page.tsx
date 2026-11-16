@@ -7,19 +7,19 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "Mahjong Parties Las Vegas",
   description:
-    "Host a mahjong party in Las Vegas for birthdays, girls nights, bridal showers and holiday gatherings. Certified instructor, all equipment provided.",
+    "Host a mahjong party in Las Vegas for birthdays, girls nights, bridal showers and holiday gatherings. Fully hosted, mahjong equipment and instruction provided.",
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas" },
   openGraph: {
     ...ogBase,
     title: "Mahjong Party Las Vegas | Birthdays, Showers & Celebrations",
-    description: "Skip the same old party. Book a private mahjong experience in Las Vegas for birthdays, girls nights and group celebrations. Certified instructor, custom quote for your group.",
+    description: "Skip the same old party. Book a private mahjong experience in Las Vegas for birthdays, girls nights and group celebrations. Fully hosted, custom quote for your group.",
     url: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas",
     images: [OG_HERO],
   },
   twitter: {
     card: "summary_large_image",
     title: "Mahjong Party Las Vegas | Birthdays, Showers & Celebrations",
-    description: "Book a private mahjong experience in Las Vegas. Birthday parties, girls nights, showers and group celebrations. Certified instructor, custom quote for your group.",
+    description: "Book a private mahjong experience in Las Vegas. Birthday parties, girls nights, showers and group celebrations. Fully hosted, custom quote for your group.",
     images: [OG_HERO],
   },
 };
@@ -29,6 +29,8 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": "https://www.lasvegasmahj.com/mahjong-parties-las-vegas#service",
+  url: "https://www.lasvegasmahj.com/mahjong-parties-las-vegas",
   name: "Private Mahjong Events Las Vegas",
   description: "Fully hosted private mahjong parties and events in Las Vegas for birthdays, corporate team building, girls nights, charity events, and more.",
   provider: { "@type": "LocalBusiness", "@id": "https://www.lasvegasmahj.com/#business", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
@@ -47,10 +49,10 @@ const eventTypes = [
 ];
 
 const faqs = [
-  { q: "How much does a private mahjong event cost in Las Vegas?", a: "Every event is custom. Pricing depends on what you need -- group size, what we're bringing, and what we're doing. Reach out and we'll put together a quote that works for you." },
+  { q: "How much does a private mahjong event cost in Las Vegas?", a: "Every event is custom. Pricing depends on what you need: group size, what we're bringing, and what we're doing. Reach out and we'll put together a quote that works for you." },
   { q: "How big can the group be?", a: "Group sizes vary widely, from intimate gatherings of 4 to large corporate events. Tell us your headcount and we'll bring additional support to match." },
   { q: "Do guests need to know how to play?", a: "Not at all. We teach everyone from scratch. Most groups are complete beginners, and that's half the fun." },
-  { q: "Where do you host private events?", a: "We can come to your home, a rented venue, a restaurant, a hotel suite, or your office. We bring all the equipment: tiles, racks, cards, everything." },
+  { q: "Where do you host private events?", a: "We can come to your home, a rented venue, a restaurant, a hotel suite, or your office. We bring the mahjong equipment and teach the game. NMJL card arrangements are confirmed in your quote." },
   { q: "How far in advance should I book?", a: "We recommend booking at least 2 weeks in advance, especially for weekends. Popular dates fill up fast, so reach out early and we'll make it work." },
 ];
 
@@ -62,7 +64,7 @@ export default function MahjongPartiesLasVegas() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
@@ -75,7 +77,7 @@ export default function MahjongPartiesLasVegas() {
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/contact?source=parties" className="btn-primary">Plan Your Event</a>
-              <a href="/mahjong-lessons-las-vegas" className="btn-outline">View Lessons Instead</a>
+              <a href="/private-mahjong-lessons-las-vegas" className="btn-outline">View Private Lessons</a>
             </div>
           </div>
         </section>
@@ -104,10 +106,10 @@ export default function MahjongPartiesLasVegas() {
               <p className="section-label">Birthday Parties</p>
               <h2 className="section-title" style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)" }}>Make Her Feel Like the <span className="accent-pink">Queen of the Table</span></h2>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
-                Birthday mahjong parties come with special birthday mats and a personalized experience designed to make the birthday girl feel celebrated from the first tile to the last. It&rsquo;s not just a game night -- it&rsquo;s a moment she&rsquo;ll actually remember.
+                Birthday mahjong parties come with special birthday mats and a personalized experience designed to make the birthday girl feel celebrated from the first tile to the last. It&rsquo;s not just a game night; it&rsquo;s a moment she&rsquo;ll actually remember.
               </p>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2rem" }}>
-                We come to your home, a restaurant private room, or any venue you choose. You handle the cake. We handle everything else.
+                We come to your home, a restaurant private room, or any venue you choose. You handle the cake. We bring the mahjong equipment and teach the game.
               </p>
               <a href="/contact?source=parties" className="btn-primary">Book a Birthday Party</a>
             </div>
@@ -131,8 +133,8 @@ export default function MahjongPartiesLasVegas() {
             <h2 className="section-title">How It <span className="accent-pink">Works</span></h2>
             {[
               { num: "01", title: "Reach Out", desc: "Tell us about your event: date, group size, location, and what kind of experience you're looking for. We'll follow up with ideas and a quote." },
-              { num: "02", title: "We Plan Together", desc: "We customize everything to your group: timing, format, venue recommendations, and any special touches you want." },
-              { num: "03", title: "We Show Up", desc: "We arrive with all the equipment: tiles, racks, cards, everything. You don't need to provide a thing." },
+              { num: "02", title: "We Plan Together", desc: "We customize everything to your group: timing, format, venue recommendations, and any special touches you want. We confirm the venue, tables, chairs and setup arrangements when planning your event." },
+              { num: "03", title: "We Show Up", desc: "We arrive with the mahjong equipment. NMJL card arrangements are confirmed in your quote." },
               { num: "04", title: "Everyone Plays", desc: "We teach your group from scratch in a fun, low-pressure way. Everyone leaves knowing how to play, and wanting to play again." },
             ].map(step => (
               <div key={step.num} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
@@ -154,7 +156,8 @@ export default function MahjongPartiesLasVegas() {
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.7, marginBottom: "2rem" }}>
               Every event is different. Pricing depends on your group size, what we&rsquo;re bringing, and what you need. Reach out and we&rsquo;ll put together something that works for you.
             </p>
-            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.9rem", marginBottom: "2rem" }}>All equipment included · We come to you · No experience needed</p>
+            {/* Non-breaking spaces: the line wraps only after a dot, never leaving one word on its own line. */}
+            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", marginBottom: "2rem" }}>Mahjong equipment and instruction provided&nbsp;· We&nbsp;come&nbsp;to&nbsp;you&nbsp;· No&nbsp;experience&nbsp;needed</p>
             <a href="/contact?source=parties" className="btn-primary">Get a Quote</a>
           </div>
         </section>
@@ -168,7 +171,7 @@ export default function MahjongPartiesLasVegas() {
                 <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, fontStyle: "italic", marginBottom: "1rem" }}>
                   &ldquo;Shauna came to my house for a birthday Mahj session. She came fully prepared with a birthday-themed mat and her beautiful set. She was an excellent teacher and truly passionate about teaching mahjong. We are having her come again today, it was such a blast!&rdquo;
                 </p>
-                <cite style={{ fontFamily: "var(--font-nav)", fontSize: "0.9rem", color: "var(--pink)", fontStyle: "normal", fontWeight: 700 }}>Amy G.</cite>
+                <cite style={{ fontFamily: "var(--font-nav)", fontSize: "0.9rem", color: "var(--pink-light)", fontStyle: "normal", fontWeight: 700 }}>Amy G.</cite>
               </blockquote>
             </div>
             <Image

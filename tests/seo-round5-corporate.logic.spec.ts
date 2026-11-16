@@ -91,7 +91,8 @@ test.describe("the four new corporate and group pages", () => {
       // A CSS value in an inline style, such as width: "100%", is layout, not a statistic.
       expect(code.replace(/style=\{\{[^}]*\}\}/g, "")).not.toMatch(/\d+\s?%/);
       expect(code).not.toMatch(/\b(up to|as many as|over) \d/i);
-      expect(code).not.toMatch(/<blockquote|testimonial|Northmarq/i);
+      // Project-wide wording guards live in seo-round11-followups.logic.spec.ts.
+      expect(code).not.toMatch(/<blockquote|testimonial/i);
       expect(code).not.toMatch(/guarantee|increase[sd]? (booth )?traffic|leads? per|\bROI\b/i);
       expect(code).not.toMatch(/telephone|tel:|openingHours/);
     });

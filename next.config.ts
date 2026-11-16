@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
+    // The default list jumps from 1200 to 1920, so 414-430px 3x phones and 1280-1440px
+    // laptops downloaded 1920px files. 1280 and 1440 close that gap.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1280, 1440, 1920, 2048, 3840],
   },
   async redirects() {
     return [

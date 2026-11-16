@@ -36,7 +36,7 @@ const bookOptions = [
   {
     title: "Open Play",
     accent: "accent-green" as const,
-    body: "Come play in a friendly, no-pressure room. Social Open Play is for players who already know the game, from Mahj 101 graduates to regulars building their game. Two hours at the table with help when you want it.",
+    body: "Come play in a friendly, no-pressure room. Social Open Play is for players who already know American Mahjong and are comfortable playing independently. Two hours at the table with help when you want it.",
     link: { lead: "Visiting Las Vegas?", text: "Play mahjong while you are in town", href: "/play-mahjong-las-vegas" },
   },
   {
@@ -50,6 +50,8 @@ const bookOptions = [
     title: "Private & Parties",
     accent: "accent-pink" as const,
     body: "Private lessons, birthday celebrations, and group parties, hosted for your people. Available upon request, contact for pricing and we will build the event around your group.",
+    href: "/contact?source=schedule",
+    cta: "Plan Something Private",
   },
 ];
 
@@ -89,7 +91,7 @@ export default async function Schedule() {
       )}
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
@@ -133,6 +135,11 @@ export default async function Schedule() {
                     <div style={{ display: "grid", gap: "1rem" }}>
                       {list.map((e) => {
                         const c = toneColor(e.tone);
+                        // A screen reader's list of links read twenty identical "Book" links, so each
+                        // one also names the session it books, as the leagues page already does.
+                        const when = e.course
+                          ? `${e.course.dayTime}, ${e.course.span}`
+                          : `${e.day.charAt(0)}${e.day.slice(1).toLowerCase()}, ${e.monthLabel.split(" ")[0]} ${e.num}, ${e.time}`;
                         return (
                           <div key={e.uid} className="sched-card" style={{ display: "flex", alignItems: "flex-start", gap: "1rem", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "1rem 1.25rem" }}>
                             <div className="sched-date" style={{ flex: "none", width: "58px", textAlign: "center", borderRight: "1px solid rgba(255,255,255,0.12)", paddingRight: "1rem" }}>
@@ -164,7 +171,7 @@ export default async function Schedule() {
                             </div>
                             )}
                             <div className="sched-book" style={{ flex: "none", textAlign: "right" }}>
-                              <a href={e.url} target="_blank" rel="noopener" className="btn-primary" style={{ padding: "0.5rem 1.1rem", fontSize: "0.85rem" }}>{e.bookLabel}</a>
+                              <a href={e.url} target="_blank" rel="noopener" className="btn-primary" aria-label={`${e.bookLabel}: ${e.title}, ${when} (opens in a new tab)`} style={{ padding: "0.5rem 1.1rem", fontSize: "0.85rem" }}>{e.bookLabel}</a>
                             </div>
                           </div>
                         );
@@ -175,7 +182,7 @@ export default async function Schedule() {
               </div>
             )}
             <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", textAlign: "center", marginTop: "2rem" }}>
-              Times shown in Pacific. Secure your seat with card payment when you book. Spots are limited, with an automatic waitlist when a session fills.
+              Times shown in Pacific. Secure your seat with card payment when you book online. Spots are limited, with an automatic waitlist when a session fills. We accept card, cash, Venmo and Zelle; online checkout takes card only.
             </p>
           </div>
         </section>

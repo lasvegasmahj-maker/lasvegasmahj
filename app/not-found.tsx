@@ -22,7 +22,7 @@ export default function NotFound() {
     <>
       <SubpageNav />
 
-      <main>
+      <main id="main-content">
         <section
           style={{
             background: "var(--navy-dark)",

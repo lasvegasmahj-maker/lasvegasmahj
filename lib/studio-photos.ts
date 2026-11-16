@@ -62,8 +62,8 @@ export const SHAUNA_NEON: StudioPhoto = {
   source: "Lessons Room shauina pointing to sign.JPG",
   shows: "Shauna pointing to the Let's Mahjong neon sign on the pink tile wall",
   alt: "Shauna inside the Las Vegas Mahjong Studio, pointing to a neon sign reading Let's Mahjong on the pink tile-patterned wall",
-  width: 1050,
-  height: 1400,
+  width: 1500,
+  height: 2000,
 };
 
 export const LESSON_TABLE: StudioPhoto = {

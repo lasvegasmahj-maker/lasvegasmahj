@@ -6,12 +6,13 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: "How to Learn American Mahjong",
   description:
-    "New to mahjong? This beginner's guide covers the tiles, the NMJL card, and how to play your first hand. Written by a certified Oh My Mahjong instructor.",
+    "New to mahjong? This beginner's guide covers the tiles, the NMJL card, how to play your first hand, and where to take lessons in Las Vegas.",
   alternates: { canonical: "https://www.lasvegasmahj.com/learn-mahjong" },
   openGraph: {
     ...ogBase,
+    type: "article",
     title: "How to Learn American Mahjong | Complete Beginner's Guide",
-    description: "Everything you need to start playing American Mahjong: the tiles, the card, your first hand, and where to find lessons near you. Written by a certified instructor.",
+    description: "Everything you need to start playing American Mahjong: the tiles, the card, your first hand, and where to find lessons near you.",
     url: "https://www.lasvegasmahj.com/learn-mahjong",
     images: [OG_HERO],
   },
@@ -43,11 +44,11 @@ export default function LearnMahjong() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Learn Mahjong", item: "https://www.lasvegasmahj.com/learn-mahjong" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
-            <p className="section-label">Written by a Certified Oh My Mahjong Instructor</p>
+            <p className="section-label">Start Here</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.2rem, 7vw, 4.5rem)", marginBottom: "1.5rem" }}>
               How to Learn <span className="accent-green">American Mahjong</span>
             </h1>
@@ -86,7 +87,7 @@ export default function LearnMahjong() {
               The NMJL card is updated every year and lists all the valid winning hands for that year. Learning to read the card, and choosing which hands to build toward, is the core skill of American Mahjong.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2.5rem" }}>
-              The card is organized into categories (Like Numbers, Quints, Consecutive Run, etc.) and shows each hand as a row of tiles; the card&rsquo;s key defines a Pair as 2 like tiles, a Pung as 3, a Kong as 4, a Quint as 5, and a Sextet as 6. It looks intimidating at first, but within one lesson, most students are reading it confidently.
+              The card is organized into categories (Like Numbers, Quints, Consecutive Run, etc.) and shows each hand as a row of tiles; the card&rsquo;s key defines a Pair as 2 like tiles, a Pung as 3, a Kong as 4, a Quint as 5, and a Sextet as 6. It looks intimidating at first, but it gets easier with practice.
             </p>
 
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>How a Game Works</h2>
@@ -121,7 +122,7 @@ export default function LearnMahjong() {
 
             {/* AFFILIATE SECTION */}
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "0.5rem" }}>Recommended Mahjong Sets & Accessories</h2>
-            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", marginBottom: "1.5rem" }}>As a certified instructor and affiliate partner, I earn a small commission on purchases at no extra cost to you.</p>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", marginBottom: "1.5rem" }}>As an affiliate partner, I earn a small commission on purchases at no extra cost to you.</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.2rem", marginBottom: "2.5rem" }}>
               {affiliates.map(a => (
                 <a key={a.name} href={a.url} target="_blank" rel="sponsored noopener noreferrer" style={{ display: "block", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "1.5rem", textDecoration: "none", transition: "border-color 0.2s" }}>
@@ -140,7 +141,7 @@ export default function LearnMahjong() {
 
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--pink)", marginBottom: "1rem" }}>Learn Mahjong in Las Vegas</h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "2rem" }}>
-              If you&rsquo;re in the Las Vegas Valley, I&rsquo;d love to be your instructor. I offer beginner lessons (MAHJ101), intermediate lessons (MAHJ102), private lessons, and Social Open Play at our studio in Las Vegas. Most students are playing confidently after their first session.
+              If you&rsquo;re in the Las Vegas Valley, I&rsquo;d love to be your instructor. I offer beginner lessons (MAHJ101), intermediate lessons (MAHJ102), advanced lessons (MAHJ103), private lessons, and Social Open Play at our studio in Las Vegas. Start with MAHJ101 and build your skills through practice and our follow-on classes.
             </p>
             <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
               <a href="/mahjong-lessons-las-vegas" className="btn-primary">Book a Lesson in Las Vegas</a>

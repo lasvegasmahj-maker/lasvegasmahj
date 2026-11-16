@@ -75,7 +75,7 @@ test("the CTA parser splits a source-tagged href into path and query", () => {
 // `count` is how many /contact CTAs the page must have, so a page that loses one fails even
 // when its remaining CTA still carries a listed label.
 const INQUIRY_PAGES: Record<string, { labels: string[]; count: number }> = {
-  "app/mahjong-corporate-las-vegas/page.tsx": { labels: ["Request a Quote", "Request a Corporate Quote"], count: 2 },
+  "app/mahjong-corporate-las-vegas/page.tsx": { labels: ["Request a Quote", "Request a Corporate Quote"], count: 3 },
   "app/corporate-team-building-las-vegas/page.tsx": { labels: ["Request a Quote"], count: 2 },
   "app/conference-activities-las-vegas/page.tsx": { labels: ["Request a Quote"], count: 2 },
   "app/convention-activities-las-vegas/page.tsx": { labels: ["Request a Quote", "Request a Convention Quote"], count: 2 },
@@ -103,11 +103,11 @@ test.describe("inquiry CTAs reach /contact", () => {
     });
   }
 
-  test("the inquiry pages carry exactly twelve /contact CTAs between them", () => {
+  test("the inquiry pages carry exactly thirteen /contact CTAs between them", () => {
     const total = Object.keys(INQUIRY_PAGES)
       .flatMap((f) => ctas(f))
       .filter((c) => c.path === "/contact").length;
-    expect(total).toBe(12);
+    expect(total).toBe(13);
   });
 });
 

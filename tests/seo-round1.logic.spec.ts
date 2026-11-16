@@ -150,10 +150,11 @@ test.describe("private lessons: studio first, contact for pricing", () => {
     expect(priv).not.toMatch(/MAHJ10[123]/);
   });
 
-  test("the broad page keeps its group pricing and hands off with one link", () => {
+  test("the broad page keeps its group pricing and hands off with two links", () => {
     const broad = fs.readFileSync(path.join(ROOT, "app/mahjong-lessons-las-vegas/page.tsx"), "utf8");
     expect(broad).toContain("$60");
-    expect((broad.match(/\/private-mahjong-lessons-las-vegas/g) ?? []).length).toBe(1);
+    // The instructor paragraph, and since 2026-11-13 the private card in the lesson chooser.
+    expect((broad.match(/\/private-mahjong-lessons-las-vegas/g) ?? []).length).toBe(2);
     expect(broad).not.toMatch(/travel fee/i);
   });
 });

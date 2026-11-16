@@ -170,15 +170,17 @@ test.describe("/studio", () => {
 });
 
 test.describe("/studio structured data", () => {
-  test("the Place carries its two verified room photographs", async ({ page }) => {
+  test("the Place carries its two verified room photographs", async ({ page, request }) => {
     await page.goto("/studio");
     const nodes = await parsedLd(page);
     const place = nodes.find((n) => n["@id"] === "https://www.lasvegasmahj.com/#studio")!;
     const photos = (place.photo as string[]) ?? [];
     expect(photos).toHaveLength(2);
     for (const url of photos) {
+      expect(url.startsWith("https://www.lasvegasmahj.com/"), url).toBe(true);
       expect(STUDIO_PHOTOS.some((p) => url.endsWith(p.src)), url).toBe(true);
-      expect((await (await fetch(url.replace("https://www.lasvegasmahj.com", "http://localhost:3000"))).status)).toBe(200);
+      // Fetched from the server this run tests (the config's baseURL), never a fixed local port.
+      expect((await request.get(new URL(url).pathname)).status(), url).toBe(200);
     }
   });
 
