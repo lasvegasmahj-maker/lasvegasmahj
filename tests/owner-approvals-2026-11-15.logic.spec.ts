@@ -213,7 +213,15 @@ test("confirmations after a sent form speak as the team", () => {
     .flatMap((rel) => code(rel).split("\n"))
     .filter((line) => /success(Title|Body)\b.*"/.test(line));
   expect(confirmations).toHaveLength(4);
-  for (const line of confirmations) expect(line).not.toMatch(/\bI(?:\\u2019|')(?:ll|m|ve|d)\b|\bmy\b|\bme\b/);
+  for (const line of confirmations) expect(line).not.toMatch(/\bI(?:\\u2019|’|')(?:ll|m|ve|d)\b|\bmy\b|\bme\b/);
+});
+
+test("the homepage pop-up's intro line speaks as the team", () => {
+  // Approved by the owner on 2026-11-16, after the confirmations. The intro stays on screen
+  // above the confirmation once a message is sent, so the two share one voice.
+  const modal = code("components/inquiry-modal.tsx");
+  expect(modal).toContain("Fill out the form below and we&rsquo;ll be in touch soon! Prefer email?");
+  expect(modal).not.toMatch(/\bI(?:&rsquo;|\\u2019|’|')(?:ll|m|ve|d)\b/);
 });
 
 test("the four curriculum cards on the lessons page are whole-card links", () => {

@@ -114,11 +114,17 @@ This section's steps replace the release steps in the section below.
    Get ready to play!" is now "Thanks for reaching out. We'll be in touch soon. Get ready to
    play!" No other confirmation spoke as "I": the newsletter confirmations
    (`lib/use-mailchimp.ts`) never did. Her first-person biography and her first-person page
-   copy are unchanged, and so is one line above the pop-up's form (open items, below).
-   - Tests: `tests/owner-approvals-2026-11-15.logic.spec.ts` pins the three lines and fails if
-     a confirmation in either file says "I", "my" or "me";
-     `tests/owner-approvals-2026-11-15.spec.ts` sends both forms (intercepted) and reads the
-     confirmation on the page.
+   copy are unchanged.
+   - The pop-up's intro line followed on 2026-11-16, by her next instruction. It stays on
+     screen above the confirmation once a message is sent, so the pop-up would otherwise have
+     said "I'll" and "We'll" together. "Fill out the form below and I'll be in touch soon!" is
+     now "Fill out the form below and we'll be in touch soon!" The rest of the line ("Prefer
+     email? Write to hello@lasvegasmahj.com.") and everything else in the pop-up are
+     unchanged.
+   - Tests: `tests/owner-approvals-2026-11-15.logic.spec.ts` pins the three confirmation lines
+     and the intro line, and fails if a confirmation says "I", "my" or "me" or the pop-up
+     says "I'll"; `tests/owner-approvals-2026-11-15.spec.ts` sends both forms (intercepted)
+     and reads the intro and the confirmation on the page.
 8. Lessons page (`app/mahjong-lessons-las-vegas/page.tsx`), "What You'll Learn", by the same
    instruction: each of the four cards is now one link (`a.lesson-card`). MAHJ101, MAHJ102 and
    MAHJ103 lead to `/schedule#calendar`, and Private Lessons leads to
@@ -175,8 +181,9 @@ This section's steps replace the release steps in the section below.
 **Commit scope:** the first commit of this step, `fd5522a`, holds everything the branch then
 changed against `main`, 116 files: 82 changed, 29 new (27 of them uncommitted until then, 2 from
 commit `dc1d628`) and 5 removed. The second commit, `c630369`, changes the contact form, its
-tests and these documents. A third carries items 7 and 8 with their tests and brings this
-section's Vercel paragraphs up to date; the pull request shows the current totals. The scope is the site, the
+tests and these documents. The third, `c931f5a`, carries items 7 and 8 with their tests and
+brings this section's Vercel paragraphs up to date. A fourth changes the pop-up's intro line
+(item 7); the pull request shows the current totals. The scope is the site, the
 tests, the gate file, `CLAUDE.md` and these documents (the build needs
 `components/track-clicks.tsx`, `app/privacy/` and the two icon files). The five removed files
 are the old backup page and four retired photos. Not in the commit and not in the repository: the
@@ -188,8 +195,9 @@ after this section was written, so their results are recorded in the description
 request #130, not here. Nothing is pushed unless they pass. The first commit of this step,
 `fd5522a`, was pushed on 2026-11-15 after they passed. The second, `c630369`, carries the
 contact form change (item 6), corrects small points in these documents and widens one test,
-and was pushed the same evening under the same checks. The third (items 7 and 8) is pushed
-only if the same checks and the gate pass on it.
+and was pushed the same evening under the same checks, and so was the third, `c931f5a` (items
+7 and 8). The fourth (the pop-up's intro line) is pushed only if the same checks and the gate
+pass on it.
 
 **Open items for the owner:** the list in the section below stands, with these changes.
 - Item 8: the card sentence is approved and applied (item 1 above). Still open on that page:
@@ -214,10 +222,12 @@ only if the same checks and the gate pass on it.
 - Vercel: access is restored (above). Hers to decide: when to publish `main`'s Friendsgiving
   listing, which is not live, and whether automatic domain assignment goes back on after this
   release.
-- New, one line above the pop-up's form (`components/inquiry-modal.tsx`): "Fill out the form
-  below and I'll be in touch soon! Prefer email?" It is an invitation, not a confirmation, so
-  her instruction did not cover it, and it now sits above a confirmation that says "We'll".
-  Proposed, not changed: "we'll".
+- New, the lesson cards on a phone: a phone has no hover, so nothing shows that a card can be
+  tapped. Proposed, not built: a short cue line at the bottom of each card, like the cue on
+  the studio room cards.
+- For the next checked update, from the gate, with nothing a visitor sees: hide the check
+  marks inside the lesson cards from screen readers (`aria-hidden`), and shorten the comment
+  above `.lesson-card` in `app/globals.css` and the one above the cards in the lessons page.
 - For a later session: first-person page copy elsewhere is hers and was not touched (the
   instructor sections, the private lessons page, and single lines on the studio, Learn
   Mahjong, rules and sets guide pages). Do not "fix" it to match the confirmations.

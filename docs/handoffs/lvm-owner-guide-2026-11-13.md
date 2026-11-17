@@ -219,8 +219,10 @@ site.
   after someone sends the contact form they now read "Thanks for reaching out. We'll be in
   touch soon!" (it said "I'll"). The homepage pop-up form now says "You're on our radar!" and
   "Thanks for reaching out. We'll be in touch soon. Get ready to play!" (they said "my radar"
-  and "I'll"). Your own first-person biography and page wording are unchanged. One line above
-  the pop-up form still says "I'll"; see Section 4.
+  and "I'll"). The line above the pop-up form followed on 2026-11-16, by your next
+  instruction: it now reads "Fill out the form below and we'll be in touch soon!" (it said
+  "I'll"). The "Prefer email?" sentence after it is unchanged. Your own first-person biography
+  and page wording are unchanged.
 - **Lesson cards are links (same decision):** on the lessons page, under "What You'll Learn",
   the whole MAHJ101, MAHJ102, MAHJ103 and Private Lessons cards can now be clicked or tapped,
   or opened from the keyboard. The three group cards open the schedule calendar; the website
@@ -288,7 +290,7 @@ merge.
 | --- | --- |
 | Friendsgiving listing is not live (new, time-sensitive): Vercel's access was restored on 2026-11-15, and restoring it published nothing. The listing (event on 2026-11-18) is in `main` but not on the live site. Publishing it is your decision, separate from this branch: `main` holds the listing and one small test fix, and nothing from this branch. It needs a deployment of `main` started in Vercel and then promoted | Handoff "RELEASE CANDIDATE 2026-11-15", "Vercel" |
 | Automatic publishing (new): it is switched off on the project that serves `www`. Decide whether it goes back on after this release, or stays off so that every release waits for a Promote | Handoff "RELEASE CANDIDATE 2026-11-15", "Vercel" |
-| Pop-up form intro (new): above the homepage pop-up form it still says "Fill out the form below and I'll be in touch soon! Prefer email?", while the thank-you message below it now says "We'll". It is not a thank-you message, so it was not changed. Proposed, not changed: "we'll" | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
+| Lesson cards on a phone (new, optional): a phone has no hover, so nothing shows that a card can be tapped. Proposed, not built: a short line at the bottom of each card, such as "See class dates" | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
 | Friendsgiving listing wording (new): it says "guests should already know the basics", which is looser than your open play wording. It is your event text, already merged, so it was not changed | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
 | Five-pack (future task): set it up in Bookwhen when you are ready. Until then the website shows only "$20 per session" everywhere and no longer mentions the five-pack | Handoff "CONSISTENCY PASS 2026-11-15", item 1 |
 | Wide link-preview picture: a wide crop of your neon-sign photo (the sign and your face) is ready for you to approve or skip. Nothing is installed | `~/Projects/.lvm-approvals-2026-11-15/photo-c/share-crop-review.png` |

@@ -95,7 +95,7 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
           Plan Your Mahjong <span style={{ color: "var(--green)" }}>Experience</span>
         </h3>
         <p className="modal-desc">
-          Fill out the form below and I&rsquo;ll be in touch soon! Prefer email?
+          Fill out the form below and we&rsquo;ll be in touch soon! Prefer email?
           Write to{" "}
           <a href="mailto:hello@lasvegasmahj.com" style={{ color: "var(--green)", fontWeight: 600 }}>
             hello@lasvegasmahj.com

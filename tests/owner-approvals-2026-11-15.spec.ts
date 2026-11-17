@@ -227,7 +227,7 @@ test("the contact page's confirmation speaks as the team", async ({ page }) => {
   await expect(page.locator(".form-success p")).toHaveText("Thanks for reaching out. We’ll be in touch soon!");
 });
 
-test("the homepage pop-up's confirmation speaks as the team", async ({ page }) => {
+test("the homepage pop-up speaks as the team, intro and confirmation", async ({ page }) => {
   await page.route(FORMSPREE, (route) => route.fulfill({ status: 200, contentType: "application/json", body: "{}" }));
   await page.goto("/");
   const cta = page.getByRole("button", { name: "Plan Your Event", exact: true }).first();
@@ -235,6 +235,8 @@ test("the homepage pop-up's confirmation speaks as the team", async ({ page }) =
   await cta.click();
   const modal = page.locator(".modal-content");
   await expect(modal).toBeVisible();
+  const intro = modal.locator(".modal-desc");
+  await expect(intro).toHaveText("Fill out the form below and we’ll be in touch soon! Prefer email? Write to hello@lasvegasmahj.com.");
   await modal.locator("#contact-name").fill("Team Voice");
   await modal.locator("#contact-email").fill("teamvoice@example.com");
   await modal.locator("#contact-phone").fill("(702) 555-0123");
@@ -242,6 +244,9 @@ test("the homepage pop-up's confirmation speaks as the team", async ({ page }) =
   await modal.getByRole("button", { name: "Send Message" }).click();
   await expect(modal.locator(".form-success h4")).toHaveText("You’re on our radar!");
   await expect(modal.locator(".form-success p")).toHaveText("Thanks for reaching out. We’ll be in touch soon. Get ready to play!");
+  // The intro stays on screen above the confirmation, so the two must share one voice.
+  await expect(intro).toBeVisible();
+  await expect(modal).not.toContainText(/\bI['’](ll|m|ve|d)\b/);
 });
 
 test("each curriculum card on the lessons page is one link, by keyboard and by pointer", async ({ page }) => {
