@@ -2,13 +2,16 @@
 
 **Update, 2026-11-15.** Written before the owner's 2026-11-15 approvals. Since then the
 corporate "At a Glance" section and the lessons "Find Your Fit" chooser were approved and
-installed, so experiments E1 and E2 ship with this branch and have no separate "before" period.
+installed, so experiments E1 and E2 shipped with this branch (live since 2026-11-16) and have no
+separate "before" period.
 The contact form now knows 16 source tags, not 15: the lessons chooser's `lessons` tag (label
 "Lessons page") is installed, not proposed. Analytics is still approved but not active: no
 Measurement ID exists, and nothing counts as live until delivery is verified.
 
-**Status:** draft for the owner's review, on the branch `seo/invisible-technical-fixes` (a draft
-pull request since 2026-11-15, not merged). Nothing in this plan is installed or switched on.
+**Status:** draft for the owner's review. It reached `main` as a document with pull request #130,
+which went live on 2026-11-16. No analytics tag or Measurement ID is installed or switched on (the
+live site loads no analytics tag, checked after the release); the event code ships dormant until
+an ID is set. The E1 and E2 sections and the `lessons` source tag went live with the release.
 
 **Today:** the live site loads no analytics, and no GA4 Measurement ID exists anywhere we can see
 (checked 2026-11-13, `~/Projects/.lvm-sprint-2026-11-13/lane7-analytics-search/SEARCH-EVIDENCE.md`,
@@ -28,9 +31,9 @@ holds the detail.
    inbox stays the record of truth for inquiries.
 2. Count clicks out to Bookwhen with `booking_link_click`. A click is not a booking. Count
    bookings in Bookwhen, and keep the two numbers side by side, never added together.
-3. Set the Measurement ID only after this branch is live. The live site still runs the old helper,
-   which sends every event two ways, so GA4 could count each event twice. The live site also has
-   no privacy page yet.
+3. Set the Measurement ID only when the owner says so (she paused analytics work on 2026-11-16).
+   The 2026-11-16 release put live the privacy page and the fix that stops each event being sent
+   two ways, which would have let GA4 count it twice.
 4. Collect 4 full weeks of clean data before changing any measured page. Then change one page at
    a time.
 5. Every benefit named in section 4 is a hypothesis until the numbers show it.
@@ -77,8 +80,9 @@ Notes:
   and, with enhanced measurement, an outbound `click`. Use `page_view` for page counts. For
   Bookwhen, GA4's `click` fires beside `booking_link_click`: count Bookwhen clicks from
   `booking_link_click` only (Round 12).
-- **On the live site today**, `contact_submit`, `newsletter_signup` and the Ask events exist but
-  stay silent because no ID is set. The other six exist only on this branch (Round 11).
+- **On the live site today**, `contact_submit`, `newsletter_signup` and the Ask events were
+  already live, and the other six went live with the release on 2026-11-16 (Round 11). All of
+  them stay silent because no ID is set.
 - `lesson_inquiry` appears in `lib/analytics.ts` (mapped to a Meta Pixel "Lead") but nothing sends
   it. The Meta Pixel is not approved and `/privacy` does not describe it, so leave
   `NEXT_PUBLIC_META_PIXEL_ID` unset.
@@ -152,15 +156,12 @@ Do the steps in order and tick each one. If a check fails, stop and tell your de
 
 ### A. Before you start
 
-- [ ] **This branch is live on <https://www.lasvegasmahj.com>.** Easy test:
-  <https://www.lasvegasmahj.com/privacy> shows the Privacy page (on 2026-11-13 it returned "not
-  found"). Why the order matters:
-  - the live site still runs the old helper, which sends every event both to the GA4 tag and to
-    `dataLayer`, so GA4 could count each event twice; the fix exists only on this branch
-    (Round 12);
-  - Google's Analytics terms require a privacy notice that discloses Analytics, and `/privacy`
-    exists only on this branch (Round 11);
-  - six of the events exist only on this branch.
+- [x] **This branch is live on <https://www.lasvegasmahj.com>** (done 2026-11-16):
+  <https://www.lasvegasmahj.com/privacy> shows the Privacy page. Why the order mattered: the old
+  helper sent every event both to the GA4 tag and to `dataLayer`, so GA4 could have counted each
+  event twice (fixed in Round 12); Google's Analytics terms require a privacy notice that
+  discloses Analytics (`/privacy`, Round 11); and six of the events arrived with this branch.
+  All three are live now.
 - [ ] The privacy page items in Round 12 ("For the owner before it ships") are done, including
   confirming "We do not sell it" and setting the "Last updated" date. Also decide how that date
   will show the day analytics switches on (section 5, item 1).
@@ -389,9 +390,9 @@ now, before GA4:
 - **Inquiries:** emails sent since 2026-09-06 (Round 3) carry a source label and an Inquiry Type
   (the homepage pop-up gained both later that same day); older emails carry neither. Some labels
   started later: Studio Page on 2026-09-07, the visitor page and four corporate and group page
-  labels in early October (Rounds 4 and 5), and Schedule, Summerlin and Henderson only once this
-  branch goes live. Menu, footer and direct inquiries arrive as "General (nav, footer or direct)".
-  Count the emails by month, label and type.
+  labels in early October (Rounds 4 and 5), and Schedule, Summerlin and Henderson since this
+  branch went live on 2026-11-16. Menu, footer and direct inquiries arrive as "General (nav,
+  footer or direct)". Count the emails by month, label and type.
 - **Bookings:** Bookwhen holds past bookings. Note bookings by class for each month.
 
 ---
@@ -551,8 +552,9 @@ each, and effort. Every benefit below is a hypothesis.
    Search Console figures in section 3.5. The minimum-data rules in section 4 are rules of thumb.
 6. If anyone adds or tightens a Content-Security-Policy later, it must allow Google's tag, or
    analytics stops with no sign on the page.
-7. The lane 5 and lane 6 sections were approved and installed on 2026-11-15. They go live with
-   this branch, so experiments E1 and E2 have no "before" window and are part of the launch.
+7. The lane 5 and lane 6 sections were approved and installed on 2026-11-15. They went live with
+   this branch on 2026-11-16, so experiments E1 and E2 have no "before" window and are part of
+   the launch.
 8. Answers that unlock experiments: lane 4 questions A3 (cards at the studio) and A4 (private
    lesson length and group limit), and the planner questions in lane 5 SOURCES.md, section 4.
 
@@ -620,7 +622,8 @@ real, so all twelve are fixed and none was rejected.
 12. **The inquiry baseline was unclear: fixed.** The Git history of `components/contact-form.tsx`
     shows that before 2026-09-06 the form sent only name, email and message. Round 3 (`fd70083`)
     added 6 labels and Studio Page followed on 2026-09-07 (`e9dca29`). Five more arrived with PR
-    #117 (2026-10-03), and Schedule, Summerlin and Henderson exist only on this branch. The
-    general label never changed, and the pop-up gained its label later on 2026-09-06 (`2d0a4dd`).
+    #117 (2026-10-03), and Schedule, Summerlin and Henderson arrived with this branch (live since
+    2026-11-16). The general label never changed, and the pop-up gained its label later on
+    2026-09-06 (`2d0a4dd`).
     Section 3.1 now dates the same claim. The handoff's Round 3 section is at lines 1272-1316,
     not the lines the review cited.

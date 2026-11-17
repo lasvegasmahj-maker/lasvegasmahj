@@ -1,9 +1,10 @@
 # Las Vegas Mahjong website: owner guide (2026-11-13)
 
-**Status:** everything below sits on the branch `seo/invisible-technical-fixes`, proposed as
-draft pull request #130 into `main` on 2026-11-15 (the working copy is `~/Projects/lvm-seo-invisible`).
-Nothing is published yet; the live site still runs the 2026-10-05 version. Merging and
-publishing need your separate approval. Full record: `docs/handoffs/lvm-seo-current.md`. Sprint files:
+**Status:** every change in Section 1 is live. It was proposed as pull request #130 into `main` on
+2026-11-15. You approved the release on 2026-11-16; it was merged that evening, exactly as
+reviewed, and visitors have seen it since you pressed Promote in Vercel at about 6:48 pm. The
+checks on the live site afterwards found no failures (handoff, "RELEASE 2026-11-16"). The
+working copy is `~/Projects/lvm-seo-invisible`. Full record: `docs/handoffs/lvm-seo-current.md`. Sprint files:
 `~/Projects/.lvm-sprint-2026-11-13/`. Pictures: `~/Projects/.lvm-seo-screens-2026-11-13/`.
 Keep the pictures folder private: some "before" pictures show details since removed from the
 site.
@@ -40,7 +41,7 @@ site.
 - Published photos carry no hidden location data, and a test checks it. Analytics code ready
   but off (no Measurement ID).
 
-### Today's sprint (added on the branch, not live)
+### Sprint of 2026-11-13 (live since 2026-11-16)
 
 - The "Plan Your Event" pop-up works like a proper dialog: the keyboard stays inside, Escape
   closes it, and selecting text no longer erases what someone typed.
@@ -88,7 +89,7 @@ site.
   quiet computer, or a check of the live site after release, is a follow-up.
 - The accessibility improvements add about 1 to 2 KB to each page.
 
-### Your approvals, applied (2026-11-15, on the branch, not live)
+### Your approvals, applied (2026-11-15, live since 2026-11-16)
 
 - **All nine sprint changes** stay. The parties page's closing line now reads "Mahjong equipment
   and instruction provided · We come to you · No experience needed". It is slightly longer than
@@ -126,7 +127,7 @@ site.
   "Scroll" hint); the consistency pass fixed it.
   Final pictures: `~/Projects/.lvm-approvals-2026-11-15/final-shots/`.
 
-### Consistency pass (2026-11-15, on the branch, not live)
+### Consistency pass (2026-11-15, live since 2026-11-16)
 
 - **Five-pack:** off the website for now, since Bookwhen does not sell it. Every page and the
   details Google reads show "$20 per session".
@@ -143,7 +144,7 @@ site.
 - **Checked:** 748 page checks pass on computer and phone with no failures; every link and
   picture loads; the details Google reads match what visitors see.
 
-### Final wording approvals (2026-11-15, on the branch, not live)
+### Final wording approvals (2026-11-15, live since 2026-11-16)
 
 - **Corporate pages:** tournament wording is gone from the five pages that had it (the main
   corporate page and the team building, meeting planner, corporate events and incentive pages),
@@ -186,7 +187,7 @@ site.
   no blockers, and so did the fourth, made on the final version after the items above. The
   handoff, "FINAL COPY APPROVALS 2026-11-15", has the full results.
 
-### Release candidate (2026-11-15)
+### Release candidate (2026-11-15, live since 2026-11-16)
 
 - **Learn Mahjong, the card paragraph:** now reads "It looks intimidating at first, but it gets
   easier with practice." It replaced "... within one lesson, most students are reading it
@@ -201,20 +202,22 @@ site.
   photos went in), and 10 pages with no visible change in their content keep their dates.
   Pushing the branch did not change any date. If the release lands on a later day and you want
   that date instead, it is a separate, checked update.
-- **Draft pull request:** the branch is proposed for `main` as a draft. A draft cannot go live
-  by accident; merging it needs your approval. The check results are in its description.
+- **Pull request #130:** you approved the release on 2026-11-16, and it was merged into `main`
+  that evening exactly as reviewed. The check results are in its description.
 - **Vercel access restored (2026-11-15):** for some weeks after 2026-10-05 Vercel did not
   receive this website's code changes, because the Vercel app on GitHub had lost access to the
-  website's code. Access is back, so each update to this branch now gets a preview link (it
+  website's code. Access is back, so each pull request now gets a preview link (it
   needs a Vercel login). Restoring access published nothing. Automatic publishing to `www` is
-  switched off, by your choice. The Friendsgiving listing is still not on the live site; see
-  Section 4.
+  switched off, by your choice, and it stayed off after the release. The Friendsgiving listing
+  went live with the release.
 - **Contact form, early Send (your decision of 2026-11-15):** if someone presses Send before
-  the page has finished loading, the message now goes straight to the form service. They
-  should then see the form service's own thank-you page; it may first ask them to confirm
-  they are not a robot. The phone number is still checked. Once the page has loaded, the form
-  works exactly as before. One real test on a preview is still to do (handoff, remaining
-  steps).
+  the page has finished loading, the message now goes straight to the form service, which shows
+  its own page. The phone number is still checked. Once the page has loaded, the form works
+  exactly as before. Tested on the live site on 2026-11-16 with one labelled message, as you
+  asked: the visitor landed straight on the form service's page "Thanks! The form was submitted
+  successfully.", and the message reached your inbox within seconds. Whether the form service
+  can first ask a visitor to prove they are not a robot depends on a setting in your Formspree
+  account that nobody has looked at yet (Section 4).
 - **Thank-you messages speak as the team (your decision of 2026-11-15, after the preview):**
   after someone sends the contact form they now read "Thanks for reaching out. We'll be in
   touch soon!" (it said "I'll"). The homepage pop-up form now says "You're on our radar!" and
@@ -230,6 +233,21 @@ site.
   Lessons opens the private lessons page. The words and the layout are the same. A card
   brightens and gains a green border under the pointer, and shows a white outline for
   keyboard users.
+
+### Released (2026-11-16)
+
+- **Live:** you approved commit `f18f104` on 2026-11-16. It was merged into `main` as `0a72967`
+  at 6:31 pm, and it went live when you pressed Promote in Vercel at about 6:48 pm.
+- **Checked:** the release checklist found 37 passes, no failures and 3 things to look at. The
+  separate live check passed 49 of 49 on a computer screen and a phone screen, and no page,
+  link or file was broken. The 3 things to look at are Bookwhen items (Section 4).
+- **One test message:** sent at your request, clearly labelled, through the early Send path.
+  It reached your inbox within seconds, and you can delete it.
+- **Automatic publishing to `www` is still off,** so the next merge also waits for your Promote.
+- **Dates left as they were:** the sitemap keeps its 2026-11-15 and 2026-11-13 dates, and the
+  privacy page still says "Last updated November 13, 2026", because you approved the release as
+  reviewed. Moving them to 2026-11-16 is an optional, separate checked update.
+- **Paused, as you asked:** research, analytics, Bookwhen and every other change.
 
 ## 2. Business facts to keep in sync
 
@@ -280,16 +298,19 @@ site.
 You approve the current versus proposed wording or pictures; the typecheck, tests and two
 reviewer checks run; then the change is merged to `main`. Since 2026-11-15 automatic publishing
 to `www` is switched off in Vercel, so after the merge the new version also has to be promoted
-in Vercel with your team's login before visitors see it. If the release lands on a later day
-than the sitemap dates, updating them to that day is a separate, checked update before the
-merge.
+in Vercel with your team's login before visitors see it; the 2026-11-16 release went live this
+way. If the release lands on a later day than the sitemap dates, updating them to that day is a
+separate, checked update before the merge.
 
 ## 4. Waiting for your approval
 
 | Item | Where to look |
 | --- | --- |
-| Friendsgiving listing is not live (new, time-sensitive): Vercel's access was restored on 2026-11-15, and restoring it published nothing. The listing (event on 2026-11-18) is in `main` but not on the live site. Publishing it is your decision, separate from this branch: `main` holds the listing and one small test fix, and nothing from this branch. It needs a deployment of `main` started in Vercel and then promoted | Handoff "RELEASE CANDIDATE 2026-11-15", "Vercel" |
-| Automatic publishing (new): it is switched off on the project that serves `www`. Decide whether it goes back on after this release, or stays off so that every release waits for a Promote | Handoff "RELEASE CANDIDATE 2026-11-15", "Vercel" |
+| Automatic publishing: it is switched off on the project that serves `www`, and it stayed off after the 2026-11-16 release, so every release waits for your Promote. Keep it that way or turn it back on | Handoff "RELEASE 2026-11-16" |
+| Bookwhen items from the release check (new; you paused Bookwhen work): `/schedule` still shows Bookwhen's "Drop in and play" wording, which clashes with open play being booked sessions, and the leagues page shows one sentence twice because the Thursday league's Bookwhen description repeats it. Both change once the listings are edited in Bookwhen. Also, one session dated 2026-11-16 still showed on the schedule after Bookwhen stopped listing it | Step-by-step Bookwhen edits: `~/Documents/LVM Growth Sprint 2026-11-13/release-support/03-BOOKWHEN-CHANGES.md`, sections 1 and 2; handoff "RELEASE 2026-11-16", open items |
+| Form spam protection (new): the contact form has no spam trap of its own, so its protection is whatever is switched on in your Formspree account, and nobody has looked at those settings yet. Checking them needs your Formspree login and changes nothing on the website | Handoff "RELEASE 2026-11-16", open items |
+| Release-day dates (new, optional): the sitemap and the privacy page's "Last updated" line keep their 2026-11-15 and 2026-11-13 dates. Moving them to 2026-11-16 would be its own checked update | Handoff "RELEASE 2026-11-16" |
+| Photo placements (new): previews of four more uses of your existing studio photos, with recommendations. Nothing is installed | `~/Projects/.lvm-approvals-2026-11-15/photo-previews/gallery/` |
 | Lesson cards on a phone (new, optional): a phone has no hover, so nothing shows that a card can be tapped. Proposed, not built: a short line at the bottom of each card, such as "See class dates" | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
 | Friendsgiving listing wording (new): it says "guests should already know the basics", which is looser than your open play wording. It is your event text, already merged, so it was not changed | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
 | Five-pack (future task): set it up in Bookwhen when you are ready. Until then the website shows only "$20 per session" everywhere and no longer mentions the five-pack | Handoff "CONSISTENCY PASS 2026-11-15", item 1 |
@@ -308,8 +329,8 @@ merge.
 
 ## 5. Next five improvements, ranked
 
-Step zero: approve and release the finished work; it helps no visitor until it is live. Every
-benefit below is a hypothesis, not a measured result.
+Step zero, done: you approved the finished work, and it went live on 2026-11-16. Every benefit
+below is a hypothesis, not a measured result.
 
 1. **Switch on analytics.** Usefulness (hypothesis): inquiries and Bookwhen clicks by page, so
    later changes can be judged. A click is not a booking; Bookwhen counts bookings. Effort: low.
@@ -324,9 +345,9 @@ benefit below is a hypothesis, not a measured result.
    less confusion (the homepage still says private lessons can pair you with other students).
    Effort: low. Evidence: lane 4 traced each gap to the pages and the Bookwhen feed.
 4. **Review the two previews.** Done: you approved both on 2026-11-15, with your corrections, and
-   they are on the branch (Section 1, "Your approvals, applied"). Still worth doing: watch
+   they are live (Section 1, "Your approvals, applied"). Still worth doing: watch
    the protected lessons page's search position after release.
-5. **Approve the button pink.** Done: you approved it on 2026-11-15 and it is on the branch.
+5. **Approve the button pink.** Done: you approved it on 2026-11-15 and it is live.
    Every pink button now measures 4.58 to 1 against the 4.5 to 1 guideline (Section 1).
 
 Not recommended now: new pages, filler posts or more neighborhood pages (lane 7).
@@ -375,6 +396,6 @@ real and all are fixed.
     line 8, `components/private-events.tsx` line 13); "speed gain unmeasured" stays.
 16. "Merged" with two meanings: fixed. The header says "published", Section 1 said "added to the
     local copy", and "merging" now means publishing only. Done since: on 2026-11-15 the Section 1
-    headings changed to "on the branch, not live".
+    headings changed to "on the branch, not live", and on 2026-11-16 to "live since 2026-11-16".
 17. Privacy sources file: fixed. The row names the Pictures folder. Done since: you confirmed the
     sentence on 2026-11-15, so the row is gone.

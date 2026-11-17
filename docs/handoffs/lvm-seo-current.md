@@ -6,12 +6,16 @@ Round 8 as PR #125 on 2026-10-05 17:11 UTC; the CI guard fix as PR #127 on 2026-
 16:43 UTC). Their records are preserved below and must not be edited or
 re-litigated. **The technical SEO audit of 2026-10-04 is MERGED** as PR #126 (branch
 `seo/technical-audit-2026-10`, merged 2026-10-05 17:49 UTC; `main` then at `089a729`, its merge
-commit). Rounds 9, 10, 11 and 12, the sprint of 2026-11-13 and the four sections dated
-2026-11-15 (owner approvals, consistency pass, final copy approvals, release candidate) below
-are on the branch `seo/invisible-technical-fixes`, proposed as draft pull request #130 into `main`:
-not merged and not live. Sentences in those sections that say "local", "uncommitted" or "not
-pushed", that PR #129 is not merged, or that sitemap dates were not changed describe the day
-each section was written. Full report:
+commit). **Rounds 9, 10, 11 and 12, the sprint of 2026-11-13 and the four sections dated
+2026-11-15 (owner approvals, consistency pass, final copy approvals, release candidate) are
+MERGED, LIVE and VERIFIED:** pull request #130 (branch `seo/invisible-technical-fixes`) was
+squash-merged into `main` as `0a72967` on 2026-11-16 (Las Vegas date), the owner promoted it to
+`www` that evening, and the checks on the live site found no failures (section "RELEASE
+2026-11-16", next). Sentences in those sections that say the branch or pull request #130 is
+"local", "uncommitted", "not pushed", "not merged", "not live" or a draft, that PR #129 is not
+merged, or that sitemap dates were not changed describe the day each section was written.
+Proposals those sections mark "not merged" that no later section applied, such as the sprint's
+performance proposals P1 and P2, were never part of the release and are not live. Full report:
 `docs/handoffs/lvm-seo-technical-audit-2026-10-04.md`. The analysis-only "LVM SEO Gap
 Audit" (Drive, LVM/Marketing, 2026-10-04) covers intent, cannibalization and internal-link
 proposals; its A1 (red CI guard) shipped as PR #127, this audit carries the leagues robots and
@@ -19,7 +23,99 @@ share-image fixes, and its link proposals stay with the owner.
 
 ---
 
-# RELEASE CANDIDATE 2026-11-15: draft pull request into main (NOT MERGED, NOT LIVE)
+# RELEASE 2026-11-16: merged, live and verified (CLOSED)
+
+**Source:** on 2026-11-16 Shauna approved releasing the reviewed commit `f18f104`: confirm the
+final checks, merge pull request #130, help her promote the release in the Vercel project
+`lasvegasmahj-h1iz`, and verify the live site. Once she had promoted it, she asked for the
+post-release checks and one clearly labelled contact-form test. Research, analytics, Bookwhen
+and all other changes stayed paused, by her instruction.
+
+**Merge:**
+- Before the merge, all six checks on the pull request's head commit `f18f104` had passed: the
+  three GitHub Actions jobs (typecheck, build and logic tests; browser tests on desktop and
+  phone; lint) and the three Vercel checks. That commit's tree had passed the Technical and
+  Brand gate before it was pushed.
+- The pull request was squash-merged on 2026-11-17 at 02:31 UTC (6:31 pm on 2026-11-16 in Las
+  Vegas) as `0a72967` on `main`, with a guard that its head was still `f18f104`. The tree of
+  `0a72967` is the tree of `f18f104` (`bdece12`), so `main` holds exactly the reviewed release.
+- CI on `main` passed all three jobs for `0a72967`.
+
+**Production:**
+- The merge started a production build of `0a72967` in both Vercel projects. On
+  `lasvegasmahj-h1iz`, where automatic domain assignment is off, the new build waited
+  unassigned while `www` kept serving the deployment of 2026-10-05. The owner promoted it in
+  Vercel with the team's login at about 02:48 UTC (6:48 pm in Las Vegas), and `www` switched
+  within seconds. `www.lasvegasmahj.com` has served deployment `dpl_2VxVqLmL4g8MPGH9pnYbj4WM7Kvt`
+  since then.
+- Automatic domain assignment on `lasvegasmahj-h1iz` is still off after the promotion (read
+  from Vercel, read-only, on 2026-11-16). So each later merge to `main` builds a production
+  deployment that waits until the owner promotes it. The same-team project `lasvegasmahj`
+  assigns automatically and published `0a72967` at its own `vercel.app` address at the merge.
+
+**Checks on the live site (2026-11-16 evening; all read-only except the one test message):**
+- The release checklist from the release-support lane (kept outside this repository)
+  recognized the new release: 37 pass, 0 fail, 3 to look at. The three are Bookwhen schedule
+  items, listed under the open items below.
+- A verification script (plain page requests, plus Chromium at desktop size and at iPhone 13
+  size, with requests to the form service, the newsletter and Ask a Rule blocked) passed all 49
+  of its checks. All 34 sitemap pages answer 200 from the new deployment and name a `www`
+  canonical. No page carries the owner's phone number or a `telephone` field. The homepage
+  pop-up's intro line and the four lesson-card links work as approved. The contact form names
+  Formspree as its `action` and carries the phone rule until its script loads. The schedule
+  shows the Friendsgiving listing and the calendar section the lesson cards open. The privacy
+  page is live. The old backup page and the four retired photos answer 404. `robots.txt` names
+  the sitemap, the HSTS and `nosniff` headers are present, and the pages opened in the browser
+  logged no script error.
+- A crawl of the 34 sitemap pages checked 50 links and 267 files with no failure.
+  `lasvegasmahj.com` redirects to `www`. The search and share titles of all 34 pages are the
+  ones the release candidate was checked with, and none repeats the brand. On the 23 pages with
+  FAQ structured data, all 143 questions and answers match the visible page.
+- The early contact path on the real service (remaining step 2 of the release candidate): one
+  clearly labelled test message, which the owner asked for, was sent from the live contact page
+  with the page's script held back, so the browser sent the form by itself. The visitor landed
+  straight on Formspree's own page, "Thanks! The form was submitted successfully.", and the
+  message reached the owner's inbox within seconds with every field and the source "General
+  (nav, footer or direct)". The Formspree account's settings were not read, so whether a visitor
+  can be shown a robot check first is not known (open item below). No other message was sent:
+  the loaded form and the pop-up were checked with nothing sent.
+
+**The release candidate's remaining steps:** steps 1 and 4 are done (above). Step 2 is half
+done: the test message went from the live site, but its first part, reading the spam-protection
+setting in the Formspree account, is still open. Step 3 was not done: she approved the release
+as reviewed, so the sitemap keeps the dates recorded in item 4 of the release candidate section,
+and the privacy page still says "Last updated November 13, 2026". Step 5 stands: analytics stays
+off until a GA4 Measurement ID is set in Vercel and event delivery is verified; the release
+checklist confirmed that no page loads an analytics tag.
+
+**Open after the release (the owner's decisions; on 2026-11-16 she paused further site changes
+and deployments):**
+- From the release checklist, all on pages fed by Bookwhen: one session dated 2026-11-16 still
+  showed on the site with its Book link after Bookwhen had stopped listing it (the link still
+  opened); `/schedule` still shows Bookwhen's "Drop in and play" wording; and the leagues page
+  still repeats the Thursday league sentence. The two wording items change only after the
+  listings are edited in Bookwhen.
+- Formspree spam protection (the open half of step 2): the contact form has no spam trap of its
+  own (Round 3's rule against underscore fields), so its protection is whatever is switched on in
+  the Formspree account. Nobody has read those settings. Checking them needs her Formspree login
+  and changes nothing on the site.
+- Dates: moving the sitemap dates and the privacy page's "Last updated" line to the release date
+  is optional and would be its own checked update (step 3).
+- Automatic domain assignment stays off, so every release waits for her Promote. Keeping it off
+  or turning it back on is her call.
+- `CLAUDE.md` still says that Vercel deploys a push to `main` straight to `www`. Until the owner
+  approves correcting it, follow the Vercel mapping below: `www` changes only after her Promote,
+  so smoke-check `www` after the Promote, not 90 seconds after the merge.
+- The open items in the release candidate section below still stand, among them the tap cue
+  for the lesson cards on phones and the invisible fixes queued for the next checked update.
+- Photo placements: previews of a second use for four existing studio photos are prepared
+  outside this repository for her review. Nothing is installed.
+- This section changes documents only. Merging it builds a production deployment like any
+  merge to `main`; that build changes nothing a visitor sees, so promoting it is optional.
+
+---
+
+# RELEASE CANDIDATE 2026-11-15: pull request #130 into main (MERGED AND LIVE 2026-11-16)
 
 **Source:** Shauna authorized these steps on 2026-11-15, after the final readiness summary: apply
 one more Learn Mahjong sentence; check PR #129's scope and checks again and, if unchanged, merge
@@ -232,7 +328,8 @@ pass on it.
   instructor sections, the private lessons page, and single lines on the studio, Learn
   Mahjong, rules and sets guide pages). Do not "fix" it to match the confirmations.
 
-**Remaining steps before production (none started):**
+**Remaining steps before production (as written before the release; what happened to each is in
+"RELEASE 2026-11-16" above):**
 1. The owner reviews the draft pull request and the preview (the link is in the pull request;
    it needs a Vercel login). On a preview the contact form sends to the real form service, so
    a test message there reaches the inbox.
@@ -250,7 +347,7 @@ pass on it.
 
 ---
 
-# FINAL COPY APPROVALS 2026-11-15: approved wording, titles and gate inputs (ON THE BRANCH, NOT MERGED)
+# FINAL COPY APPROVALS 2026-11-15: approved wording, titles and gate inputs (MERGED AND LIVE 2026-11-16)
 
 **Source:** Shauna approved the final copy adjustments on 2026-11-15, after the consistency pass
 below. They are applied in this working copy on top of that pass, uncommitted, on `dc1d628`;
@@ -531,7 +628,7 @@ release candidate section above; kept as the record of that plan):**
 
 ---
 
-# CONSISTENCY PASS 2026-11-15: final pass before release review (ON THE BRANCH, NOT MERGED)
+# CONSISTENCY PASS 2026-11-15: final pass before release review (MERGED AND LIVE 2026-11-16)
 
 **Source:** Shauna's consistency-pass instruction of 2026-11-15 (seven items). It applies her
 approved wording across the site and closes open items 1 to 7 of the approvals section below.
@@ -646,7 +743,7 @@ lessons wording, hero CSS, calendar click and keyboard test, eligibility on both
 
 ---
 
-# OWNER APPROVALS 2026-11-15: gallery decisions applied (ON THE BRANCH, NOT MERGED)
+# OWNER APPROVALS 2026-11-15: gallery decisions applied (MERGED AND LIVE 2026-11-16)
 
 **Source:** Shauna approved the recommendations in the local approval gallery on 2026-11-15. Her
 text is saved word for word in `~/Projects/.lvm-approvals-2026-11-15/OWNER-APPROVAL-2026-11-15.md`.
@@ -823,7 +920,7 @@ repository history); items 8 and 9 continue in its release review packet.
 
 ---
 
-# SPRINT 2026-11-13: journeys, accessibility, performance, content, previews (ON THE BRANCH, NOT MERGED)
+# SPRINT 2026-11-13: journeys, accessibility, performance, content, previews (MERGED AND LIVE 2026-11-16)
 
 **How it ran:** after Round 12, eight lanes worked in parallel, each in its own copy of the site
 (`~/Projects/.lvm-sprint-2026-11-13/<lane>/`), each owning a fixed set of files and handing back a
@@ -1084,7 +1181,7 @@ Changed only before the sprint (33):
 
 ---
 
-# ROUND 12: owner decisions on fees, credentials, favicon, analytics and privacy (ON THE BRANCH, NOT MERGED, 2026-11-13)
+# ROUND 12: owner decisions on fees, credentials, favicon, analytics and privacy (2026-11-13; MERGED AND LIVE 2026-11-16)
 
 **Branch:** `seo/invisible-technical-fixes`, worktree `~/Projects/lvm-seo-invisible`, on top of
 Rounds 9 to 11 below. Still one commit (`dc1d628`); everything else is uncommitted. Nothing
@@ -1278,7 +1375,7 @@ Instagram, TikTok, Facebook), Vercel hosting, children, and changes.
 
 ---
 
-# ROUND 11: owner follow-ups on privacy, instructor accuracy and policies (ON THE BRANCH, NOT MERGED, 2026-11-13)
+# ROUND 11: owner follow-ups on privacy, instructor accuracy and policies (2026-11-13; MERGED AND LIVE 2026-11-16)
 
 **Branch:** `seo/invisible-technical-fixes`, worktree `~/Projects/lvm-seo-invisible`, on top of
 Rounds 9 and 10 below. Still one commit (`dc1d628`); everything else is uncommitted. Nothing
@@ -1477,7 +1574,7 @@ enable GA4 or GTM". The owner asked on 2026-11-13 for the remaining steps only.
 
 ---
 
-# ROUND 10: owner-approved visible improvements (ON THE BRANCH, NOT MERGED, 2026-11-12)
+# ROUND 10: owner-approved visible improvements (2026-11-12; MERGED AND LIVE 2026-11-16)
 
 **Branch:** `seo/invisible-technical-fixes`, worktree `~/Projects/lvm-seo-invisible`, on top of
 the Round 9 work below. Nothing is committed beyond `dc1d628`, nothing is pushed.
@@ -1668,7 +1765,7 @@ Per the standing rule they must be re-set to the merge date when this ships.
 
 ---
 
-# ROUND 9: invisible head, schema, link and title fixes (ON THE BRANCH, NOT MERGED, 2026-11-10 to 2026-11-12)
+# ROUND 9: invisible head, schema, link and title fixes (2026-11-10 to 2026-11-12; MERGED AND LIVE 2026-11-16)
 
 **Branch:** `seo/invisible-technical-fixes`, worktree `~/Projects/lvm-seo-invisible`, built on
 `main` at `089a729`, the merge commit of PR #126 (the technical audit below).
@@ -2657,8 +2754,11 @@ project: lasvegasmahj-h1iz
 
 `lasvegasmahj-h1iz` serves `www.lasvegasmahj.com`. There are two other similarly named
 projects; a sibling `lasvegasmahj` in the same team also builds every commit but does NOT hold
-the domain, and a third `lasvegasmahj` under a different account is stale. Deployment happens
-by **merging to `main`** (GitHub auto-deploy). Do not run a CLI deploy, and do not create a
+the domain, and a third `lasvegasmahj` under a different account is stale. Deployment starts
+by **merging to `main`**: Vercel's GitHub integration starts a production build in both
+projects. On `lasvegasmahj-h1iz` automatic domain assignment is off (the owner's choice, still
+off after the 2026-11-16 release), so a new build reaches `www` only when the owner promotes it
+in Vercel with the team's login. Do not run a CLI deploy, and do not create a
 `.vercel/project.json` in a worktree: that has previously produced a stray project.
 
 ## Google Search Console
