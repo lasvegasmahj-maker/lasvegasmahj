@@ -44,7 +44,7 @@ test("shared share-image sizes match the real files", () => {
     expect({ width: img.width, height: img.height }, img.url).toEqual(size);
     expect(img.alt.length, img.url).toBeGreaterThan(10);
   }
-  for (const photo of [studioPhotos.WISHBONE_ROOM, studioPhotos.SEVENS_OPEN_PLAY, studioPhotos.PLAYERS_AT_TABLE]) {
+  for (const photo of [studioPhotos.WISHBONE_ROOM, studioPhotos.SEVENS_OPEN_PLAY, studioPhotos.TABLES_SET_FOR_PLAY]) {
     const og = studioOgImage(photo);
     expect({ width: og.width, height: og.height }, photo.src).toEqual(jpegSize(photo.src));
     expect(og.alt).toBe(photo.alt);
@@ -110,5 +110,5 @@ test("a page that publishes Article schema also shares as an article, not a gene
 test("the leagues page takes its share image from the shared helper, like every other page", () => {
   // Its hand-built descriptor left out the image type, which made leagues the one sitemap
   // route with no og:image:type.
-  expect(read("app/mahjong-leagues-las-vegas/page.tsx")).toContain("images: [studioOgImage(PLAYERS_AT_TABLE)]");
+  expect(read("app/mahjong-leagues-las-vegas/page.tsx")).toContain("images: [studioOgImage(TABLES_SET_FOR_PLAY)]");
 });

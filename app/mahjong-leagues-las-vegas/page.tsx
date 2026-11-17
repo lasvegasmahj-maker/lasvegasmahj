@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ogBase, studioOgImage } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import { getLeagues } from "@/lib/schedule";
-import { PLAYERS_AT_TABLE } from "@/lib/studio-photos";
+import { TABLES_SET_FOR_PLAY } from "@/lib/studio-photos";
 
 const PAGE_URL = "https://www.lasvegasmahj.com/mahjong-leagues-las-vegas";
 
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     url: PAGE_URL,
     // A page-level openGraph object replaces the parent's, so without this the share card
     // had no image at all.
-    images: [studioOgImage(PLAYERS_AT_TABLE)],
+    images: [studioOgImage(TABLES_SET_FOR_PLAY)],
   },
 };
 
@@ -58,6 +59,9 @@ export default async function MahjongLeaguesLasVegas() {
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="#leagues" className="btn-primary">See the Leagues</a>
               <a href="/schedule" className="btn-outline">View the Full Schedule</a>
+            </div>
+            <div style={{ position: "relative", aspectRatio: "4 / 3", maxWidth: "760px", margin: "3rem auto 0", borderRadius: "10px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)" }}>
+              <Image src={TABLES_SET_FOR_PLAY.src} alt={TABLES_SET_FOR_PLAY.alt} fill priority fetchPriority="high" sizes="(max-width: 760px) 100vw, 760px" style={{ objectFit: "cover" }} />
             </div>
           </div>
         </section>

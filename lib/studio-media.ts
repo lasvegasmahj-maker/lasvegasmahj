@@ -1,4 +1,4 @@
-import { OPEN_PLAY_ROOM, PLAYERS_AT_TABLE, type StudioPhoto } from "./studio-photos";
+import { LESSON_TABLE, OPEN_PLAY_ROOM, type StudioPhoto } from "./studio-photos";
 
 /**
  * Local news coverage of the Las Vegas Mahjong Studio.
@@ -43,6 +43,6 @@ export const STUDIO_MEDIA: StudioMediaAppearance[] = [
     publishedIso: "2026-09-02",
     publishedLabel: "September 2, 2026",
     url: "https://www.fox5vegas.com/video/2026/09/02/american-mahjong-classes-now-being-taught-las-vegas-mahjong/",
-    image: PLAYERS_AT_TABLE,
+    image: LESSON_TABLE,
   },
 ];
