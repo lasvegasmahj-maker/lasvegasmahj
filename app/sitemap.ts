@@ -52,7 +52,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: "https://www.lasvegasmahj.com/mahjong-leagues-las-vegas",
-      lastModified: new Date("2026-10-03"),
+      lastModified: new Date("2026-11-17"),
       changeFrequency: "weekly",
       priority: 0.85,
     },

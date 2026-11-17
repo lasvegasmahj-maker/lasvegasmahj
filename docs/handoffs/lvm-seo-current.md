@@ -11,7 +11,9 @@ commit). **Rounds 9, 10, 11 and 12, the sprint of 2026-11-13 and the four sectio
 MERGED, LIVE and VERIFIED:** pull request #130 (branch `seo/invisible-technical-fixes`) was
 squash-merged into `main` as `0a72967` on 2026-11-16 (Las Vegas date), the owner promoted it to
 `www` that evening, and the checks on the live site found no failures (section "RELEASE
-2026-11-16", next). Sentences in those sections that say the branch or pull request #130 is
+2026-11-16", below). **The photo update of 2026-11-17 (next section) is on the branch
+`photos/leagues-and-fox5-card`, proposed as a draft pull request into `main`: not merged and not
+live.** Sentences in those sections that say the branch or pull request #130 is
 "local", "uncommitted", "not pushed", "not merged", "not live" or a draft, that PR #129 is not
 merged, or that sitemap dates were not changed describe the day each section was written.
 Proposals those sections mark "not merged" that no later section applied, such as the sprint's
@@ -20,6 +22,54 @@ performance proposals P1 and P2, were never part of the release and are not live
 Audit" (Drive, LVM/Marketing, 2026-10-04) covers intent, cannibalization and internal-link
 proposals; its A1 (red CI guard) shipped as PR #127, this audit carries the leagues robots and
 share-image fixes, and its link proposals stay with the owner.
+
+---
+
+# PHOTO UPDATE 2026-11-17: leagues photo and FOX5 card picture (ON THE BRANCH, NOT MERGED)
+
+**Source:** the owner chose these photos from a local preview kept outside this repository. On
+2026-11-16 she chose a studio photo with no people for the leagues page, asked that its room not
+be named and that nothing call it a league, and asked for new pictures for the leagues page's
+share image and for one FOX5 card. On 2026-11-17 she approved the previews, confirmed that the
+leagues play in the room shown, and asked for this update with its checks. Merging and
+publishing wait for her approval.
+
+**What changes:**
+1. Leagues page (`app/mahjong-leagues-las-vegas/page.tsx`): the studio photo
+   `TABLES_SET_FOR_PLAY` (`public/studio-tables-set-for-play.jpg`) sits under the two buttons and
+   above the league list, shown whole in its 4:3 shape at up to 760 pixels wide. It loads first
+   (`priority`, `fetchPriority="high"`) because a laptop shows it on the first screen. Its
+   description says only what is in frame and names no room, league or event, and there is no
+   caption. The page's share image is the same photo, so the page and its link preview match.
+2. `lib/studio-photos.ts`: `TABLES_SET_FOR_PLAY` joins the owner-identified photos, with no room
+   claim. The file is a 2000 by 1500 copy of her original, made upright with sharp and carrying
+   no metadata, so no location.
+3. The FOX5 card "American Mahjong Classes NOW being taught at Las Vegas Mahjong"
+   (`lib/studio-media.ts`) shows `LESSON_TABLE`, a studio table set for a lesson. Its link,
+   headline and date are unchanged, and so is the other card. Neither the homepage nor the
+   Studio page shows `LESSON_TABLE` in its own content, so no card repeats a photo on its page
+   (the rule in `tests/press.logic.spec.ts`).
+4. Every studio photo file in `public/` is listed in `lib/studio-photos.ts`, and a new test
+   checks it. The owner's photo selection rules are recorded privately, outside this repository.
+5. Sitemap: the leagues page carries 2026-11-17, the day its photo was approved. The homepage
+   and the Studio page keep their dates, because a different picture on a press card is not a
+   significant update of either page (her rule: accurate significant-update dates).
+6. Tests: `tests/owner-approvals-2026-11-17.logic.spec.ts` pins the photo's place, its approved
+   description, the exact file, the share image, the FOX5 card's picture, link, headline and
+   date, the other card, the studio photo list and the sitemap date.
+   `tests/owner-approvals-2026-11-17.spec.ts` checks the rendered pages at desktop and phone
+   sizes: the photo's position, early loading and shape, no sideways scroll (also at 320
+   pixels), the share image and its file, and both FOX5 cards on the homepage and the Studio
+   page. `tests/seo-round9-share-schema.logic.spec.ts` and the first-screen image list in
+   `tests/seo-technical-audit.logic.spec.ts` name the new photo.
+
+**Not in this update:** the other photo placements previewed for the owner (the private
+lessons, Summerlin and Henderson pages) still wait for her decisions, and any further photo
+decisions are recorded privately, outside this repository.
+
+**Checks:** typecheck, the logic and browser tests, the lint check and the Technical and Brand
+gate run on the exact tree before it is pushed; the results are in the pull request's
+description.
 
 ---
 

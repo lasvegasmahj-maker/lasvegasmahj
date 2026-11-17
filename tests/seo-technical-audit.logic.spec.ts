@@ -99,6 +99,7 @@ test("likely LCP images ask for high fetch priority and are never lazy", () => {
     ["app/play-mahjong-las-vegas/page.tsx", "src={SEVENS_OPEN_PLAY.src}"],
     ["app/about/page.tsx", "src={SHAUNA_NEON.src}"],
     ["app/convention-activities-las-vegas/page.tsx", 'src="/lvm-tables-ready.jpg"'],
+    ["app/mahjong-leagues-las-vegas/page.tsx", "src={TABLES_SET_FOR_PLAY.src}"],
   ]) {
     const file = read(rel);
     const at = file.indexOf(src);

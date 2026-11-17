@@ -1,6 +1,7 @@
 # Las Vegas Mahjong website: owner guide (2026-11-13)
 
-**Status:** every change in Section 1 is live. It was proposed as pull request #130 into `main` on
+**Status:** every change in Section 1 is live, except the photo update of 2026-11-17, which waits
+for your approval. The rest was proposed as pull request #130 into `main` on
 2026-11-15. You approved the release on 2026-11-16; it was merged that evening, exactly as
 reviewed, and visitors have seen it since you pressed Promote in Vercel at about 6:48 pm. The
 checks on the live site afterwards found no failures (handoff, "RELEASE 2026-11-16"). The
@@ -249,6 +250,16 @@ site.
   reviewed. Moving them to 2026-11-16 is an optional, separate checked update.
 - **Paused, as you asked:** research, analytics, Bookwhen and every other change.
 
+### Photo update (2026-11-17, on the branch, not live)
+
+- **Leagues page:** your studio photo of a room with three tables set for play sits under the two
+  buttons, with the room unnamed and no caption. Its description says only what is in the photo.
+  The page's link preview uses the same photo.
+- **FOX5 card "American Mahjong Classes NOW being taught at Las Vegas Mahjong":** on the homepage
+  and the Studio page it shows your photo of a studio table set for a lesson. Its link, headline
+  and date are unchanged, and so is the other card.
+- Visitors see it only after you approve the merge and press Promote.
+
 ## 2. Business facts to keep in sync
 
 | Fact | Where it lives | When it changes |
@@ -310,7 +321,7 @@ separate, checked update before the merge.
 | Bookwhen items from the release check (new; you paused Bookwhen work): `/schedule` still shows Bookwhen's "Drop in and play" wording, which clashes with open play being booked sessions, and the leagues page shows one sentence twice because the Thursday league's Bookwhen description repeats it. Both change once the listings are edited in Bookwhen. Also, one session dated 2026-11-16 still showed on the schedule after Bookwhen stopped listing it | Step-by-step Bookwhen edits: `~/Documents/LVM Growth Sprint 2026-11-13/release-support/03-BOOKWHEN-CHANGES.md`, sections 1 and 2; handoff "RELEASE 2026-11-16", open items |
 | Form spam protection (new): the contact form has no spam trap of its own, so its protection is whatever is switched on in your Formspree account, and nobody has looked at those settings yet. Checking them needs your Formspree login and changes nothing on the website | Handoff "RELEASE 2026-11-16", open items |
 | Release-day dates (new, optional): the sitemap and the privacy page's "Last updated" line keep their 2026-11-15 and 2026-11-13 dates. Moving them to 2026-11-16 would be its own checked update | Handoff "RELEASE 2026-11-16" |
-| Photo placements (new): previews of four more uses of your existing studio photos, with recommendations. Nothing is installed | `~/Projects/.lvm-approvals-2026-11-15/photo-previews/gallery/` |
+| Photo placements: the leagues photo is in the photo update of 2026-11-17, waiting for your approval to merge. The private lessons, Summerlin and Henderson previews still wait for your decisions | `~/Projects/.lvm-approvals-2026-11-15/photo-previews/gallery/` |
 | Lesson cards on a phone (new, optional): a phone has no hover, so nothing shows that a card can be tapped. Proposed, not built: a short line at the bottom of each card, such as "See class dates" | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
 | Friendsgiving listing wording (new): it says "guests should already know the basics", which is looser than your open play wording. It is your event text, already merged, so it was not changed | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
 | Five-pack (future task): set it up in Bookwhen when you are ready. Until then the website shows only "$20 per session" everywhere and no longer mentions the five-pack | Handoff "CONSISTENCY PASS 2026-11-15", item 1 |

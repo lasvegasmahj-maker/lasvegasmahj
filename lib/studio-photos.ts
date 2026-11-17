@@ -6,8 +6,8 @@
  * taken there. Provenance now lives in one place, next to the alt text that depends on it,
  * so a photo cannot be described as a room unless someone recorded that it shows that room.
  *
- * Every entry below was supplied and identified by the owner on 2026-09-07. `shows` is the
- * claim the alt text is allowed to make. Do not add an entry from a filename, a folder or a
+ * Every entry below was supplied and identified by the owner, on 2026-09-07 unless its own
+ * comment gives another date. `shows` is the claim the alt text is allowed to make. Do not add an entry from a filename, a folder or a
  * resemblance to another photo: if the owner has not said what it is, it does not go here.
  *
  * Sources are the owner's originals in ~/Downloads. Each was passed through sharp with
@@ -104,16 +104,15 @@ export const OPEN_PLAY_ROOM: StudioPhoto = {
 };
 
 /**
- * The owner grouped this one under community activity and did not say which room it is in,
- * so it makes no room claim. The wall behind it resembles the Lucky Wishbone wallpaper, but
- * matching a wallpaper is the kind of inference that put open play photographs on the studio
- * page in the first place.
+ * Identified by the owner on 2026-11-17: the leagues play in this room. On 2026-11-16 she asked
+ * that the room not be named, so it makes no room claim, and the alt text says only what is in
+ * frame.
  */
-export const PLAYERS_AT_TABLE: StudioPhoto = {
-  src: "/studio-players-at-table.jpg",
-  source: "IMG_8679.JPG",
-  shows: "Four players around a mahjong table mid-game at the studio",
-  alt: "Four players around a mahjong table mid-game at the Las Vegas Mahjong Studio, under a neon Let's Mahjong sign",
+export const TABLES_SET_FOR_PLAY: StudioPhoto = {
+  src: "/studio-tables-set-for-play.jpg",
+  source: "IMG_8843.JPG",
+  shows: "A studio room where the leagues play, with three mahjong tables set for play",
+  alt: "Three mahjong tables set for play with mats, tiles, racks and drinks, surrounded by navy velvet chairs",
   width: 2000,
   height: 1500,
 };
@@ -138,6 +137,6 @@ export const STUDIO_PHOTOS: StudioPhoto[] = [
   OPEN_PLAY_SNACKS,
   OPEN_PLAY_PLAYERS,
   OPEN_PLAY_ROOM,
-  PLAYERS_AT_TABLE,
+  TABLES_SET_FOR_PLAY,
   LUCKY_HARE_DOOR,
 ];
