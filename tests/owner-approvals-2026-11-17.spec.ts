@@ -4,7 +4,7 @@ import { test, expect } from "@playwright/test";
 // desktop and phone sizes: the leagues page photo and share image, and one FOX5 card's picture.
 
 const APPROVED_ALT =
-  "Three mahjong tables set for play with mats, tiles, racks and drinks, surrounded by navy velvet chairs";
+  "Three mahjong tables set for play with mats, tiles, racks and tumblers, surrounded by navy velvet chairs";
 const CLASSES_URL = "https://www.fox5vegas.com/video/2026/09/02/american-mahjong-classes-now-being-taught-las-vegas-mahjong/";
 const LEARN_URL = "https://www.fox5vegas.com/video/2026/09/02/learn-play-american-mahjong-new-business-las-vegas-mahjong-sahara/";
 
@@ -26,9 +26,8 @@ test("the leagues page shows the approved photo between its buttons and the leag
   const list = await page.locator("#leagues").boundingBox();
   expect(box!.y).toBeGreaterThan(buttons!.y + buttons!.height);
   expect(box!.y + box!.height).toBeLessThanOrEqual(list!.y);
-  // The whole photo, in its own 4:3 shape, at most 760 pixels wide.
-  expect(box!.width).toBeLessThanOrEqual(760);
-  expect(Math.abs(box!.width / box!.height - 4 / 3)).toBeLessThan(0.02);
+  expect(box!.width, "the photo frame is at most 760 pixels wide").toBeLessThanOrEqual(760);
+  expect(Math.abs(box!.width / box!.height - 4 / 3), "the whole photo shows, in its own 4:3 shape").toBeLessThan(0.02);
   expect(await noSidewaysScroll(page)).toBe(true);
 });
 

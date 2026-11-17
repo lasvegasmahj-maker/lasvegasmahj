@@ -15,7 +15,7 @@ const sha256 = (rel: string) => crypto.createHash("sha256").update(fs.readFileSy
 
 const LEAGUES = "app/mahjong-leagues-las-vegas/page.tsx";
 const APPROVED_ALT =
-  "Three mahjong tables set for play with mats, tiles, racks and drinks, surrounded by navy velvet chairs";
+  "Three mahjong tables set for play with mats, tiles, racks and tumblers, surrounded by navy velvet chairs";
 
 test("the leagues page shows the approved studio photo under its buttons, whole and loaded first", () => {
   const page = read(LEAGUES);
@@ -28,7 +28,7 @@ test("the leagues page shows the approved studio photo under its buttons, whole 
   const image = page.slice(page.lastIndexOf("<Image", photo), page.indexOf("/>", photo));
   expect(image).toContain("alt={TABLES_SET_FOR_PLAY.alt}");
   expect(image).toContain('fetchPriority="high"');
-  expect(image).toMatch(/\bpriority\b/);
+  expect(image).toMatch(/\bpriority\b|\bpreload\b|loading="eager"/);
   // The frame has the photo's own shape, so nothing is cropped.
   expect(TABLES_SET_FOR_PLAY.width / TABLES_SET_FOR_PLAY.height).toBe(4 / 3);
   expect(page.slice(page.lastIndexOf("<div", photo), photo)).toContain('aspectRatio: "4 / 3"');

@@ -31,8 +31,8 @@ share-image fixes, and its link proposals stay with the owner.
 2026-11-16 she chose a studio photo with no people for the leagues page, asked that its room not
 be named and that nothing call it a league, and asked for new pictures for the leagues page's
 share image and for one FOX5 card. On 2026-11-17 she approved the previews, confirmed that the
-leagues play in the room shown, and asked for this update with its checks. Merging and
-publishing wait for her approval.
+leagues play in the room shown, approved the final wording of the photo's description, and asked
+for this update with its checks. Merging and publishing wait for her approval.
 
 **What changes:**
 1. Leagues page (`app/mahjong-leagues-las-vegas/page.tsx`): the studio photo
@@ -51,9 +51,13 @@ publishing wait for her approval.
    (the rule in `tests/press.logic.spec.ts`).
 4. Every studio photo file in `public/` is listed in `lib/studio-photos.ts`, and a new test
    checks it. The owner's photo selection rules are recorded privately, outside this repository.
-5. Sitemap: the leagues page carries 2026-11-17, the day its photo was approved. The homepage
-   and the Studio page keep their dates, because a different picture on a press card is not a
-   significant update of either page (her rule: accurate significant-update dates).
+5. Sitemap: the leagues page carries 2026-11-17, the day its main photo changed. The homepage
+   and the Studio page keep their dates. Item 4 of the release candidate section records her
+   rule: each date is the day that page's visible content last changed. That release counted
+   changes to visible wording or a main photo, and a new picture on a press card is neither. If
+   she wants those two pages dated 2026-11-17, that is a one-line change each before the merge.
+   Moving a date to the release day, if she wants that, is a separate, checked update before the
+   merge.
 6. Tests: `tests/owner-approvals-2026-11-17.logic.spec.ts` pins the photo's place, its approved
    description, the exact file, the share image, the FOX5 card's picture, link, headline and
    date, the other card, the studio photo list and the sitemap date.
@@ -66,6 +70,10 @@ publishing wait for her approval.
 **Not in this update:** the other photo placements previewed for the owner (the private
 lessons, Summerlin and Henderson pages) still wait for her decisions, and any further photo
 decisions are recorded privately, outside this repository.
+
+**Follow-up, nothing a visitor sees:** Next 16 marks the `priority` image prop as deprecated in
+favor of `preload`; it still works the same way. All six first-screen photos use `priority`
+(the leagues photo follows that pattern), so move them together in one separate, checked change.
 
 **Checks:** typecheck, the logic and browser tests, the lint check and the Technical and Brand
 gate run on the exact tree before it is pushed; the results are in the pull request's

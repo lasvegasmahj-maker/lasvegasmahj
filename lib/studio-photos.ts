@@ -7,8 +7,9 @@
  * so a photo cannot be described as a room unless someone recorded that it shows that room.
  *
  * Every entry below was supplied and identified by the owner, on 2026-09-07 unless its own
- * comment gives another date. `shows` is the claim the alt text is allowed to make. Do not add an entry from a filename, a folder or a
- * resemblance to another photo: if the owner has not said what it is, it does not go here.
+ * comment gives another date. `shows` is the claim the alt text is allowed to make. Do not
+ * add an entry from a filename, a folder or a resemblance to another photo: if the owner has
+ * not said what it is, it does not go here.
  *
  * Sources are the owner's originals in ~/Downloads. Each was passed through sharp with
  * .rotate() to bake EXIF orientation into the pixels, because Next's optimizer strips EXIF
@@ -112,7 +113,7 @@ export const TABLES_SET_FOR_PLAY: StudioPhoto = {
   src: "/studio-tables-set-for-play.jpg",
   source: "IMG_8843.JPG",
   shows: "A studio room where the leagues play, with three mahjong tables set for play",
-  alt: "Three mahjong tables set for play with mats, tiles, racks and drinks, surrounded by navy velvet chairs",
+  alt: "Three mahjong tables set for play with mats, tiles, racks and tumblers, surrounded by navy velvet chairs",
   width: 2000,
   height: 1500,
 };
