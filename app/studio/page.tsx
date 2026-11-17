@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ogBase } from "@/lib/og";
+import { ogBase, studioOgImage } from "@/lib/og";
 import {
   WISHBONE_ROOM,
   SEVENS_OPEN_PLAY,
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     url: "https://www.lasvegasmahj.com/studio",
     // A page-level openGraph object replaces the parent's rather than merging, so this has
     // to be stated or the share card has no image at all.
-    images: [`https://www.lasvegasmahj.com${WISHBONE_ROOM.src}`],
+    images: [studioOgImage(WISHBONE_ROOM)],
   },
 };
 
@@ -124,7 +124,7 @@ export default function Studio() {
       />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
@@ -203,7 +203,7 @@ export default function Studio() {
                 <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, marginBottom: "1rem" }}>
                   Lucky Wishbone is the teaching room. Classes meet here, from
                   people who have never touched a tile to players who already know
-                  the card and want to get sharper. Leagues run here, and so do
+                  the card and want to get sharper. <a href="/mahjong-leagues-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>Leagues</a> run here, and so do
                   special events, so this is the room where the community comes
                   together.
                 </p>
@@ -231,7 +231,7 @@ export default function Studio() {
                 <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, marginBottom: "1rem" }}>
                   Lucky Sevens is the playing room. This is where Social Open Play
                   happens: book a seat, sit down, and play. It is for players who
-                  already know the game, including Mahj 101 graduates. Come on your own or bring a friend, and
+                  already know American Mahjong and are comfortable playing independently. Come on your own or bring a friend, and
                   expect to leave knowing a few more names than when you walked in.
                 </p>
                 <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: 0 }}>

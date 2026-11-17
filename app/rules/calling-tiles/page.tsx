@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "Calling Tiles Rules in American Mahjong | Las Vegas Mahjong",
     description: "Who has priority when two players call? Can I call any discard? What is out of turn? Calling tile rules explained.",
     url: "https://www.lasvegasmahj.com/rules/calling-tiles",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
@@ -37,7 +37,7 @@ export default function CallingTilesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "American Mahjong Rules", item: "https://www.lasvegasmahj.com/rules" }, { "@type": "ListItem", position: 3, name: "Calling Tiles", item: "https://www.lasvegasmahj.com/rules/calling-tiles" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
             <Link href="/rules" style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.82rem", textDecoration: "none", display: "block", marginBottom: "1.5rem" }}>
@@ -64,7 +64,7 @@ export default function CallingTilesPage() {
               ))}
             </div>
             <div style={{ marginTop: "3rem", padding: "2rem", background: "rgba(233,30,140,0.08)", border: "1px solid rgba(233,30,140,0.25)", borderRadius: 16, textAlign: "center" }}>
-              <p style={{ color: "rgba(255,255,255,0.7)", marginBottom: "1.2rem" }}>Learn from a certified instructor and never second-guess a call again.</p>
+              <p style={{ color: "rgba(255,255,255,0.7)", marginBottom: "1.2rem" }}>Learn with us and never second-guess a call again.</p>
               <Link href="/mahjong-lessons-las-vegas" className="btn-primary">Book a Lesson &rarr;</Link>
             </div>
           </div>

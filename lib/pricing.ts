@@ -5,9 +5,10 @@
  */
 export const OPEN_PLAY_PRICES = {
   session: 20,
+  // The five-pack is not on sale in Bookwhen as of 2026-11-15, so no page or markup offers it until it is.
   fivePack: 85,
 } as const;
 
 export const usd = (amount: number) => `$${amount}`;
 
-export const OPEN_PLAY_PRICE_LINE = `${usd(OPEN_PLAY_PRICES.session)} per session, or ${usd(OPEN_PLAY_PRICES.fivePack)} for a 5-pack`;
+export const OPEN_PLAY_PRICE_LINE = `${usd(OPEN_PLAY_PRICES.session)} per session`;

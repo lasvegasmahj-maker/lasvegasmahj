@@ -26,7 +26,9 @@ test.describe("/mahjong-open-play-las-vegas", () => {
     await page.goto("/mahjong-open-play-las-vegas");
     await expect(page.locator("main")).toContainText(OPEN_PLAY_PRICE_LINE);
     const service = (await ldNodes(page)).find((n) => n["@type"] === "Service") as { offers: { price: string }[] };
-    expect(service.offers.map((o) => o.price)).toEqual(["20.00", "85.00"]);
+    // Session price only: the five-pack is not on sale in Bookwhen (2026-11-15).
+    expect(service.offers.map((o) => o.price)).toEqual(["20.00"]);
+    await expect(page.locator("main")).not.toContainText(/5-pack|\$85/);
   });
 
   test("the FAQ markup matches the visible FAQ", async ({ page }) => {
@@ -55,5 +57,5 @@ test("the sitewide offer catalog prices Social Open Play", async ({ page }) => {
     hasOfferCatalog: { itemListElement: { itemOffered: { name: string; offers?: { price: string }[] } }[] };
   };
   const openPlay = biz.hasOfferCatalog.itemListElement.find((o) => o.itemOffered.name === "Social Open Play")!;
-  expect(openPlay.itemOffered.offers!.map((o) => o.price)).toEqual(["20.00", "85.00"]);
+  expect(openPlay.itemOffered.offers!.map((o) => o.price)).toEqual(["20.00"]);
 });

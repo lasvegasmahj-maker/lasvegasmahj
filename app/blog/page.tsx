@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: { absolute: "Mahjong Blog | Las Vegas Mahjong" },
   description:
-    "Mahjong tips and ideas for players in Las Vegas from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
+    "Mahjong tips and ideas for players in Las Vegas from Las Vegas Mahjong.",
   alternates: {
     canonical: "https://www.lasvegasmahj.com/blog",
   },
@@ -16,12 +17,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Mahjong Blog | Las Vegas Mahjong",
     description:
-      "Mahjong tips and ideas for players in Las Vegas from Las Vegas Mahjong, a certified Oh My Mahjong instructor.",
+      "Mahjong tips and ideas for players in Las Vegas from Las Vegas Mahjong.",
     url: "https://www.lasvegasmahj.com/blog",
     type: "website",
     siteName: "Las Vegas Mahjong",
     locale: "en_US",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
@@ -46,7 +47,7 @@ export default function BlogPage() {
       )}
       <SubpageNav />
 
-      <main>
+      <main id="main-content">
         <section
           style={{
             background: "var(--navy-dark)",

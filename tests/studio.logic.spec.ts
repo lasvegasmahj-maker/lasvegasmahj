@@ -231,7 +231,7 @@ test.describe("nothing unsourceable ships", () => {
     const src = readCode(STUDIO_PAGE);
     const og = src.match(/images:\s*\[([^\]]*)\]/);
     expect(og, "/studio needs a share image: a page-level openGraph replaces the parent's").not.toBeNull();
-    expect(og![1], "the share card should come from the manifest").toContain("WISHBONE_ROOM.src");
+    expect(og![1], "the share card should come from the manifest").toContain("studioOgImage(WISHBONE_ROOM)");
     // schema.org photo means "this image depicts this Place", so only room photographs qualify.
     const photoBlock = src.match(/photo:\s*\[([\s\S]*?)\]/);
     expect(photoBlock, "the Place should carry its verified photographs").not.toBeNull();
@@ -372,9 +372,10 @@ test.describe("internal linking is deliberate, not stuffed", () => {
   test("no page links to /studio more than a couple of times", () => {
     // About is allowed one more than the rest: the credentials card plus the single line of
     // FOX5 credit, which points at the coverage on /studio rather than repeating it.
-    const ALLOWANCE: Record<string, number> = { "app/about/page.tsx": 4 };
+    const ALLOWANCE: Record<string, number> = { "app/about/page.tsx": 3 };
     for (const file of LINKERS) {
-      const hits = read(file).match(/\/studio/g) ?? [];
+      // The page path only: "/studio-photos" imports and "/studio-*.jpg" photos are not links to it.
+      const hits = read(file).match(/\/studio(?![-\w])/g) ?? [];
       expect(hits.length, `${file} over-links /studio`).toBeLessThanOrEqual(ALLOWANCE[file] ?? 2);
     }
   });

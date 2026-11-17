@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -7,14 +7,14 @@ import Footer from "@/components/footer";
 export const metadata: Metadata = {
   title: { absolute: "American Mahjong Rules Guide | Las Vegas Mahjong" },
   description:
-    "Complete American Mahjong rules guide by a certified instructor: jokers, the charleston, calling tiles, scoring, dead hands, and more, answered plainly.",
+    "Complete American Mahjong rules guide: jokers, the charleston, calling tiles, scoring, dead hands, and more, answered plainly.",
   alternates: { canonical: "https://www.lasvegasmahj.com/rules" },
   openGraph: {
     ...ogBase,
     title: "American Mahjong Rules Guide | Las Vegas Mahjong",
-    description: "Every common American Mahjong rules question, answered by a certified Oh My Mahjong instructor. Jokers, charleston, scoring, dead hands, and more.",
+    description: "Every common American Mahjong rules question, answered plainly. Jokers, charleston, scoring, dead hands, and more.",
     url: "https://www.lasvegasmahj.com/rules",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
@@ -22,7 +22,7 @@ const schema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
   name: "American Mahjong Rules Guide",
-  description: "Complete American Mahjong rules guide by certified instructor Shauna of Las Vegas Mahjong.",
+  description: "Complete American Mahjong rules guide by Shauna of Las Vegas Mahjong.",
   url: "https://www.lasvegasmahj.com/rules",
   author: { "@type": "Person", "@id": "https://www.lasvegasmahj.com/about#shauna", name: "Shauna", url: "https://www.lasvegasmahj.com/about" },
   publisher: { "@type": "Organization", "@id": "https://www.lasvegasmahj.com/#business", name: "Las Vegas Mahjong", url: "https://www.lasvegasmahj.com" },
@@ -124,18 +124,18 @@ export default function RulesIndexPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
-            <p className="section-label">From a Certified Oh My Mahjong Instructor</p>
+            <p className="section-label">Every Common Question, Answered</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.2rem, 7vw, 4.5rem)", marginBottom: "1.5rem" }}>
               American Mahjong <span className="accent-pink">Rules Guide</span>
             </h1>
             <p style={{ fontSize: "1.1rem", color: "rgba(255,255,255,0.7)", maxWidth: "600px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
               Real answers to the questions that come up mid-game. Written the way I&rsquo;d answer them at the table: no ambiguity, no legalese.
             </p>
-            <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)", maxWidth: "500px", margin: "0 auto" }}>
+            <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.5)", maxWidth: "500px", margin: "0 auto" }}>
               Based on American Mahjong played with the NMJL card. Rules are updated annually when the new card releases.
             </p>
           </div>
@@ -166,7 +166,7 @@ export default function RulesIndexPage() {
                   <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.88rem", lineHeight: 1.6, margin: 0 }}>
                     {cat.desc}
                   </p>
-                  <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.75rem", marginTop: "1rem", marginBottom: 0 }}>
+                  <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.75rem", marginTop: "1rem", marginBottom: 0 }}>
                     {cat.count} questions &rarr;
                   </p>
                 </Link>

@@ -103,7 +103,10 @@ test.describe("phone is collected, never published", () => {
   test("validation counts digits rather than enforcing one format", () => {
     const src = readCode(FORM);
     expect(src).toContain("setCustomValidity");
-    expect(src).not.toMatch(/pattern="/);
+    // No format pattern. The one pattern in the form counts digits and is on the field only
+    // until the script has loaded (tests/round3-contact.logic.spec.ts checks its rule).
+    expect(src.match(/\bpattern=/g)).toHaveLength(1);
+    expect(src).toContain("pattern={scriptReady ? undefined : PHONE_PATTERN}");
     // Reproduce the shipped rule and check it against the formats the owner listed.
     const accepts = (v: string) => {
       const d = v.replace(/\D/g, "");

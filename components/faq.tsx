@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: "How long does it take to learn?",
-    a: "Most people feel comfortable playing after just one 2\u20133 hour lesson. You won\u2019t be an expert overnight, but you\u2019ll know enough to sit down and play , and that\u2019s when the real fun starts.",
+    a: "Start with MAHJ101 and build your skills through practice and our follow-on classes.",
   },
   {
     q: "Where do you hold classes and events?",
@@ -73,19 +73,28 @@ export default function FAQ() {
         </div>
 
         <div className="faq-list reveal">
+          {/* The button carries the keyboard and screen reader semantics; its click bubbles to
+              the item, so a click anywhere on an item still toggles it as before. */}
           {faqs.map((faq, i) => (
             <div
               key={faq.q}
               className={`faq-item ${openIndex === i ? "faq-open" : ""}`}
               onClick={() => setOpenIndex(openIndex === i ? null : i)}
             >
-              <div className="faq-question">
-                <h3>{faq.q}</h3>
-                <span className="faq-toggle">
-                  {openIndex === i ? "\u2212" : "+"}
-                </span>
-              </div>
-              <div className="faq-answer">
+              <h3 className="faq-heading">
+                <button
+                  type="button"
+                  className="faq-question"
+                  aria-expanded={openIndex === i}
+                  aria-controls={`faq-answer-${i}`}
+                >
+                  <span className="faq-question-text">{faq.q}</span>
+                  <span className="faq-toggle" aria-hidden="true">
+                    {openIndex === i ? "\u2212" : "+"}
+                  </span>
+                </button>
+              </h3>
+              <div className="faq-answer" id={`faq-answer-${i}`}>
                 <p>{faq.a}</p>
               </div>
             </div>

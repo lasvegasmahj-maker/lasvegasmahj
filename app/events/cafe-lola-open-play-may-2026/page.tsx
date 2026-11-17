@@ -18,7 +18,7 @@ const EVENT = {
   imageUrl: "https://www.lasvegasmahj.com/hero-bg.jpg",
   body: [
     "Whether you've been playing for decades or you learned last month, this is the event for you. Open play means no pressure: just show up, pull up a chair, and start playing.",
-    "We had multiple tables running all night at Cafe Lola, one of Las Vegas's most welcoming local spots. Certified Oh My Mahjong instructor Shauna was on hand the whole time for rules questions.",
+    "We had multiple tables running all night at Cafe Lola, one of Las Vegas's most welcoming local spots. Shauna was on hand the whole time for rules questions.",
     "Players of all skill levels joined, from complete beginners to seasoned veterans, which made for a great mix at every table.",
   ],
   whatToKnow: [
@@ -27,7 +27,7 @@ const EVENT = {
     "Come solo or bring friends. Solo players will be paired at a table.",
     "Arrive a few minutes early to get settled and meet your tablemates.",
     "Tickets must be purchased in advance. No walk-ins guaranteed.",
-    "Hosted by Shauna, certified Oh My Mahjong instructor.",
+    "Hosted by Shauna.",
   ],
   recapBody: [
     "This event has passed. Check the events page for upcoming open play sessions.",

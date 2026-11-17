@@ -30,7 +30,7 @@ function readCode(rel: string) {
 
 // Every page that tags its /contact CTAs, and the slug each one must use.
 const TAGGED_PAGES: Record<string, { slug: string; count: number }> = {
-  "app/mahjong-corporate-las-vegas/page.tsx": { slug: "corporate", count: 2 },
+  "app/mahjong-corporate-las-vegas/page.tsx": { slug: "corporate", count: 3 },
   "app/corporate-team-building-las-vegas/page.tsx": { slug: "team-building", count: 2 },
   "app/conference-activities-las-vegas/page.tsx": { slug: "conference", count: 2 },
   "app/convention-activities-las-vegas/page.tsx": { slug: "convention", count: 2 },
@@ -42,6 +42,15 @@ const TAGGED_PAGES: Record<string, { slug: string; count: number }> = {
   "app/corporate-event-activities-las-vegas/page.tsx": { slug: "corporate-activities", count: 2 },
   "app/incentive-group-activities-las-vegas/page.tsx": { slug: "incentive", count: 2 },
   "app/trade-show-booth-activities-las-vegas/page.tsx": { slug: "trade-show", count: 2 },
+  // Added 2026-11-12 with the owner's approval: each local lesson page now explains the
+  // three ways to learn, and its inquiry links are for a lesson at a home or venue.
+  "app/mahjong-lessons-summerlin/page.tsx": { slug: "summerlin", count: 2 },
+  "app/mahjong-lessons-henderson/page.tsx": { slug: "henderson", count: 2 },
+  // The schedule's "Private & Parties" card had no next step until 2026-11-12.
+  "app/schedule/page.tsx": { slug: "schedule", count: 1 },
+  // 2026-11-13: the lessons page's chooser asks about a lesson at a home or venue, and that
+  // inquiry should name the page it came from. A text link, so the page still has no /contact button.
+  "app/mahjong-lessons-las-vegas/page.tsx": { slug: "lessons", count: 1 },
 };
 
 // The nav and the footer are deliberately left bare. They are one shared component each,
@@ -73,8 +82,10 @@ function homeClientImports() {
   return [...src.matchAll(/from "@\/(components\/[a-z-]+)"/g)].map((m) => `${m[1]}.tsx`);
 }
 
+// Matches a JSX attribute (href="...") and a link declared as data (href: "..."), which is
+// how the schedule page's cards carry theirs.
 function contactHrefs(rel: string) {
-  return [...read(rel).matchAll(/href="(\/contact[^"]*)"/g)].map((m) => m[1]);
+  return [...read(rel).matchAll(/href(?:=|:\s*)"(\/contact[^"]*)"/g)].map((m) => m[1]);
 }
 
 test.describe("source attribution vocabulary", () => {
@@ -84,7 +95,7 @@ test.describe("source attribution vocabulary", () => {
     // Bidirectional: a slug the CTAs never use is dead code, and a slug the form does not
     // know silently degrades that page's leads to "General".
     expect(inForm).toEqual(inCtas);
-    expect(inForm).toHaveLength(12);
+    expect(inForm).toHaveLength(16);
   });
 
   test("every honoured slug is lowercase, hyphenated and URL safe", () => {
@@ -113,7 +124,9 @@ test.describe("source attribution vocabulary", () => {
       // A prefill that is not an option would render the required select as blank.
       expect(types, `${label} prefills an inquiry type that does not exist`).toContain(inquiry);
     }
-    expect(prefills, "the ten commercial pages prefill").toBe(10);
+    // The Summerlin and Henderson pages joined on 2026-11-12, and the lessons page on
+    // 2026-11-13: each inquiry link is for a lesson at a home or venue, which is a private lesson.
+    expect(prefills, "the ten commercial pages and the three lesson pages prefill").toBe(13);
   });
 
   test("the studio slug attributes without touching the visitor's inquiry choice", () => {
@@ -257,8 +270,11 @@ test.describe("form fields", () => {
     const src = readCode(FORM);
     expect(src).toContain("validatePhone");
     expect(src).toContain("setCustomValidity");
-    // A brittle pattern attribute would reject formats the owner explicitly wants accepted.
-    expect(src).not.toMatch(/pattern="/);
+    // A format pattern would reject ways of writing a number the owner explicitly wants
+    // accepted. The one pattern allowed counts digits, and the field carries it only until
+    // the script has loaded, when validatePhone takes over.
+    expect(src.match(/\bpattern=/g)).toHaveLength(1);
+    expect(src).toContain("pattern={scriptReady ? undefined : PHONE_PATTERN}");
   });
 
   test("autocomplete helps with name, email and phone only", () => {
@@ -291,6 +307,30 @@ test.describe("delivery path is unchanged", () => {
     // forwarding them. A _gotcha honeypot in particular answers 200 for a discarded
     // submission, which would show the visitor "Message Sent!" for a lead that vanished.
     expect(read(FORM)).not.toMatch(/name="_/);
+  });
+
+  test("a submit made before the script loads goes to the same endpoint", () => {
+    // The fetch and the form's own action must name one address, or the early submit and
+    // the scripted one could deliver to different places.
+    const src = read(FORM);
+    expect(src).toContain("fetch(FORMSPREE, {");
+    expect(src).toContain('<form method="post" action={FORMSPREE} onSubmit={handleSubmit}>');
+    expect(src.match(/formspree\.io/g)).toHaveLength(1);
+  });
+
+  test("the phone rule the browser applies by itself agrees with the scripted one", () => {
+    // Before the script loads only HTML attributes guard the form, and "required" accepts
+    // spaces. Browsers compile a pattern attribute whole-value, with the v flag. The first
+    // five are the ways of writing a number the owner asked to have accepted.
+    const src = read(FORM);
+    const pattern = JSON.parse(src.match(/const PHONE_PATTERN = ("[^"\n]+");/)![1]) as string;
+    const rule = new RegExp(`^(?:${pattern})$`, "v");
+    for (const ok of ["7025551212", "702-555-1212", "(702) 555-1212", "+1 702 555 1212", "702.555.1212", "123456789012345"]) {
+      expect(rule.test(ok), ok).toBe(true);
+    }
+    for (const bad of ["   ", "5", "555-0123", "call me", "1234567890123456"]) {
+      expect(rule.test(bad), JSON.stringify(bad)).toBe(false);
+    }
   });
 
   test("a 200 carrying an errors body is treated as a failure", () => {
@@ -338,7 +378,7 @@ test.describe("protected pages and SEO are untouched", () => {
     }
   });
 
-  test("the homepage and the main lessons page gained no /contact CTA", () => {
+  test("the homepage and the main lessons page gained no /contact button", () => {
     // app/page.tsx is an eleven line shell that renders <HomeClient />, so asserting against
     // it would pass no matter what shipped. Walk what the homepage actually renders instead.
     // Nav and footer are shared chrome and link to /contact on every page by design, so the

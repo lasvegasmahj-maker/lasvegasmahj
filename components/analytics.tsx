@@ -1,21 +1,26 @@
 import Script from "next/script";
+import TrackClicks from "@/components/track-clicks";
 
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
-const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
+// The owner chose the direct GA4 tag on 2026-11-13. A Tag Manager container set up
+// alongside it would count every visit twice, so Tag Manager loads only without GA4.
+const GTM_ID = GA4_ID ? undefined : process.env.NEXT_PUBLIC_GTM_ID;
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
 // Renders analytics tags only when the matching env var is set. With no env
-// vars configured (current production), every branch is null, so the rendered
-// output and behavior of the site are unchanged. Set the IDs in Vercel to
-// activate, no further code change required.
+// vars configured (current production), every tag branch is null, so no
+// analytics script loads and nothing is sent anywhere. Set the ID in Vercel
+// and redeploy to activate, no further code change required. The privacy page
+// describes GA4 only; a Meta Pixel ID would need that page updated first.
 //
-// Use EITHER GTM (recommended: configure GA4 + Meta Pixel inside the GTM
-// container, set only NEXT_PUBLIC_GTM_ID) OR the direct tags
-// (NEXT_PUBLIC_GA4_ID + NEXT_PUBLIC_META_PIXEL_ID). Avoid setting both GTM and
-// the direct GA4 tag to prevent double-counting.
+// TrackClicks is mounted either way and renders nothing. Its listener returns
+// on its first line until GA4 or GTM has loaded, so it stays inert while no ID
+// is set.
 export function Analytics() {
   return (
     <>
+      <TrackClicks />
+
       {GTM_ID ? (
         <Script id="gtm-init" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`}

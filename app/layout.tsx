@@ -33,12 +33,12 @@ export const metadata: Metadata = {
     template: "%s | Las Vegas Mahjong",
   },
   description:
-    "Certified mahjong lessons, open play, and private parties across Las Vegas, Summerlin, and Henderson. Taught by a certified Oh My Mahjong instructor.",
+    "Mahjong lessons, open play, and private parties across Las Vegas, Summerlin, and Henderson. Beginner classes need no experience.",
   openGraph: {
     title:
       "Las Vegas Mahjong | Lessons, Events & Open Play Across the Valley",
     description:
-      "Join Las Vegas's most vibrant mahjong community. Beginner-friendly lessons, open play events, private parties, corporate team building, leagues & tournaments from Summerlin to Henderson. Certified Oh My Mahjong instructor. No experience needed!",
+      "Join Las Vegas's most vibrant mahjong community. Beginner-friendly lessons, open play events, private parties, corporate team building, leagues & tournaments from Summerlin to Henderson. Beginner classes need no experience.",
     type: "website",
     locale: "en_US",
     url: "https://www.lasvegasmahj.com",
@@ -52,10 +52,10 @@ export const metadata: Metadata = {
         type: "image/jpeg",
       },
       {
-        url: "https://www.lasvegasmahj.com/shauna.jpg",
-        width: 1774,
+        url: "https://www.lasvegasmahj.com/studio-shauna-neon-sign.jpg",
+        width: 1500,
         height: 2000,
-        alt: "Shauna, certified mahjong instructor and founder of Las Vegas Mahjong",
+        alt: "Shauna inside the Las Vegas Mahjong Studio, pointing to a neon sign reading Let's Mahjong on the pink tile-patterned wall",
         type: "image/jpeg",
       },
     ],
@@ -87,15 +87,15 @@ const localBusinessSchema = {
   name: "Las Vegas Mahjong",
   alternateName: "LV Mahjong",
   description:
-    "American Mahjong in Las Vegas, played with the National Mah Jongg League (NMJL) card: lessons from first tile to confident play, Social Open Play, leagues, and private and corporate mahjong experiences. The Las Vegas Mahjong studio is inside Lucky Hare at 8687 W. Sahara Ave., Suite 200. Founded by a certified Oh My Mahjong instructor.",
+    "American Mahjong in Las Vegas, played with the National Mah Jongg League (NMJL) card: lessons from first tile to confident play, Social Open Play, leagues, and private and corporate mahjong experiences. The Las Vegas Mahjong studio is inside Lucky Hare at 8687 W. Sahara Ave., Suite 200. Founded by Shauna in 2025.",
   url: "https://www.lasvegasmahj.com",
   email: "hello@lasvegasmahj.com",
   image: [
     "https://www.lasvegasmahj.com/hero-bg.jpg",
-    "https://www.lasvegasmahj.com/shauna.jpg",
+    "https://www.lasvegasmahj.com/studio-shauna-neon-sign.jpg",
   ],
   currenciesAccepted: "USD",
-  paymentAccepted: "Cash, Credit Card, Venmo",
+  paymentAccepted: "Cash, Credit Card, Venmo, Zelle",
   foundingDate: "2025",
   knowsAbout: [
     "American Mahjong",
@@ -139,11 +139,11 @@ const localBusinessSchema = {
     "@type": "Person",
     "@id": "https://www.lasvegasmahj.com/about#shauna",
     name: "Shauna",
-    jobTitle: "Certified Mahjong Instructor",
+    jobTitle: "Founder and Mahjong Instructor",
     description:
-      "Certified Oh My Mahjong instructor with nearly 18 years of mahjong experience, teaching across the Las Vegas Valley.",
+      "Founder of Las Vegas Mahjong, with nearly 18 years of mahjong experience, teaching across the Las Vegas Valley.",
     url: "https://www.lasvegasmahj.com/about",
-    image: "https://www.lasvegasmahj.com/shauna.jpg",
+    image: "https://www.lasvegasmahj.com/studio-shauna-neon-sign.jpg",
     hasCredential: {
       "@type": "EducationalOccupationalCredential",
       credentialCategory: "certification",
@@ -307,7 +307,7 @@ const cafeLolaEventSchema = {
   "@type": "Event",
   name: "Cafe Lola Open Play Mahjong Party",
   description:
-    "Join Las Vegas Mahjong for an open play mahjong party at Cafe Lola! All skill levels welcome -- come play, meet fellow mahjong lovers, and enjoy a fun evening in Las Vegas. Hosted by certified Oh My Mahjong instructor Shauna.",
+    "Join Las Vegas Mahjong for an open play mahjong party at Cafe Lola! All skill levels welcome. Come play, meet fellow mahjong lovers, and enjoy a fun evening in Las Vegas. Hosted by Shauna.",
   startDate: "2026-05-31T18:00:00-07:00",
   endDate: "2026-05-31T20:00:00-07:00",
   eventStatus: "https://schema.org/EventScheduled",
@@ -330,7 +330,7 @@ const cafeLolaEventSchema = {
   },
   image: [
     "https://www.lasvegasmahj.com/hero-bg.jpg",
-    "https://www.lasvegasmahj.com/shauna.jpg",
+    "https://www.lasvegasmahj.com/studio-shauna-neon-sign.jpg",
   ],
   url: "https://www.lasvegasmahj.com",
   offers: {

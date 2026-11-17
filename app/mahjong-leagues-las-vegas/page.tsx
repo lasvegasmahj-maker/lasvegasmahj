@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, studioOgImage } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import { getLeagues } from "@/lib/schedule";
@@ -24,14 +24,7 @@ export const metadata: Metadata = {
     url: PAGE_URL,
     // A page-level openGraph object replaces the parent's, so without this the share card
     // had no image at all.
-    images: [
-      {
-        url: `https://www.lasvegasmahj.com${PLAYERS_AT_TABLE.src}`,
-        width: PLAYERS_AT_TABLE.width,
-        height: PLAYERS_AT_TABLE.height,
-        alt: PLAYERS_AT_TABLE.alt,
-      },
-    ],
+    images: [studioOgImage(PLAYERS_AT_TABLE)],
   },
 };
 
@@ -52,7 +45,7 @@ export default async function MahjongLeaguesLasVegas() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
             <p className="section-label">Weekly Season Play</p>

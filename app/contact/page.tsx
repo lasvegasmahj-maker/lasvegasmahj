@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_SHAUNA } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import ContactForm from "@/components/contact-form";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description:
       "Questions about mahjong lessons, a private party, or a corporate event in Las Vegas? Send a message and we will get back to you.",
     url: "https://www.lasvegasmahj.com/contact",
-    images: ["https://www.lasvegasmahj.com/shauna.jpg"],
+    images: [OG_SHAUNA],
   },
 };
 
@@ -67,7 +67,7 @@ export default function Contact() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPage).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container" style={{ maxWidth: "760px" }}>

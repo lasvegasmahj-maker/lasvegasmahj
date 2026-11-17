@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import RelatedExperiences from "@/components/related-experiences";
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description:
       "A live American Mahjong table for exhibitors and sponsors: short sessions at the booth, hosted play in your hospitality suite, or hosted play in a sponsored lounge.",
     url: PAGE_URL,
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
@@ -67,7 +67,7 @@ const formats = [
 const faqs = [
   {
     q: "Can a mahjong table fit in a trade show booth?",
-    a: "Yes, if your booth has room for a table and seating. You provide the booth space, table and chairs; we bring the game. Tell us your booth size and layout, and check your show's exhibitor rules for booth activities, and we will suggest the format that fits.",
+    a: "Yes, if your booth has room for a table and seating. We confirm the booth, tables, chairs and setup arrangements when planning your event. Tell us your booth size and layout, and check your show's exhibitor rules for booth activities, and we will suggest the format that fits.",
   },
   {
     q: "How does a booth session work if visitors have never played?",
@@ -75,7 +75,7 @@ const faqs = [
   },
   {
     q: "Can you set up in our hospitality suite?",
-    a: "Yes. Hospitality suites suit longer, hosted play for the clients and prospects you invite. The suite provides the tables and chairs; we bring the game and run it.",
+    a: "Yes. Hospitality suites suit longer, hosted play for the clients and prospects you invite. We bring the game and run it. We confirm the suite, tables, chairs and setup arrangements when planning your event.",
   },
   {
     q: "Can mahjong be part of a sponsorship or experiential marketing activation?",
@@ -83,7 +83,7 @@ const faqs = [
   },
   {
     q: "What do you bring to the show?",
-    a: "The 152-tile American Mahjong sets, racks, current NMJL cards and other game materials, and facilitators matched to the sessions you are running. You provide the space, with tables and chairs set for play.",
+    a: "The 152-tile American Mahjong sets, racks and other game materials, and facilitators matched to the sessions you are running. NMJL card arrangements are confirmed in your quote. We confirm the venue, tables, chairs and setup arrangements when planning your event.",
   },
   {
     q: "How is a trade show activity priced?",
@@ -105,7 +105,7 @@ export default function TradeShowBoothActivitiesLasVegas() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
             <p className="section-label">Exhibitors &middot; Sponsors &middot; Hospitality Suites</p>
@@ -167,7 +167,7 @@ export default function TradeShowBoothActivitiesLasVegas() {
             <ul style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.9, margin: "1.5rem 0 0", paddingLeft: "1.25rem", listStyle: "disc" }}>
               <li>Check your show&rsquo;s exhibitor rules for booth activities and seating.</li>
               <li>Send us your booth size and layout, the show dates, and the hours you want covered.</li>
-              <li>Plan a table and seating in your booth, suite or lounge; we bring the game materials.</li>
+              <li>Plan space for a table and seating in your booth, suite or lounge; we bring the game materials.</li>
               <li>Short sessions suit the booth itself; longer, relaxed play suits a suite or lounge.</li>
               <li>Tell us who you want at the table: walk-up attendees, invited clients, or both.</li>
             </ul>

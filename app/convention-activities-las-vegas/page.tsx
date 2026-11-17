@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import RelatedExperiences from "@/components/related-experiences";
@@ -15,19 +15,21 @@ export const metadata: Metadata = {
     title: "Convention Activities Las Vegas | Las Vegas Mahjong",
     description: "A social mahjong activity for convention groups in Las Vegas: attendee engagement sessions and group downtime at your venue or hotel. Contact for a quote.",
     url: "https://www.lasvegasmahj.com/convention-activities-las-vegas",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
   twitter: {
     card: "summary_large_image",
     title: "Convention Activities Las Vegas | Las Vegas Mahjong",
     description: "A social mahjong activity for convention groups in Las Vegas: attendee engagement sessions and group downtime. Contact for a quote.",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": "https://www.lasvegasmahj.com/convention-activities-las-vegas#service",
+  url: "https://www.lasvegasmahj.com/convention-activities-las-vegas",
   name: "Convention Activities Las Vegas",
   serviceType: "Convention attendee engagement activity",
   description: "Mahjong convention activities and attendee experiences in Las Vegas. A social, hands-on activity for convention organizers and attendee groups.",
@@ -59,10 +61,10 @@ const breadcrumb = {
 };
 
 const faqs = [
-  { q: "Can you handle large convention groups?", a: "Yes. We accommodate large attendee groups and scale the number of facilitators to the headcount so every table gets proper instruction. Tell us your expected numbers and we will build the right setup. Contact us for a quote." },
+  { q: "Can you handle large convention groups?", a: "Yes. We accommodate large attendee groups and scale the number of facilitators to the headcount so every table gets proper instruction. Tell us your expected numbers and we will plan the right setup. Contact us for a quote." },
   { q: "Where can a convention mahjong activity be hosted?", a: "We come to you. We host at the convention venue, your hotel meeting space, an exhibitor suite, or a nearby room you have booked. We work with the space and schedule you already have. Contact us for a quote." },
   { q: "How does mahjong work as a booth draw or attendee engagement activity?", a: "We can run rotating short sessions to keep traffic moving at your booth, or host longer games for group downtime between sessions. It gives attendees a reason to stop, sit down, and connect. Contact us for a quote." },
-  { q: "What is included in a convention mahjong activity?", a: "We bring the mahjong equipment (152-tile American Mahjong sets, racks, and NMJL cards) and provide full instruction and facilitation start to finish. You or your venue provide the space, tables and chairs, and any food or drink you would like." },
+  { q: "What is included in a convention mahjong activity?", a: "We bring the mahjong equipment (152-tile American Mahjong sets, racks and other game materials) and provide full instruction and facilitation start to finish. NMJL card arrangements are confirmed in your quote. We confirm the venue, tables, chairs and setup arrangements when planning your event. You or your venue provide any food or drink you would like." },
   { q: "How much does a convention activity cost?", a: "Convention and group pricing depends on your headcount, format, and schedule, so we build a custom quote for each event. Tell us your dates and expected numbers and we will send pricing. Contact us for a quote." },
   { q: "Do attendees need any mahjong experience?", a: "None at all. Mahjong is approachable for complete beginners, and jokers are wild, which makes early hands forgiving and fun. We start from zero and have groups playing quickly." },
 ];
@@ -75,7 +77,7 @@ export default function ConventionActivitiesLasVegas() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
             <p className="section-label">Conventions · Attendee Engagement · Group Downtime</p>
@@ -138,7 +140,7 @@ export default function ConventionActivitiesLasVegas() {
                 { title: "Attendee Engagement Sessions", desc: "Hosted tables in a meeting room or lounge so attendees can drop in, learn, and play between sessions. A welcoming way to keep your group connected." },
                 { title: "Group Downtime and Receptions", desc: "An evening or afternoon mahjong experience for out-of-town groups. A relaxed alternative to another dinner or another cocktail hour." },
                 { title: "Hosted at Your Venue", desc: "We come to the convention center, your hotel meeting space, an exhibitor suite, or a nearby room you have booked. We work with the space and schedule you have." },
-                { title: "Large-Group Capacity", desc: "We scale facilitators to your headcount so every table gets proper instruction. Tell us your expected numbers and we will build the right setup." },
+                { title: "Large-Group Capacity", desc: "We scale facilitators to your headcount so every table gets proper instruction. Tell us your expected numbers and we will plan the right setup." },
               ].map((item, i) => (
                 <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
                   <div style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--green)", opacity: 0.35, flexShrink: 0, lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</div>

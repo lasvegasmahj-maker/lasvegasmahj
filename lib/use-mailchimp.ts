@@ -8,15 +8,20 @@ export type SubscribeStatus = "idle" | "loading" | "success" | "info" | "error";
 export function useMailchimpSubscribe() {
   const [status, setStatus] = useState<SubscribeStatus>("idle");
   const [message, setMessage] = useState("");
+  // Only an empty field or the route's own format check means the address itself is wrong.
+  // A network or service failure leaves a correct address, which must not be marked invalid.
+  const [invalidEmail, setInvalidEmail] = useState(false);
 
   const subscribe = useCallback(async (email: string) => {
     const trimmed = email.trim();
     if (!trimmed) {
       setStatus("error");
+      setInvalidEmail(true);
       setMessage("Please enter your email.");
       return;
     }
     setStatus("loading");
+    setInvalidEmail(false);
     setMessage("");
     try {
       const res = await fetch("/api/subscribe", {
@@ -45,6 +50,7 @@ export function useMailchimpSubscribe() {
         );
       } else {
         setStatus("error");
+        setInvalidEmail(res.status === 400);
         setMessage(msg.replace(/<[^>]*>/g, "").trim() || "That didn't go through. Please try again.");
       }
     } catch {
@@ -53,5 +59,5 @@ export function useMailchimpSubscribe() {
     }
   }, []);
 
-  return { status, message, subscribe };
+  return { status, message, subscribe, invalidEmail };
 }

@@ -1,27 +1,29 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_SHAUNA } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Mahjong Lessons in Henderson, NV",
   description:
-    "Certified mahjong lessons in Henderson, NV. Oh My Mahjong certified instructor serves Green Valley, Anthem, and all of Henderson.",
+    "Mahjong lessons in Henderson, NV. At our Las Vegas studio, or by request at your home or venue in Henderson, including Green Valley and Anthem.",
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-lessons-henderson" },
   openGraph: {
     ...ogBase,
     title: "Mahjong Lessons in Henderson, NV | Las Vegas Mahjong",
-    description: "Certified mahjong instructor serving Henderson, Nevada. We come to you. Green Valley, Anthem, and all of Henderson.",
+    description: "Mahjong lessons for Henderson, Nevada. Learn at our Las Vegas studio, or by request at your home or venue in Henderson, including Green Valley and Anthem.",
     url: "https://www.lasvegasmahj.com/mahjong-lessons-henderson",
-    images: ["https://www.lasvegasmahj.com/shauna.jpg"],
+    images: [OG_SHAUNA],
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": "https://www.lasvegasmahj.com/mahjong-lessons-henderson#service",
+  url: "https://www.lasvegasmahj.com/mahjong-lessons-henderson",
   name: "Mahjong Lessons Henderson Nevada",
-  description: "Certified American Mahjong lessons in Henderson, Nevada for all skill levels.",
+  description: "American Mahjong lessons. Henderson players can learn at the Las Vegas Mahjong studio inside Lucky Hare, or ask for a lesson at their home or venue in Henderson, Nevada.",
   provider: {
     "@type": "LocalBusiness",
     name: "Las Vegas Mahjong",
@@ -42,9 +44,10 @@ const breadcrumb = {
 };
 
 const faqs = [
-  { q: "Do you teach mahjong lessons in Henderson, Nevada?", a: "Yes. We serve all of Henderson including Green Valley, Anthem, Seven Hills, and MacDonald Ranch. We come to your home, community space, or preferred venue." },
-  { q: "Can I book a mahjong lesson at my Henderson home?", a: "Absolutely. We bring all the equipment and come to you. All you need is a table that seats four people." },
+  { q: "Do you teach mahjong lessons in Henderson, Nevada?", a: "Yes, by request, at your home or venue in Henderson. We do not have a studio in Henderson. Our one location is the studio inside Lucky Hare at 8687 W. Sahara Ave., Suite 200, Las Vegas, where group lessons and open play are held." },
+  { q: "Can I book a mahjong lesson at my Henderson home?", a: "Yes. In-home lessons are available by request. Send us an inquiry through the contact form and tell us where you are, how many people are learning, and a date you have in mind. Contact for pricing." },
   { q: "What type of mahjong do you teach in Henderson?", a: "We teach American Mahjong using the National Mah Jongg League (NMJL) card, the most widely played version in the United States." },
+  { q: "Do I need my own mahjong set for a lesson?", a: "No. We provide the tiles, racks, and NMJL cards." },
 ];
 
 export default function MahjongLessonsHenderson() {
@@ -55,7 +58,7 @@ export default function MahjongLessonsHenderson() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
             <p className="section-label">Henderson, Nevada</p>
@@ -63,7 +66,7 @@ export default function MahjongLessonsHenderson() {
               Mahjong Lessons in <span className="accent-pink">Henderson</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              A certified Oh My Mahjong instructor with 18 years of experience serves all of Henderson, including Green Valley, Anthem, and Seven Hills. We come to you with everything you need. No experience required.
+              We teach at our studio inside Lucky Hare on West Sahara in Las Vegas, and by request at your home or venue in Henderson, including Green Valley and Anthem. Our founder, Shauna, has played American Mahjong for nearly 18 years. No experience required.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/#classes" className="btn-primary">Book a Lesson</a>
@@ -75,29 +78,47 @@ export default function MahjongLessonsHenderson() {
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
           <div className="container" style={{ maxWidth: "760px" }}>
             <p className="section-label">Serving Henderson</p>
-            <h2 className="section-title">We Come to <span className="accent-green">Henderson</span></h2>
-            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
-              Henderson is a city unto itself, with its own strong community culture, incredible neighborhoods, and a population that loves social activities. We&rsquo;ve taught in Green Valley homes, Anthem clubhouses, and community spaces all across the city.
-            </p>
-            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
-              Whether you&rsquo;re a book club looking for something new, a group of neighbors who have always been curious about mahjong, or a friend group ready to learn together, we&rsquo;ll come to you with all the tiles, racks, and instruction you need.
-            </p>
+            <h2 className="section-title">Our Table or <span className="accent-green">Yours</span></h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85 }}>
-              Henderson residents can also join open play at our studio inside Lucky Hare to keep practicing after their first lesson.
+              Our one location is{" "}
+              <a href="/studio" style={{ color: "var(--green)", fontWeight: 600 }}>the studio inside Lucky Hare</a> at 8687 W. Sahara Ave., Suite 200, Las Vegas. There is no Henderson branch. You can learn at the studio in two ways, or ask for a lesson where you are.
+            </p>
+            <div style={{ display: "grid", gap: "1rem", margin: "1.5rem 0" }}>
+              <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "6px", padding: "1.25rem 1.5rem" }}>
+                <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, color: "var(--white)", marginBottom: "0.4rem" }}>Learn with other beginners</h3>
+                <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.95rem", lineHeight: 1.7, margin: 0 }}>
+                  We hold group lessons at the studio, and new players start with Mahj 101. The{" "}
+                  <a href="/schedule" style={{ color: "var(--green)", fontWeight: 600 }}>class schedule</a> lists the dates, and you book your seat online.
+                </p>
+              </div>
+              <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "6px", padding: "1.25rem 1.5rem" }}>
+                <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, color: "var(--white)", marginBottom: "0.4rem" }}>Learn at your own pace</h3>
+                <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.95rem", lineHeight: 1.7, margin: 0 }}>
+                  A private lesson can be one person, or a small closed group you bring yourself. We teach{" "}
+                  <a href="/private-mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>private lessons at the studio</a>.
+                </p>
+              </div>
+            </div>
+            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85 }}>
+              Henderson residents who already know American Mahjong and are comfortable playing independently can also join open play at our studio inside Lucky Hare.
             </p>
           </div>
         </section>
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
           <div className="container" style={{ maxWidth: "780px" }}>
-            <p className="section-label">Neighborhoods We Serve</p>
-            <h2 className="section-title">All of <span className="accent-pink">Henderson</span></h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem", marginTop: "2.5rem" }}>
+            <p className="section-label">Home and Venue Lessons</p>
+            <h2 className="section-title">Where in <span className="accent-pink">Henderson</span>?</h2>
+            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85 }}>
+              Lessons at your home or venue in Henderson are available by request. Whether it is just you, a book club, neighbors, or friends ready to learn together,{" "}
+              <a href="/contact?source=henderson" style={{ color: "var(--green)", fontWeight: 600 }}>send us an inquiry</a> and tell us which part of the city you are in. Contact for pricing.
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem", marginTop: "2rem" }}>
               {["Green Valley", "Anthem", "Seven Hills", "MacDonald Ranch", "Black Mountain", "Water Street District", "Whitney Ranch", "Inspirada", "Cadence"].map(n => (
                 <div key={n} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "6px", padding: "1rem", textAlign: "center", color: "rgba(255,255,255,0.7)", fontSize: "0.95rem" }}>{n}</div>
               ))}
             </div>
-            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", marginTop: "1.5rem", textAlign: "center" }}>Don&rsquo;t see your neighborhood? If you&rsquo;re in Henderson, we serve you.</p>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", marginTop: "1.5rem", textAlign: "center" }}>These are parts of Henderson, not studio locations.</p>
           </div>
         </section>
 
@@ -120,7 +141,8 @@ export default function MahjongLessonsHenderson() {
           <div className="container">
             <h2 className="section-title">Book Your <span className="accent-pink">Henderson Lesson</span></h2>
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "480px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
-              Ready to learn mahjong in Henderson? Book a group or private lesson and we&rsquo;ll come to you. We will get back to you.
+              Ready to learn mahjong in Henderson? Start with a class at the studio, or{" "}
+              <a href="/contact?source=henderson" style={{ color: "var(--green)", fontWeight: 600 }}>tell us where you are</a> and ask about a lesson at your home or venue. We will get back to you.
             </p>
             <a href="/#classes" className="btn-primary">Book Now</a>
           </div>

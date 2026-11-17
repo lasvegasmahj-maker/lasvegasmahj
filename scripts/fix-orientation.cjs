@@ -12,15 +12,14 @@ const PUB = path.join(__dirname, "..", "public");
 const DL = path.join(process.env.HOME, "Downloads");
 
 // public file  <-  original source in Downloads
+// lvm-private-game.jpg and lvm-lesson-group.jpg were removed from public/ on the owner's
+// approval (2026-11-15). Listing them here again would write a removed photo back.
 const FIX = [
   { pub: "lvm-teaching-action.jpg", src: path.join(DL, "IMG_5418.jpeg") },
-  { pub: "lvm-private-game.jpg", src: path.join(DL, "IMG_4930.jpeg") },
 ];
 const ALL_PUB = [
-  "lvm-lesson-group.jpg",
   "lvm-teaching-action.jpg",
   "lvm-community-group.jpg",
-  "lvm-private-game.jpg",
   "lvm-social-toast.jpg",
 ];
 

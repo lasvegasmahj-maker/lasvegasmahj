@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { SHAUNA_NEON } from "@/lib/studio-photos";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_SHAUNA } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "About Shauna | Certified Mahjong Instructor",
+  title: "About Shauna",
   description:
-    "Meet Shauna, a certified Oh My Mahjong instructor with 18 years of playing experience. Her teaching style, her story, and why she started Las Vegas Mahjong.",
+    "Meet Shauna, who has played American Mahjong for nearly 18 years. Her teaching style, her story, and why she started Las Vegas Mahjong.",
   alternates: { canonical: "https://www.lasvegasmahj.com/about" },
   openGraph: {
     ...ogBase,
     title: "About Shauna | Las Vegas Mahjong",
-    description: "A certified Oh My Mahjong instructor with 18 years of experience, a passion for teaching, and a community built one tile at a time.",
+    description: "18 years at the mahjong table, a passion for teaching, and a community built one tile at a time.",
     url: "https://www.lasvegasmahj.com/about",
-    images: ["https://www.lasvegasmahj.com/shauna.jpg"],
+    images: [OG_SHAUNA],
   },
 };
 
@@ -24,19 +24,21 @@ const jsonLd = {
   "@type": "Person",
   "@id": "https://www.lasvegasmahj.com/about#shauna",
   name: "Shauna",
-  jobTitle: "Certified Mahjong Instructor",
-  description: "A certified Oh My Mahjong instructor with 18 years of American Mahjong playing experience.",
+  jobTitle: "Founder and Mahjong Instructor",
+  description: "Founder of Las Vegas Mahjong, with 18 years of American Mahjong playing experience.",
   url: "https://www.lasvegasmahj.com/about",
-  image: "https://www.lasvegasmahj.com/shauna.jpg",
-  sameAs: [
-    "https://www.instagram.com/lasvegasmahjong",
-    "https://www.tiktok.com/@lasvegasmahjong",
-  ],
+  image: "https://www.lasvegasmahj.com/studio-shauna-neon-sign.jpg",
   worksFor: {
     "@type": "LocalBusiness",
     "@id": "https://www.lasvegasmahj.com/#business",
     name: "Las Vegas Mahjong",
     url: "https://www.lasvegasmahj.com",
+    // The owner confirmed both are the business's accounts, not personal ones, so they
+    // are declared on the business and never as the Person's own sameAs.
+    sameAs: [
+      "https://www.instagram.com/lasvegasmahjong",
+      "https://www.tiktok.com/@lasvegasmahjong",
+    ],
   },
   knowsAbout: "American Mahjong, NMJL card, mahjong instruction, mahjong events",
 };
@@ -51,10 +53,9 @@ const breadcrumb = {
 };
 
 const CREDENTIALS: { icon: string; title: string; desc: string; href?: string }[] = [
-  { icon: "🏅", title: "Certified Instructor", desc: "I hold a certification from Oh My Mahjong, one of the leading American Mahjong companies." },
   { icon: "🀄", title: "18 Years Playing", desc: "Nearly two decades at the mahjong table means I've seen every type of hand, every learning style, and every common mistake. I know exactly where players get stuck at any level and how to get them moving again." },
   { icon: "🌟", title: "Beginner to Advanced", desc: "I start complete beginners from zero, then build real strategy through MAHJ102 and MAHJ103 until you know all the rules and can play confidently on your own." },
-  { icon: "📍", title: "A Home for the Game", href: "/studio", desc: "My studio inside Lucky Hare in Las Vegas is home base for group lessons and open play. Prefer a private lesson at your home or venue? I can travel across Summerlin, Henderson, and the greater Valley for an added fee." },
+  { icon: "📍", title: "A Home for the Game", href: "/studio", desc: "My studio inside Lucky Hare in Las Vegas is home base for group lessons and open play. Prefer a private lesson at your home or venue? That is available by request across Summerlin, Henderson, and the greater Valley." },
   { icon: "👥", title: "Hundreds Taught", desc: "I've taught hundreds of people to play across the Las Vegas Valley, from one-on-one beginners and group classes to birthday parties and corporate team-building events." },
   { icon: "🎉", title: "Open Play & Events", desc: "Once you can play on your own, my open plays and events are where you keep the game going: meet new people, have fun, and play for prizes. Come to one, or hire me to host an event for your group." },
 ];
@@ -66,16 +67,16 @@ export default function About() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container" style={{ maxWidth: "800px" }}>
-            <p className="section-label">Certified Oh My Mahjong Instructor · Hundreds of Students Taught</p>
+            <p className="section-label">Mahjong Teacher · Hundreds of Students Taught</p>
             <h1 className="section-title" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", marginBottom: "1.5rem" }}>
               Meet <span className="accent-pink">Shauna</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", lineHeight: 1.75 }}>
-              Founder of Las Vegas Mahjong. Certified Oh My Mahjong instructor. 18 years at the table, and counting.
+              Founder of Las Vegas Mahjong. 18 years at the table, and counting.
             </p>
           </div>
         </section>
@@ -123,9 +124,9 @@ export default function About() {
         {/* CREDENTIALS */}
         <section style={{ padding: "5rem 2rem", background: "var(--navy-dark)" }}>
           <div className="container" style={{ maxWidth: "780px" }}>
-            <p className="section-label">Credentials</p>
+            <p className="section-label">Experience</p>
             <h2 className="section-title">Why Work <span className="accent-pink">With Me</span></h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
+            <div className="about-experience-grid">
               {CREDENTIALS.map(item => (
                 <div key={item.title} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
                   <div style={{ fontSize: "1.8rem", marginBottom: "0.6rem" }}>{item.icon}</div>
@@ -151,7 +152,7 @@ export default function About() {
             <p className="section-label">Teaching Style</p>
             <h2 className="section-title">Patient. Clear. <span className="accent-green">Fun.</span></h2>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
-              I keep groups small on purpose. For group lessons, I work with 3 to 8 students max, which means everyone gets hands-on time, real feedback, and the chance to actually play rather than just watch.
+              I keep groups small on purpose. For group lessons, I work with 4 to 8 students max, which means everyone gets hands-on time, real feedback, and the chance to actually play rather than just watch.
             </p>
             <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.85, marginBottom: "1rem" }}>
               My approach is simple: no overwhelming rule dumps, no assuming you&rsquo;ve done any research beforehand, and no making anyone feel silly for asking the same question twice. Mahjong is a game. Games are supposed to be fun. My job is to make sure it feels that way from the first tile.
@@ -190,11 +191,10 @@ export default function About() {
                 { name: "Tamar", text: "I was on the verge of giving up on learning to play Mahjong. Then Shauna taught me. I got it straight away, after having tried for months. If it wasn't for Shauna, I wouldn't be playing Mahjong today and LOVING it!" },
                 { name: "Sabrina", text: "I had such a great time learning Mahjong with Shauna! She's an amazing teacher, super patient, clear in her explanations, and she makes the whole experience really fun. Highly recommend!" },
                 { name: "Molly", text: "If you need a mahjong lesson (or 5) @lasvegasmahjong is your woman. Amazing teacher." },
-                { name: "Kristi, Northmarq", text: "We worked with Shauna for a corporate event in early 2026. Shauna was easy to work with and her team was engaging with all of our guests. We got some of the best guest feedback we've ever received from this event." },
               ].map(t => (
                 <div key={t.name} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
                   <p style={{ color: "rgba(255,255,255,0.75)", lineHeight: 1.75, fontStyle: "italic", marginBottom: "1rem" }}>&ldquo;{t.text}&rdquo;</p>
-                  <div style={{ fontFamily: "var(--font-nav)", fontSize: "0.85rem", color: "var(--pink)", fontWeight: 700 }}>{t.name}</div>
+                  <div style={{ fontFamily: "var(--font-nav)", fontSize: "0.85rem", color: "var(--pink-light)", fontWeight: 700 }}>{t.name}</div>
                 </div>
               ))}
             </div>

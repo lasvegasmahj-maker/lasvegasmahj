@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import RelatedExperiences from "@/components/related-experiences";
@@ -14,19 +14,21 @@ export const metadata: Metadata = {
     title: "Conference Activities in Las Vegas | Mahjong Networking Break",
     description: "A mahjong break-out and networking activity for conference attendees in Las Vegas, set up in your hotel meeting room or ballroom. Contact for a quote.",
     url: "https://www.lasvegasmahj.com/conference-activities-las-vegas",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
   twitter: {
     card: "summary_large_image",
     title: "Conference Activities in Las Vegas | Mahjong Networking Break",
     description: "A mahjong break-out and networking activity for conference attendees in Las Vegas, set up in your hotel meeting room or ballroom. Contact for a quote.",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": "https://www.lasvegasmahj.com/conference-activities-las-vegas#service",
+  url: "https://www.lasvegasmahj.com/conference-activities-las-vegas",
   name: "Conference Activities Las Vegas",
   serviceType: "Conference networking activity",
   description: "A mahjong networking and break-out activity for conferences and conference attendee groups in Las Vegas. Runs in a hotel meeting room, ballroom or on-site venue, no experience needed.",
@@ -60,7 +62,7 @@ const breadcrumb = {
 const faqs = [
   { q: "Can a mahjong activity work for a large conference group?", a: "Yes. We add facilitators to match your headcount so every table gets proper instruction and stays engaged. Contact us with your numbers for a quote." },
   { q: "Do our attendees need any mahjong experience?", a: "None at all. We teach the game from zero and have people playing real hands within the first session, so it works for a room of total beginners and mixed skill levels alike." },
-  { q: "Can you run this in our hotel meeting room or on-site?", a: "Yes. We come to your hotel meeting room, ballroom, breakout space, or on-site venue. The venue provides the space, tables and chairs; we bring the tiles, racks, NMJL cards and game materials, set up the game, and facilitate the activity from start to finish." },
+  { q: "Can you run this in our hotel meeting room or on-site?", a: "Yes. We come to your hotel meeting room, ballroom, breakout space, or on-site venue. We confirm the venue, tables, chairs and setup arrangements when planning your event. We bring the tiles, racks and other game materials, set up the game, and facilitate the activity from start to finish. NMJL card arrangements are confirmed in your quote." },
   { q: "How long does a conference mahjong activity run?", a: "Most run 60 to 90 minutes as a break-out or networking session, and we can shorten or extend to fit your agenda. Tell us your time slot and we will tailor the format." },
   { q: "Why is mahjong a good conference networking activity?", a: "Four people at a small table, learning something new together, naturally start talking. It breaks the ice faster than a reception and gives out-of-town attendees a shared experience to remember." },
   { q: "How much does a conference mahjong activity cost?", a: "Pricing depends on group size, format, and length, so we put together a custom proposal. Contact us and we will follow up with a quote." },
@@ -74,7 +76,7 @@ export default function ConferenceActivitiesLasVegas() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
             <p className="section-label">Conferences · Networking · General Sessions</p>
@@ -122,7 +124,7 @@ export default function ConferenceActivitiesLasVegas() {
                 { title: "Conference Reception Activity", desc: "Run a session during a welcome reception or evening social. Guests rotate through, learn the game, and connect over something more engaging than small talk." },
                 { title: "Exhibit Booth Draw", desc: "A live demo table at your booth pulls attendees in and gives your team a natural reason to start conversations. A standout way to drive booth traffic." },
                 { title: "Out-of-Town Group Activity", desc: "Hosting an incoming group in Las Vegas? A guided mahjong session gives visiting attendees a uniquely local, social experience without leaving the property." },
-                { title: "Large Meeting or General Session", desc: "For big groups, the venue sets the room with tables and we bring a team of facilitators so every attendee gets hands-on instruction at the same time." },
+                { title: "Large Meeting or General Session", desc: "For big groups, we bring a team of facilitators so every attendee gets hands-on instruction at the same time." },
               ].map((item, i) => (
                 <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
                   <div style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", color: "var(--green)", opacity: 0.35, flexShrink: 0, lineHeight: 1 }}>{String(i + 1).padStart(2, "0")}</div>
@@ -134,7 +136,7 @@ export default function ConferenceActivitiesLasVegas() {
               ))}
             </div>
             <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: "2.5rem" }}>
-              Every format includes the mahjong equipment (152-tile American sets, racks, and current NMJL cards), game setup, and full facilitation from start to finish. Your venue provides the room, tables and chairs, and any food or drink you would like. Want a deeper look at how we run company events? See our{" "}
+              Every format includes the mahjong equipment (152-tile American sets, racks and other game materials), game setup, and full facilitation from start to finish. NMJL card arrangements are confirmed in your quote. We confirm the venue, tables, chairs and setup arrangements when planning your event. Your venue provides any food or drink you would like. Want a deeper look at how we run company events? See our{" "}
               <a href="/mahjong-corporate-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>corporate mahjong events</a> page. Exhibiting at the show and want a game at your booth? See{" "}
               <a href="/trade-show-booth-activities-las-vegas" className="accent-green" style={{ textDecoration: "underline" }}>trade show booth activities</a>.
             </p>

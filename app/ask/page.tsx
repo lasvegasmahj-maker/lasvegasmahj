@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import AskClient from "./ask-client";
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     description:
       "Have an American Mahjong rules question? Ask Las Vegas Mahjong and get a clear, direct answer based on National Mah Jongg League rules.",
     url: "https://www.lasvegasmahj.com/ask",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 

@@ -2,7 +2,7 @@
 
 **Scope:** every route on `main` at `d7a8212` (after PR #124). Technical SEO only: no new pages,
 no copy or keyword rewrites, no pricing or business facts, no Bookwhen changes, no photo swaps.
-**Fix PR:** branch `seo/technical-audit-2026-10`, PR #126 (open, NOT merged). Rebased on
+**Fix PR:** branch `seo/technical-audit-2026-10`, PR #126 (MERGED 2026-10-05 17:49 UTC as `089a729`). Rebased on
 2026-10-05 onto `main` at `599e5f7`, after PR #127 and PR #125 merged, and re-verified there.
 **Related, merged before this PR:** PR #127 (the CI guard fix this audit found, shipped on its
 own) and PR #125 (Round 8, stale and unsourced claims on the homepage, footer, Summerlin,

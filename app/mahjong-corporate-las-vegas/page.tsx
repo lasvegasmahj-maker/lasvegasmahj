@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import RelatedExperiences from "@/components/related-experiences";
@@ -15,22 +15,24 @@ export const metadata: Metadata = {
     title: "Corporate Mahjong Events in Las Vegas | Las Vegas Mahjong",
     description: "Corporate mahjong events in Las Vegas for company events, meetings and conventions, hosted and facilitated at your office, hotel or venue. Contact for a custom quote.",
     url: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
   twitter: {
     card: "summary_large_image",
     title: "Corporate Mahjong Events in Las Vegas | Las Vegas Mahjong",
     description: "Corporate mahjong events in Las Vegas for company events, meetings and conventions, hosted and facilitated at your office, hotel or venue. Contact for a quote.",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas#service",
+  url: "https://www.lasvegasmahj.com/mahjong-corporate-las-vegas",
   name: "Corporate Mahjong Events Las Vegas",
   serviceType: "Corporate mahjong event hosting",
-  description: "Corporate mahjong events in Las Vegas for company events, employee events, client entertainment and meeting or convention groups, hosted and facilitated at the client's office, hotel or venue, with all tiles, racks, NMJL cards and instruction provided.",
+  description: "Corporate mahjong events in Las Vegas for company events, employee events, client entertainment and meeting or convention groups, hosted and facilitated at the client's office, hotel or venue, with mahjong equipment and instruction provided. NMJL card arrangements are confirmed in your quote.",
   provider: {
     "@type": "LocalBusiness",
     name: "Las Vegas Mahjong",
@@ -53,12 +55,60 @@ const breadcrumb = {
 
 const faqs = [
   { q: "How large of a corporate group can you accommodate?", a: "Send your expected headcount with your inquiry, and we will staff the event with enough facilitators for every table." },
-  { q: "What's included in a corporate mahjong event?", a: "We provide the mahjong equipment and game materials (tiles, racks and NMJL cards), full instruction, and facilitation from start to finish, and we set up and clear the game. Your venue provides the event space, tables and chairs, and any food or drink you would like." },
+  { q: "What's included in a corporate mahjong event?", a: "We provide the mahjong equipment (152-tile American Mahjong sets, racks and other game materials), full instruction, and facilitation from start to finish, and we set up and clear the game. NMJL card arrangements are confirmed in your quote. Your venue provides the event space and any food or drink you would like. We confirm the venue, tables, chairs and setup arrangements when planning your event." },
   { q: "How long does a corporate mahjong event run?", a: "Typical events run 2-3 hours. We can customize the duration based on your schedule and what fits your team's energy." },
-  { q: "Can you host at our office or hotel meeting room?", a: "Yes. We come to wherever your team is: your office, a hotel conference space, a restaurant private room, or a corporate venue. As long as the room is set with tables and chairs for the group, we bring the rest of the game." },
-  { q: "Can you plan a mahjong experience for an incentive trip or a visiting company group?", a: "Yes. Send us your dates, headcount and where your group is staying, and we will build a mahjong experience around your program. We come to your hotel meeting space or venue and bring all the mahjong equipment. Partner and referral arrangements are available for DMCs and event professionals. Contact us to discuss your program." },
-  { q: "Do you do charity mahjong events?", a: "We do. Charity mahjong events, fundraiser tournaments and cause-based gatherings can be built around your organization's goals. Contact us to discuss your needs." },
+  { q: "Can you host at our office or hotel meeting room?", a: "Yes. We come to wherever your team is: your office, a hotel conference space, a restaurant private room, or a corporate venue. We bring the mahjong equipment and teach the game." },
+  { q: "Can you plan a mahjong experience for an incentive trip or a visiting company group?", a: "Yes. Send us your dates, headcount and where your group is staying, and we will build a mahjong experience around your program. We come to your hotel meeting space or venue and bring the mahjong equipment. Partner and referral arrangements are available for DMCs and event professionals. Contact us to discuss your program." },
+  { q: "Do you do charity mahjong events?", a: "We do. Charity mahjong events and cause-based gatherings can be built around your organization's goals. Contact us to discuss your needs." },
   { q: "How do we book a corporate mahjong event?", a: "Send us your date, venue, headcount and the time slot through the contact form. We will suggest a format that fits and follow up with a custom quote." },
+];
+
+const glance = [
+  {
+    title: "What It Involves",
+    color: "var(--white)",
+    border: "rgba(255,255,255,0.08)",
+    items: [
+      "We teach the game from the first tile, so no one needs experience.",
+      "Guests play four to a table while facilitators matched to your headcount keep every table going.",
+      "Typical events run 2-3 hours. Networking sessions and breakouts usually run 60 to 90 minutes. We tailor the length to your agenda.",
+    ],
+  },
+  {
+    title: "Who It Suits",
+    color: "var(--white)",
+    border: "rgba(255,255,255,0.08)",
+    items: [
+      "Company teams, departments and offsites",
+      "Client entertainment and employee appreciation",
+      "Meeting, conference and convention groups",
+      "Incentive trips and visiting company groups",
+      "Holiday parties and charity fundraisers",
+      "Mixed rooms of first-timers and experienced players",
+    ],
+  },
+  {
+    title: "What We Provide",
+    color: "var(--green)",
+    border: "rgba(57,230,57,0.25)",
+    items: [
+      "152-tile American Mahjong sets, racks and other game materials for every table",
+      "Instruction from the very first tile",
+      "Facilitators matched to your headcount",
+      "Setting up and clearing the game",
+    ],
+    note: "NMJL card arrangements are confirmed in your quote.",
+  },
+  {
+    title: "What Your Venue Provides",
+    color: "var(--white)",
+    border: "rgba(233,30,140,0.25)",
+    items: [
+      "The event space, such as your office, a hotel meeting room, a ballroom or a hospitality suite",
+      "Any food or drink you would like",
+    ],
+    note: "We confirm the venue, tables, chairs and setup arrangements when planning your event.",
+  },
 ];
 
 export default function MahjongCorporateLasVegas() {
@@ -69,7 +119,7 @@ export default function MahjongCorporateLasVegas() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(f => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
             <p className="section-label">Corporate Events · Planners · Group Programs</p>
@@ -77,29 +127,43 @@ export default function MahjongCorporateLasVegas() {
               Corporate Mahjong Events in <span className="accent-green">Las Vegas</span>
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "640px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              From corporate events and employee events to meeting and convention groups, Las Vegas Mahjong brings a facilitated, portable American Mahjong experience to hotels, conference rooms, ballrooms, corporate venues, hospitality suites, private rooms and offsite events across Las Vegas. We provide the mahjong equipment, game materials and instruction; your venue provides the event space, tables and chairs.
+              From corporate events and employee events to meeting and convention groups, Las Vegas Mahjong brings a facilitated, portable American Mahjong experience to hotels, conference rooms, ballrooms, corporate venues, hospitality suites, private rooms and offsite events across Las Vegas. We provide the mahjong equipment, game materials and instruction.
             </p>
             <a href="/contact?source=corporate" className="btn-primary">Request a Quote</a>
           </div>
         </section>
 
         <section style={{ padding: "5rem 2rem", background: "var(--navy)" }}>
-          <div className="container" style={{ maxWidth: "780px" }}>
-            <p className="section-label">What We Provide</p>
-            <h2 className="section-title">What We Bring to <span className="accent-pink">Your Event</span></h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
-              {[
-                { icon: "🀄", title: "Sets, Racks and Cards", desc: "152-tile American Mahjong sets, racks and current NMJL cards for every table, with the rest of the game materials." },
-                { icon: "🎓", title: "Instruction From Zero", desc: "We teach the game from the first tile, so no one needs experience to take part." },
-                { icon: "🤝", title: "Facilitation at Every Table", desc: "Facilitators matched to your headcount keep every table playing from the first hand to the last." },
-                { icon: "📋", title: "A Format for Your Program", desc: "Length, format and level of competition set around your agenda, from a short session to an evening social." },
-              ].map(item => (
-                <div key={item.title} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "1.8rem" }}>
-                  <div style={{ fontSize: "1.8rem", marginBottom: "0.6rem" }}>{item.icon}</div>
-                  <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.4rem" }}>{item.title}</h3>
-                  <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
+          <div className="container" style={{ maxWidth: "1040px" }}>
+            <p className="section-label">For Planners</p>
+            <h2 className="section-title">Corporate Mahjong <span className="accent-pink">at a Glance</span></h2>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(400px, 100%), 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
+              {glance.map(card => (
+                <div key={card.title} style={{ background: "rgba(255,255,255,0.03)", border: `1px solid ${card.border}`, borderRadius: "8px", padding: "1.8rem" }}>
+                  <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.75rem", color: card.color }}>{card.title}</h3>
+                  <ul style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.95rem", lineHeight: 1.7, margin: 0, paddingLeft: "1.1rem", listStyle: "disc" }}>
+                    {card.items.map((item, i) => (
+                      <li key={item} style={i > 0 ? { marginTop: "0.4rem" } : undefined}>{item}</li>
+                    ))}
+                  </ul>
+                  {card.note && (
+                    <p style={{ color: "rgba(255,255,255,0.62)", fontSize: "0.9rem", lineHeight: 1.65, margin: "0.9rem 0 0" }}>{card.note}</p>
+                  )}
                 </div>
               ))}
+            </div>
+            <div style={{ marginTop: "1.5rem", background: "rgba(233,30,140,0.08)", border: "1px solid rgba(233,30,140,0.25)", borderRadius: "8px", padding: "1.8rem", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "1.5rem" }}>
+              <div style={{ flex: "1 1 420px", minWidth: 0 }}>
+                <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.5rem" }}>How to Request a Quote</h3>
+                <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "1rem", lineHeight: 1.7, margin: 0 }}>
+                  Send your date, venue, headcount and time slot through the contact form. We suggest a format and follow up with a custom quote.
+                </p>
+                <p style={{ color: "rgba(255,255,255,0.62)", fontSize: "0.9rem", lineHeight: 1.65, margin: "0.6rem 0 0" }}>
+                  Pricing depends on group size, format and length.
+                </p>
+              </div>
+              {/* Narrower side padding on small phones keeps the label on one line inside the padded panel. */}
+              <a href="/contact?source=corporate" className="btn-primary" style={{ padding: "1rem clamp(0.75rem, 4vw, 2.2rem)" }}>Request a Quote</a>
             </div>
           </div>
         </section>
@@ -114,7 +178,7 @@ export default function MahjongCorporateLasVegas() {
                   {[
                     { title: "Tell us about the program", desc: "Share the date, venue, headcount and time slot, and what you want the session to do: connect a team, entertain clients or fill a breakout." },
                     { title: "We shape the format", desc: "We suggest the length and format that fit your agenda and follow up with a custom quote." },
-                    { title: "Your venue sets the room", desc: "The hotel or venue provides the event space, tables and chairs. We arrive with the sets, racks, cards and game materials and set up the game." },
+                    { title: "We confirm the setup", desc: "We confirm the venue, tables, chairs and setup arrangements when planning your event, then arrive with the sets, racks and game materials and set up the game." },
                     { title: "We teach and facilitate", desc: "We teach from the first tile, facilitate every table until the last hand, and clear the game when you are done." },
                   ].map((item, i) => (
                     <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
@@ -152,7 +216,7 @@ export default function MahjongCorporateLasVegas() {
                 { title: "Client Entertainment", desc: "Impress clients with an experience they haven't done before. A private mahjong session is a conversation starter that lasts.", links: [] },
                 { title: "Conference and Convention Groups", desc: "An evening or afternoon session for groups in town for a conference or convention, in a meeting room, ballroom or hospitality suite.", links: [{ href: "/conference-activities-las-vegas", text: "conference activities" }, { href: "/convention-activities-las-vegas", text: "convention activities" }] },
                 { title: "Holiday and Quarterly Parties", desc: "Skip the standard holiday dinner. Give your team an event they'll associate with your company in the best possible way.", links: [] },
-                { title: "Charity and Fundraiser Events", desc: "We partner with nonprofits to produce mahjong fundraisers, tournaments, and awareness events. Custom format for your organization's goals.", links: [] },
+                { title: "Charity and Fundraiser Events", desc: "We partner with nonprofits to produce mahjong fundraisers and awareness events. Custom format for your organization's goals.", links: [] },
                 { title: "Incentive and Visiting Groups", desc: "Hosted sessions for reward trips and company groups visiting Las Vegas, set up at the group's hotel.", links: [{ href: "/incentive-group-activities-las-vegas", text: "incentive group activities" }] },
               ].map((item, i) => (
                 <div key={item.title} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 0", borderBottom: i < 5 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
@@ -209,10 +273,9 @@ export default function MahjongCorporateLasVegas() {
               <div>
                 <p className="section-label">Corporate Testimonial</p>
                 <blockquote style={{ borderLeft: "3px solid var(--green)", paddingLeft: "1.5rem", margin: "2rem 0 0" }}>
-                  <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, fontStyle: "italic", marginBottom: "1rem" }}>
+                  <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.8, fontStyle: "italic", marginBottom: 0 }}>
                     &ldquo;We worked with Shauna for a mahjong-oriented corporate event in early 2026. Shauna was easy to work with and her team was engaging with all of our guests. We got some of the best guest feedback we&rsquo;ve ever received from this event, and we hope to work with Shauna again on a future mahjong social!&rdquo;
                   </p>
-                  <cite style={{ fontFamily: "var(--font-nav)", fontSize: "0.9rem", color: "var(--green)", fontStyle: "normal", fontWeight: 700 }}>Kristi, Northmarq</cite>
                 </blockquote>
               </div>
               <Image

@@ -10,7 +10,7 @@ const eventTypes = [
   {
     icon: "\uD83C\uDFE2",
     title: "Corporate Team Building",
-    desc: "Break the ice and build connections. Mahjong is the perfect mix of strategy and teamwork for any group size.",
+    desc: "Break the ice and build connections. Mahjong is the perfect mix of strategy and teamwork.",
   },
   {
     icon: "\uD83C\uDF82",
@@ -94,7 +94,7 @@ export default function PrivateEvents({ onInquiryOpen }: PrivateEventsProps) {
         <div className="reveal" style={{ textAlign: "center", marginTop: "3rem" }}>
           <p
             style={{
-              color: "rgba(255,255,255,0.5)",
+              color: "rgba(255,255,255,0.55)",
               fontSize: "1rem",
               marginBottom: "1.5rem",
             }}
@@ -103,7 +103,12 @@ export default function PrivateEvents({ onInquiryOpen }: PrivateEventsProps) {
           </p>
           <button
             className="btn-primary"
-            onClick={onInquiryOpen}
+            onClick={(e) => {
+              // Safari does not focus a button on click, and the dialog returns focus to
+              // whatever had it when it opened.
+              e.currentTarget.focus();
+              onInquiryOpen();
+            }}
           >
             Plan Your Event
           </button>

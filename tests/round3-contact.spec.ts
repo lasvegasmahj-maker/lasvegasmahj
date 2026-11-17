@@ -384,3 +384,77 @@ test.describe("the studio page attributes its leads without steering them", () =
     expect(sent.source).toBe("General (nav, footer or direct)");
   });
 });
+
+test.describe("a submit made before the script has loaded", () => {
+  test.use({ javaScriptEnabled: false });
+
+  type Post = { url: string; method: string; fields: Record<string, string> };
+
+  // As everywhere in this file, the route is installed before navigation, so the browser's
+  // own form post is caught here and no message reaches Formspree.
+  async function open(page: Page) {
+    const posts: Post[] = [];
+    await page.route(ENDPOINT, async (route) => {
+      const request = route.request();
+      posts.push({
+        url: request.url(),
+        method: request.method(),
+        fields: Object.fromEntries(new URLSearchParams(request.postData() ?? "")),
+      });
+      await route.fulfill({ status: 200, contentType: "text/html", body: "<title>Intercepted</title><p>Intercepted.</p>" });
+    });
+    await page.goto("/contact?source=corporate");
+    return posts;
+  }
+
+  // Enter on the focused button, not a pointer click: with scripts off, Playwright's click
+  // cannot settle while the page is still smooth-scrolling to the field filled just before.
+  const send = (page: Page) => page.getByRole("button", { name: "Send Message" }).press("Enter");
+
+  test("the browser's own post carries the message to Formspree, not to this site", async ({ page }) => {
+    const posts = await open(page);
+    const postedToThisSite: string[] = [];
+    page.on("request", (request) => {
+      if (request.method() === "POST" && !request.url().startsWith("https://formspree.io/")) postedToThisSite.push(request.url());
+    });
+    await page.fill("#contact-name", "No Script Test");
+    await page.fill("#contact-email", "noscript@example.com");
+    await page.fill("#contact-phone", "(702) 555-0123");
+    await page.selectOption("#contact-inquiry", "Private Lesson");
+    await page.fill("#contact-message", "Sent before the script loaded.");
+    await send(page);
+    await expect(page.getByText("Intercepted.")).toBeVisible();
+
+    expect(posts).toHaveLength(1);
+    expect(posts[0].method).toBe("POST");
+    expect(posts[0].url).toBe("https://formspree.io/f/mwvrnjrb");
+    // The page as served cannot read ?source= yet, so this path reports general traffic.
+    expect(posts[0].fields).toMatchObject({
+      name: "No Script Test",
+      email: "noscript@example.com",
+      phone: "(702) 555-0123",
+      inquiry_type: "Private Lesson",
+      message: "Sent before the script loaded.",
+      source: "General (nav, footer or direct)",
+    });
+    // Formspree reads underscore fields as directives and can discard the message.
+    expect(Object.keys(posts[0].fields).filter((name) => name.startsWith("_"))).toEqual([]);
+    expect(postedToThisSite).toEqual([]);
+    // Nothing the visitor typed is in an address.
+    expect(page.url()).toBe("https://formspree.io/f/mwvrnjrb");
+  });
+
+  test("a phone number we could not call back still stops the submit", async ({ page }) => {
+    const posts = await open(page);
+    for (const phone of ["   ", "555-0123", "call me"]) {
+      await page.fill("#contact-name", "No Script Test");
+      await page.fill("#contact-email", "noscript@example.com");
+      await page.fill("#contact-phone", phone);
+      await page.selectOption("#contact-inquiry", "Private Lesson");
+      await send(page);
+      await expect(page.locator("#contact-phone:invalid"), JSON.stringify(phone)).toHaveCount(1);
+      await expect(page).toHaveURL(/\/contact\?source=corporate$/);
+    }
+    expect(posts).toEqual([]);
+  });
+});

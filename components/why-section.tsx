@@ -58,22 +58,22 @@ export default function WhySection() {
 
           <div className="why-pillars reveal">
             <div className="pillar">
-              <div className="pillar-icon">&#129504;</div>
+              <div className="pillar-icon" aria-hidden="true">&#129504;</div>
               <h3>Brain Health</h3>
               <p>Keep your mind sharp with every hand played.</p>
             </div>
             <div className="pillar">
-              <div className="pillar-icon">&#128155;</div>
+              <div className="pillar-icon" aria-hidden="true">&#128155;</div>
               <h3>Friendship</h3>
               <p>Meet your new favorite people across the table.</p>
             </div>
             <div className="pillar">
-              <div className="pillar-icon">&#126980;</div>
+              <div className="pillar-icon" aria-hidden="true">&#126980;</div>
               <h3>Pure Fun</h3>
               <p>Every game is different. Every session a good time.</p>
             </div>
             <div className="pillar">
-              <div className="pillar-icon">&#127959;&#65039;</div>
+              <div className="pillar-icon" aria-hidden="true">&#127959;&#65039;</div>
               <h3>Vegas Community</h3>
               <p>Built for locals, transplants, visitors and newcomers alike.</p>
             </div>

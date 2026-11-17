@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ogBase } from "@/lib/og";
+import { ogBase, studioOgImage } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
 import { SEVENS_OPEN_PLAY, OPEN_PLAY_PLAYERS } from "@/lib/studio-photos";
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     description:
       "Already play American Mahjong? Book a seat at Social Open Play at the Las Vegas Mahjong studio inside Lucky Hare. Come on your own or bring friends.",
     url: PAGE_URL,
-    images: [`https://www.lasvegasmahj.com${SEVENS_OPEN_PLAY.src}`],
+    images: [studioOgImage(SEVENS_OPEN_PLAY)],
   },
 };
 
@@ -63,7 +63,7 @@ const faqs = [
   },
   {
     q: "How much experience do I need for Open Play?",
-    a: "Open Play is for playing, not a class, and it is for players who already know American Mahjong. If you already play, or have completed Mahj 101, you are ready. If you have never played, start with Mahj 101: it teaches the tiles, how to read the NMJL card and how a hand comes together.",
+    a: "Open Play is for playing, not a class, and it is for players who already know American Mahjong and are comfortable playing independently. If you have never played, start with Mahj 101: it teaches the tiles, how to read the NMJL card and how a hand comes together.",
   },
   {
     q: "Do I need to reserve in advance?",
@@ -108,7 +108,7 @@ const quickFacts = [
   },
   {
     title: "Who can come",
-    body: "Players who already know American Mahjong, visitors and locals alike. Come on your own or bring friends; you do not need a table of four.",
+    body: "Players who already know American Mahjong and are comfortable playing independently, visitors and locals alike. Come on your own or bring friends; you do not need a table of four.",
   },
   {
     title: "How to get a seat",
@@ -164,7 +164,7 @@ export default async function PlayMahjongLasVegas() {
       />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", borderBottom: "1px solid rgba(57,230,57,0.2)" }}>
           <div className="container">
@@ -269,7 +269,7 @@ export default async function PlayMahjongLasVegas() {
                       </div>
                     </div>
                     <div className="sched-book" style={{ flex: "none", textAlign: "right" }}>
-                      <a href={e.url} target="_blank" rel="noopener" className="btn-primary" style={{ padding: "0.5rem 1.1rem", fontSize: "0.85rem" }}>{e.bookLabel}</a>
+                      <a href={e.url} target="_blank" rel="noopener" className="btn-primary" aria-label={`${e.bookLabel}: ${e.title}, ${e.day.charAt(0)}${e.day.slice(1).toLowerCase()}, ${e.monthLabel.split(" ")[0]} ${e.num}, ${e.time} (opens in a new tab)`} style={{ padding: "0.5rem 1.1rem", fontSize: "0.85rem" }}>{e.bookLabel}</a>
                     </div>
                   </div>
                 ))}
@@ -319,15 +319,15 @@ export default async function PlayMahjongLasVegas() {
               table, not a class, and help is there when you want it.
             </p>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, marginBottom: "1rem" }}>
-              It is for players who already know American Mahjong. If you play
-              with the NMJL card at home, or you have completed Mahj 101, you are
-              ready. A little rusty? Come anyway.
+              It is for players who already know American Mahjong and are
+              comfortable playing independently. If you play with the NMJL card
+              at home, you are ready.
             </p>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: 0 }}>
-              If you have never played American Mahjong, start with Mahj 101
-              before Open Play. It teaches the tiles, how to read the NMJL card and
-              how a hand comes together, and you play a full game in your first
-              lesson. Class dates are on the same schedule as Open Play.
+              If you have never played American Mahjong, start with Mahj 101. It
+              teaches the tiles, how to read the NMJL card and how a hand comes
+              together, and you play a full game in your first lesson. Class
+              dates are on the same schedule as Open Play.
             </p>
           </div>
         </section>

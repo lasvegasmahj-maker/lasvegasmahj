@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_HERO } from "@/lib/og";
 import Link from "next/link";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
@@ -8,14 +8,14 @@ import { DEAD_HANDS } from "@/content/rules/dead-hands";
 export const metadata: Metadata = {
   title: { absolute: "Dead Hand Rules in American Mahjong | Las Vegas Mahjong" },
   description:
-    "What makes a hand dead in American Mahjong, when it can be corrected, and whether dead hand players still pay. Explained by a certified instructor.",
+    "What makes a hand dead in American Mahjong, when it can be corrected, and whether dead hand players still pay.",
   alternates: { canonical: "https://www.lasvegasmahj.com/rules/dead-hands" },
   openGraph: {
     ...ogBase,
     title: "Dead Hand Rules in American Mahjong | Las Vegas Mahjong",
     description: "What kills a hand? Can you save it? Does a dead hand player still pay? All dead hand rules answered.",
     url: "https://www.lasvegasmahj.com/rules/dead-hands",
-    images: ["https://www.lasvegasmahj.com/hero-bg.jpg"],
+    images: [OG_HERO],
   },
 };
 
@@ -37,7 +37,7 @@ export default function DeadHandsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "American Mahjong Rules", item: "https://www.lasvegasmahj.com/rules" }, { "@type": "ListItem", position: 3, name: "Dead Hands", item: "https://www.lasvegasmahj.com/rules/dead-hands" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
             <Link href="/rules" style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.82rem", textDecoration: "none", display: "block", marginBottom: "1.5rem" }}>

@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { LESSON_TABLE } from "@/lib/studio-photos";
-import { ogBase } from "@/lib/og";
+import { ogBase, OG_SHAUNA } from "@/lib/og";
 import SubpageNav from "@/components/subpage-nav";
 import Footer from "@/components/footer";
+import { OPEN_PLAY_PRICE_LINE } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "Mahjong Lessons in Las Vegas",
   description:
-    "Vegas mahjong lessons for beginners and experienced players. Learn American Mahjong at our Las Vegas studio with certified instruction, small classes and private lessons.",
+    "Vegas mahjong lessons for beginners and experienced players. Learn American Mahjong at our Las Vegas studio with small classes and private lessons.",
   alternates: { canonical: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas" },
   openGraph: {
     ...ogBase,
-    title: "Mahjong Lessons Las Vegas | Certified Instructor | Las Vegas Mahjong",
+    title: "Mahjong Lessons Las Vegas | Beginner-Friendly Classes",
     description:
-      "Vegas mahjong lessons for beginners and experienced players. Learn American Mahjong at our Las Vegas studio with certified instruction, small classes and private lessons.",
+      "Vegas mahjong lessons for beginners and experienced players. Learn American Mahjong at our Las Vegas studio with small classes and private lessons.",
     url: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas",
-    images: ["https://www.lasvegasmahj.com/shauna.jpg"],
+    images: [OG_SHAUNA],
   },
 };
 
@@ -25,7 +26,7 @@ const jsonLd = {
   "@type": "Course",
   name: "Mahjong Lessons Las Vegas",
   description:
-    "Certified American Mahjong lessons in Las Vegas for all skill levels. MAHJ101 for complete beginners, MAHJ102 for intermediate players, and MAHJ103 for confident, independent play.",
+    "American Mahjong lessons in Las Vegas for all skill levels. MAHJ101 for complete beginners, MAHJ102 for intermediate players, and MAHJ103 for confident, independent play.",
   provider: {
     "@type": "LocalBusiness",
     "@id": "https://www.lasvegasmahj.com/#business",
@@ -53,6 +54,51 @@ const faqs = [
   { q: "What version of mahjong do you teach?", a: "We teach American Mahjong using the National Mah Jongg League (NMJL) card, the most popular version played across the US." },
 ];
 
+// Text links, not btn- buttons: tests/seo-round2.spec.ts fails this page on any button-styled
+// link to /contact, and the home or venue choice can only be asked about there.
+const lessonChoices = [
+  {
+    title: "Group Classes",
+    accent: "accent-pink",
+    border: "rgba(233,30,140,0.25)",
+    price: "$60 per person",
+    bestFor: "Beginners, and anyone who would rather learn alongside others.",
+    howItWorks: "Start with MAHJ101, then move on to MAHJ102 and MAHJ103. Small classes of 4-8 people at our studio inside Lucky Hare.",
+    href: "/schedule#calendar",
+    cta: "See Class Dates",
+  },
+  {
+    title: "Private Lessons at the Studio",
+    accent: "accent-pink",
+    border: "rgba(233,30,140,0.25)",
+    price: "Contact for pricing",
+    bestFor: "Anyone who wants to set the pace, alone or with people they choose.",
+    howItWorks: "One on one, or a small group you bring yourself, in a quiet room at the studio, at a time that works for you.",
+    href: "/private-mahjong-lessons-las-vegas",
+    cta: "View Private Lessons",
+  },
+  {
+    title: "Lessons at Your Home or Venue",
+    accent: "accent-pink",
+    border: "rgba(233,30,140,0.25)",
+    price: "Contact for pricing",
+    bestFor: "Friends gathering at home, or a group hosting at its own venue.",
+    howItWorks: "Available by request. Tell us where you are, how many people are learning, and a date you have in mind.",
+    href: "/contact?source=lessons",
+    cta: "Send Us an Inquiry",
+  },
+  {
+    title: "Social Open Play",
+    accent: "accent-green",
+    border: "rgba(57,230,57,0.25)",
+    price: OPEN_PLAY_PRICE_LINE,
+    bestFor: "Players who already know American Mahjong and are comfortable playing independently.",
+    howItWorks: "Two hours of social play at the studio, not a lesson. Book your seat in advance and bring your current National Mah Jongg League card.",
+    href: "/schedule#calendar",
+    cta: "See Open Play Dates",
+  },
+];
+
 export default function MahjongLessonsLasVegas() {
   return (
     <>
@@ -61,7 +107,7 @@ export default function MahjongLessonsLasVegas() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: "https://www.lasvegasmahj.com" }, { "@type": "ListItem", position: 2, name: "Mahjong Lessons Las Vegas", item: "https://www.lasvegasmahj.com/mahjong-lessons-las-vegas" }] }).replace(/</g, "\\u003c") }} />
       <SubpageNav />
 
-      <main style={{ paddingTop: "80px" }}>
+      <main id="main-content" style={{ paddingTop: "80px" }}>
         {/* HERO */}
         <section style={{ background: "var(--navy-dark)", padding: "5rem 2rem 4rem", textAlign: "center", borderBottom: "1px solid rgba(233,30,140,0.2)" }}>
           <div className="container">
@@ -70,11 +116,11 @@ export default function MahjongLessonsLasVegas() {
               Mahjong <span className="accent-pink">Lessons</span> in Las Vegas
             </h1>
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", maxWidth: "620px", margin: "0 auto 2rem", lineHeight: 1.75 }}>
-              Las Vegas Mahjong offers in-person American Mahjong lessons at our Las Vegas studio, taught by a certified Oh My Mahjong instructor. Beginner-friendly, patient, and genuinely fun. Most students are playing confidently after just one session.
+              Las Vegas Mahjong offers in-person American Mahjong lessons at our Las Vegas studio. Beginner-friendly, patient, and genuinely fun. Start with MAHJ101 and build your skills through practice and our follow-on classes.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/#classes" className="btn-primary">Book a Lesson</a>
-              <a href="/" className="btn-outline">Learn More</a>
+              <a href="/schedule" className="btn-outline">See the Class Schedule</a>
             </div>
           </div>
         </section>
@@ -85,13 +131,15 @@ export default function MahjongLessonsLasVegas() {
             <p className="section-label">The Curriculum</p>
             <h2 className="section-title">What You&rsquo;ll <span className="accent-green">Learn</span></h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem", marginTop: "2.5rem" }}>
+              {/* Each card is one link. The schedule has a single calendar and no address per
+                  class, so the three group classes all lead to it. */}
               {[
-                { num: "MAHJ101", title: "Absolute Beginners", price: "$60 per lesson", items: ["Sorting and identifying tiles", "Reading the NMJL card", "Understanding how a hand works", "Playing your first full game", "Tips for your first open play event"] },
-                { num: "MAHJ102", title: "Beyond the Basics", price: "$60 per lesson", items: ["Quick MAHJ101 recap", "More complex hands and patterns", "Strategy and decision-making", "Speed and confidence at the table", "Preparing for open play and leagues"] },
-                { num: "MAHJ103", title: "Confident Play", price: "$60 per lesson", items: ["The Charleston and smart passing", "Defensive play and reading the table", "Using jokers and exchanges wisely", "Knowing all the rules cold", "Playing confidently on your own"] },
-                { num: "Private", title: "1-on-1 Lessons", price: "Contact for pricing", items: ["Fully customized to your pace", "At the studio, with in-home by request", "Any skill level welcome", "Great for busy schedules", "Zoom option available"] },
+                { num: "MAHJ101", title: "Absolute Beginners", price: "$60 per lesson", items: ["Sorting and identifying tiles", "Reading the NMJL card", "Understanding how a hand works", "Playing your first full game", "Tips for your first open play event"], href: "/schedule#calendar" },
+                { num: "MAHJ102", title: "Beyond the Basics", price: "$60 per lesson", items: ["Quick MAHJ101 recap", "More complex hands and patterns", "Strategy and decision-making", "Speed and confidence at the table", "Preparing for open play and leagues"], href: "/schedule#calendar" },
+                { num: "MAHJ103", title: "Confident Play", price: "$60 per lesson", items: ["The Charleston and smart passing", "Defensive play and reading the table", "Using jokers and exchanges wisely", "Knowing all the rules cold", "Playing confidently on your own"], href: "/schedule#calendar" },
+                { num: "Private", title: "Private Lessons", price: "Contact for pricing", items: ["Fully customized to your pace", "At the studio, with in-home by request", "Any skill level welcome", "Great for busy schedules", "Zoom option available"], href: "/private-mahjong-lessons-las-vegas" },
               ].map(tier => (
-                <div key={tier.num} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "2rem" }}>
+                <a key={tier.num} href={tier.href} className="lesson-card">
                   <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.4rem", color: "var(--pink)", marginBottom: "0.3rem" }}>{tier.num}</div>
                   <h3 style={{ fontFamily: "var(--font-nav)", fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.5rem" }}>{tier.title}</h3>
                   <div style={{ fontFamily: "var(--font-nav)", fontSize: "1.2rem", color: "var(--green)", fontWeight: 700, marginBottom: "1rem" }}>{tier.price}</div>
@@ -102,6 +150,33 @@ export default function MahjongLessonsLasVegas() {
                       </li>
                     ))}
                   </ul>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="choose-your-lesson" style={{ padding: "5rem 2rem", background: "var(--navy-dark)", borderBottom: "1px solid rgba(233,30,140,0.15)" }}>
+          <div className="container">
+            <p className="section-label">Find Your Fit</p>
+            <h2 className="section-title">Which One Is <span className="accent-pink">Right for You?</span></h2>
+            <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.75, maxWidth: "620px" }}>
+              Ways to learn or play with us. Pick the one that sounds like you.
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(360px, 100%), 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
+              {lessonChoices.map(c => (
+                <div key={c.title} style={{ display: "flex", flexDirection: "column", background: "rgba(255,255,255,0.03)", border: `1px solid ${c.border}`, borderRadius: "8px", padding: "1.8rem" }}>
+                  <h3 className="section-title" style={{ fontSize: "1.6rem", marginBottom: "0.4rem" }}>
+                    <span className={c.accent}>{c.title}</span>
+                  </h3>
+                  <div style={{ fontFamily: "var(--font-nav)", fontSize: "1.1rem", color: "var(--green)", fontWeight: 700, marginBottom: "1rem" }}>{c.price}</div>
+                  <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.95rem", lineHeight: 1.7, marginBottom: "0.75rem" }}>
+                    <strong style={{ color: "var(--white)" }}>Best for:</strong> {c.bestFor}
+                  </p>
+                  <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.95rem", lineHeight: 1.7, marginBottom: "1rem" }}>
+                    <strong style={{ color: "var(--white)" }}>How it works:</strong> {c.howItWorks}
+                  </p>
+                  <a href={c.href} style={{ color: "var(--green)", fontWeight: 600, display: "inline-block", alignSelf: "flex-start", marginTop: "auto", padding: "0.6rem 0" }}>{c.cta}</a>
                 </div>
               ))}
             </div>
@@ -139,15 +214,15 @@ export default function MahjongLessonsLasVegas() {
             </div>
             <div>
               <p className="section-label">Your Instructor</p>
-              <h2 className="section-title">Certified. <span className="accent-pink">Patient. Fun.</span></h2>
+              <h2 className="section-title">Patient. <span className="accent-pink">Clear. Fun.</span></h2>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
-                Hi, I&rsquo;m Shauna, a <strong>certified Oh My Mahjong instructor</strong> and the founder of Las Vegas Mahjong. I&rsquo;ve been playing American Mahjong for nearly 18 years, teaching friends and family long before I turned it into a business.
+                Hi, I&rsquo;m Shauna, the founder of Las Vegas Mahjong. I&rsquo;ve been playing American Mahjong for nearly 18 years, teaching friends and family long before I turned it into a business.
               </p>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "1rem" }}>
                 My teaching style is patient, clear, and beginner-obsessed. I break the game into simple, logical steps so you&rsquo;re not overwhelmed, and you&rsquo;ll play a game in your first lesson.
               </p>
               <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: "2rem" }}>
-                My <a href="/studio" style={{ color: "var(--green)", fontWeight: 600 }}>studio inside <strong>Lucky Hare</strong></a> in Las Vegas is home base for group lessons and open play. If you would rather learn one on one, at your own pace, I also teach <a href="/private-mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>private mahjong lessons at the studio</a>.
+                My <a href="/studio" style={{ color: "var(--green)", fontWeight: 600 }}>studio inside <strong>Lucky Hare</strong></a> in Las Vegas is home base for group lessons and open play. If you would rather learn on your own or with a small group you bring yourself, at your own pace, I also teach <a href="/private-mahjong-lessons-las-vegas" style={{ color: "var(--green)", fontWeight: 600 }}>private mahjong lessons at the studio</a>.
               </p>
               <a href="/#classes" className="btn-primary">Book Your Lesson</a>
             </div>
@@ -210,8 +285,10 @@ export default function MahjongLessonsLasVegas() {
             <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: "500px", margin: "1rem auto 2rem", lineHeight: 1.7 }}>
               Join hundreds of Las Vegas players who learned to love mahjong at the table. Book your spot today. No experience needed.
             </p>
-            <a href="/#classes" className="btn-primary" style={{ marginRight: "1rem" }}>Book a Lesson</a>
-            <a href="/" className="btn-outline">Back to Homepage</a>
+            <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+              <a href="/#classes" className="btn-primary">Book a Lesson</a>
+              <a href="/" className="btn-outline">Back to Homepage</a>
+            </div>
           </div>
         </section>
       </main>
