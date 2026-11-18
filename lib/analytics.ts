@@ -47,26 +47,28 @@ type LinkTarget = Pick<URL, "origin" | "hostname" | "pathname" | "search" | "has
 type CurrentPage = Pick<URL, "origin" | "pathname" | "search">;
 
 const BOOKING_HOST = "bookwhen.com";
+// Every Book button and league link opens this account's pages. Other Bookwhen pages, such as
+// its privacy policy, are not booking links.
+const BOOKING_PATH = "/lasvegasmahjong";
 const SOURCE_SLUG = /^[a-z]+(-[a-z]+)*$/;
 
 // Names a click on one of the three links worth measuring and returns null for every other
-// link. Only the destination's host and path, a well-formed ?source= slug and the current
-// page's path are reported: every other query string and fragment is dropped, so nothing
-// else carried in a URL can reach analytics.
+// link. Only the destination's host and path and a well-formed ?source= slug are reported:
+// every other query string and fragment is dropped, so nothing else carried in a URL can reach
+// analytics.
+//
+// No parameter names the page clicked on: GA4 records the page address with every event, and
+// gtag.js takes a page_path parameter as its own page field, so one sent here never arrives.
 //
 // booking_link_click is a click that leaves for Bookwhen, not a booking. The booking itself
 // happens on bookwhen.com, where this site cannot see it.
 export function linkClickEvent(to: LinkTarget, page: CurrentPage): { name: string; params: EventParams } | null {
-  // Every event carries the same four keys. GTM keeps a dataLayer value until something
+  // Every event carries the same three keys. GTM keeps a dataLayer value until something
   // overwrites it, so a key left out here would inherit whatever the previous click set.
-  const params: EventParams = {
-    link_url: to.pathname,
-    link_domain: to.hostname,
-    source_slug: undefined,
-    page_path: /^\/[a-z0-9/-]*$/.test(page.pathname) ? page.pathname : undefined,
-  };
+  const params: EventParams = { link_url: to.pathname, link_domain: to.hostname, source_slug: undefined };
 
   if (to.hostname === BOOKING_HOST || to.hostname.endsWith(`.${BOOKING_HOST}`)) {
+    if (to.pathname !== BOOKING_PATH && !to.pathname.startsWith(`${BOOKING_PATH}/`)) return null;
     return { name: "booking_link_click", params: { ...params, link_url: to.origin + to.pathname } };
   }
   if (to.origin !== page.origin) return null;

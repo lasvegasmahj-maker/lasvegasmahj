@@ -52,12 +52,14 @@ async function fillForm(page: Page) {
   await page.fill("#contact-message", TYPED.message);
 }
 
-test("a click on a link to the schedule is reported with the page it was clicked on", async ({ page }) => {
+test("a click on a link to the schedule is reported with the link's path and host only", async ({ page }) => {
   await plantDataLayer(page);
   await page.goto("/studio");
   await holdNavigation(page);
   const hits = await clickUntilRecorded(page, page.locator('main a[href="/schedule"]').first(), "schedule_link_click");
-  expect(hits[0]).toMatchObject({ link_url: "/schedule", page_path: "/studio" });
+  expect(hits[0]).toMatchObject({ link_url: "/schedule" });
+  // GA4 records the page clicked on by itself; gtag.js would swallow a page_path parameter.
+  expect(hits[0]).not.toHaveProperty("page_path");
 });
 
 test("a click that leaves for Bookwhen is reported as a link click, never as a booking", async ({ page }) => {
@@ -68,7 +70,7 @@ test("a click that leaves for Bookwhen is reported as a link click, never as a b
   await holdNavigation(page);
   const hits = await clickUntilRecorded(page, out, "booking_link_click");
   expect(String(hits[0].link_domain)).toMatch(/(^|\.)bookwhen\.com$/);
-  expect(hits[0]).toMatchObject({ page_path: "/schedule" });
+  expect(String(hits[0].link_url)).toMatch(/^https:\/\/bookwhen\.com\/lasvegasmahjong(\/|$)/);
   const all = await pushes(page);
   // The booking itself happens on bookwhen.com, where this site cannot see it, so no event
   // may claim one.
@@ -80,7 +82,7 @@ test("a click on a tagged inquiry button reports that page's source slug", async
   await page.goto("/mahjong-corporate-las-vegas");
   await holdNavigation(page);
   const hits = await clickUntilRecorded(page, page.locator('main a[href="/contact?source=corporate"]').first(), "contact_link_click");
-  expect(hits[0]).toMatchObject({ link_url: "/contact", source_slug: "corporate", page_path: "/mahjong-corporate-las-vegas" });
+  expect(hits[0]).toMatchObject({ link_url: "/contact", source_slug: "corporate" });
 });
 
 test("a successful inquiry is reported apart from the attempt, and carries nothing the visitor typed", async ({ page }) => {

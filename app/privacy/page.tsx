@@ -25,6 +25,9 @@ const breadcrumbSchema = buildBreadcrumbSchema([{ name: "Privacy", url: "https:/
 // components/analytics.tsx loads the GA4 tag only when this variable is set at build time, so
 // the page describes Google Analytics in exactly the builds that load it and never before.
 const ANALYTICS_ON = Boolean(process.env.NEXT_PUBLIC_GA4_ID);
+// Setting the ID changes what this page says, and the page promises to move its date when that
+// happens. The first date is the day the build carrying the ID goes live.
+const LAST_UPDATED = ANALYTICS_ON ? "November 18, 2026" : "November 13, 2026";
 
 const card = { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 14, padding: "1.6rem 1.8rem 0.8rem" } as const;
 const heading = { fontFamily: "var(--font-nav)", fontWeight: 700, fontSize: "1.05rem", color: "white", marginBottom: "0.7rem", lineHeight: 1.4 } as const;
@@ -61,7 +64,7 @@ export default function Privacy() {
             <p style={{ fontSize: "1.15rem", color: "rgba(255,255,255,0.7)", lineHeight: 1.75, marginBottom: "1rem" }}>
               What this website does with information about you, in plain language.
             </p>
-            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", margin: 0 }}>Last updated November 13, 2026</p>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", margin: 0 }}>Last updated {LAST_UPDATED}</p>
           </div>
         </section>
 
@@ -127,16 +130,16 @@ export default function Privacy() {
               {ANALYTICS_ON ? (
               <>
               <p style={text}>
-                We use Google Analytics 4, a Google service, to understand which pages people visit and which links they click. When you load a page, your browser sends Google the address of that page and your IP address, and Google Analytics sets cookies in your browser (their names start with _ga) to tell visitors and their visits apart.
+                We use Google Analytics 4, a Google service, to understand which pages people visit and which links they click. When you load a page, your browser sends Google the address and title of that page, the address of the page you came from and your IP address. It also sends details about your browser and device, such as the browser, the operating system and their versions, the device model, the screen size and the language setting. Google may use the IP address to identify your general location. When you leave a page, your browser tells Google how long you spent on it. Google Analytics also sets cookies in your browser (their names start with _ga) to tell visitors and their visits apart.
               </p>
               <p style={text}>Our site also tells Google Analytics when you:</p>
               <ul style={list}>
                 <li>click a link to our class schedule</li>
                 <li>click a link to our contact page</li>
-                <li>click a link out to Bookwhen. This counts the click, not a booking: the booking itself happens on Bookwhen, where this site cannot see it.</li>
+                <li>click a link to our booking pages on Bookwhen. This counts the click, not a booking: the booking itself happens on Bookwhen, where this site cannot see it.</li>
                 <li>send the contact form, with whether it went through, the type of help you picked from our list and which page sent you to the form</li>
                 <li>sign up for the newsletter</li>
-                <li>use Ask a Rule: that you asked a question (typed or picked from the suggestions), what kind of answer it got, its rules topic and whether the AI helper took part, plus taps on suggested questions, links and Start a new question</li>
+                <li>use Ask a Rule: that you asked a question (typed or picked from the suggestions), which question in the conversation it was, what kind of answer it got, its rules topic and whether the AI helper took part, plus taps on suggested questions, links and Start a new question</li>
               </ul>
               <p style={text}>
                 Link clicks also record the page you clicked on. Our site never sends Google Analytics your name, email address, phone number, or anything you type into the contact form, the newsletter signup or Ask a Rule.

@@ -9,9 +9,11 @@ const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
 // Renders analytics tags only when the matching env var is set. With no env
 // vars configured (current production), every tag branch is null, so no
-// analytics script loads and nothing is sent anywhere. Set the ID in Vercel
-// and redeploy to activate, no further code change required. The privacy page
-// describes GA4 only; a Meta Pixel ID would need that page updated first.
+// analytics script loads and nothing is sent anywhere. Switching GA4 on is a
+// release: set the ID in Vercel before the production build, and the privacy
+// page's date and its sitemap date (same variable) must show the go-live day
+// (measurement plan, section 2.C). The privacy page describes GA4 only; a Meta
+// Pixel ID would need that page updated first.
 //
 // TrackClicks is mounted either way and renders nothing. Its listener returns
 // on its first line until GA4 or GTM has loaded, so it stays inert while no ID

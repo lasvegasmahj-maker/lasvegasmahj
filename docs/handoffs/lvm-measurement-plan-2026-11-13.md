@@ -8,32 +8,69 @@ The contact form now knows 16 source tags, not 15: the lessons chooser's `lesson
 "Lessons page") is installed, not proposed. Analytics is still approved but not active: no
 Measurement ID exists, and nothing counts as live until delivery is verified.
 
-**Status:** draft for the owner's review. It reached `main` as a document with pull request #130,
-which went live on 2026-11-16. No analytics tag or Measurement ID is installed or switched on (the
-live site loads no analytics tag, checked after the release); the event code ships dormant until
-an ID is set. The E1 and E2 sections and the `lessons` source tag went live with the release.
+**Update, 2026-11-18.** The owner decided the GA4 property's settings on 2026-11-18, and setup is
+under way; no Measurement ID is live yet. The code on branch `analytics/ga4-setup` changes three
+things. Link clicks no longer send `page_path`: gtag.js takes that
+parameter as its own page field, so it never arrived, and GA4's built-in "Page path and screen
+class" dimension already shows the page of every click. `booking_link_click` now counts only
+links to the booking pages on Bookwhen, so the link to Bookwhen's privacy policy on `/privacy` no
+longer counts and needs no filter. The privacy page's "Last updated" date now changes in the same
+build as its Analytics text (section 5, item 1), and that text now lists what Google's tag sends
+with each page. The owner's decisions: property Las Vegas Mahjong under the business Google
+account, Los Angeles (Pacific) time, US dollars, every optional data-sharing setting off, Google
+signals off, no Google Ads link, event and user data kept 14 months, `contact_form_success` as
+the only key event, custom dimensions only for parameters the code sends, nothing a visitor
+types ever sent, Bookwhen clicks never counted as bookings, and checks only with clearly labelled
+tests, never a real inquiry, newsletter signup or booking. The setup plan keeps Page views on,
+turns every other enhanced measurement option off (Outbound clicks included), redacts email
+addresses and Mailchimp's `mc_eid`, and registers seven custom dimensions. Section 2 has the
+steps.
 
-**Today:** the live site loads no analytics, and no GA4 Measurement ID exists anywhere we can see
-(checked 2026-11-13, `~/Projects/.lvm-sprint-2026-11-13/lane7-analytics-search/SEARCH-EVIDENCE.md`,
-section 1). Analytics is approved (handoff Round 12) on these terms: the direct GA4 tag, no
-duplicate tracking, an accurate privacy page, no invented ID, and no claim that tracking is live
-until it is verified.
+**Later on 2026-11-18.** The owner created the property and its web stream and set everything in
+section 2.B except the last two items, which she deferred: the custom dimensions and the key event
+are optional reporting setup and do not block activation. Google's served tag for the Measurement
+ID confirms page views as the only enhanced measurement (with history events), email and `mc_eid`
+redaction, Google signals off, and user-provided data capabilities off. That last setting was on
+by default, with automatic detection of email addresses, phone numbers and street addresses; the
+owner switched it off and published the tag change the same day. Google also created three key
+events of its own (`purchase`, `qualify_lead`, `close_convert_lead`). The site never sends those
+events, so they stay at zero.
 
-**Built from:** the code on branch `seo/invisible-technical-fixes` as read on 2026-11-13 (files in
-section 6). If those files change before launch, re-check section 1. The owner guide
+**Status:** draft for the owner's review, updated 2026-11-18 with the owner's GA4 decisions. An
+earlier version reached `main` with pull request #130, which went live on 2026-11-16. This update
+and the code change it describes are on branch `analytics/ga4-setup` and reach `main` in the
+release that switches analytics on (section 2.C). No Measurement ID is live, and the live site
+loads no analytics tag (checked after the 2026-11-16 release); the event code ships dormant until
+an ID is set. The E1 and E2 sections and the `lessons` source tag went live with the 2026-11-16
+release.
+
+**Today (2026-11-18):** the live site loads no analytics. On 2026-11-13 we found no GA4
+Measurement ID anywhere we could see
+(`~/Projects/.lvm-sprint-2026-11-13/lane7-analytics-search/SEARCH-EVIDENCE.md`, section 1), and
+setup of the GA4 property started on 2026-11-18. Analytics is approved (handoff Round 12) on these
+terms: the direct GA4 tag, no duplicate tracking, an accurate privacy page, no invented ID, and no
+claim that tracking is live until it is verified.
+
+**Built from:** the code on branch `seo/invisible-technical-fixes` ("this branch" below; live
+since 2026-11-16) as read on 2026-11-13 (files in section 6), with section 1.1 re-checked on
+2026-11-18 against branch `analytics/ga4-setup`. If those files change before
+launch, re-check section 1. The owner guide
 (`docs/handoffs/lvm-owner-guide-2026-11-13.md`, section 4) lists switching analytics on among the
 things waiting for you after go-live (you approved analytics on 2026-11-13, Round 12); this plan
 holds the detail.
 
 ## In short
 
-1. Count an inquiry when `contact_form_success` arrives. Make it the only GA4 key event. Your
-   inbox stays the record of truth for inquiries.
+1. Count an inquiry when `contact_form_success` arrives. Mark it as a key event in the deferred
+   reporting setup (section 2.B); it is the only one of the site's events to mark. Your inbox stays
+   the record of truth for inquiries.
 2. Count clicks out to Bookwhen with `booking_link_click`. A click is not a booking. Count
    bookings in Bookwhen, and keep the two numbers side by side, never added together.
-3. Set the Measurement ID only when the owner says so (she paused analytics work on 2026-11-16).
-   The 2026-11-16 release put live the privacy page and the fix that stops each event being sent
-   two ways, which would have let GA4 count it twice.
+3. Switch analytics on only with the owner's release approval, after the labelled local test
+   (section 2.E): set the Measurement ID in Vercel, merge, then Promote (section 2.C), and call
+   tracking live only after the live checks in section 2.D. The 2026-11-16 release put live the
+   privacy page and the fix that stops each event being sent two ways, which would have let GA4
+   count it twice. The page's "Last updated" date changes in the same build as its Analytics text.
 4. Collect 4 full weeks of clean data before changing any measured page. Then change one page at
    a time.
 5. Every benefit named in section 4 is a hypothesis until the numbers show it.
@@ -45,6 +82,9 @@ Words used below:
 - **Key event:** GA4's name for an event you count as a result (GA4 used to call it a conversion).
 - **Custom dimension:** a GA4 setting that lets reports show a parameter. GA4 shows a parameter
   only from the day its dimension exists.
+- **Page path:** in this plan, GA4's built-in "Page path and screen class" dimension: the page an
+  event happened on. GA4 records the page address with every event, so the site sends no page
+  parameter of its own.
 - **Realtime and DebugView:** two GA4 screens that show events within seconds. Use them to check.
 
 ---
@@ -59,11 +99,11 @@ Words used below:
 | `contact_submit` | The same moment as `contact_form_success` (older name, still sent) | none | Inquiry: the same one again | Not a key event. Leave it out of reports |
 | `contact_form_attempt` | Send Message was pressed and every field passed its checks | `source_label`, `inquiry_type` | Inquiry health | Not a key event |
 | `contact_form_error` | Formspree refused the inquiry or the connection failed. The visitor sees "Something went wrong" and the email address | `source_label`, `inquiry_type` | Inquiry health: a lead at risk | Not a key event. Check every week |
-| `contact_link_click` | A click on any link to `/contact` | `link_url` (`/contact`), `link_domain`, `source_slug` (the button's `?source=` tag; empty for menu and footer links), `page_path` (the page clicked on) | Inquiry intent | Not a key event. Dimensions: `source_slug`, `page_path` |
-| `schedule_link_click` | A click on any link to `/schedule`, including the menu's Schedule and Join an Event links on `/schedule` itself (those show `page_path` /schedule). Only the "See the Calendar" jump within `/schedule` is not counted | `link_url` (`/schedule`), `link_domain`, `page_path` | Booking intent, first step | Not a key event. Dimension: `page_path` |
-| `booking_link_click` | A click on a link to bookwhen.com: the Book buttons on `/schedule` and on the visitor page's dates, and the Bookwhen buttons on `/mahjong-leagues-las-vegas`. The Bookwhen privacy policy link on `/privacy` also counts (noise; filter it out) | `link_url` (the Bookwhen address, query string removed), `link_domain`, `page_path` | Booking intent, second step. **A click, never a booking** | Not a key event. Dimensions: `link_url`, `page_path` |
+| `contact_link_click` | A click on any link to `/contact` | `link_url` (`/contact`), `link_domain`, `source_slug` (the button's `?source=` tag; empty for menu and footer links) | Inquiry intent | Not a key event. Dimensions: `source_slug`, and the built-in page path for the page clicked on |
+| `schedule_link_click` | A click on any link to `/schedule`, including the menu's Schedule and Join an Event links on `/schedule` itself (their page path is /schedule). Only the "See the Calendar" jump within `/schedule` is not counted | `link_url` (`/schedule`), `link_domain` | Booking intent, first step | Not a key event. Dimension: the built-in page path |
+| `booking_link_click` | A click on a link to the booking pages on Bookwhen (`bookwhen.com/lasvegasmahjong` and the pages under it): the Book buttons on `/schedule` and on the visitor page's dates, and the Bookwhen buttons on `/mahjong-leagues-las-vegas`. Other Bookwhen links, such as its privacy policy on `/privacy`, are not counted | `link_url` (the Bookwhen address, query string removed), `link_domain` | Booking intent, second step. **A click, never a booking** | Not a key event. Dimensions: `link_url`, and the built-in page path |
 | `newsletter_signup` | Mailchimp accepted a new address, from the homepage newsletter section or the footer box on every page. Not sent for an address already on the list, or after an error | none | Newsletter growth | Not a key event. Mailchimp's audience count is the record of truth |
-| `ask_question` | An Ask a Rule answer arrived, including the "taking a break" message when Ask fails | `origin` (`typed`, `starter`, `followup`), `turn`, `kind`, `label`, `category`, `matched`, `via` | Rules engagement | Not a key event. Dimensions `matched` and `category` (needed for the monthly Ask view, section 3.3, item 7); `origin` and `kind` optional |
+| `ask_question` | An Ask a Rule answer arrived, including the "taking a break" message when Ask fails | `origin` (`typed`, `starter`, `followup`), `turn`, `kind`, `label`, `category`, `matched`, `via` | Rules engagement | Not a key event. Dimensions `matched` and `category` (needed for the monthly Ask view, section 3.3, item 7). The other parameters get no dimension: no planned report needs them |
 | `ask_unverified` | An answer with no matching written entry (not a failure) | `kind`, `turn` | Rules engagement: topics the guide does not cover yet | Not a key event |
 | `ask_nudge_shown`, `ask_nudge_click` | An answer carried a "See lessons", "See MAHJ103" or "See open play" suggestion; the visitor clicked it | `target` (`lessons`, `advanced`, `open-play`) | Rules engagement that leads toward lessons or open play | Not a key event. Dimension `target` (needed for the monthly Ask view) |
 | `ask_link_click` | A click on a rules page link inside an answer | `target` (`rules`), plus `reason` (`failed` or `unverified`) or `topic` (the rules page name) | Rules engagement | Not a key event |
@@ -72,14 +112,15 @@ Words used below:
 Notes:
 
 - **Nothing a visitor types is ever sent.** The form sends two values from the site's own lists
-  (the page label and the Inquiry Type choice). Click events send a path, a host, a shape-checked
-  tag and the page. Ask events send labels the site sets, never the question
-  (`components/contact-form.tsx` `handleSubmit`, `lib/analytics.ts` `linkClickEvent`,
-  `app/ask/ask-client.tsx`).
-- **GA4 adds events of its own:** `page_view`, `session_start`, `first_visit`, `user_engagement`,
-  and, with enhanced measurement, an outbound `click`. Use `page_view` for page counts. For
-  Bookwhen, GA4's `click` fires beside `booking_link_click`: count Bookwhen clicks from
-  `booking_link_click` only (Round 12).
+  (the page label and the Inquiry Type choice). Click events send a path, a host and a
+  shape-checked tag, and no page: GA4 records the page address with every event, so the page path
+  shows the page a click happened on, including after a link that changes the page without a full
+  reload. Ask events send labels the site sets, never the question (`components/contact-form.tsx`
+  `handleSubmit`, `lib/analytics.ts` `linkClickEvent`, `app/ask/ask-client.tsx`).
+- **GA4 adds events of its own:** `page_view`, `session_start`, `first_visit` and
+  `user_engagement`. Use `page_view` for page counts. Outbound clicks stays off in enhanced
+  measurement (section 2.B), so GA4 sends no `click` event of its own, and Bookwhen clicks come
+  only from `booking_link_click`.
 - **On the live site today**, `contact_submit`, `newsletter_signup` and the Ask events were
   already live, and the other six went live with the release on 2026-11-16 (Round 11). All of
   them stay silent because no ID is set.
@@ -152,117 +193,182 @@ The `lessons` tag belongs to the lessons page chooser (section 4, E2), approved 
 
 ## 2. Checklist: switching analytics on and verifying it
 
-Do the steps in order and tick each one. If a check fails, stop and tell your developer.
+Do the parts in order and tick each box, with one exception: your developer runs part E, a
+labelled test on a local copy of the site, as soon as part B is done and before part C, so a
+fault shows up before anything changes on the live site. If a check fails, stop and tell your
+developer.
 
 ### A. Before you start
 
-- [x] **This branch is live on <https://www.lasvegasmahj.com>** (done 2026-11-16):
+- [x] **The 2026-11-16 release is live on <https://www.lasvegasmahj.com>** (done 2026-11-16):
   <https://www.lasvegasmahj.com/privacy> shows the Privacy page. Why the order mattered: the old
   helper sent every event both to the GA4 tag and to `dataLayer`, so GA4 could have counted each
   event twice (fixed in Round 12); Google's Analytics terms require a privacy notice that
-  discloses Analytics (`/privacy`, Round 11); and six of the events arrived with this branch.
+  discloses Analytics (`/privacy`, Round 11); and six of the events arrived with that release.
   All three are live now.
-- [ ] The privacy page items in Round 12 ("For the owner before it ships") are done, including
-  confirming "We do not sell it" and setting the "Last updated" date. Also decide how that date
-  will show the day analytics switches on (section 5, item 1).
+- [x] The privacy page items this checklist named from Round 12 ("For the owner before it ships")
+  are settled. You confirmed "We do not sell it" on 2026-11-15. The "Last updated" date follows
+  the ID: `LAST_UPDATED` in `app/privacy/page.tsx` shows November 13, 2026 in a build without the
+  ID and November 18, 2026 in the build that carries it (section 5, item 1; part C checks the
+  go-live day).
 - [ ] On `/privacy`, the Analytics section reads "This website does not use an analytics service
-  right now." That is correct until the ID is set.
+  right now." and the page reads "Last updated November 13, 2026". Both are correct until the ID
+  is set.
 
 ### B. Create GA4 and set it up before the ID goes live
 
-- [ ] At <https://analytics.google.com>, signed in as the business Google account that holds the
-  www Search Console property (not the older Gmail account): Admin > Create > Property. If Google Analytics asks you to create an account first (likely: no
-  Google Analytics account was found for either business), name the account Las Vegas Mahjong,
-  then create the property. Name the property Las Vegas Mahjong. Choose the Los Angeles (Pacific)
-  reporting time zone, so GA4's days match yours, and US dollars. Create a **Web** data stream for
-  `https://www.lasvegasmahj.com` and copy its Measurement ID (it starts with `G-`). Anyone who
-  helps with the setup steps below needs the Editor role; Viewer is enough for checking.
-- [ ] Data retention: Admin > Data collection and modification > Data retention > 14 months. The
-  default, 2 months, is too short for the monthly views in section 3.
-- [ ] Enhanced measurement (Admin > Data streams > your stream):
-  - keep **Page views** on, including page changes based on browser history events (some links on
-    the rules pages, Ask a Rule, the blog, the privacy page and the not-found page open the next
-    page without a full reload; most other links reload the page);
-  - keep **Outbound clicks** on if you want clicks to the affiliate shops and social pages, but
-    never use them to count Bookwhen;
-  - turn everything else off, **Form interactions** first. The site sends its own form events;
-    GA4's own form events cannot tell the contact form from the footer newsletter box (neither
-    form has a name or id); and `/privacy` does not describe scroll, site search or video
-    tracking.
-- [ ] Leave **Google signals** off and link no Google Ads account. `/privacy` describes neither,
-  and with Google signals on, GA4 can hide small numbers in reports. If you ever want either,
-  update `/privacy` first.
-- [ ] Custom dimensions: Admin > Custom definitions > Create custom dimension, scope **Event**, one
-  for each parameter, named exactly like the parameter: `source_label`, `inquiry_type`,
-  `source_slug`, `page_path`, `link_url`, `link_domain` (the six named in Round 12). For the
-  monthly Ask a Rule view (section 3.3, item 7), also `matched`, `category` and `target`; without
-  them that view cannot be built. Optional extras: `origin`, `kind`. Create all of them before the
-  ID goes live. If GA4 says a name is already in use (it has built-in Link URL and Link domain
-  dimensions), use the built-in one and write that down.
-- [ ] Key event: Admin > Key events > New key event > `contact_form_success`. Nothing else. Not
+Everything here except the last two items was done on 2026-11-18. Those two, the custom dimensions
+and the key event, are optional reporting setup that the owner deferred: they do not block
+activation. GA4 applies each only from the day it is set, so data collected before then cannot be
+split by those parameters or counted as key events; the events themselves are collected from
+activation.
+
+- [x] At <https://analytics.google.com>, signed in as the business Google account that holds the
+  www Search Console property: Admin > Create > Property. If Google Analytics asks you to create
+  an account first, name the account Las Vegas Mahjong and turn off every optional data-sharing
+  setting it offers (if the account already exists, check that those settings are off). Name the
+  property Las Vegas Mahjong. Choose the Los Angeles (Pacific) reporting time zone, so GA4's days
+  match yours, and US dollars. Anyone who helps with the setup steps below needs the Editor role;
+  Viewer is enough for checking.
+- [x] Data stream: Admin > Data collection and modification > Data streams. Add a **Web** stream
+  for `https://www.lasvegasmahj.com` and copy its Measurement ID (it starts with `G-`).
+- [x] Enhanced measurement, on that stream's page:
+  - **Page views** on, with "page changes based on browser history events" on (some links on the
+    rules pages, Ask a Rule, the blog, the privacy page and the not-found page open the next page
+    without a full reload; most other links reload the page);
+  - **Scrolls, Outbound clicks, Site search, Form interactions, Video engagement and File
+    downloads** off. With Outbound clicks on, every Bookwhen click would also send GA4's own
+    `click` event (two events for one click), and every shop, Amazon and social link would send
+    its full address, which `/privacy` does not describe. The site sends its own form events, and
+    GA4's form events cannot tell the contact form from the footer newsletter box (neither form
+    has a name or id). `/privacy` does not describe scroll, site search, video or download
+    tracking either.
+- [x] Redact data, in the Events section of the same stream page: keep **Email** redaction on
+  (Google's default for new properties), and redact the query parameter `mc_eid` (Mailchimp's
+  per-subscriber id, which links in a newsletter email can carry).
+- [x] User-provided data: on the same stream page, Configure tag settings > Allow user-provided data
+  capabilities **off**, then publish the tag change (a saved change does nothing until it is
+  published). It is on by default for a new tag and detects email addresses, phone numbers and
+  street addresses on the page; the site must never send those.
+- [x] Data retention: Admin > Data collection and modification > Data retention. Set both event
+  data and user data retention to **14 months**. The default, 2 months, is too short for the
+  monthly views in section 3.
+- [x] Google signals: Admin > Data collection and modification > Data collection. Leave "Enable
+  Google signals data collection" **off**, and link no Google Ads account. `/privacy` describes
+  neither, and with Google signals on, GA4 can hide small numbers in reports. If you ever want
+  either, update `/privacy` first.
+- [ ] Deferred (owner, 2026-11-18). Custom dimensions: Admin > Data display > Custom definitions >
+  Custom dimensions > Create custom dimension. Create these seven, each with Scope **Event**, and
+  with Dimension name and Event parameter both set to exactly the parameter's name (Description is
+  free text):
+  - `source_label` and `inquiry_type` (the contact form);
+  - `source_slug` (contact clicks) and `link_url` (Bookwhen clicks);
+  - `category`, `matched` and `target` (the monthly Ask a Rule view, section 3.3, item 7).
+
+  Create all seven as soon as convenient. If GA4 refuses `link_url` because a built-in Link URL
+  dimension exists, use the built-in one and write that down. Register nothing else: `page_path`
+  never arrives; `link_domain` is always bookwhen.com for Bookwhen clicks and the site's own host
+  for the others; and `origin`, `kind`, `label`, `via`, `turn`, `reason` and `topic` are sent, but
+  no planned report needs them. The page a click happened on needs no setup: it is the built-in
+  page path.
+- [ ] Deferred (owner, 2026-11-18). Key event: Admin > Data display > Events > "+ Create event".
+  Name it `contact_form_success`, turn on "Mark as key event", and choose "Create with code" if
+  Google asks. Add **no** matching conditions: a rule with conditions would copy events. Google's
+  own `purchase`, `qualify_lead` and `close_convert_lead` stay as they are (the site never sends
+  them). This is the only one of the site's events to mark: not
   `contact_submit` (the same inquiry again), and not `booking_link_click` (a click, not a booking).
 
 ### C. Switch it on
 
+- [x] Part E has passed (2026-11-18).
 - [ ] In Vercel, project **`lasvegasmahj-h1iz`** (team `lasvegasmahj-6104s-projects`), Settings >
   Environment Variables:
   <https://vercel.com/lasvegasmahj-6104s-projects/lasvegasmahj-h1iz/settings/environment-variables>.
   Add `NEXT_PUBLIC_GA4_ID` with the `G-` ID, for **Production** only, so preview builds send
-  nothing.
+  nothing. Add it before the merge below: the site reads the ID while it builds.
+  - Sign in as the team owner. A Developer cannot change production variables.
   - Do not set `NEXT_PUBLIC_GTM_ID` (you chose the direct GA4 tag) or `NEXT_PUBLIC_META_PIXEL_ID`
     (not approved, not on `/privacy`).
   - Use that project only. The sibling project also named `lasvegasmahj` builds every commit but
     does not serve the domain.
-  - This step needs your own Vercel access: the token our sessions use cannot reach this project
-    (Round 12).
   - Never type the ID into the code. A test checks only the three analytics files for a typed ID.
-- [ ] Redeploy production from the Vercel dashboard: Deployments, the current Production
-  deployment, Redeploy. The site reads the ID when it is built, so nothing changes until this
-  redeploy finishes. Do not use the Vercel command-line tool.
+- [ ] The privacy page date matches the go-live day, the day you press Promote (Las Vegas time).
+  `LAST_UPDATED` in `app/privacy/page.tsx` shows November 18, 2026 in a build with the ID. If the
+  release goes live on another day, your developer changes that date before merging, in that file,
+  `tests/privacy-page.logic.spec.ts`, `tests/seo-round12-owner-decisions.spec.ts` and the page's
+  sitemap date in `app/sitemap.ts`, and reruns the checks. If Promote then slips past that day, a new build with the new date replaces it.
+- [ ] With your release approval, your developer merges the pull request for branch
+  `analytics/ga4-setup`. Automatic domain assignment is off, so Vercel builds a production
+  deployment and holds it as Staged: the live site does not change yet.
+- [ ] You press **Promote** on that deployment in Vercel, signed in as the team owner. There is no
+  separate Redeploy step: the build from the merge already carries the ID. Do not use the Vercel
+  command-line tool.
 
 ### D. Check the live site in a normal browser window
 
+These checks use only page views and link clicks. Do not send an inquiry, sign up for the
+newsletter or book anything to test them; part E covered those events with a labelled test.
+
+- [ ] Your developer confirms that the live pages load the Google tag once, with your `G-` ID.
 - [ ] <https://www.lasvegasmahj.com/privacy>: the Analytics section now names Google Analytics 4 and
-  lists, in plain words, schedule links, contact links, clicks out to Bookwhen ("This counts the
-  click, not a booking"), the contact form, the newsletter and Ask a Rule. The cookies section
-  reads "This website does not set any cookies of its own. Google Analytics sets the cookies
-  described above." If the page still says "does not use an analytics service", the redeploy did
-  not pick up the ID: stop.
-- [ ] GA4 > Reports > Realtime: you appear as a visitor with a `page_view`. Then click "Book Now" in
-  the homepage lessons box and watch `schedule_link_click` arrive. Only after both may anyone say
-  tracking is live (Round 12).
+  lists, in plain words, schedule links, contact links, clicks to the booking pages on Bookwhen
+  ("This counts the click, not a booking"), the contact form, the newsletter and Ask a Rule. The
+  page reads "Last updated November 18, 2026" (or the go-live day set in part C), and the cookies
+  section reads "This website does not set any cookies of its own. Google Analytics sets the
+  cookies described above." If the page still says "does not use an analytics service" or shows
+  November 13, 2026, the build did not pick up the ID: stop.
+- [ ] GA4 > Reports > Realtime: you appear as a visitor with a `page_view`. Then click "Book Now"
+  in the homepage lessons box and watch `schedule_link_click` arrive. Only after all three checks
+  pass may anyone say tracking is live (Round 12).
 
 ### E. Check each event once, in DebugView
 
-Open <https://tagassistant.google.com>, add `www.lasvegasmahj.com`, and use the site in the window it
-opens. Watch GA4 > Admin > DebugView. Do each action once, then click each event in DebugView and
-read its parameters.
+Your developer runs this test on a local copy of the site, before part C. It uses a production
+build with the real ID and a browser test script kept outside the repository. The contact form
+service and the newsletter service are replaced by stand-ins, and Bookwhen is blocked, so no
+inquiry, signup or booking happens. Never test with a real inquiry, a real newsletter signup or a
+booking. The test runs twice:
 
-| Do this | Expect, once each | Check the parameters |
+1. **Counting run.** Every hit to Google is answered on your developer's computer, so nothing is
+   sent. The script counts the page views and events the site would send, with your property's
+   real enhanced measurement settings.
+2. **Labelled run.** The script then sends a small set of clearly labelled test events: debug mode
+   is on (`debug_mode`), every event carries a `test_run` label, and the pages run on a local host
+   name, never `www.lasvegasmahj.com`. You watch Admin > Data display > DebugView (or Reports >
+   Realtime) and click each event to read its parameters.
+
+In the table, "the event's page" is the page address GA4 records with the event (`page_location`).
+
+| The test does this | Expect, once each | Check the parameters |
 | --- | --- | --- |
 | Load the homepage | `page_view` | One page view, not two |
-| Click "Book Now" in the homepage lessons box | `schedule_link_click` | `link_url` /schedule, `page_path` / |
+| Click "Book Now" in the homepage lessons box | `schedule_link_click` | `link_url` /schedule; the event's page is the homepage |
 | On `/schedule`, click "See the Calendar" | nothing from the site | In-page jumps are not counted |
-| On `/schedule`, click one "Book" button (Bookwhen opens in a new tab; do not book) | `booking_link_click` | `link_url` starts with `https://bookwhen.com/lasvegasmahjong/`, `page_path` /schedule. GA4's own `click` may appear too: expected, and never a booking |
-| On `/mahjong-corporate-las-vegas`, click "Request a Quote" | `contact_link_click` | `source_slug` corporate, `page_path` /mahjong-corporate-las-vegas |
-| On the contact form that opens, before any other click, send a test: name "Analytics Test", your own email, the example number shown in the phone box, message "GA4 test, please ignore" | `contact_form_attempt`, then `contact_form_success` and `contact_submit` | `source_label` Corporate Events page, `inquiry_type` Corporate or Team Building; `contact_submit` has none. The name, email, phone number and message appear in no parameter |
-| Now click Contact in the menu | `contact_link_click` | No `source_slug` value (missing or empty), `page_path` /contact |
-| Subscribe an address you own in the footer box | `newsletter_signup` | No parameters; the address appears nowhere. Remove it from Mailchimp afterwards. An address already on the list shows "You're already on the list" and sends nothing, by design |
+| On `/schedule`, click one "Book" button (Bookwhen is blocked) | `booking_link_click` | `link_url` starts with `https://bookwhen.com/lasvegasmahjong/`; the event's page is `/schedule`. No GA4 `click` event: Outbound clicks is off |
+| On `/privacy`, click the link to Bookwhen's privacy policy | nothing from the site | Only links to the booking pages count |
+| On `/mahjong-corporate-las-vegas`, click "Request a Quote" | `contact_link_click` | `source_slug` corporate; the event's page is `/mahjong-corporate-las-vegas` |
+| Open `/contact?source=corporate` (where "Request a Quote" leads), fill in test details and send (the stand-in accepts them) | `contact_form_attempt`, then `contact_form_success` and `contact_submit` | `source_label` Corporate Events page, `inquiry_type` Corporate or Team Building; `contact_submit` has none. Nothing typed appears in any parameter |
+| On `/studio`, click Contact in the menu | `contact_link_click` | No `source_slug` value (missing or empty); the event's page is `/studio` |
+| Subscribe a test address in the footer box (the stand-in accepts it) | `newsletter_signup` | No parameters; the address appears nowhere |
 | On `/ask`, tap a starter question | `ask_starter_click`, then `ask_question` | `origin` starter, `turn` 1; the question text appears nowhere |
-| Type a question and send it | `ask_question` | `origin` typed; the words you typed appear in no parameter |
+| Type a question and send it | `ask_question` | `origin` typed; the words typed appear in no parameter |
 | Press "Start a new question" | `ask_reset` | none |
 
-- [ ] **No duplicates.** Each action produced each listed event once. `contact_form_success` plus
-  `contact_submit` is the designed pair, not a duplicate. If anything arrives twice, stop: the
-  usual causes are a second Google tag added somewhere else, or a live site that is not this
-  branch.
-- [ ] **Nothing typed, anywhere.** Also read the page addresses in DebugView: the contact page
-  shows as `/contact` or `/contact?source=corporate`, never an address with your name or email in
-  it. The form posts its data and never puts it in the address.
-- [ ] The test inquiry reached your inbox through Formspree, like a real one. Delete it afterwards.
-- [ ] `contact_form_error` cannot be triggered safely by hand (the form service has to fail). The
-  automated test `tests/analytics-events.spec.ts` covers it. In GA4 it appears only when a real
-  failure happens.
+- [x] **No duplicates.** In the counting run, each action produced each listed event once, and
+  each page load one `page_view`. `contact_form_success` plus `contact_submit` is the designed
+  pair, not a duplicate. A GA4 `click`, `scroll`, `view_search_results`, `form_start`,
+  `form_submit` or `file_download` event, or any `video_` event, means an enhanced measurement
+  option from part B is still on. If anything arrives twice, stop: the usual cause is a second
+  Google tag added somewhere else.
+- [x] **The labelled run went out** (2026-11-18, desktop): every request carried `_dbg=1` and
+  `ep.test_run`, from a local host name, and Google answered the page views, the inquiry, the
+  newsletter signup and the Ask a Rule events. Seeing them in DebugView or Realtime is optional.
+- [x] **Nothing typed, anywhere.** No request carried a typed value, plain or coded, and no
+  user-data parameter. The contact page address carries only `?source=`: the form posts its data
+  and never puts it in the address.
+- [x] `contact_form_error` cannot be triggered safely by hand (the form service has to fail). The
+  counting run covers it with two mocked failures, and so does the automated test
+  `tests/analytics-events.spec.ts`. In GA4 it appears only when a real failure happens.
 
 ### F. Finish
 
@@ -270,12 +376,13 @@ read its parameters.
   Realtime and DebugView do not.
 - [ ] Stop counting your own visits, once the checks above are done: install Google's opt-out
   add-on (linked from `/privacy`) in the browsers you use for the site, or define internal traffic
-  by IP address in the data stream's tag settings and switch on that filter. Note the test events
-  in the first week's numbers.
-- [ ] Send your developer the date, which production deployment you checked (the top Production
-  entry on Vercel's Deployments page) and the list of checks that passed. Your developer records
-  them in the SEO handoff (`docs/handoffs/lvm-seo-current.md`). Until that record exists, nobody
-  calls tracking live.
+  by IP address in the data stream's tag settings and switch on that filter. The labelled test
+  events from part E carry `test_run` and a local host name; note them in the first week's
+  numbers.
+- [ ] Send your developer the date, which production deployment you promoted (the current
+  Production deployment on Vercel's Deployments page) and the list of checks that passed. Your
+  developer records them in the SEO handoff (`docs/handoffs/lvm-seo-current.md`). Until that
+  record exists, nobody calls tracking live.
 
 ---
 
@@ -301,7 +408,7 @@ Dashboards folder in Drive: one row per week, one tab per month.
 | Inquiries by type | Inbox: the `inquiry_type` line of each email |
 | GA4 inquiries | GA4: `contact_form_success` count |
 | Form errors | GA4: `contact_form_error` count |
-| Bookwhen clicks | GA4: `booking_link_click` where `link_url` contains `/lasvegasmahjong` |
+| Bookwhen clicks | GA4: `booking_link_click` count (it fires only for links to the booking pages, so no filter is needed) |
 | Bookwhen bookings | Bookwhen: bookings made that week |
 | New subscribers | Mailchimp: audience change, with GA4 `newsletter_signup` beside it |
 | Notes | Anything unusual: a social post, press, a holiday, a site change |
@@ -319,10 +426,11 @@ Three warning signs to act on the same week:
 1. **Inquiries by source page and type.** GA4 Free-form exploration: rows `source_label`, columns
    `inquiry_type`, value Event count, filtered to `contact_form_success`. Check the total against
    the inbox.
-2. **Contact clicks and inquiries by page.** `contact_link_click` by `page_path` and `source_slug`,
-   beside `contact_form_success` by `source_label`. Call the ratio "inquiries per 100 contact
-   clicks"; a visitor can click today and send later, or never.
-3. **Bookwhen clicks by page.** `booking_link_click` by `page_path` (`/schedule`,
+2. **Contact clicks and inquiries by page.** `contact_link_click` by page path (the built-in "Page
+   path and screen class") and `source_slug`, beside `contact_form_success` by `source_label`.
+   Call the ratio "inquiries per 100 contact clicks"; a visitor can click today and send later, or
+   never.
+3. **Bookwhen clicks by page.** `booking_link_click` by page path (`/schedule`,
    `/play-mahjong-las-vegas`, `/mahjong-leagues-las-vegas`), then by `link_url` to see which
    sessions draw clicks. Beside it, Bookwhen bookings by class.
 4. **Lessons path.** Funnel exploration, within one visit: a view of `/mahjong-lessons-las-vegas`,
@@ -349,8 +457,8 @@ Bookwhen.
 These are two different things. Write them side by side; never add them together, and never put
 one in place of the other.
 
-- **Bookwhen clicks** (`booking_link_click`): someone on the site clicked a link that opens
-  Bookwhen.
+- **Bookwhen clicks** (`booking_link_click`): someone on the site clicked a link to one of the
+  booking pages on Bookwhen.
 - **Bookings** (Bookwhen): someone finished booking on bookwhen.com.
 
 You can watch "bookings per 100 Bookwhen clicks" as a trend, but never call it the site's booking
@@ -363,9 +471,7 @@ rate. The two numbers differ for known reasons:
 4. One booking can hold more than one seat. If Bookwhen shows seats, track bookings and seats in
    separate columns.
 5. Middle-button and "Open in new tab" clicks are not counted (section 1.3).
-6. The `/privacy` link to Bookwhen's privacy policy also reports as `booking_link_click`. The filter
-   "`link_url` contains `/lasvegasmahjong`" removes it.
-7. The leagues page's "View Booking Page" button opens the general Bookwhen page, not one session.
+6. The leagues page's "View Booking Page" button opens the general Bookwhen page, not one session.
 
 To compare one session: for a single session, `link_url` ends with the Bookwhen event code (`ev-`,
 then an id, then the session's start date and time). Match it with that session's bookings in
@@ -440,7 +546,7 @@ each, and effort. Every benefit below is a hypothesis.
   traced to a published line in that folder's SOURCES.md.
 - **Hypothesis:** planners who see the format, what is included and what the venue supplies in
   one place request a quote more often.
-- **Outcome:** `contact_link_click` with `source_slug` corporate and `page_path`
+- **Outcome:** `contact_link_click` with `source_slug` corporate and page path
   /mahjong-corporate-las-vegas, per 100 hub page views; and `contact_form_success` with
   `source_label` "Corporate Events page", checked against the inbox. Per window.
 - **Minimum:** the standard rule, counting hub quote clicks.
@@ -459,7 +565,7 @@ each, and effort. Every benefit below is a hypothesis.
   `~/Projects/.lvm-sprint-2026-11-13/lane6-lessons-preview/preview.patch`.
 - **Hypothesis:** visitors unsure which option fits pick one sooner, so more of them reach the
   schedule or ask about a private or home lesson.
-- **Outcome:** `schedule_link_click` with `page_path` /mahjong-lessons-las-vegas (any link on the
+- **Outcome:** `schedule_link_click` with page path /mahjong-lessons-las-vegas (any link on the
   page, the menu included) per 100 lessons page views; `contact_form_success` with `source_label`
   "Lessons page"; the Lessons to Bookwhen funnel.
 - **Minimum:** the standard rule, counting schedule clicks from the page.
@@ -477,8 +583,8 @@ each, and effort. Every benefit below is a hypothesis.
   2026-09-29), and no dollar figure on the visitor page (test-enforced).
 - **Hypothesis:** a visiting player who forgot a card, or has last year's, can tell whether they can
   still come, so fewer stop before booking.
-- **Outcome:** `booking_link_click` with `page_path` /play-mahjong-las-vegas per 100 visitor page
-  views, and `schedule_link_click` with `page_path` /mahjong-open-play-las-vegas per 100 open play
+- **Outcome:** `booking_link_click` with page path /play-mahjong-las-vegas per 100 visitor page
+  views, and `schedule_link_click` with page path /mahjong-open-play-las-vegas per 100 open play
   page views. Social Open Play bookings in Bookwhen per month, as context only.
 - **Minimum:** the standard rule.
 - **Effort:** low, after your answer.
@@ -514,7 +620,7 @@ each, and effort. Every benefit below is a hypothesis.
 - **Hypothesis:** the extra stop on the homepage loses some visitors on their way to the schedule.
 - **Outcome:** GA4 Path exploration starting at `/mahjong-lessons-las-vegas`: of the visits that go
   next to the homepage, the share that then click to the schedule (`schedule_link_click` with
-  `page_path` /) and then to Bookwhen (`booking_link_click`).
+  page path /) and then to Bookwhen (`booking_link_click`).
 - **Minimum:** 8 weeks of data.
 - **Effort:** none to measure. Changing the buttons reverses a recorded decision on a protected
   page, so bring the numbers to the decision first.
@@ -538,16 +644,16 @@ each, and effort. Every benefit below is a hypothesis.
 
 ## 5. Open items, and what this plan could not source
 
-1. **The "Last updated" date on `/privacy` is typed into the page.** Switching analytics on changes
-   what the page says, and the page promises to update its date when the site changes how it
-   handles information. Setting the ID does not change the date by itself. Decide before switching
-   on: update the date in a deploy on the switch-on day, or accept the gap.
+1. **The "Last updated" date on `/privacy`: settled in the code.** `LAST_UPDATED` in
+   `app/privacy/page.tsx` shows November 13, 2026 in a build without the ID and November 18, 2026
+   in the build that carries it, so the date moves in the same build as the Analytics text. If
+   the release goes live (is promoted) on another day, your developer changes that date, the
+   page's sitemap date and the two tests that pin them, before merging (section 2.C).
 2. Whether Bookwhen can send completed bookings to GA4: not verified (Round 11).
 3. What Bookwhen's own reports show (bookings by the date they were made, seats per booking): not
    checked. Adapt section 3.4 to what Bookwhen shows.
-4. GA4 menu names and settings in section 2 come from general knowledge of GA4, not from a live
-   property (none exists, and this plan used no web search). If a menu reads differently, follow
-   the intent of the step.
+4. GA4 menu names and settings in section 2 come from Google's help pages (read 2026-11-18) and
+   from the property itself. If a menu reads differently, follow the intent of the step.
 5. No traffic, inquiry, booking or newsletter volume exists in any source reviewed beyond the
    Search Console figures in section 3.5. The minimum-data rules in section 4 are rules of thumb.
 6. If anyone adds or tightens a Content-Security-Policy later, it must allow Google's tag, or
@@ -572,6 +678,12 @@ each, and effort. Every benefit below is a hypothesis.
   files under `app/` that import Next.js links, `tests/seo-round10-visible.logic.spec.ts` (the ID
   guard), and the Git history of `components/contact-form.tsx` and `components/inquiry-modal.tsx`
   on `origin/main` (when each label started).
+- **Code change of 2026-11-18** (branch `analytics/ga4-setup`):
+  `lib/analytics.ts` (`linkClickEvent`: no page parameter, Bookwhen booking pages only),
+  `app/privacy/page.tsx` (`LAST_UPDATED` and the Analytics text), the tests that commit updates,
+  and the new `tests/analytics-ga4-setup.logic.spec.ts`.
+- **GA4 setup:** the owner's GA4 decisions of 2026-11-18, and Google's help pages for the menu
+  paths in section 2 (read 2026-11-18).
 - **Records:** `docs/handoffs/lvm-seo-current.md` (Rounds 12, 11 and 10; Round 2 for `/#classes`;
   Round 3 for source attribution); `CLAUDE.md` (Hard Rules, Pricing).
 - **Sprint findings,** `~/Projects/.lvm-sprint-2026-11-13/`: `lane7-analytics-search/SEARCH-EVIDENCE.md`,

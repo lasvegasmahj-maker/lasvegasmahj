@@ -72,9 +72,9 @@ test("with the GA4 tag on the page, an event is sent once, through gtag only", (
   const calls: unknown[][] = [];
   const dataLayer: unknown[] = [];
   withWindow({ gtag: (...args: unknown[]) => calls.push(args), dataLayer }, () =>
-    trackEvent("schedule_link_click", { link_url: "/schedule", page_path: "/studio" }),
+    trackEvent("schedule_link_click", { link_url: "/schedule", link_domain: "www.lasvegasmahj.com" }),
   );
-  expect(calls).toEqual([["event", "schedule_link_click", { link_url: "/schedule", page_path: "/studio" }]]);
+  expect(calls).toEqual([["event", "schedule_link_click", { link_url: "/schedule", link_domain: "www.lasvegasmahj.com" }]]);
   expect(dataLayer).toEqual([]);
 });
 

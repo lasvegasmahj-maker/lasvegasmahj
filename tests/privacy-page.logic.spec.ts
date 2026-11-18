@@ -46,7 +46,17 @@ test("the page is titled Privacy and is canonical at /privacy", () => {
 
   const h1 = PAGE.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "";
   expect(h1.replace(/<[^>]+>/g, "").trim()).toBe("Privacy");
-  expect(PAGE).toContain("Last updated November 13, 2026");
+  // The date moves when the build that sets the GA4 ID changes what the page says.
+  expect(PAGE).toContain('const LAST_UPDATED = ANALYTICS_ON ? "November 18, 2026" : "November 13, 2026";');
+  expect(PAGE).toContain("Last updated {LAST_UPDATED}</p>");
+  expect(PAGE.match(/Last updated/g)).toHaveLength(1);
+  // The sitemap's date for the page moves in the same build, and the two pairs of dates must
+  // stay equal when the go-live day changes.
+  expect(read("app/sitemap.ts")).toContain('lastModified: new Date(process.env.NEXT_PUBLIC_GA4_ID ? "2026-11-18" : "2026-11-13"),');
+  const pageDates = PAGE.match(/const LAST_UPDATED = ANALYTICS_ON \? "([^"]+)" : "([^"]+)";/);
+  const mapDates = read("app/sitemap.ts").match(/NEXT_PUBLIC_GA4_ID \? "(\d{4}-\d{2}-\d{2})" : "(\d{4}-\d{2}-\d{2})"/);
+  const iso = (d: string) => new Date(`${d} UTC`).toISOString().slice(0, 10);
+  expect(pageDates && [iso(pageDates[1]), iso(pageDates[2])]).toEqual(mapDates && [mapDates[1], mapDates[2]]);
 });
 
 test("it describes Google Analytics only in a build that loads it, and links Google's opt-out add-on", () => {
@@ -56,6 +66,9 @@ test("it describes Google Analytics only in a build that loads it, and links Goo
   expect(read("components/analytics.tsx")).toContain("const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;");
   expect(PAGE).toContain("This website does not use an analytics service right now.");
   expect(PAGE).toContain("Google Analytics 4");
+  // Google's tag also sends browser and device details with every page view, so the page must
+  // never read as if the address, title and IP address were all it receives.
+  expect(PAGE).toContain("details about your browser and device");
   expect(HREFS).toContain("https://tools.google.com/dlpage/gaoptout");
   expect(HREFS).toContain("https://policies.google.com/technologies/partner-sites");
 });

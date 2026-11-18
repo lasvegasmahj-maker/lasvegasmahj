@@ -11,9 +11,12 @@ commit). **Rounds 9, 10, 11 and 12, the sprint of 2026-11-13 and the four sectio
 MERGED, LIVE and VERIFIED:** pull request #130 (branch `seo/invisible-technical-fixes`) was
 squash-merged into `main` as `0a72967` on 2026-11-16 (Las Vegas date), the owner promoted it to
 `www` that evening, and the checks on the live site found no failures (section "RELEASE
-2026-11-16", below). **The photo update of 2026-11-17 (next section) is on the branch
-`photos/leagues-and-fox5-card`, proposed as a draft pull request into `main`: not merged and not
-live.** Sentences in those sections that say the branch or pull request #130 is
+2026-11-16", below). **The photo update of 2026-11-17 (section below) is MERGED, LIVE and
+VERIFIED:** pull request #131 was squash-merged into `main` as `f36af78` on 2026-11-17, the owner
+promoted it to `www` that evening, and the checks on the live site found no failures. **The
+analytics setup of 2026-11-18 (next section) is NOT MERGED:** it is on branch
+`analytics/ga4-setup` and waits for the owner's approval of the finished release. Sentences
+in those sections that say the branch or pull request #130 is
 "local", "uncommitted", "not pushed", "not merged", "not live" or a draft, that PR #129 is not
 merged, or that sitemap dates were not changed describe the day each section was written.
 Proposals those sections mark "not merged" that no later section applied, such as the sprint's
@@ -25,14 +28,126 @@ share-image fixes, and its link proposals stay with the owner.
 
 ---
 
-# PHOTO UPDATE 2026-11-17: leagues photo and FOX5 card picture (ON THE BRANCH, NOT MERGED)
+# ANALYTICS SETUP 2026-11-18: GA4 property, link-click fixes and privacy date (NOT MERGED)
+
+**Owner's brief (2026-11-18):** resume analytics setup only. A GA4 property "Las Vegas Mahjong"
+under the business Google account, with a web stream for `https://www.lasvegasmahj.com`, Pacific
+time and US dollars; optional data sharing and Google signals off; 14-month retention; nothing a
+visitor types ever sent; Bookwhen clicks counted as clicks, never as bookings; an accurate privacy
+page; checks only with clearly labelled tests, never a real inquiry, signup or booking. Later that
+day she deferred the custom dimensions and the key event (optional reporting setup, not activation
+blockers) and asked for one finished release to approve. Nothing merges, deploys or activates
+tracking before that approval. Bookwhen changes, research, photo work and unrelated tidy-ups stay
+paused.
+
+**Before:** on 2026-11-18 the live site loaded no Google tag, `lasvegasmahj-h1iz` held no
+analytics setting (names checked, never values), `/privacy` said the site uses no analytics, and
+no record we can reach showed a GA4 property.
+
+**The property** (created by the owner on 2026-11-18): account and property "Las Vegas Mahjong",
+Los Angeles time zone, US dollars, one web stream for `https://www.lasvegasmahj.com`. Its
+Measurement ID goes into Vercel as `NEXT_PUBLIC_GA4_ID` (Production only) and is never typed into
+the code.
+
+| Setting | State | Confirmed by |
+| --- | --- | --- |
+| Enhanced measurement | Page views only, with page changes based on browser history events | Google's served tag for the ID, and the local counting run |
+| Redaction | Email addresses, and the `mc_eid` query parameter | Google's served tag |
+| Google signals | Off | Google's served tag |
+| User-provided data capabilities | Off. It was on by default, with automatic detection of email addresses, phone numbers and street addresses; the owner switched it off and published the tag change | Google's served tag |
+| Data retention | 14 months, event and user data | The owner (not visible in the tag) |
+| Account data-sharing settings | Unticked at account creation, as instructed | Not independently checked |
+| Property setting "User-provided data collection" | Not recorded | Cannot affect this setup: the tag no longer sends such data |
+| Custom dimensions and the key event | Deferred by the owner | Steps in the measurement plan, section 2.B |
+
+Google also created three key events of its own (`purchase`, `qualify_lead`,
+`close_convert_lead`). The site never sends those events, so they stay at zero.
+
+**Code** (this branch):
+
+- Link clicks send the link's path, its host and a well-formed `?source=` tag, and no page:
+  gtag.js takes a `page_path` parameter as its own page field, so it never arrived. GA4 records the
+  page address with every event.
+- `booking_link_click` fires only for links to this account's booking pages on Bookwhen; Bookwhen's
+  privacy policy link on `/privacy` no longer counts. It is a click, never a booking.
+- `/privacy`: `LAST_UPDATED` follows the same switch as the Analytics section ("November 13, 2026"
+  without an ID, "November 18, 2026" with one), and so does the page's date in `app/sitemap.ts`. The Analytics text names what Google's tag sends
+  with each page: the page address and title, the previous page, the IP address, browser and
+  device details such as the browser, the operating system and their versions, the device model,
+  the screen size and the language setting, and, when a visitor leaves a page, how long they spent
+  on it. Sources: Google's "Automatically collected events"
+  and "Data collection" help pages, the requests captured from Google's tag in the counting run,
+  and Google's partner-sites policy for the location sentence. The text also says "our booking
+  pages on Bookwhen" and adds Ask a Rule's turn number. The pull request lists every wording change
+  as current and proposed text for the owner's approval.
+- Tests: new `tests/analytics-ga4-setup.logic.spec.ts`; updated `tests/analytics-events.spec.ts`,
+  `tests/privacy-page.logic.spec.ts`, `tests/seo-round12-owner-decisions.spec.ts` (an analytics-on
+  check that runs only in a build with the ID) and `tests/seo-round12-owner-decisions.logic.spec.ts`.
+
+**Checks (2026-11-18):**
+
+- Typecheck clean. ESLint clean on every changed file. Logic tests: 592 passed and 7 skipped. One
+  more fails on this machine only: `tests/ask-engine.logic.spec.ts`, "the Find My Mahj manifest
+  still matches the sister repo when it is checked out", compares Ask files with the sister
+  repository's local copy, touches nothing on this branch, and skips in CI.
+- Browser tests for analytics, the privacy page and accessibility, desktop and phone, in a build
+  without an ID: 48 passed, 8 skipped by design (they need an ID or a Bookwhen link).
+- A local production build with the real ID, driven by a browser script kept outside this
+  repository, with every Google request answered on the machine (nothing sent), against the tag
+  Google serves for the property after every setting above: 26 scenario runs (13 scenarios on
+  desktop and on iPhone), with identical counts on both.
+  - One `page_view` per full page load and one per page change without a reload (13 for 3 loads
+    and 10 such changes, back and forward included); the "See the Calendar" jump and the skip link
+    add none.
+  - Each site event arrived once per action: `contact_form_attempt`, `contact_submit` and
+    `contact_form_success` for a mocked inquiry, on `/contact` and in the homepage pop-up;
+    `contact_form_attempt` and `contact_form_error`, and no success, for two mocked failures;
+    `newsletter_signup`; `schedule_link_click`; `contact_link_click`, with `source_slug` on a
+    tagged button only; `booking_link_click`, while the Bookwhen privacy policy link sent
+    nothing; `ask_starter_click`, `ask_question`, `ask_unverified` and `ask_reset`.
+  - No other GA4 event appeared: no scroll, form, outbound click, site search, video or download
+    event.
+  - None of the 178 requests to Google (119 to Google Analytics, 59 copies to google.com), nor
+    the 3 sent as pages closed and read from inside the page, carried a typed value, plain or
+    coded, or a user-data parameter.
+- A labelled run from the same build sent a small set of events to the property: desktop, 8
+  scenarios, 33 requests, each with `_dbg=1` and `ep.test_run=lvm-ga4-setup-test-2026-11-18`, from
+  a local host name. Google answered 204 to the page views, the mocked inquiry, the mocked
+  newsletter signup and the Ask a Rule events. Link clicks go out while the page changes, when the
+  browser no longer reports the reply. The contact form service and the newsletter were stand-ins
+  and Bookwhen was blocked, so no inquiry, signup or booking happened.
+- The same build's `/privacy` shows the Analytics section and "Last updated November 18, 2026",
+  and every page carries the Google tag once, with the property's ID.
+
+**Activation (waiting for the owner's approval of the finished release):**
+
+1. The owner adds `NEXT_PUBLIC_GA4_ID` (Production only) in `lasvegasmahj-h1iz`, signed in as the
+   team owner.
+2. With her approval, merge this branch's pull request. Automatic domain assignment is off, so
+   Vercel holds the production build as Staged.
+3. She presses Promote.
+4. Live checks: the pages load the Google tag once, with the ID; `/privacy` shows the Analytics
+   section and the new date; a short labelled check sends page views and link clicks only. Only
+   then is tracking called live.
+
+The go-live day is the day the owner presses Promote, Las Vegas time. If it is not 2026-11-18,
+change "November 18, 2026" to that day before merging, in `app/privacy/page.tsx` (`LAST_UPDATED`),
+`tests/privacy-page.logic.spec.ts` and `tests/seo-round12-owner-decisions.spec.ts`, and the
+matching "2026-11-18" in `app/sitemap.ts` and `tests/privacy-page.logic.spec.ts`, then rerun the
+checks. If Promote then slips past that day, merge a new build with the new date and promote that
+one instead.
+
+---
+
+# PHOTO UPDATE 2026-11-17: leagues photo and FOX5 card picture (MERGED, LIVE AND VERIFIED)
 
 **Source:** the owner chose these photos from a local preview kept outside this repository. On
 2026-11-16 she chose a studio photo with no people for the leagues page, asked that its room not
 be named and that nothing call it a league, and asked for new pictures for the leagues page's
 share image and for one FOX5 card. On 2026-11-17 she approved the previews, confirmed that the
 leagues play in the room shown, approved the final wording of the photo's description, and asked
-for this update with its checks. Merging and publishing wait for her approval.
+for this update with its checks. Later that day she approved the merge, and that evening she
+promoted the release ("Release", below).
 
 **What changes:**
 1. Leagues page (`app/mahjong-leagues-las-vegas/page.tsx`): the studio photo
@@ -54,10 +169,9 @@ for this update with its checks. Merging and publishing wait for her approval.
 5. Sitemap: the leagues page carries 2026-11-17, the day its main photo changed. The homepage
    and the Studio page keep their dates. Item 4 of the release candidate section records her
    rule: each date is the day that page's visible content last changed. That release counted
-   changes to visible wording or a main photo, and a new picture on a press card is neither. If
-   she wants those two pages dated 2026-11-17, that is a one-line change each before the merge.
-   Moving a date to the release day, if she wants that, is a separate, checked update before the
-   merge.
+   changes to visible wording or a main photo, and a new picture on a press card is neither. On
+   2026-11-18 she asked to keep the sitemap dates as agreed, so the leagues page keeps
+   2026-11-17 and the homepage and the Studio page keep 2026-11-15.
 6. Tests: `tests/owner-approvals-2026-11-17.logic.spec.ts` pins the photo's place, its approved
    description, the exact file, the share image, the FOX5 card's picture, link, headline and
    date, the other card, the studio photo list and the sitemap date.
@@ -71,13 +185,36 @@ for this update with its checks. Merging and publishing wait for her approval.
 lessons, Summerlin and Henderson pages) still wait for her decisions, and any further photo
 decisions are recorded privately, outside this repository.
 
-**Follow-up, nothing a visitor sees:** Next 16 marks the `priority` image prop as deprecated in
-favor of `preload`; it still works the same way. All six first-screen photos use `priority`
-(the leagues photo follows that pattern), so move them together in one separate, checked change.
+**Optional code tidy-ups, nothing a visitor sees (left alone at the owner's request of
+2026-11-18):** Next 16 marks the `priority` image prop as deprecated in favor of `preload`; it
+still works the same way. All six first-screen photos use `priority` (the leagues photo follows
+that pattern), so if they move, they move together in one separate, checked change. The
+reviewers also suggested a closer `sizes` value for the leagues photo,
+`(max-width: 824px) calc(100vw - 4rem), 760px`. Do not start either without her word.
 
 **Checks:** typecheck, the logic and browser tests, the lint check and the Technical and Brand
-gate run on the exact tree before it is pushed; the results are in the pull request's
-description.
+gate ran on the exact tree before each push and passed; the results are in the description of
+pull request #131.
+
+**Release:**
+- Merge: before the merge, all six checks on the pull request's head commit `46bd4e6` had
+  passed (the three GitHub Actions jobs and the three Vercel checks). It was squash-merged on
+  2026-11-17 at 21:48 UTC (1:48 pm in Las Vegas) as `f36af78` on `main`, with a guard that its
+  head was still `46bd4e6`. The tree of `f36af78` is the reviewed tree (`cd704dd`), and CI on
+  `main` passed all three jobs for it.
+- Production: on `lasvegasmahj-h1iz` the build of `f36af78` waited unassigned while `www` kept
+  serving the 2026-11-16 deployment. The owner promoted it at about 01:19 UTC on 2026-11-18
+  (5:19 pm on 2026-11-17 in Las Vegas), and `www.lasvegasmahj.com` has served deployment
+  `dpl_7B5ghJsTgj77g1f1u9yTh28vxR4B` since then. Automatic domain assignment on
+  `lasvegasmahj-h1iz` is still off after this promotion (read from Vercel, read-only).
+- Checks on the live site (2026-11-17 evening, read-only, nothing sent): a photo verification
+  script passed all 32 of its checks. The leagues photo is the approved file, byte for byte. At
+  desktop and iPhone 13 sizes it sits between the buttons and the league list with no sideways
+  scroll. The page's link preview uses it with the approved description, and the leagues page's
+  sitemap date is 2026-11-17. Both FOX5 cards on the homepage and the Studio page show the
+  expected pictures and keep their links. All 34 sitemap pages answer 200 from the new
+  deployment. The pages opened in the browser logged no script error. The 49 checks of the
+  2026-11-16 release script passed again against the new deployment.
 
 ---
 
@@ -104,8 +241,8 @@ and all other changes stayed paused, by her instruction.
   `lasvegasmahj-h1iz`, where automatic domain assignment is off, the new build waited
   unassigned while `www` kept serving the deployment of 2026-10-05. The owner promoted it in
   Vercel with the team's login at about 02:48 UTC (6:48 pm in Las Vegas), and `www` switched
-  within seconds. `www.lasvegasmahj.com` has served deployment `dpl_2VxVqLmL4g8MPGH9pnYbj4WM7Kvt`
-  since then.
+  within seconds. `www.lasvegasmahj.com` served deployment `dpl_2VxVqLmL4g8MPGH9pnYbj4WM7Kvt`
+  from then until the photo update was promoted on 2026-11-17 (section above).
 - Automatic domain assignment on `lasvegasmahj-h1iz` is still off after the promotion (read
   from Vercel, read-only, on 2026-11-16). So each later merge to `main` builds a production
   deployment that waits until the owner promotes it. The same-team project `lasvegasmahj`
@@ -166,10 +303,11 @@ and deployments):**
   so smoke-check `www` after the Promote, not 90 seconds after the merge.
 - The open items in the release candidate section below still stand, among them the tap cue
   for the lesson cards on phones and the invisible fixes queued for the next checked update.
-- Photo placements: previews of a second use for four existing studio photos are prepared
-  outside this repository for her review. Nothing is installed.
-- This section changes documents only. Merging it builds a production deployment like any
-  merge to `main`; that build changes nothing a visitor sees, so promoting it is optional.
+- Photo placements: the leagues page's photo went live with the photo update of 2026-11-17
+  (section above). The private lessons, Summerlin and Henderson previews, prepared outside this
+  repository, still wait for her decisions; none of them is installed.
+- This section changed documents only. It reached `main` with pull request #131, the photo
+  update above.
 
 ---
 
@@ -2815,9 +2953,9 @@ projects; a sibling `lasvegasmahj` in the same team also builds every commit but
 the domain, and a third `lasvegasmahj` under a different account is stale. Deployment starts
 by **merging to `main`**: Vercel's GitHub integration starts a production build in both
 projects. On `lasvegasmahj-h1iz` automatic domain assignment is off (the owner's choice, still
-off after the 2026-11-16 release), so a new build reaches `www` only when the owner promotes it
-in Vercel with the team's login. Do not run a CLI deploy, and do not create a
-`.vercel/project.json` in a worktree: that has previously produced a stray project.
+off after the 2026-11-16 release and the 2026-11-17 photo update), so a new build reaches `www`
+only when the owner promotes it in Vercel with the team's login. Do not run a CLI deploy, and do
+not create a `.vercel/project.json` in a worktree: that has previously produced a stray project.
 
 ## Google Search Console
 
