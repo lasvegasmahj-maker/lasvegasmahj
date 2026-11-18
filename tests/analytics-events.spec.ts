@@ -52,7 +52,7 @@ async function fillForm(page: Page) {
   await page.fill("#contact-message", TYPED.message);
 }
 
-test("a click on a link to the schedule is reported with the link's path and host only", async ({ page }) => {
+test("a click on a link to the schedule is reported with the link's path and no page parameter", async ({ page }) => {
   await plantDataLayer(page);
   await page.goto("/studio");
   await holdNavigation(page);

@@ -304,10 +304,11 @@ activation.
   separate Redeploy step: the build from the merge already carries the ID. Do not use the Vercel
   command-line tool.
 
-### D. Check the live site in a normal browser window
+### D. Check the live site
 
-These checks use only page views and link clicks. Do not send an inquiry, sign up for the
-newsletter or book anything to test them; part E covered those events with a labelled test.
+These checks use only page views and link clicks, and every test event carries a label. Do not
+send an inquiry, sign up for the newsletter or book anything to test them; part E covered those
+events with a labelled test.
 
 - [ ] Your developer confirms that the live pages load the Google tag once, with your `G-` ID.
 - [ ] <https://www.lasvegasmahj.com/privacy>: the Analytics section now names Google Analytics 4 and
@@ -317,9 +318,12 @@ newsletter or book anything to test them; part E covered those events with a lab
   section reads "This website does not set any cookies of its own. Google Analytics sets the
   cookies described above." If the page still says "does not use an analytics service" or shows
   November 13, 2026, the build did not pick up the ID: stop.
-- [ ] GA4 > Reports > Realtime: you appear as a visitor with a `page_view`. Then click "Book Now"
-  in the homepage lessons box and watch `schedule_link_click` arrive. Only after all three checks
-  pass may anyone say tracking is live (Round 12).
+- [ ] Your developer runs the short labelled live check: the same browser script as part E, against
+  `https://www.lasvegasmahj.com`, with page views and link clicks only (the homepage, "Book Now"
+  in the lessons box, a "Request a Quote" button), debug mode on and a `test_run` label on every
+  request. Google must accept the requests, and each action must send its event once. If you
+  want to watch, GA4 > Reports > Realtime shows the `page_view` and `schedule_link_click` arrive.
+  Only after all three checks pass may anyone say tracking is live (Round 12).
 
 ### E. Check each event once, in DebugView
 
@@ -377,8 +381,8 @@ In the table, "the event's page" is the page address GA4 records with the event 
 - [ ] Stop counting your own visits, once the checks above are done: install Google's opt-out
   add-on (linked from `/privacy`) in the browsers you use for the site, or define internal traffic
   by IP address in the data stream's tag settings and switch on that filter. The labelled test
-  events from part E carry `test_run` and a local host name; note them in the first week's
-  numbers.
+  events from parts D and E carry `test_run` (part E's also a local host name); note them in the
+  first week's numbers.
 - [ ] Send your developer the date, which production deployment you promoted (the current
   Production deployment on Vercel's Deployments page) and the list of checks that passed. Your
   developer records them in the SEO handoff (`docs/handoffs/lvm-seo-current.md`). Until that

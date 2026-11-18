@@ -56,7 +56,9 @@ test("the page is titled Privacy and is canonical at /privacy", () => {
   const pageDates = PAGE.match(/const LAST_UPDATED = ANALYTICS_ON \? "([^"]+)" : "([^"]+)";/);
   const mapDates = read("app/sitemap.ts").match(/NEXT_PUBLIC_GA4_ID \? "(\d{4}-\d{2}-\d{2})" : "(\d{4}-\d{2}-\d{2})"/);
   const iso = (d: string) => new Date(`${d} UTC`).toISOString().slice(0, 10);
-  expect(pageDates && [iso(pageDates[1]), iso(pageDates[2])]).toEqual(mapDates && [mapDates[1], mapDates[2]]);
+  expect(pageDates).not.toBeNull();
+  expect(mapDates).not.toBeNull();
+  expect([iso(pageDates![1]), iso(pageDates![2])]).toEqual([mapDates![1], mapDates![2]]);
 });
 
 test("it describes Google Analytics only in a build that loads it, and links Google's opt-out add-on", () => {
