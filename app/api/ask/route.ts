@@ -6,7 +6,6 @@ import {
   askedEntryIds,
   readMoreUrl,
   splitQuestions,
-  summarizeGap,
   MAX_QUESTION_CHARS,
   type Turn,
 } from "@/lib/ask/engine";
@@ -142,6 +141,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Fixed codes, ids and numbers only: the question and the conversation never go to the log.
     console.info(
       JSON.stringify({
         event: "ask",
@@ -152,7 +152,6 @@ export async function POST(req: NextRequest) {
         via: response.via,
         turn: Math.floor(history.length / 2) + 1,
         ms: Date.now() - started,
-        gap: response.kind === "unverified" ? summarizeGap(question) : undefined,
       })
     );
 

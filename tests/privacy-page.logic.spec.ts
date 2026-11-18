@@ -102,12 +102,9 @@ test("every link stays on this site, uses the public email, or is a verified htt
 });
 
 test("what the page says about logs and storage still matches the code", () => {
-  const engine = read("lib/ask/engine.ts");
-  const gap = engine.slice(engine.indexOf("export function summarizeGap"));
-  expect(gap).toContain(".slice(0, 120)");
-  expect(gap).toContain('.replace(/\\d+/g, "")');
-  expect(read("app/api/ask/route.ts")).toContain('gap: response.kind === "unverified" ? summarizeGap(question) : undefined');
-  expect(PAGE).toContain("the first 120 characters of your question, with any email addresses and numbers removed");
+  // tests/ask-log-privacy.logic.spec.ts runs the route and checks every log call it makes.
+  expect(read("app/api/ask/route.ts")).not.toMatch(/summarizeGap|\bgap:/);
+  expect(PAGE).toContain("Our server writes a short record of each answer to our hosting logs");
 
   const files = ["app", "components", "lib"].flatMap(sourceFiles);
   expect(files.length).toBeGreaterThan(50);
