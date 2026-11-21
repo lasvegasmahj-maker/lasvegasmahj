@@ -213,8 +213,9 @@ presses Promote, Las Vegas time. This release set it to "November 20, 2026". The
 update (section above) changes the text of `/privacy` and `/ask` again and moves both dates to
 its own release day. The dates live in `app/privacy/page.tsx` (`LAST_UPDATED`),
 `tests/seo-round12-owner-decisions.spec.ts`, `app/sitemap.ts` (`/privacy` and `/ask`) and
-`tests/privacy-page.logic.spec.ts`. A release that changes either page's text on a later day
-moves them to that day, reruns the checks, and promotes that build.
+`tests/privacy-page.logic.spec.ts`. A release that changes a page's text on a later day moves
+that page's dates to that day, reruns the checks, and promotes that build: for `/privacy`,
+`LAST_UPDATED`, its sitemap date and their pins; for `/ask`, its sitemap date and its pin.
 
 ---
 

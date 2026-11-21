@@ -5,6 +5,7 @@ import path from "node:path";
 import { NextRequest } from "next/server";
 import { POST } from "../app/api/ask/route";
 import { answerDeterministic, buildFollowups, type Turn } from "../lib/ask/engine";
+import { KNOWLEDGE_BY_ID } from "../lib/ask/knowledge";
 import { composeWithModel, type ModelClient, type ModelInput } from "../lib/ask/llm";
 
 // Ask writes one line per answer to the hosting logs. That line, the model usage line and the
@@ -145,8 +146,11 @@ test.describe("the model layer logs no question text", () => {
   }
 
   test("a usable reply, an unreadable reply and a failed call each log JSON that holds none of the typed words", async () => {
-    const failing: ModelClient = { messages: { create: async () => { throw Object.assign(new Error("overloaded"), { status: 529 }); } } };
-    for (const client of [clientReturning(JSON.stringify({ entry_ids: [], covered: false })), clientReturning("not json"), failing]) {
+    // Each fake repeats the question, the way a real reply or error can, so a log line that
+    // copied any part of a reply or an error would carry the typed words.
+    const failing: ModelClient = { messages: { create: async () => { throw Object.assign(new Error(`overloaded: ${question}`), { status: 529 }); } } };
+    const replies = [JSON.stringify({ entry_ids: [], covered: false, conversational_answer: question }), `not json: ${question}`];
+    for (const client of [...replies.map(clientReturning), failing]) {
       const { lines } = await captureConsole(() => composeWithModel(input(), client, 2_000));
       expect(lines.length).toBeGreaterThan(0);
       for (const line of lines) expect(() => JSON.parse(line)).not.toThrow();
@@ -185,13 +189,26 @@ test.describe("the error lines and the AI library cannot copy a question into a 
     for (const src of [route, llm]) expect(src).not.toMatch(/console\.\w+\([^;]*\.message/);
   });
 
+  test("a failure inside the route logs one line with the error's name and none of its text", async () => {
+    const question = "Jennifer Kowalski from Summerlin asks: can I use a joker in a pair?";
+    const map = KNOWLEDGE_BY_ID as unknown as { get?: (id: string) => unknown };
+    map.get = () => { throw new TypeError(`no entry for: ${question}`); };
+    try {
+      const { result, lines } = await captureConsole(() => ask(question));
+      expect(result.status).toBe(500);
+      expect(lines).toEqual(['{"event":"ask_failed","error":"TypeError"}']);
+    } finally {
+      delete map.get;
+    }
+  });
+
   test("the AI library's own logging stays at warnings even when ANTHROPIC_LOG asks for request details", () => {
     expect(read("lib/ask/llm.ts")).toContain('new Anthropic({ timeout: MODEL_TIMEOUT_MS, maxRetries: 0, logLevel: "warn" })');
     const saved = process.env.ANTHROPIC_LOG;
     process.env.ANTHROPIC_LOG = "debug";
     try {
       const client = new Anthropic({ apiKey: "unused-test-key", logLevel: "warn" });
-      expect((client as unknown as { logLevel: string }).logLevel).toBe("warn");
+      expect(client.logLevel).toBe("warn");
     } finally {
       if (saved === undefined) delete process.env.ANTHROPIC_LOG;
       else process.env.ANTHROPIC_LOG = saved;
