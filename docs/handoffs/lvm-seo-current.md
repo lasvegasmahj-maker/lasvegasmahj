@@ -1532,8 +1532,8 @@ Instagram, TikTok, Facebook), Vercel hosting, children, and changes.
   does not cover business customers' content).
 - **For the owner before it ships:** (1) "We do not sell it" (about contact-form details) is
   a business commitment, not something the code can prove: confirm it (she confirmed it on
-  2026-11-15: FINAL COPY APPROVALS at the top); (2) update "Last
-  updated November 13, 2026" to the go-live date; (3) it is a plain-language notice drafted
+  2026-11-15: FINAL COPY APPROVALS at the top); (2) done: the page
+  reads "Last updated November 20, 2026", the day its text changed; (3) it is a plain-language notice drafted
   from the code, not legal advice; (4) settled 2026-11-20: the `/ask` disclaimer and `/privacy`
   both say the Ask log never holds the question's words, and the code matches.
 

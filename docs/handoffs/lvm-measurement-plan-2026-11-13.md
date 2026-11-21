@@ -216,8 +216,8 @@ developer.
   day the page's visible text last changed: `LAST_UPDATED` in `app/privacy/page.tsx` shows
   November 20, 2026 in every build (section 5, item 1; part C checks the go-live day).
 - [ ] On `/privacy`, the Analytics section reads "This website does not use an analytics service
-  right now." and the page reads "Last updated November 20, 2026". Both are correct until the ID
-  is set.
+  right now." and the page reads "Last updated November 20, 2026". The Analytics sentence is
+  correct until the ID is set; the date is the same in every build.
 
 ### B. Create GA4 and set it up before the ID goes live
 
