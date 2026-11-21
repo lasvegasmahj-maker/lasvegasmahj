@@ -215,7 +215,6 @@ calls, latency and token counts for the cost estimate.
 ## What is logged
 
 One JSON line per question in Vercel function logs: kind, entry id, category, label,
-via (rules or model), turn number, latency. The question text is never logged, except a
-scrubbed topic summary (emails and digits removed, 120 characters) when no entry matched,
-so gaps in the knowledge base can be found. Conversations are held only in the visitor's
-browser tab (`sessionStorage`) and are never stored server side.
+via (rules or model), turn number, latency. The question text and the conversation are never
+logged; `tests/ask-log-privacy.logic.spec.ts` enforces this. Conversations are held only in the
+visitor's browser tab (`sessionStorage`) and are never stored server side.
