@@ -282,7 +282,7 @@ site.
 | Certification | Your About biography and the hidden founder record (`app/layout.tsx`); the Ask page wording is an open item (Section 4). The old headshot with the printed badge was retired on 2026-11-15 | The certification and the 18 years are yours alone: never imply that whoever teaches a class has them (tests check). |
 | Class titles (for example "Mahj 101 with Shauna") | Bookwhen, shown on `/schedule` as written | Update every place that names a level: lessons, schedule, About, Learn Mahjong, the hidden offer list in `app/layout.tsx`, the Ask page nudges (`lib/ask/nudges.ts`, your call), the homepage (stops at 102), and the Mahj 101 mentions on the Summerlin, Henderson, open play, visitor and studio pages and in `lib/schema.ts`. Search the code for "MAHJ10" and "Mahj 10". |
 | FAQ answers | On 23 pages one list feeds both the visible FAQ and Google's hidden copy | Edit the list in the page file, never just the text on screen. |
-| Privacy page | `app/privacy/page.tsx`: forms, newsletter, Ask a Rule, Bookwhen, analytics, cookies, outside links, hosting | Update it for any new form field, service, tracking tool or Ask logging change; its analytics part follows the Measurement ID on its own, and so do its "Last updated" date and its sitemap date (November 13, 2026 without the ID, November 18, 2026 with it; if analytics goes live on another day, your developer changes that date before the merge). Switching analytics off later is a checked release too, with a new date. Otherwise change "Last updated" only when the page's text changes. |
+| Privacy page | `app/privacy/page.tsx`: forms, newsletter, Ask a Rule, Bookwhen, analytics, cookies, outside links, hosting | Update it for any new form field, service, tracking tool or Ask logging change; its analytics part follows the Measurement ID on its own, and so do its "Last updated" date and its sitemap date (November 13, 2026 without the ID, November 20, 2026, the analytics release day, with it). Switching analytics off later is a checked release too, with a new date. Otherwise change "Last updated" only when the page's text changes. |
 
 ## 3. Updating photos and words safely
 
@@ -353,9 +353,10 @@ below is a hypothesis, not a measured result.
 
 1. **Switch on analytics.** Usefulness (hypothesis): inquiries and Bookwhen clicks by page, so
    later changes can be judged. A click is not a booking; Bookwhen counts bookings. Effort: low.
-   Evidence: the live site loads no analytics yet. You created the GA4 property on 2026-11-18;
-   its Measurement ID waits to be added in Vercel for the analytics release (SEO handoff,
-   "ANALYTICS SETUP 2026-11-18"), and the code passed its checks against Google's real tag.
+   Evidence: you created the GA4 property on 2026-11-18 and added its Measurement ID in Vercel on
+   2026-11-20. You approved the analytics release that day; it merged and goes live when you press
+   Promote (SEO handoff, "ANALYTICS SETUP 2026-11-18"). The code passed its checks against
+   Google's real tag.
 2. **Pull the Search Console exports.** Usefulness (hypothesis): edits go where people already
    search, and Summerlin and Henderson get a keep-or-fold-in decision on real numbers. Effort: low
    (or add your developer as a read-only user). Evidence: only 2 of 33 pages have page-level

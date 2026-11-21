@@ -14,8 +14,9 @@ squash-merged into `main` as `0a72967` on 2026-11-16 (Las Vegas date), the owner
 2026-11-16", below). **The photo update of 2026-11-17 (section below) is MERGED, LIVE and
 VERIFIED:** pull request #131 was squash-merged into `main` as `f36af78` on 2026-11-17, the owner
 promoted it to `www` that evening, and the checks on the live site found no failures. **The
-analytics setup of 2026-11-18 (next section) is NOT MERGED:** it is on branch
-`analytics/ga4-setup` and waits for the owner's approval of the finished release. Sentences
+analytics setup of 2026-11-18 (next section) is MERGED:** the owner approved the finished release
+on 2026-11-20, pull request #132 was squash-merged into `main` that day, and tracking goes live
+when she promotes that build. Sentences
 in those sections that say the branch or pull request #130 is
 "local", "uncommitted", "not pushed", "not merged", "not live" or a draft, that PR #129 is not
 merged, or that sitemap dates were not changed describe the day each section was written.
@@ -28,7 +29,7 @@ share-image fixes, and its link proposals stay with the owner.
 
 ---
 
-# ANALYTICS SETUP 2026-11-18: GA4 property, link-click fixes and privacy date (NOT MERGED)
+# ANALYTICS SETUP 2026-11-18: GA4 property, link-click fixes and privacy date (MERGED 2026-11-20)
 
 **Owner's brief (2026-11-18):** resume analytics setup only. A GA4 property "Las Vegas Mahjong"
 under the business Google account, with a web stream for `https://www.lasvegasmahj.com`, Pacific
@@ -71,7 +72,7 @@ Google also created three key events of its own (`purchase`, `qualify_lead`,
 - `booking_link_click` fires only for links to this account's booking pages on Bookwhen; Bookwhen's
   privacy policy link on `/privacy` no longer counts. It is a click, never a booking.
 - `/privacy`: `LAST_UPDATED` follows the same switch as the Analytics section ("November 13, 2026"
-  without an ID, "November 18, 2026" with one), and so does the page's date in `app/sitemap.ts`. The Analytics text names what Google's tag sends
+  without an ID, "November 20, 2026", the release day, with one), and so does the page's date in `app/sitemap.ts`. The Analytics text names what Google's tag sends
   with each page: the page address and title, the previous page, the IP address, browser and
   device details such as the browser, the operating system and their versions, the device model,
   the screen size and the language setting, and, when a visitor leaves a page, how long they spent
@@ -118,24 +119,34 @@ Google also created three key events of its own (`purchase`, `qualify_lead`,
   and Bookwhen was blocked, so no inquiry, signup or booking happened.
 - The same build's `/privacy` shows the Analytics section and "Last updated November 18, 2026",
   and every page carries the Google tag once, with the property's ID.
+- **Rerun on 2026-11-20,** after the date moved to the release day: typecheck clean; ESLint clean
+  on the changed files; logic tests 592 passed and 7 skipped, with the same local-only failure;
+  the same browser tests in a build without an ID, desktop and phone: 48 passed, 8 skipped by
+  design. A build with the ID, read with plain page requests only (no browser, so nothing reached
+  Google): `/privacy` shows the Analytics section and "Last updated November 20, 2026" and no
+  longer says the site uses no analytics service; the sitemap gives `/privacy` 2026-11-20; each of
+  7 pages carries the Google tag once (a preload hint and one script entry) with the property's ID
+  and one `config` call, and no Tag Manager or Meta Pixel.
 
-**Activation (waiting for the owner's approval of the finished release):**
+**Activation (approved by the owner on 2026-11-20, with the privacy wording as proposed):**
 
-1. The owner adds `NEXT_PUBLIC_GA4_ID` (Production only) in `lasvegasmahj-h1iz`, signed in as the
-   team owner.
-2. With her approval, merge this branch's pull request. Automatic domain assignment is off, so
+1. Done 2026-11-20: the owner added `NEXT_PUBLIC_GA4_ID` in `lasvegasmahj-h1iz`, Production only,
+   signed in as the team owner. A read-only check through Vercel's API found one such variable,
+   Production only, no Tag Manager or Meta Pixel variable, and no analytics variable on the
+   sibling project; that token cannot read the value, so the live pages confirm it.
+2. Done 2026-11-20: pull request #132 merged into `main`. Automatic domain assignment is off, so
    Vercel holds the production build as Staged.
 3. She presses Promote.
 4. Live checks: the pages load the Google tag once, with the ID; `/privacy` shows the Analytics
    section and the new date; a short labelled check sends page views and link clicks only. Only
    then is tracking called live.
 
-The go-live day is the day the owner presses Promote, Las Vegas time. If it is not 2026-11-18,
-change "November 18, 2026" to that day before merging, in `app/privacy/page.tsx` (`LAST_UPDATED`),
-`tests/privacy-page.logic.spec.ts` and `tests/seo-round12-owner-decisions.spec.ts`, and the
-matching "2026-11-18" in `app/sitemap.ts` and `tests/privacy-page.logic.spec.ts`, then rerun the
-checks. If Promote then slips past that day, merge a new build with the new date and promote that
-one instead.
+The go-live day is the day the owner presses Promote, Las Vegas time. She asked for the actual
+release date, so on 2026-11-20 the date moved to that day: "November 20, 2026" in
+`app/privacy/page.tsx` (`LAST_UPDATED`) and `tests/seo-round12-owner-decisions.spec.ts`, and
+"2026-11-20" in `app/sitemap.ts`, with both pinned in `tests/privacy-page.logic.spec.ts`. If
+Promote slips past that day, change those four files to the new day, rerun the checks, and merge
+and promote a new build instead.
 
 ---
 

@@ -47,12 +47,12 @@ test("the page is titled Privacy and is canonical at /privacy", () => {
   const h1 = PAGE.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "";
   expect(h1.replace(/<[^>]+>/g, "").trim()).toBe("Privacy");
   // The date moves when the build that sets the GA4 ID changes what the page says.
-  expect(PAGE).toContain('const LAST_UPDATED = ANALYTICS_ON ? "November 18, 2026" : "November 13, 2026";');
+  expect(PAGE).toContain('const LAST_UPDATED = ANALYTICS_ON ? "November 20, 2026" : "November 13, 2026";');
   expect(PAGE).toContain("Last updated {LAST_UPDATED}</p>");
   expect(PAGE.match(/Last updated/g)).toHaveLength(1);
   // The sitemap's date for the page moves in the same build, and the two pairs of dates must
   // stay equal when the go-live day changes.
-  expect(read("app/sitemap.ts")).toContain('lastModified: new Date(process.env.NEXT_PUBLIC_GA4_ID ? "2026-11-18" : "2026-11-13"),');
+  expect(read("app/sitemap.ts")).toContain('lastModified: new Date(process.env.NEXT_PUBLIC_GA4_ID ? "2026-11-20" : "2026-11-13"),');
   const pageDates = PAGE.match(/const LAST_UPDATED = ANALYTICS_ON \? "([^"]+)" : "([^"]+)";/);
   const mapDates = read("app/sitemap.ts").match(/NEXT_PUBLIC_GA4_ID \? "(\d{4}-\d{2}-\d{2})" : "(\d{4}-\d{2}-\d{2})"/);
   const iso = (d: string) => new Date(`${d} UTC`).toISOString().slice(0, 10);
