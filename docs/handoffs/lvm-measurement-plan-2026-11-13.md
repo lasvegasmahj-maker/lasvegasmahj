@@ -218,8 +218,9 @@ developer.
   All three are live now.
 - [x] The privacy page items this checklist named from Round 12 ("For the owner before it ships")
   are settled. You confirmed "We do not sell it" on 2026-11-15. The "Last updated" date is the
-  day the page's visible text last changed: `LAST_UPDATED` in `app/privacy/page.tsx` shows
-  November 20, 2026 in every build (section 5, item 1; part C checks the go-live day).
+  day the page's visible text last changed: `LAST_UPDATED` in `app/privacy/page.tsx` shows that
+  day in every build, November 20, 2026 when analytics went live and November 21, 2026 with the
+  Ask log privacy update (section 5, item 1; part C checks the go-live day).
 - [x] Until the release, the live `/privacy` said "This website does not use an analytics service
   right now." That sentence now shows only in builds without the ID, such as previews and CI; the
   live page names Google Analytics 4 (part D).
@@ -302,11 +303,11 @@ activation.
     does not serve the domain.
   - Never type the ID into the code. A test checks only the three analytics files for a typed ID.
 - [x] The privacy page date matches the go-live day, the day you press Promote (Las Vegas time).
-  `LAST_UPDATED` in `app/privacy/page.tsx` shows November 20, 2026 in every build, the release
-  day. If Promote slips past that day, your developer changes that date in that file,
-  `tests/privacy-page.logic.spec.ts`, `tests/seo-round12-owner-decisions.spec.ts` and the
-  sitemap dates for `/privacy` and `/ask` in `app/sitemap.ts`, reruns the checks, and a new build with the new date replaces
-  the staged one.
+  The analytics release set `LAST_UPDATED` in `app/privacy/page.tsx` to November 20, 2026, its
+  release day, and the live page showed it after the Promote (part D). A later release that
+  changes the page's text moves that date in that file, `tests/privacy-page.logic.spec.ts`,
+  `tests/seo-round12-owner-decisions.spec.ts` and the sitemap dates for `/privacy` and `/ask` in
+  `app/sitemap.ts` to its own go-live day, and reruns the checks.
 - [x] Done 2026-11-20. With your release approval, your developer merges the pull request for
   branch `analytics/ga4-setup` (pull request #132). Automatic domain assignment is off, so Vercel
   builds a production deployment and holds it as Staged: the live site does not change yet.
@@ -662,10 +663,10 @@ each, and effort. Every benefit below is a hypothesis.
 ## 5. Open items, and what this plan could not source
 
 1. **The "Last updated" date on `/privacy`: settled in the code.** `LAST_UPDATED` in
-   `app/privacy/page.tsx` shows November 20, 2026 in every build, the day the Analytics text and
-   the Ask a Rule log wording changed. If Promote slips past that day, your developer changes
-   that date, the sitemap dates for `/privacy` and `/ask` and the two tests that pin them, and a
-   new build replaces the staged one (section 2.C).
+   `app/privacy/page.tsx` is the day the page's visible text last changed, in every build:
+   November 20, 2026 when the Analytics text went live, and November 21, 2026 with the Ask log
+   privacy update. A release that changes the page's text moves that date, the sitemap dates for
+   `/privacy` and `/ask` and the two tests that pin them to its go-live day (section 2.C).
 2. Whether Bookwhen can send completed bookings to GA4: not verified (Round 11).
 3. What Bookwhen's own reports show (bookings by the date they were made, seats per booking): not
    checked. Adapt section 3.4 to what Bookwhen shows.

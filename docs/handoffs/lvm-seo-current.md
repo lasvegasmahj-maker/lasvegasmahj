@@ -14,10 +14,11 @@ squash-merged into `main` as `0a72967` on 2026-11-16 (Las Vegas date), the owner
 2026-11-16", below). **The photo update of 2026-11-17 (section below) is MERGED, LIVE and
 VERIFIED:** pull request #131 was squash-merged into `main` as `f36af78` on 2026-11-17, the owner
 promoted it to `www` that evening, and the checks on the live site found no failures. **The
-analytics setup of 2026-11-18 (next section) is MERGED, LIVE and TECHNICALLY VERIFIED:** the
+analytics setup of 2026-11-18 (section below) is MERGED, LIVE and TECHNICALLY VERIFIED:** the
 owner approved the finished release on 2026-11-20, pull request #132 was squash-merged into `main`
 that day, she promoted it to `www` at 21:05 PST, and the checks on the live site found no
-failures. The test events have not yet been confirmed inside GA4 itself. Sentences
+failures. The test events have not yet been confirmed inside GA4 itself. **The Ask log privacy
+update (next section) is NOT MERGED:** its pull request waits for the owner's approval. Sentences
 in those sections that say the branch or pull request #130 is
 "local", "uncommitted", "not pushed", "not merged", "not live" or a draft, that PR #129 is not
 merged, or that sitemap dates were not changed describe the day each section was written.
@@ -27,6 +28,39 @@ performance proposals P1 and P2, were never part of the release and are not live
 Audit" (Drive, LVM/Marketing, 2026-10-04) covers intent, cannibalization and internal-link
 proposals; its A1 (red CI guard) shipped as PR #127, this audit carries the leagues robots and
 share-image fixes, and its link proposals stay with the owner.
+
+---
+
+# ASK LOG PRIVACY 2026-11-20: no question text in the server log; privacy and Ask page wording (NOT MERGED)
+
+**Owner's approval (2026-11-20):** "Approve L-W1, L-W2 and L-W5, with no L-W3." She also
+replaced the end of Ask a Rule's reply for a rule it cannot verify. Nothing merges or goes live
+before she approves the finished pull request, which lists every visible change as current and
+proposed text.
+
+**What changes:**
+
+- The Ask route's log line for each answer no longer carries the first 120 characters of a
+  question it cannot verify. Every Ask log line now holds only fixed codes, entry ids, numbers,
+  status codes and error class names. The two error lines record the error's class name instead
+  of its own text, which can repeat what was sent. The AI library's logging is pinned at
+  warnings, so an `ANTHROPIC_LOG` setting cannot make it log request details, which hold the
+  question.
+- `/privacy`, Ask a Rule (L-W1): the record "never includes the words of your question or of the
+  conversation."
+- `/ask`, "How this works" (L-W2 and L-W5): the conversation "lives only in this browser tab. It
+  is never saved to an account or written to our logs." With the AI helper switched on, "some
+  questions and the last few turns of this conversation go to our AI provider to help pick the
+  right written answer."
+- Ask a Rule's reply for a rule it cannot verify (`CANNOT_VERIFY` in `lib/ask/engine.ts`) now
+  ends "Please check with your instructor or consult the official NMJL rules." The owner wrote
+  that sentence.
+- Not added (L-W3, the owner's choice): a sentence on how long Anthropic keeps what it receives.
+- Dates: `/privacy` reads "Last updated November 21, 2026", and the sitemap gives `/privacy` and
+  `/ask` 2026-11-21, the planned release day. If the release goes live on a later day, all of
+  them move to that day first.
+- Ask answers themselves do not change: the deterministic engine and the model layer return the
+  same answers, and only the reply text above is new.
 
 ---
 
@@ -72,8 +106,9 @@ Google also created three key events of its own (`purchase`, `qualify_lead`,
   page address with every event.
 - `booking_link_click` fires only for links to this account's booking pages on Bookwhen; Bookwhen's
   privacy policy link on `/privacy` no longer counts. It is a click, never a booking.
-- `/privacy`: `LAST_UPDATED` is "November 20, 2026" in every build, the day its visible text last changed
-  (the Analytics text and the Ask a Rule log wording), and the page's date in `app/sitemap.ts` matches it. The Analytics text names what Google's tag sends
+- `/privacy`: `LAST_UPDATED` is the day its visible text last changed, in every build, and the
+  page's date in `app/sitemap.ts` matches it: November 20, 2026 for this release's Analytics
+  text, and November 21, 2026 with the Ask log privacy update (section above). The Analytics text names what Google's tag sends
   with each page: the page address and title, the previous page, the IP address, browser and
   device details such as the browser, the operating system and their versions, the device model,
   the screen size and the language setting, and, when a visitor leaves a page, how long they spent
@@ -168,12 +203,12 @@ Google also created three key events of its own (`purchase`, `qualify_lead`,
   fill (measurement plan, section 2.F).
 
 The privacy page's date is the day its visible text last changed, which is the day the owner
-presses Promote, Las Vegas time: "November 20, 2026" in `app/privacy/page.tsx` (`LAST_UPDATED`)
-and `tests/seo-round12-owner-decisions.spec.ts`, and "2026-11-20" in `app/sitemap.ts`, with both
-pinned in `tests/privacy-page.logic.spec.ts`. The /ask sitemap date in `app/sitemap.ts` is
-"2026-11-20" too, the day its disclaimer changed, and the same test pins it. A release that
-changes either page's text on a later day moves those dates to that day, reruns the checks, and
-promotes that build.
+presses Promote, Las Vegas time. This release set it to "November 20, 2026". The Ask log privacy
+update (section above) changes the text of `/privacy` and `/ask` again and moves both dates to
+its own release day. The dates live in `app/privacy/page.tsx` (`LAST_UPDATED`),
+`tests/seo-round12-owner-decisions.spec.ts`, `app/sitemap.ts` (`/privacy` and `/ask`) and
+`tests/privacy-page.logic.spec.ts`. A release that changes either page's text on a later day
+moves them to that day, reruns the checks, and promotes that build.
 
 ---
 
@@ -1560,8 +1595,8 @@ Instagram, TikTok, Facebook), Vercel hosting, children, and changes.
   does not cover business customers' content).
 - **For the owner before it ships:** (1) "We do not sell it" (about contact-form details) is
   a business commitment, not something the code can prove: confirm it (she confirmed it on
-  2026-11-15: FINAL COPY APPROVALS at the top); (2) done: the page
-  reads "Last updated November 20, 2026", the day its text changed; (3) it is a plain-language notice drafted
+  2026-11-15: FINAL COPY APPROVALS at the top); (2) done: the page's "Last updated" date is the
+  day its text last changed (November 21, 2026 with the Ask log privacy update); (3) it is a plain-language notice drafted
   from the code, not legal advice; (4) settled 2026-11-20: the `/ask` disclaimer and `/privacy`
   both say the Ask log never holds the question's words, and the code matches.
 

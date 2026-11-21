@@ -119,7 +119,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: "https://www.lasvegasmahj.com/privacy",
       // Matches LAST_UPDATED in app/privacy/page.tsx.
-      lastModified: new Date("2026-11-20"),
+      lastModified: new Date("2026-11-21"),
       changeFrequency: "yearly",
       priority: 0.3,
     },
@@ -143,7 +143,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: "https://www.lasvegasmahj.com/ask",
-      lastModified: new Date("2026-11-20"),
+      lastModified: new Date("2026-11-21"),
       changeFrequency: "monthly",
       priority: 0.8,
     },

@@ -26,7 +26,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([{ name: "Privacy", url: "https:/
 // the page describes Google Analytics in exactly the builds that load it and never before.
 const ANALYTICS_ON = Boolean(process.env.NEXT_PUBLIC_GA4_ID);
 // app/sitemap.ts carries the same date for /privacy.
-const LAST_UPDATED = "November 20, 2026";
+const LAST_UPDATED = "November 21, 2026";
 
 const card = { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 14, padding: "1.6rem 1.8rem 0.8rem" } as const;
 const heading = { fontFamily: "var(--font-nav)", fontWeight: 700, fontSize: "1.05rem", color: "white", marginBottom: "0.7rem", lineHeight: 1.4 } as const;

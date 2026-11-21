@@ -55,7 +55,8 @@ export type ModelClient = {
 
 let cachedClient: Anthropic | null = null;
 function defaultClient(): ModelClient {
-  cachedClient ??= new Anthropic({ timeout: MODEL_TIMEOUT_MS, maxRetries: 0 });
+  // Pinned so an ANTHROPIC_LOG setting cannot make the SDK log request details, which hold the question.
+  cachedClient ??= new Anthropic({ timeout: MODEL_TIMEOUT_MS, maxRetries: 0, logLevel: "warn" });
   return cachedClient;
 }
 
@@ -355,7 +356,8 @@ export async function composeWithModel(input: ModelInput, client: ModelClient = 
     return validateModelOutput(parsed, input);
   } catch (e) {
     const status = e instanceof Anthropic.APIError ? e.status : undefined;
-    console.error(JSON.stringify({ event: "ask_model_error", ms: Date.now() - started, status, message: e instanceof Error ? e.message.slice(0, 200) : String(e) }));
+    // An error's own text can repeat what was sent, so only its status and class name are logged.
+    console.error(JSON.stringify({ event: "ask_model_error", ms: Date.now() - started, status, error: e instanceof Error ? e.name : typeof e }));
     return null;
   }
 }

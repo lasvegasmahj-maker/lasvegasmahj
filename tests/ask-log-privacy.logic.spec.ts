@@ -1,13 +1,18 @@
 import { test, expect } from "@playwright/test";
+import Anthropic from "@anthropic-ai/sdk";
+import fs from "node:fs";
+import path from "node:path";
 import { NextRequest } from "next/server";
 import { POST } from "../app/api/ask/route";
 import { answerDeterministic, buildFollowups, type Turn } from "../lib/ask/engine";
 import { composeWithModel, type ModelClient, type ModelInput } from "../lib/ask/llm";
 
-// Ask writes one line per answer to the hosting logs. That line and the model usage line are
-// built from fixed codes, entry ids and numbers only; the two error lines add the error's own
-// message. The words of a question and of the conversation never reach a log. These tests run
-// the real route in-process and record every console call it makes.
+// Ask writes one line per answer to the hosting logs. That line, the model usage line and the
+// two error lines are built from fixed codes, entry ids, numbers, status codes and error class
+// names only, so the words of a question and of the conversation never reach a log. These tests
+// run the real route in-process and record every console call it makes.
+
+const read = (rel: string) => fs.readFileSync(path.join(__dirname, "..", rel), "utf8");
 
 const CONSOLE_METHODS = ["log", "info", "warn", "error", "debug"] as const;
 const LOG_KEYS = ["event", "kind", "entry", "category", "label", "via", "turn", "ms"];
@@ -146,6 +151,39 @@ test.describe("the model layer logs no question text", () => {
       expect(lines.length).toBeGreaterThan(0);
       for (const line of lines) expect(() => JSON.parse(line)).not.toThrow();
       expectNoTypedWords(lines, `${question} my grandmother plays zinnia rules`);
+    }
+  });
+
+  test("a failed call whose error repeats the question logs only fixed fields", async () => {
+    const quoting: ModelClient = { messages: { create: async () => { throw new Error(`400 invalid request: ${question}`); } } };
+    const { lines } = await captureConsole(() => composeWithModel(input(), quoting, 2_000));
+    expect(lines).toHaveLength(1);
+    const record = JSON.parse(lines[0]) as Record<string, unknown>;
+    expect(Object.keys(record).sort()).toEqual(["error", "event", "ms"]);
+    expect(record).toMatchObject({ event: "ask_model_error", error: "Error" });
+    expectNoTypedWords(lines, question);
+  });
+});
+
+test.describe("the error lines and the AI library cannot copy a question into a log", () => {
+  test("both error lines log a class name, never an error's text", () => {
+    const route = read("app/api/ask/route.ts");
+    const llm = read("lib/ask/llm.ts");
+    expect(route).toContain('console.error(JSON.stringify({ event: "ask_failed", error: e instanceof Error ? e.name : typeof e }));');
+    expect(llm).toContain('status, error: e instanceof Error ? e.name : typeof e }));');
+    for (const src of [route, llm]) expect(src).not.toMatch(/console\.\w+\([^;]*\.message/);
+  });
+
+  test("the AI library's own logging stays at warnings even when ANTHROPIC_LOG asks for request details", () => {
+    expect(read("lib/ask/llm.ts")).toContain('new Anthropic({ timeout: MODEL_TIMEOUT_MS, maxRetries: 0, logLevel: "warn" })');
+    const saved = process.env.ANTHROPIC_LOG;
+    process.env.ANTHROPIC_LOG = "debug";
+    try {
+      const client = new Anthropic({ apiKey: "unused-test-key", logLevel: "warn" });
+      expect((client as unknown as { logLevel: string }).logLevel).toBe("warn");
+    } finally {
+      if (saved === undefined) delete process.env.ANTHROPIC_LOG;
+      else process.env.ANTHROPIC_LOG = saved;
     }
   });
 });

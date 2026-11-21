@@ -46,7 +46,7 @@ test("the page is titled Privacy and is canonical at /privacy", () => {
 
   const h1 = PAGE.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "";
   expect(h1.replace(/<[^>]+>/g, "").trim()).toBe("Privacy");
-  expect(PAGE).toContain('const LAST_UPDATED = "November 20, 2026";');
+  expect(PAGE).toContain('const LAST_UPDATED = "November 21, 2026";');
   expect(PAGE).toContain("Last updated {LAST_UPDATED}</p>");
   expect(PAGE.match(/Last updated/g)).toHaveLength(1);
 
@@ -55,13 +55,13 @@ test("the page is titled Privacy and is canonical at /privacy", () => {
   const at = sitemap.indexOf('url: "https://www.lasvegasmahj.com/privacy"');
   expect(at).toBeGreaterThan(-1);
   const entry = sitemap.slice(at, sitemap.indexOf("}", at));
-  expect(entry).toContain('lastModified: new Date("2026-11-20")');
+  expect(entry).toContain('lastModified: new Date("2026-11-21")');
   // /ask's disclaimer changed in the same release, so its sitemap date moves with this one.
   const askAt = sitemap.indexOf('url: "https://www.lasvegasmahj.com/ask"');
   expect(askAt).toBeGreaterThan(-1);
-  expect(sitemap.slice(askAt, sitemap.indexOf("}", askAt))).toContain('lastModified: new Date("2026-11-20")');
+  expect(sitemap.slice(askAt, sitemap.indexOf("}", askAt))).toContain('lastModified: new Date("2026-11-21")');
   const pageDate = PAGE.match(/const LAST_UPDATED = "([^"]+)";/)?.[1] ?? "";
-  expect(new Date(`${pageDate} UTC`).toISOString().slice(0, 10)).toBe("2026-11-20");
+  expect(new Date(`${pageDate} UTC`).toISOString().slice(0, 10)).toBe("2026-11-21");
 });
 
 test("it describes Google Analytics only in a build that loads it, and links Google's opt-out add-on", () => {
