@@ -42,7 +42,7 @@ test("until a GA4 ID is set, the privacy page says the site uses no analytics", 
   await page.goto("/privacy");
   await expect(page.locator("main")).toContainText("This website does not use an analytics service right now.");
   await expect(page.locator("main")).toContainText("This website does not set any cookies.");
-  await expect(page.locator("main")).toContainText("Last updated November 13, 2026");
+  await expect(page.locator("main")).toContainText("Last updated November 20, 2026");
   await expect(page.locator("main")).not.toContainText("Google Analytics");
   await expect(page.locator('meta[name="description"]')).not.toHaveAttribute("content", /analytics/i);
 });

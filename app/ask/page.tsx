@@ -80,7 +80,7 @@ export default function AskPage() {
               Prefer to read? Browse the full <Link href="/rules">American Mahjong rules guide</Link>. Want to learn at a real table? See our <Link href="/mahjong-lessons-las-vegas">mahjong lessons</Link> or join <Link href="/mahjong-open-play-las-vegas">open play</Link>.
             </p>
             <p className="ask-disclaimer">
-              Las Vegas Mahjong is not affiliated with or endorsed by the National Mah Jongg League. The annual card is the League&rsquo;s copyrighted work and this tool never reproduces its hands. Your conversation lives only in this browser tab and is never saved to an account. When we cannot answer, we keep a short topic summary (no numbers or emails) so we can add the missing rule; if our AI helper is switched on, your question and the last few turns of this conversation are sent to our AI provider to phrase the answer.
+              Las Vegas Mahjong is not affiliated with or endorsed by the National Mah Jongg League. The annual card is the League&rsquo;s copyrighted work and this tool never reproduces its hands. Your conversation lives only in this browser tab. It is never saved to an account or written to our logs. If our AI helper is switched on, your question and the last few turns of this conversation are sent to our AI provider to phrase the answer.
             </p>
           </div>
         </section>
