@@ -118,7 +118,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: "https://www.lasvegasmahj.com/privacy",
-      lastModified: new Date("2026-11-13"),
+      // Moves with LAST_UPDATED in app/privacy/page.tsx: the page's text changes in the build that sets the GA4 ID.
+      lastModified: new Date(process.env.NEXT_PUBLIC_GA4_ID ? "2026-11-20" : "2026-11-13"),
       changeFrequency: "yearly",
       priority: 0.3,
     },

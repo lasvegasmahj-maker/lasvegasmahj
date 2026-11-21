@@ -57,11 +57,14 @@ in Bookwhen (handoff, Round 12).
 Splitting inquiries by page also needs step 5 of that list. The form lives on `/contact`, so
 `source_label` records which page's inquiry button brought someone to the form, and
 `inquiry_type` records the option they chose. Step 5 registers both, with `page_path` and the
-three other parameters it names, as custom dimensions in GA4. GA4 shows a parameter only from the
+three other parameters it names, as custom dimensions in GA4. (Superseded on 2026-11-18: the site
+no longer sends `page_path`, and the measurement plan, section 2.B, lists the dimensions to
+register, which the owner deferred.) GA4 shows a parameter only from the
 day its dimension exists (`docs/handoffs/lvm-measurement-plan-2026-11-13.md`, "Words used below"),
 so an inquiry that arrives before step 5 can never be split by page or inquiry type. The
-measurement plan's checklist therefore registers them before the ID goes live (its section 2,
-part B).
+measurement plan's checklist lists them (its section 2, part B); the owner deferred them on
+2026-11-18, so inquiries sent before they are registered cannot be split that way in GA4, though
+each inquiry email still shows both.
 
 **Timing, if she wants a before-and-after comparison.** GA4 holds nothing from before its ID goes
 live. An item that goes live before the ID, or in the same release, starts its counts with the

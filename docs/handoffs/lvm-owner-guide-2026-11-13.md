@@ -1,10 +1,11 @@
 # Las Vegas Mahjong website: owner guide (2026-11-13)
 
-**Status:** every change in Section 1 is live, except the photo update of 2026-11-17, which waits
-for your approval. The rest was proposed as pull request #130 into `main` on
-2026-11-15. You approved the release on 2026-11-16; it was merged that evening, exactly as
-reviewed, and visitors have seen it since you pressed Promote in Vercel at about 6:48 pm. The
-checks on the live site afterwards found no failures (handoff, "RELEASE 2026-11-16"). The
+**Status:** every change in Section 1 is live. Most of it was proposed as pull request #130
+into `main` on 2026-11-15. You approved the release on 2026-11-16; it was merged that evening,
+exactly as reviewed, and visitors have seen it since you pressed Promote in Vercel at about
+6:48 pm. The photo update of 2026-11-17 followed as pull request #131: merged at 1:48 pm and live
+since you pressed Promote at 5:19 pm that day. The checks on the live site after each release
+found no failures (handoff, "RELEASE 2026-11-16" and "PHOTO UPDATE 2026-11-17"). The
 working copy is `~/Projects/lvm-seo-invisible`. Full record: `docs/handoffs/lvm-seo-current.md`. Sprint files:
 `~/Projects/.lvm-sprint-2026-11-13/`. Pictures: `~/Projects/.lvm-seo-screens-2026-11-13/`.
 Keep the pictures folder private: some "before" pictures show details since removed from the
@@ -245,12 +246,12 @@ site.
 - **One test message:** sent at your request, clearly labelled, through the early Send path.
   It reached your inbox within seconds, and you can delete it.
 - **Automatic publishing to `www` is still off,** so the next merge also waits for your Promote.
-- **Dates left as they were:** the sitemap keeps its 2026-11-15 and 2026-11-13 dates, and the
-  privacy page still says "Last updated November 13, 2026", because you approved the release as
-  reviewed. Moving them to 2026-11-16 is an optional, separate checked update.
+- **Dates left as they were:** the release kept the sitemap's 2026-11-15 and 2026-11-13 dates
+  and the privacy page's "Last updated November 13, 2026", because you approved the release as
+  reviewed. For the sitemap dates since the photo update, see below.
 - **Paused, as you asked:** research, analytics, Bookwhen and every other change.
 
-### Photo update (2026-11-17, on the branch, not live)
+### Photo update (2026-11-17, live)
 
 - **Leagues page:** your studio photo of a room with three tables set for play sits under the two
   buttons, with the room unnamed and no caption. Its description says only what is in the photo.
@@ -258,7 +259,14 @@ site.
 - **FOX5 card "American Mahjong Classes NOW being taught at Las Vegas Mahjong":** on the homepage
   and the Studio page it shows your photo of a studio table set for a lesson. Its link, headline
   and date are unchanged, and so is the other card.
-- Visitors see it only after you approve the merge and press Promote.
+- **Live:** you approved the merge on 2026-11-17. Pull request #131 was merged into `main` as
+  `f36af78` at 1:48 pm, and it went live when you pressed Promote in Vercel at 5:19 pm.
+- **Checked:** the photo check passed 32 of 32, and the 2026-11-16 live check passed 49 of 49
+  again, on a computer screen and a phone screen.
+- **Sitemap dates, as agreed (your instruction of 2026-11-18):** the leagues page carries
+  2026-11-17; the homepage and the Studio page keep 2026-11-15.
+- **Left alone, as you asked on 2026-11-18:** the two optional code tidy-ups, which visitors
+  would not see (handoff, "PHOTO UPDATE 2026-11-17").
 
 ## 2. Business facts to keep in sync
 
@@ -274,7 +282,7 @@ site.
 | Certification | Your About biography and the hidden founder record (`app/layout.tsx`); the Ask page wording is an open item (Section 4). The old headshot with the printed badge was retired on 2026-11-15 | The certification and the 18 years are yours alone: never imply that whoever teaches a class has them (tests check). |
 | Class titles (for example "Mahj 101 with Shauna") | Bookwhen, shown on `/schedule` as written | Update every place that names a level: lessons, schedule, About, Learn Mahjong, the hidden offer list in `app/layout.tsx`, the Ask page nudges (`lib/ask/nudges.ts`, your call), the homepage (stops at 102), and the Mahj 101 mentions on the Summerlin, Henderson, open play, visitor and studio pages and in `lib/schema.ts`. Search the code for "MAHJ10" and "Mahj 10". |
 | FAQ answers | On 23 pages one list feeds both the visible FAQ and Google's hidden copy | Edit the list in the page file, never just the text on screen. |
-| Privacy page | `app/privacy/page.tsx`: forms, newsletter, Ask a Rule, Bookwhen, analytics, cookies, outside links, hosting | Update it for any new form field, service, tracking tool or Ask logging change; its analytics part follows the Measurement ID on its own. Change "Last updated" only when the page's text changes, or in the separate release-date update. |
+| Privacy page | `app/privacy/page.tsx`: forms, newsletter, Ask a Rule, Bookwhen, analytics, cookies, outside links, hosting | Update it for any new form field, service, tracking tool or Ask logging change; its analytics part follows the Measurement ID on its own, and so do its "Last updated" date and its sitemap date (November 13, 2026 without the ID, November 20, 2026, the analytics release day, with it). Switching analytics off later is a checked release too, with a new date. Otherwise change "Last updated" only when the page's text changes. |
 
 ## 3. Updating photos and words safely
 
@@ -309,19 +317,19 @@ site.
 You approve the current versus proposed wording or pictures; the typecheck, tests and two
 reviewer checks run; then the change is merged to `main`. Since 2026-11-15 automatic publishing
 to `www` is switched off in Vercel, so after the merge the new version also has to be promoted
-in Vercel with your team's login before visitors see it; the 2026-11-16 release went live this
-way. If the release lands on a later day than the sitemap dates, updating them to that day is a
-separate, checked update before the merge.
+in Vercel with your team's login before visitors see it; the 2026-11-16 release and the
+2026-11-17 photo update went live this way. If the release lands on a later day than the
+sitemap dates, updating them to that day is a separate, checked update before the merge.
 
 ## 4. Waiting for your approval
 
 | Item | Where to look |
 | --- | --- |
-| Automatic publishing: it is switched off on the project that serves `www`, and it stayed off after the 2026-11-16 release, so every release waits for your Promote. Keep it that way or turn it back on | Handoff "RELEASE 2026-11-16" |
+| Automatic publishing: it is switched off on the project that serves `www`, and it stayed off after the 2026-11-16 release and the 2026-11-17 photo update, so every release waits for your Promote. Keep it that way or turn it back on | Handoff "RELEASE 2026-11-16" |
 | Bookwhen items from the release check (new; you paused Bookwhen work): `/schedule` still shows Bookwhen's "Drop in and play" wording, which clashes with open play being booked sessions, and the leagues page shows one sentence twice because the Thursday league's Bookwhen description repeats it. Both change once the listings are edited in Bookwhen. Also, one session dated 2026-11-16 still showed on the schedule after Bookwhen stopped listing it | Step-by-step Bookwhen edits: `~/Documents/LVM Growth Sprint 2026-11-13/release-support/03-BOOKWHEN-CHANGES.md`, sections 1 and 2; handoff "RELEASE 2026-11-16", open items |
 | Form spam protection (new): the contact form has no spam trap of its own, so its protection is whatever is switched on in your Formspree account, and nobody has looked at those settings yet. Checking them needs your Formspree login and changes nothing on the website | Handoff "RELEASE 2026-11-16", open items |
-| Release-day dates (new, optional): the sitemap and the privacy page's "Last updated" line keep their 2026-11-15 and 2026-11-13 dates. Moving them to 2026-11-16 would be its own checked update | Handoff "RELEASE 2026-11-16" |
-| Photo placements: the leagues photo is in the photo update of 2026-11-17, waiting for your approval to merge. The private lessons, Summerlin and Henderson previews still wait for your decisions | `~/Projects/.lvm-approvals-2026-11-15/photo-previews/gallery/` |
+| Privacy page date: it says "Last updated November 13, 2026" until analytics goes live; the analytics release moves it to the go-live day (measurement plan, section 5, item 1). The sitemap dates stay as agreed, by your instruction of 2026-11-18: 2026-11-17 for the leagues page and 2026-11-15 for the homepage and the Studio page. The privacy page's own sitemap date moves with its "Last updated" date (2026-11-13 to the go-live day), by the agreed rule that a page's date is the day its visible content changed | Handoff "RELEASE 2026-11-16", "PHOTO UPDATE 2026-11-17" and "ANALYTICS SETUP 2026-11-18" |
+| Photo placements: the leagues photo is live since 2026-11-17. The private lessons, Summerlin and Henderson previews still wait for your decisions | `~/Projects/.lvm-approvals-2026-11-15/photo-previews/gallery/` |
 | Lesson cards on a phone (new, optional): a phone has no hover, so nothing shows that a card can be tapped. Proposed, not built: a short line at the bottom of each card, such as "See class dates" | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
 | Friendsgiving listing wording (new): it says "guests should already know the basics", which is looser than your open play wording. It is your event text, already merged, so it was not changed | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
 | Five-pack (future task): set it up in Bookwhen when you are ready. Until then the website shows only "$20 per session" everywhere and no longer mentions the five-pack | Handoff "CONSISTENCY PASS 2026-11-15", item 1 |
@@ -345,8 +353,10 @@ below is a hypothesis, not a measured result.
 
 1. **Switch on analytics.** Usefulness (hypothesis): inquiries and Bookwhen clicks by page, so
    later changes can be judged. A click is not a booking; Bookwhen counts bookings. Effort: low.
-   Evidence: no Measurement ID exists, the live site loads no analytics, and the code passed tests
-   with a stand-in.
+   Evidence: you created the GA4 property on 2026-11-18 and added its Measurement ID in Vercel on
+   2026-11-20. You approved the analytics release that day; it merged and goes live when you press
+   Promote (SEO handoff, "ANALYTICS SETUP 2026-11-18"). The code passed its checks against
+   Google's real tag.
 2. **Pull the Search Console exports.** Usefulness (hypothesis): edits go where people already
    search, and Summerlin and Henderson get a keep-or-fold-in decision on real numbers. Effort: low
    (or add your developer as a read-only user). Evidence: only 2 of 33 pages have page-level

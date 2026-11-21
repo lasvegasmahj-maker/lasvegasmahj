@@ -42,8 +42,18 @@ test("until a GA4 ID is set, the privacy page says the site uses no analytics", 
   await page.goto("/privacy");
   await expect(page.locator("main")).toContainText("This website does not use an analytics service right now.");
   await expect(page.locator("main")).toContainText("This website does not set any cookies.");
+  await expect(page.locator("main")).toContainText("Last updated November 13, 2026");
   await expect(page.locator("main")).not.toContainText("Google Analytics");
   await expect(page.locator('meta[name="description"]')).not.toHaveAttribute("content", /analytics/i);
+});
+
+test("once a GA4 ID is set, the privacy page names Google Analytics and moves its date", async ({ page }) => {
+  test.skip(!process.env.NEXT_PUBLIC_GA4_ID, "this build has no GA4 ID, so the page still says no analytics is used");
+  await page.goto("/privacy");
+  await expect(page.locator("main")).toContainText("We use Google Analytics 4");
+  await expect(page.locator("main")).toContainText("Last updated November 20, 2026");
+  await expect(page.locator("main")).toContainText("Google Analytics sets the cookies described above.");
+  await expect(page.locator("main")).not.toContainText("does not use an analytics service");
 });
 
 test("the About page leads with Shauna's experience and keeps the credential in her story", async ({ page }) => {
