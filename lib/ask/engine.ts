@@ -43,7 +43,7 @@ export const CARD_REFUSAL =
   `I cannot share the hands, categories, or values printed on the annual card. The card is copyrighted material sold by the National Mah Jongg League, and buying the current card supports the League. With your ${CURRENT_CARD_YEAR} card in hand, I am happy to explain how any of the general rules work.`;
 
 export const CANNOT_VERIFY =
-  "I cannot verify that rule from the approved American Mahjong rules I work from, so I will not guess. Check with your table or the official National Mah Jongg League rules, and we will work on adding a verified answer.";
+  "I cannot verify that rule from the approved American Mahjong rules I work from, so I will not guess. Check with your table or the official National Mah Jongg League rules. Please check with your instructor or consult the official NMJL rules.";
 
 export const OFF_TOPIC =
   "I can only help with American Mahjong rules questions. Try something like: can I use a joker in a pair? Or: what happens when two players call the same tile?";
@@ -423,16 +423,4 @@ export function splitQuestions(raw: string): string[] {
     .map((p) => (p || "").trim())
     .filter((p) => p.length >= 8 && !/^(also|and)$/i.test(p));
   return parts.slice(0, 3);
-}
-
-// Gap telemetry summary: topic only, never a transcript. Emails then digits are stripped
-// before anything is logged, so no contact info can leak into server logs.
-export function summarizeGap(question: string): string {
-  return String(question || "")
-    .replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g, "")
-    .replace(/\d+/g, "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .trim()
-    .slice(0, 120);
 }

@@ -5,7 +5,13 @@ into `main` on 2026-11-15. You approved the release on 2026-11-16; it was merged
 exactly as reviewed, and visitors have seen it since you pressed Promote in Vercel at about
 6:48 pm. The photo update of 2026-11-17 followed as pull request #131: merged at 1:48 pm and live
 since you pressed Promote at 5:19 pm that day. The checks on the live site after each release
-found no failures (handoff, "RELEASE 2026-11-16" and "PHOTO UPDATE 2026-11-17"). The
+found no failures (handoff, "RELEASE 2026-11-16" and "PHOTO UPDATE 2026-11-17"). The analytics
+release followed on 2026-11-20 as pull request #132: merged at 8:34 pm and live since you pressed
+Promote at 9:05 pm. Its live checks passed (handoff, "ANALYTICS SETUP 2026-11-18"); the test
+events have not yet been confirmed inside GA4 itself. The Ask log privacy update (handoff, "ASK
+LOG PRIVACY 2026-11-20") merges only with your approval and shows only after your Promote: Ask a
+Rule stops keeping any words of a question in the server log, and the privacy page and the Ask
+page say so. Until then the live privacy page reads "Last updated November 20, 2026". The
 working copy is `~/Projects/lvm-seo-invisible`. Full record: `docs/handoffs/lvm-seo-current.md`. Sprint files:
 `~/Projects/.lvm-sprint-2026-11-13/`. Pictures: `~/Projects/.lvm-seo-screens-2026-11-13/`.
 Keep the pictures folder private: some "before" pictures show details since removed from the
@@ -40,8 +46,8 @@ site.
   wording on 2026-11-15. The About title reads "About Shauna | Las Vegas Mahjong". The lessons
   page's share title (the one link previews show) reads "Mahjong Lessons Las Vegas |
   Beginner-Friendly Classes". The lessons page's search title is unchanged.
-- Published photos carry no hidden location data, and a test checks it. Analytics code ready
-  but off (no Measurement ID).
+- Published photos carry no hidden location data, and a test checks it. Analytics: Google
+  Analytics 4, switched on with the release of 2026-11-20 (pull request #132).
 
 ### Sprint of 2026-11-13 (live since 2026-11-16)
 
@@ -282,7 +288,7 @@ site.
 | Certification | Your About biography and the hidden founder record (`app/layout.tsx`); the Ask page wording is an open item (Section 4). The old headshot with the printed badge was retired on 2026-11-15 | The certification and the 18 years are yours alone: never imply that whoever teaches a class has them (tests check). |
 | Class titles (for example "Mahj 101 with Shauna") | Bookwhen, shown on `/schedule` as written | Update every place that names a level: lessons, schedule, About, Learn Mahjong, the hidden offer list in `app/layout.tsx`, the Ask page nudges (`lib/ask/nudges.ts`, your call), the homepage (stops at 102), and the Mahj 101 mentions on the Summerlin, Henderson, open play, visitor and studio pages and in `lib/schema.ts`. Search the code for "MAHJ10" and "Mahj 10". |
 | FAQ answers | On 23 pages one list feeds both the visible FAQ and Google's hidden copy | Edit the list in the page file, never just the text on screen. |
-| Privacy page | `app/privacy/page.tsx`: forms, newsletter, Ask a Rule, Bookwhen, analytics, cookies, outside links, hosting | Update it for any new form field, service, tracking tool or Ask logging change; its analytics part follows the Measurement ID on its own, and so do its "Last updated" date and its sitemap date (November 13, 2026 without the ID, November 20, 2026, the analytics release day, with it). Switching analytics off later is a checked release too, with a new date. Otherwise change "Last updated" only when the page's text changes. |
+| Privacy page | `app/privacy/page.tsx`: forms, newsletter, Ask a Rule, Bookwhen, analytics, cookies, outside links, hosting | Update it for any new form field, service, tracking tool or Ask logging change; its analytics part follows the Measurement ID on its own; its "Last updated" date and its sitemap date are the day its visible text last changed (November 21, 2026 with the Ask log privacy update), and a release that changes the page's text moves both, plus `tests/privacy-page.logic.spec.ts` and `tests/seo-round12-owner-decisions.spec.ts`, to its go-live day. Switching analytics off later is a checked release too, with a new date. |
 
 ## 3. Updating photos and words safely
 
@@ -328,7 +334,7 @@ sitemap dates, updating them to that day is a separate, checked update before th
 | Automatic publishing: it is switched off on the project that serves `www`, and it stayed off after the 2026-11-16 release and the 2026-11-17 photo update, so every release waits for your Promote. Keep it that way or turn it back on | Handoff "RELEASE 2026-11-16" |
 | Bookwhen items from the release check (new; you paused Bookwhen work): `/schedule` still shows Bookwhen's "Drop in and play" wording, which clashes with open play being booked sessions, and the leagues page shows one sentence twice because the Thursday league's Bookwhen description repeats it. Both change once the listings are edited in Bookwhen. Also, one session dated 2026-11-16 still showed on the schedule after Bookwhen stopped listing it | Step-by-step Bookwhen edits: `~/Documents/LVM Growth Sprint 2026-11-13/release-support/03-BOOKWHEN-CHANGES.md`, sections 1 and 2; handoff "RELEASE 2026-11-16", open items |
 | Form spam protection (new): the contact form has no spam trap of its own, so its protection is whatever is switched on in your Formspree account, and nobody has looked at those settings yet. Checking them needs your Formspree login and changes nothing on the website | Handoff "RELEASE 2026-11-16", open items |
-| Privacy page date: it says "Last updated November 13, 2026" until analytics goes live; the analytics release moves it to the go-live day (measurement plan, section 5, item 1). The sitemap dates stay as agreed, by your instruction of 2026-11-18: 2026-11-17 for the leagues page and 2026-11-15 for the homepage and the Studio page. The privacy page's own sitemap date moves with its "Last updated" date (2026-11-13 to the go-live day), by the agreed rule that a page's date is the day its visible content changed | Handoff "RELEASE 2026-11-16", "PHOTO UPDATE 2026-11-17" and "ANALYTICS SETUP 2026-11-18" |
+| Privacy page date: with the Ask log privacy update it says "Last updated November 21, 2026", the day its Ask a Rule wording changes (its analytics wording changed on November 20); any later wording change moves it to that release's go-live day (measurement plan, section 5, item 1). The sitemap dates stay as agreed, by your instruction of 2026-11-18: 2026-11-17 for the leagues page and 2026-11-15 for the homepage and the Studio page. The privacy page's own sitemap date matches its "Last updated" date, by the agreed rule that a page's date is the day its visible content changed; /ask's sitemap date is 2026-11-21, the day its disclaimer changed, by the same rule | Handoff "RELEASE 2026-11-16", "PHOTO UPDATE 2026-11-17" and "ANALYTICS SETUP 2026-11-18" |
 | Photo placements: the leagues photo is live since 2026-11-17. The private lessons, Summerlin and Henderson previews still wait for your decisions | `~/Projects/.lvm-approvals-2026-11-15/photo-previews/gallery/` |
 | Lesson cards on a phone (new, optional): a phone has no hover, so nothing shows that a card can be tapped. Proposed, not built: a short line at the bottom of each card, such as "See class dates" | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
 | Friendsgiving listing wording (new): it says "guests should already know the basics", which is looser than your open play wording. It is your event text, already merged, so it was not changed | Handoff "RELEASE CANDIDATE 2026-11-15", open items |
@@ -342,8 +348,8 @@ sitemap dates, updating them to that day is a separate, checked update before th
 | Proposed wording for the private lessons, visitor and corporate pages (P1 to P5, V1 to V4, H1 and H2) | `docs/handoffs/lvm-proposed-content-2026-11-13.md` |
 | Content questions (Zoom, party tables and chairs, cards for sale, private lesson length and size, finding Suite 200, cancellations, minimum age); three homepage contradictions; the "Your Instructor" and "Meet Your Mahjong Teacher" labels; corporate venue examples | `lane4-content/PROPOSALS.md` sections A and B, plus C2 if wanted. C1 is already done. The lessons chooser you approved already shows the 4 to 8 class size and the small group you bring yourself, so C3 and C4 would repeat them; only C3's class length is new. Handoff Rounds 10 and 11 |
 | Search research: what customers ask, gaps on existing pages, questions for you | `docs/handoffs/lvm-search-opportunities-2026-11-13.md` |
-| Ask page: "certified instructor's" wording, and a note promising a topic summary while the code keeps the question's first 120 characters | `app/ask/page.tsx`; handoff Round 12 |
-| Analytics after go-live: switching it on and verifying it | `docs/handoffs/lvm-measurement-plan-2026-11-13.md`, section 2 (checklist) |
+| Ask page: "certified instructor's" wording | `app/ask/page.tsx`; handoff Round 12 |
+| Analytics, now live: confirm the test events inside GA4 (Realtime or DebugView), check the reports after 24-48 hours, and stop counting your own visits | `docs/handoffs/lvm-measurement-plan-2026-11-13.md`, section 2.F |
 | Five Search Console exports | `lane7-analytics-search/SEARCH-EVIDENCE.md` section 5 |
 
 ## 5. Next five improvements, ranked
@@ -353,10 +359,10 @@ below is a hypothesis, not a measured result.
 
 1. **Switch on analytics.** Usefulness (hypothesis): inquiries and Bookwhen clicks by page, so
    later changes can be judged. A click is not a booking; Bookwhen counts bookings. Effort: low.
-   Evidence: you created the GA4 property on 2026-11-18 and added its Measurement ID in Vercel on
-   2026-11-20. You approved the analytics release that day; it merged and goes live when you press
-   Promote (SEO handoff, "ANALYTICS SETUP 2026-11-18"). The code passed its checks against
-   Google's real tag.
+   Done: you created the GA4 property on 2026-11-18, added its Measurement ID in Vercel on
+   2026-11-20 and approved the release that day. It has been live since you pressed Promote at
+   9:05 pm, and the live checks passed (SEO handoff, "ANALYTICS SETUP 2026-11-18"). Not yet
+   confirmed: the test events inside GA4 itself; its standard reports take 24-48 hours to fill.
 2. **Pull the Search Console exports.** Usefulness (hypothesis): edits go where people already
    search, and Summerlin and Henderson get a keep-or-fold-in decision on real numbers. Effort: low
    (or add your developer as a read-only user). Evidence: only 2 of 33 pages have page-level
