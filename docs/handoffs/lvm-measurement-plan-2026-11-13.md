@@ -299,8 +299,8 @@ activation.
 - [x] The privacy page date matches the go-live day, the day you press Promote (Las Vegas time).
   `LAST_UPDATED` in `app/privacy/page.tsx` shows November 20, 2026 in every build, the release
   day. If Promote slips past that day, your developer changes that date in that file,
-  `tests/privacy-page.logic.spec.ts`, `tests/seo-round12-owner-decisions.spec.ts` and the page's
-  sitemap date in `app/sitemap.ts`, reruns the checks, and a new build with the new date replaces
+  `tests/privacy-page.logic.spec.ts`, `tests/seo-round12-owner-decisions.spec.ts` and the
+  sitemap dates for `/privacy` and `/ask` in `app/sitemap.ts`, reruns the checks, and a new build with the new date replaces
   the staged one.
 - [x] Done 2026-11-20. With your release approval, your developer merges the pull request for
   branch `analytics/ga4-setup` (pull request #132). Automatic domain assignment is off, so Vercel
@@ -655,9 +655,9 @@ each, and effort. Every benefit below is a hypothesis.
 
 1. **The "Last updated" date on `/privacy`: settled in the code.** `LAST_UPDATED` in
    `app/privacy/page.tsx` shows November 20, 2026 in every build, the day the Analytics text and
-   the Ask a Rule log wording changed. If Promote slips past that day, your developer changes that date, the page's
-   sitemap date and the two tests that pin them, and a new build replaces the staged one (section
-   2.C).
+   the Ask a Rule log wording changed. If Promote slips past that day, your developer changes
+   that date, the sitemap dates for `/privacy` and `/ask` and the two tests that pin them, and a
+   new build replaces the staged one (section 2.C).
 2. Whether Bookwhen can send completed bookings to GA4: not verified (Round 11).
 3. What Bookwhen's own reports show (bookings by the date they were made, seats per booking): not
    checked. Adapt section 3.4 to what Bookwhen shows.

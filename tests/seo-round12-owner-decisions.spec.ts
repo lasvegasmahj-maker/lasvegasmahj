@@ -47,7 +47,7 @@ test("until a GA4 ID is set, the privacy page says the site uses no analytics", 
   await expect(page.locator('meta[name="description"]')).not.toHaveAttribute("content", /analytics/i);
 });
 
-test("once a GA4 ID is set, the privacy page names Google Analytics and moves its date", async ({ page }) => {
+test("once a GA4 ID is set, the privacy page names Google Analytics", async ({ page }) => {
   test.skip(!process.env.NEXT_PUBLIC_GA4_ID, "this build has no GA4 ID, so the page still says no analytics is used");
   await page.goto("/privacy");
   await expect(page.locator("main")).toContainText("We use Google Analytics 4");

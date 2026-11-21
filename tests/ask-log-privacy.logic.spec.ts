@@ -4,10 +4,10 @@ import { POST } from "../app/api/ask/route";
 import { answerDeterministic, buildFollowups, type Turn } from "../lib/ask/engine";
 import { composeWithModel, type ModelClient, type ModelInput } from "../lib/ask/llm";
 
-// Ask writes one line per answer to the hosting logs. That line, and every other log call on
-// the Ask path, is built from fixed codes, entry ids and numbers only: the words of a question
-// and of the conversation never reach a log. These tests run the real route in-process and
-// record every console call it makes.
+// Ask writes one line per answer to the hosting logs. That line and the model usage line are
+// built from fixed codes, entry ids and numbers only; the two error lines add the error's own
+// message. The words of a question and of the conversation never reach a log. These tests run
+// the real route in-process and record every console call it makes.
 
 const CONSOLE_METHODS = ["log", "info", "warn", "error", "debug"] as const;
 const LOG_KEYS = ["event", "kind", "entry", "category", "label", "via", "turn", "ms"];
@@ -139,7 +139,7 @@ test.describe("the model layer logs no question text", () => {
     };
   }
 
-  test("a usable reply, an unreadable reply and a failed call each log codes and numbers only", async () => {
+  test("a usable reply, an unreadable reply and a failed call each log JSON that holds none of the typed words", async () => {
     const failing: ModelClient = { messages: { create: async () => { throw Object.assign(new Error("overloaded"), { status: 529 }); } } };
     for (const client of [clientReturning(JSON.stringify({ entry_ids: [], covered: false })), clientReturning("not json"), failing]) {
       const { lines } = await captureConsole(() => composeWithModel(input(), client, 2_000));

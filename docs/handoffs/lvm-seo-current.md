@@ -144,8 +144,10 @@ Google also created three key events of its own (`purchase`, `qualify_lead`,
 The privacy page's date is the day its visible text last changed, which is the day the owner
 presses Promote, Las Vegas time: "November 20, 2026" in `app/privacy/page.tsx` (`LAST_UPDATED`)
 and `tests/seo-round12-owner-decisions.spec.ts`, and "2026-11-20" in `app/sitemap.ts`, with both
-pinned in `tests/privacy-page.logic.spec.ts`. A release that changes the page's text on a later
-day changes those four files to that day, reruns the checks, and promotes that build.
+pinned in `tests/privacy-page.logic.spec.ts`. The /ask sitemap date in `app/sitemap.ts` is
+"2026-11-20" too, the day its disclaimer changed, and the same test pins it. A release that
+changes either page's text on a later day moves those dates to that day, reruns the checks, and
+promotes that build.
 
 ---
 

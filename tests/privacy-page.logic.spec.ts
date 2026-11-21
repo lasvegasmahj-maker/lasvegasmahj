@@ -56,6 +56,10 @@ test("the page is titled Privacy and is canonical at /privacy", () => {
   expect(at).toBeGreaterThan(-1);
   const entry = sitemap.slice(at, sitemap.indexOf("}", at));
   expect(entry).toContain('lastModified: new Date("2026-11-20")');
+  // /ask's disclaimer changed in the same release, so its sitemap date moves with this one.
+  const askAt = sitemap.indexOf('url: "https://www.lasvegasmahj.com/ask"');
+  expect(askAt).toBeGreaterThan(-1);
+  expect(sitemap.slice(askAt, sitemap.indexOf("}", askAt))).toContain('lastModified: new Date("2026-11-20")');
   const pageDate = PAGE.match(/const LAST_UPDATED = "([^"]+)";/)?.[1] ?? "";
   expect(new Date(`${pageDate} UTC`).toISOString().slice(0, 10)).toBe("2026-11-20");
 });
