@@ -7,11 +7,11 @@ const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
 const GTM_ID = GA4_ID ? undefined : process.env.NEXT_PUBLIC_GTM_ID;
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
-// Renders analytics tags only when the matching env var is set. With no env
-// vars configured (current production), every tag branch is null, so no
-// analytics script loads and nothing is sent anywhere. Switching GA4 on is a
-// release: set the ID in Vercel before the production build, and the privacy
-// page's date and its sitemap date (same variable) must show the go-live day
+// Renders analytics tags only when the matching env var is set. With none set,
+// as in preview builds and CI (the GA4 ID is Production only), every tag branch
+// is null, so no analytics script loads and nothing is sent anywhere. Switching GA4 on is a
+// release: set the ID in Vercel before the production build. The privacy page's
+// date and its sitemap date are the day its visible text last changed
 // (measurement plan, section 2.C). The privacy page describes GA4 only; a Meta
 // Pixel ID would need that page updated first.
 //

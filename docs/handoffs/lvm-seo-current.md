@@ -71,8 +71,8 @@ Google also created three key events of its own (`purchase`, `qualify_lead`,
   page address with every event.
 - `booking_link_click` fires only for links to this account's booking pages on Bookwhen; Bookwhen's
   privacy policy link on `/privacy` no longer counts. It is a click, never a booking.
-- `/privacy`: `LAST_UPDATED` follows the same switch as the Analytics section ("November 13, 2026"
-  without an ID, "November 20, 2026", the release day, with one), and so does the page's date in `app/sitemap.ts`. The Analytics text names what Google's tag sends
+- `/privacy`: `LAST_UPDATED` is "November 20, 2026" in every build, the day its visible text last changed
+  (the Analytics text and the Ask a Rule log wording), and the page's date in `app/sitemap.ts` matches it. The Analytics text names what Google's tag sends
   with each page: the page address and title, the previous page, the IP address, browser and
   device details such as the browser, the operating system and their versions, the device model,
   the screen size and the language setting, and, when a visitor leaves a page, how long they spent
@@ -141,12 +141,11 @@ Google also created three key events of its own (`purchase`, `qualify_lead`,
    section and the new date; a short labelled check sends page views and link clicks only. Only
    then is tracking called live.
 
-The go-live day is the day the owner presses Promote, Las Vegas time. She asked for the actual
-release date, so on 2026-11-20 the date moved to that day: "November 20, 2026" in
-`app/privacy/page.tsx` (`LAST_UPDATED`) and `tests/seo-round12-owner-decisions.spec.ts`, and
-"2026-11-20" in `app/sitemap.ts`, with both pinned in `tests/privacy-page.logic.spec.ts`. If
-Promote slips past that day, change those four files to the new day, rerun the checks, and merge
-and promote a new build instead.
+The privacy page's date is the day its visible text last changed, which is the day the owner
+presses Promote, Las Vegas time: "November 20, 2026" in `app/privacy/page.tsx` (`LAST_UPDATED`)
+and `tests/seo-round12-owner-decisions.spec.ts`, and "2026-11-20" in `app/sitemap.ts`, with both
+pinned in `tests/privacy-page.logic.spec.ts`. A release that changes the page's text on a later
+day changes those four files to that day, reruns the checks, and promotes that build.
 
 ---
 
@@ -730,9 +729,8 @@ is not merged; the five-pack stays off the site; analytics stays approved but NO
    experience needed. Beginners welcome!" still extends "no experience needed" to open play and
    leagues, against her open play rule. Proposed, not applied: end with "Beginner classes need
    no experience.", the sentence she approved for the search description.
-4. Ask a Rule's disclaimer says the log keeps "a short topic summary"; the privacy page and the
-   code say the first 120 characters of the question, with emails and numbers removed (Round
-   12, still open; the Ask page is off-limits without her).
+4. Settled 2026-11-20 with the owner's approval: the Ask a Rule log record holds codes, ids and
+   numbers only, and `/ask` and `/privacy` both say it never includes the words of a question.
 5. Small wording and color notes from the gate, for a later pass: the homepage FAQ question "How
    long does it take to learn?" now has an answer with no time in it (retitle the question?); the
    lessons page says "$60 per lesson" on three tier cards and "$60 per person" elsewhere; "Mahj
@@ -1525,9 +1523,8 @@ Instagram, TikTok, Facebook), Vercel hosting, children, and changes.
 - **Ask a Rule, said exactly as the code does it:** questions go to our server with the last
   few turns; when the AI helper is switched on some go to Anthropic (question and turns only);
   IP addresses are used only for in-memory rate limits; each answer leaves a short record in
-  the hosting logs, and when an answer cannot be verified that record includes the first 120
-  characters of the question with email addresses and numbers removed
-  (`lib/ask/engine.ts` `summarizeGap`, logged by `app/api/ask/route.ts`).
+  the hosting logs that never includes the words of the question or the conversation
+  (`app/api/ask/route.ts`, enforced by `tests/ask-log-privacy.logic.spec.ts`).
 - Linked only after each returned 200 on 2026-11-13: Google partner-sites, Google opt-out
   add-on, Intuit (Mailchimp) privacy statement, Bookwhen privacy policy, Vercel privacy
   notice. Formspree is named but not linked (a contact-consistency test allows its address
@@ -1537,10 +1534,8 @@ Instagram, TikTok, Facebook), Vercel hosting, children, and changes.
   a business commitment, not something the code can prove: confirm it (she confirmed it on
   2026-11-15: FINAL COPY APPROVALS at the top); (2) update "Last
   updated November 13, 2026" to the go-live date; (3) it is a plain-language notice drafted
-  from the code, not legal advice; (4) the `/ask` page's own disclaimer says "we keep a short
-  topic summary (no numbers or emails)", but the code keeps the first 120 characters of the
-  question itself. Ask a Rule is off-limits, so that sentence is unchanged and needs her
-  decision (reword it, or shorten what is logged).
+  from the code, not legal advice; (4) settled 2026-11-20: the `/ask` disclaimer and `/privacy`
+  both say the Ask log never holds the question's words, and the code matches.
 
 **Reviews (lane G) and what changed because of them.**
 - Wording and analytics review: fixed the homepage description (open play is not for new

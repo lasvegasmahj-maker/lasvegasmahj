@@ -212,12 +212,11 @@ developer.
   discloses Analytics (`/privacy`, Round 11); and six of the events arrived with that release.
   All three are live now.
 - [x] The privacy page items this checklist named from Round 12 ("For the owner before it ships")
-  are settled. You confirmed "We do not sell it" on 2026-11-15. The "Last updated" date follows
-  the ID: `LAST_UPDATED` in `app/privacy/page.tsx` shows November 13, 2026 in a build without the
-  ID and November 20, 2026, the release day, in the build that carries it (section 5, item 1; part
-  C checks the go-live day).
+  are settled. You confirmed "We do not sell it" on 2026-11-15. The "Last updated" date is the
+  day the page's visible text last changed: `LAST_UPDATED` in `app/privacy/page.tsx` shows
+  November 20, 2026 in every build (section 5, item 1; part C checks the go-live day).
 - [ ] On `/privacy`, the Analytics section reads "This website does not use an analytics service
-  right now." and the page reads "Last updated November 13, 2026". Both are correct until the ID
+  right now." and the page reads "Last updated November 20, 2026". Both are correct until the ID
   is set.
 
 ### B. Create GA4 and set it up before the ID goes live
@@ -298,8 +297,8 @@ activation.
     does not serve the domain.
   - Never type the ID into the code. A test checks only the three analytics files for a typed ID.
 - [x] The privacy page date matches the go-live day, the day you press Promote (Las Vegas time).
-  `LAST_UPDATED` in `app/privacy/page.tsx` shows November 20, 2026 in a build with the ID, the
-  release day. If Promote slips past that day, your developer changes that date in that file,
+  `LAST_UPDATED` in `app/privacy/page.tsx` shows November 20, 2026 in every build, the release
+  day. If Promote slips past that day, your developer changes that date in that file,
   `tests/privacy-page.logic.spec.ts`, `tests/seo-round12-owner-decisions.spec.ts` and the page's
   sitemap date in `app/sitemap.ts`, reruns the checks, and a new build with the new date replaces
   the staged one.
@@ -322,8 +321,8 @@ events with a labelled test.
   ("This counts the click, not a booking"), the contact form, the newsletter and Ask a Rule. The
   page reads "Last updated November 20, 2026" (the go-live day set in part C), and the cookies
   section reads "This website does not set any cookies of its own. Google Analytics sets the
-  cookies described above." If the page still says "does not use an analytics service" or shows
-  November 13, 2026, the build did not pick up the ID: stop.
+  cookies described above." If the page still says "does not use an analytics service", the
+  build did not pick up the ID: stop.
 - [ ] Your developer runs the short labelled live check: the same browser script as part E, against
   `https://www.lasvegasmahj.com`, with page views and link clicks only (the homepage, "Book Now"
   in the lessons box, a "Request a Quote" button), debug mode on and a `test_run` label on every
@@ -655,9 +654,8 @@ each, and effort. Every benefit below is a hypothesis.
 ## 5. Open items, and what this plan could not source
 
 1. **The "Last updated" date on `/privacy`: settled in the code.** `LAST_UPDATED` in
-   `app/privacy/page.tsx` shows November 13, 2026 in a build without the ID and November 20, 2026,
-   the release day, in the build that carries it, so the date moves in the same build as the
-   Analytics text. If Promote slips past that day, your developer changes that date, the page's
+   `app/privacy/page.tsx` shows November 20, 2026 in every build, the day the Analytics text and
+   the Ask a Rule log wording changed. If Promote slips past that day, your developer changes that date, the page's
    sitemap date and the two tests that pin them, and a new build replaces the staged one (section
    2.C).
 2. Whether Bookwhen can send completed bookings to GA4: not verified (Round 11).
