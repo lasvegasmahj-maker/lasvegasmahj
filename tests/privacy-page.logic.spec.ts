@@ -106,6 +106,8 @@ test("what the page says about logs and storage still matches the code", () => {
   expect(PAGE).toContain("The record never includes the words of your question or of the conversation.");
   expect(PAGE).not.toMatch(/120 characters/);
   expect(read("app/ask/page.tsx")).toContain("It is never saved to an account or written to our logs.");
+  expect(read("app/ask/page.tsx")).toContain("go to our AI provider to help pick the right written answer.");
+  expect(read("app/ask/page.tsx")).not.toMatch(/to phrase the answer/);
   expect(read("app/ask/page.tsx")).not.toMatch(/topic summary/);
 
   const files = ["app", "components", "lib"].flatMap(sourceFiles);
