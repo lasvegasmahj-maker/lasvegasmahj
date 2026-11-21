@@ -5,7 +5,10 @@ into `main` on 2026-11-15. You approved the release on 2026-11-16; it was merged
 exactly as reviewed, and visitors have seen it since you pressed Promote in Vercel at about
 6:48 pm. The photo update of 2026-11-17 followed as pull request #131: merged at 1:48 pm and live
 since you pressed Promote at 5:19 pm that day. The checks on the live site after each release
-found no failures (handoff, "RELEASE 2026-11-16" and "PHOTO UPDATE 2026-11-17"). The
+found no failures (handoff, "RELEASE 2026-11-16" and "PHOTO UPDATE 2026-11-17"). The analytics
+release followed on 2026-11-20 as pull request #132: merged at 8:34 pm and live since you pressed
+Promote at 9:05 pm. Its live checks passed (handoff, "ANALYTICS SETUP 2026-11-18"); the test
+events have not yet been confirmed inside GA4 itself. The
 working copy is `~/Projects/lvm-seo-invisible`. Full record: `docs/handoffs/lvm-seo-current.md`. Sprint files:
 `~/Projects/.lvm-sprint-2026-11-13/`. Pictures: `~/Projects/.lvm-seo-screens-2026-11-13/`.
 Keep the pictures folder private: some "before" pictures show details since removed from the
@@ -40,8 +43,8 @@ site.
   wording on 2026-11-15. The About title reads "About Shauna | Las Vegas Mahjong". The lessons
   page's share title (the one link previews show) reads "Mahjong Lessons Las Vegas |
   Beginner-Friendly Classes". The lessons page's search title is unchanged.
-- Published photos carry no hidden location data, and a test checks it. Analytics code ready
-  but off (no Measurement ID).
+- Published photos carry no hidden location data, and a test checks it. Analytics: Google
+  Analytics 4, switched on with the release of 2026-11-20 (pull request #132).
 
 ### Sprint of 2026-11-13 (live since 2026-11-16)
 
@@ -353,10 +356,10 @@ below is a hypothesis, not a measured result.
 
 1. **Switch on analytics.** Usefulness (hypothesis): inquiries and Bookwhen clicks by page, so
    later changes can be judged. A click is not a booking; Bookwhen counts bookings. Effort: low.
-   Evidence: you created the GA4 property on 2026-11-18 and added its Measurement ID in Vercel on
-   2026-11-20. You approved the analytics release that day; it merged and goes live when you press
-   Promote (SEO handoff, "ANALYTICS SETUP 2026-11-18"). The code passed its checks against
-   Google's real tag.
+   Done: you created the GA4 property on 2026-11-18, added its Measurement ID in Vercel on
+   2026-11-20 and approved the release that day. It has been live since you pressed Promote at
+   9:05 pm, and the live checks passed (SEO handoff, "ANALYTICS SETUP 2026-11-18"). Not yet
+   confirmed: the test events inside GA4 itself; its standard reports take 24-48 hours to fill.
 2. **Pull the Search Console exports.** Usefulness (hypothesis): edits go where people already
    search, and Summerlin and Henderson get a keep-or-fold-in decision on real numbers. Effort: low
    (or add your developer as a read-only user). Evidence: only 2 of 33 pages have page-level

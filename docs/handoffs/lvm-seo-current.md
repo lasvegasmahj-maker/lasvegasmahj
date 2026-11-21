@@ -14,9 +14,10 @@ squash-merged into `main` as `0a72967` on 2026-11-16 (Las Vegas date), the owner
 2026-11-16", below). **The photo update of 2026-11-17 (section below) is MERGED, LIVE and
 VERIFIED:** pull request #131 was squash-merged into `main` as `f36af78` on 2026-11-17, the owner
 promoted it to `www` that evening, and the checks on the live site found no failures. **The
-analytics setup of 2026-11-18 (next section) is MERGED:** the owner approved the finished release
-on 2026-11-20, pull request #132 was squash-merged into `main` that day, and tracking goes live
-when she promotes that build. Sentences
+analytics setup of 2026-11-18 (next section) is MERGED, LIVE and TECHNICALLY VERIFIED:** the
+owner approved the finished release on 2026-11-20, pull request #132 was squash-merged into `main`
+that day, she promoted it to `www` at 21:05 PST, and the checks on the live site found no
+failures. The test events have not yet been confirmed inside GA4 itself. Sentences
 in those sections that say the branch or pull request #130 is
 "local", "uncommitted", "not pushed", "not merged", "not live" or a draft, that PR #129 is not
 merged, or that sitemap dates were not changed describe the day each section was written.
@@ -29,7 +30,7 @@ share-image fixes, and its link proposals stay with the owner.
 
 ---
 
-# ANALYTICS SETUP 2026-11-18: GA4 property, link-click fixes and privacy date (MERGED 2026-11-20)
+# ANALYTICS SETUP 2026-11-18: GA4 property, link-click fixes and privacy date (MERGED, LIVE AND TECHNICALLY VERIFIED 2026-11-20)
 
 **Owner's brief (2026-11-18):** resume analytics setup only. A GA4 property "Las Vegas Mahjong"
 under the business Google account, with a web stream for `https://www.lasvegasmahj.com`, Pacific
@@ -136,10 +137,35 @@ Google also created three key events of its own (`purchase`, `qualify_lead`,
    sibling project; that token cannot read the value, so the live pages confirm it.
 2. Done 2026-11-20: pull request #132 merged into `main`. Automatic domain assignment is off, so
    Vercel holds the production build as Staged.
-3. She presses Promote.
-4. Live checks: the pages load the Google tag once, with the ID; `/privacy` shows the Analytics
-   section and the new date; a short labelled check sends page views and link clicks only. Only
-   then is tracking called live.
+3. Done 2026-11-20: she pressed Promote, and `www` has served the new build since 21:05 PST.
+   Automatic domain assignment stayed off afterwards, so the next merge also waits for her
+   Promote.
+4. Done 2026-11-20: the live checks below passed, so tracking is live and technically verified.
+
+**Live checks (2026-11-20, after the Promote):**
+
+- Plain page reads, which run no JavaScript and send nothing: 8 pages (`/`, `/privacy`,
+  `/schedule`, `/contact`, `/studio`, `/mahjong-lessons-las-vegas`,
+  `/mahjong-corporate-las-vegas`, `/ask`) serve the new build. Each carries the Google tag once
+  (a preload hint and one script entry) with the property's ID and one `config` call, and no Tag
+  Manager, Meta Pixel or other tracker. The exact text of the `config` call shows that the value
+  saved in Vercel is right. `/privacy` shows the approved Analytics wording and "Last updated
+  November 20, 2026", and the sitemap gives `/privacy` 2026-11-20. Two independent rereads at
+  about 22:05 PST matched the first reads exactly.
+- A counting run on `www`, with every Google request answered on the machine so nothing was sent:
+  14 runs (7 scenarios on desktop and on iPhone), with the same counts as before the release. Each
+  full page load and each page change without a reload sent one `page_view`, and each click sent
+  its event once. The Bookwhen privacy link sent nothing, and no other GA4 event appeared. Every
+  hit carried the property's ID, and no request carried a typed value or a user-data parameter.
+- Labelled runs from `www` to the property, desktop, page views and link clicks only, with
+  `_dbg=1` on every request: 14 events labelled `ep.test_run=lvm-ga4-live-check-2026-11-20`,
+  then a booking-link test labelled `ep.test_run=lvm-ga4-live-booking-2026-11-20`. Google
+  answered 204 to the page views and to a `booking_link_click` sent while the page stayed open.
+  A click sent as the next page opens goes out without a reply the browser can report. Bookwhen
+  was blocked, so no booking happened, and no inquiry or signup was sent.
+- **Not yet confirmed:** the test events inside GA4 itself (Realtime, DebugView or the reports).
+  The checks ran without access to the GA4 property, and its standard reports take 24-48 hours to
+  fill (measurement plan, section 2.F).
 
 The privacy page's date is the day its visible text last changed, which is the day the owner
 presses Promote, Las Vegas time: "November 20, 2026" in `app/privacy/page.tsx` (`LAST_UPDATED`)
