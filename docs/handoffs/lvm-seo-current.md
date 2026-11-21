@@ -18,7 +18,8 @@ analytics setup of 2026-11-18 (section below) is MERGED, LIVE and TECHNICALLY VE
 owner approved the finished release on 2026-11-20, pull request #132 was squash-merged into `main`
 that day, she promoted it to `www` at 21:05 PST, and the checks on the live site found no
 failures. The test events have not yet been confirmed inside GA4 itself. **The Ask log privacy
-update (next section) is NOT MERGED:** its pull request waits for the owner's approval. Sentences
+update (next section)** merges only with the owner's approval of its pull request, and visitors
+see it only after her Promote. Sentences
 in those sections that say the branch or pull request #130 is
 "local", "uncommitted", "not pushed", "not merged", "not live" or a draft, that PR #129 is not
 merged, or that sitemap dates were not changed describe the day each section was written.
@@ -31,7 +32,7 @@ share-image fixes, and its link proposals stay with the owner.
 
 ---
 
-# ASK LOG PRIVACY 2026-11-20: no question text in the server log; privacy and Ask page wording (NOT MERGED)
+# ASK LOG PRIVACY 2026-11-20: no question text in the server log; privacy and Ask page wording (merges only with the owner's approval; live after her Promote)
 
 **Owner's approval (2026-11-20):** "Approve L-W1, L-W2 and L-W5, with no L-W3." She also
 replaced the end of Ask a Rule's reply for a rule it cannot verify. Nothing merges or goes live
@@ -42,8 +43,9 @@ proposed text.
 
 - The Ask route's log line for each answer no longer carries the first 120 characters of a
   question it cannot verify. Every Ask log line now holds only fixed codes, entry ids, numbers,
-  status codes and error class names. The two error lines record the error's class name instead
-  of its own text, which can repeat what was sent. The AI library's logging is pinned at
+  status codes, fixed failure labels and an error's name. Neither error line records an error's
+  own text, which can repeat what was sent: a model failure logs `timeout`, `connection`, `api` or
+  `other`, and a route failure logs the error's name, such as `TypeError`. The AI library's logging is pinned at
   warnings, so an `ANTHROPIC_LOG` setting cannot make it log request details, which hold the
   question.
 - `/privacy`, Ask a Rule (L-W1): the record "never includes the words of your question or of the
@@ -58,7 +60,10 @@ proposed text.
 - Not added (L-W3, the owner's choice): a sentence on how long Anthropic keeps what it receives.
 - Dates: `/privacy` reads "Last updated November 21, 2026", and the sitemap gives `/privacy` and
   `/ask` 2026-11-21, the planned release day. If the release goes live on a later day, all of
-  them move to that day first.
+  them move to that day first: `LAST_UPDATED` in `app/privacy/page.tsx`, the `/privacy` and
+  `/ask` dates in `app/sitemap.ts`, the pins in `tests/privacy-page.logic.spec.ts` and
+  `tests/seo-round12-owner-decisions.spec.ts`, and every line in this handoff, the owner guide and
+  the measurement plan that gives November 21, 2026 as the date.
 - Ask answers themselves do not change: the deterministic engine and the model layer return the
   same answers, and only the reply text above is new.
 
@@ -172,9 +177,10 @@ Google also created three key events of its own (`purchase`, `qualify_lead`,
    sibling project; that token cannot read the value, so the live pages confirm it.
 2. Done 2026-11-20: pull request #132 merged into `main`. Automatic domain assignment is off, so
    Vercel holds the production build as Staged.
-3. Done 2026-11-20: she pressed Promote, and `www` has served the new build since 21:05 PST.
-   Automatic domain assignment stayed off afterwards, so the next merge also waits for her
-   Promote.
+3. Done 2026-11-20: she pressed Promote, and `www` has served deployment
+   `dpl_3bQmwvDPA1GVEoS9Qx3PrFbxqJ17`, the production build of `4492f8a`, since 21:05 PST.
+   Automatic domain assignment stayed off afterwards (read from Vercel, read-only), so the next
+   merge also waits for her Promote.
 4. Done 2026-11-20: the live checks below passed, so tracking is live and technically verified.
 
 **Live checks (2026-11-20, after the Promote):**
@@ -277,8 +283,9 @@ pull request #131.
   `main` passed all three jobs for it.
 - Production: on `lasvegasmahj-h1iz` the build of `f36af78` waited unassigned while `www` kept
   serving the 2026-11-16 deployment. The owner promoted it at about 01:19 UTC on 2026-11-18
-  (5:19 pm on 2026-11-17 in Las Vegas), and `www.lasvegasmahj.com` has served deployment
-  `dpl_7B5ghJsTgj77g1f1u9yTh28vxR4B` since then. Automatic domain assignment on
+  (5:19 pm on 2026-11-17 in Las Vegas), and `www.lasvegasmahj.com` served deployment
+  `dpl_7B5ghJsTgj77g1f1u9yTh28vxR4B` from then until the analytics release was promoted at 21:05
+  PST on 2026-11-20 (section above). Automatic domain assignment on
   `lasvegasmahj-h1iz` is still off after this promotion (read from Vercel, read-only).
 - Checks on the live site (2026-11-17 evening, read-only, nothing sent): a photo verification
   script passed all 32 of its checks. The leagues photo is the approved file, byte for byte. At

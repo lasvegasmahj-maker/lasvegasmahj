@@ -216,9 +216,11 @@ calls, latency and token counts for the cost estimate.
 
 One JSON line per question in Vercel function logs: kind, entry id, category, label,
 via (rules or model), turn number, latency. A failure adds one line with only a status code and
-the error's class name, and the AI library's own logging is pinned at warnings. The question text
+a fixed label (`timeout`, `connection`, `api` or `other`) for a model failure, or the error's
+name, such as `TypeError`, for a route failure. The AI library's own logging is pinned at
+warnings. The question text
 and the conversation are never logged. `tests/ask-log-privacy.logic.spec.ts` runs the route and
-the model layer with made-up personal details, including a model error that repeats the
+the model layer with made-up personal details, including model errors that repeat the
 question, checks that no log line carries them, and checks both error lines and the pinned log
 level in the source. Conversations are held only in the
 visitor's browser tab (`sessionStorage`) and are never stored server side.

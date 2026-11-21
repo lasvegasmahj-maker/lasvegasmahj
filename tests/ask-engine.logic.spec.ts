@@ -10,7 +10,6 @@ import {
   canonicalEntryFor,
   normalizeQuestion,
   retrieve,
-  summarizeGap,
   CANNOT_VERIFY,
   CARD_REFUSAL,
   OFF_TOPIC,
@@ -340,14 +339,6 @@ test.describe("guards", () => {
     expect(answerDeterministic("What is a wall game?").label).toBe("house");
     expect(answerDeterministic("Who pays on a self drawn win?").entry?.id).toBe("self-drawn-win");
     expect(answerDeterministic("Who pays on a self drawn win?").label).toBe("pending");
-  });
-});
-
-test.describe("gap summary", () => {
-  test("gap summary strips emails and digits and caps length", () => {
-    const s = summarizeGap("Email JANE.DOE@example.com about the 2026 card rules " + "x".repeat(200));
-    expect(s).not.toMatch(/@|\d/);
-    expect(s.length).toBeLessThanOrEqual(120);
   });
 });
 

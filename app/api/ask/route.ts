@@ -157,7 +157,7 @@ export async function POST(req: NextRequest) {
 
     return json(response);
   } catch (e) {
-    // An error's own text can repeat the question, so only its class name is logged.
+    // An error's own text can repeat the question, so only its name, such as TypeError, is logged.
     console.error(JSON.stringify({ event: "ask_failed", error: e instanceof Error ? e.name : typeof e }));
     return json({ ok: false, error: "The rules helper is having trouble right now. The rules guide still works.", fallback: "/rules" }, 500);
   }

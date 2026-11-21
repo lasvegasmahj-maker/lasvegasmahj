@@ -65,9 +65,9 @@ claim that tracking is live until it is verified.
 since 2026-11-16) as read on 2026-11-13 (files in section 6), with section 1.1 re-checked on
 2026-11-18 against branch `analytics/ga4-setup`. If those files change before
 launch, re-check section 1. The owner guide
-(`docs/handoffs/lvm-owner-guide-2026-11-13.md`, section 4) lists switching analytics on among the
-things waiting for you after go-live (you approved analytics on 2026-11-13, Round 12); this plan
-holds the detail.
+(`docs/handoffs/lvm-owner-guide-2026-11-13.md`, section 4) lists the remaining analytics steps
+(section 2.F) among the things waiting for you (you approved analytics on 2026-11-13, Round 12);
+this plan holds the detail.
 
 ## In short
 
@@ -80,7 +80,8 @@ holds the detail.
    (section 2.E): set the Measurement ID in Vercel, merge, then Promote (section 2.C), and call
    tracking live only after the live checks in section 2.D. The 2026-11-16 release put live the
    privacy page and the fix that stops each event being sent two ways, which would have let GA4
-   count it twice. The page's "Last updated" date changes in the same build as its Analytics text.
+   count it twice. The page's "Last updated" date is the day its visible text last changed; a
+   release that changes that text moves the date to its go-live day (section 5, item 1).
 4. Collect 4 full weeks of clean data before changing any measured page. Then change one page at
    a time.
 5. Every benefit named in section 4 is a hypothesis until the numbers show it.

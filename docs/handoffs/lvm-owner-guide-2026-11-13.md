@@ -346,7 +346,7 @@ sitemap dates, updating them to that day is a separate, checked update before th
 | Content questions (Zoom, party tables and chairs, cards for sale, private lesson length and size, finding Suite 200, cancellations, minimum age); three homepage contradictions; the "Your Instructor" and "Meet Your Mahjong Teacher" labels; corporate venue examples | `lane4-content/PROPOSALS.md` sections A and B, plus C2 if wanted. C1 is already done. The lessons chooser you approved already shows the 4 to 8 class size and the small group you bring yourself, so C3 and C4 would repeat them; only C3's class length is new. Handoff Rounds 10 and 11 |
 | Search research: what customers ask, gaps on existing pages, questions for you | `docs/handoffs/lvm-search-opportunities-2026-11-13.md` |
 | Ask page: "certified instructor's" wording | `app/ask/page.tsx`; handoff Round 12 |
-| Analytics after go-live: switching it on and verifying it | `docs/handoffs/lvm-measurement-plan-2026-11-13.md`, section 2 (checklist) |
+| Analytics, now live: confirm the test events inside GA4 (Realtime or DebugView), check the reports after 24-48 hours, and stop counting your own visits | `docs/handoffs/lvm-measurement-plan-2026-11-13.md`, section 2.F |
 | Five Search Console exports | `lane7-analytics-search/SEARCH-EVIDENCE.md` section 5 |
 
 ## 5. Next five improvements, ranked

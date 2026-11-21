@@ -8,9 +8,9 @@ import { answerDeterministic, buildFollowups, type Turn } from "../lib/ask/engin
 import { composeWithModel, type ModelClient, type ModelInput } from "../lib/ask/llm";
 
 // Ask writes one line per answer to the hosting logs. That line, the model usage line and the
-// two error lines are built from fixed codes, entry ids, numbers, status codes and error class
-// names only, so the words of a question and of the conversation never reach a log. These tests
-// run the real route in-process and record every console call it makes.
+// two error lines are built from fixed codes, entry ids, numbers, status codes, fixed failure
+// labels and an error's name only, so the words of a question and of the conversation never
+// reach a log. These tests run the real route in-process and record every console call it makes.
 
 const read = (rel: string) => fs.readFileSync(path.join(__dirname, "..", rel), "utf8");
 
@@ -154,23 +154,34 @@ test.describe("the model layer logs no question text", () => {
     }
   });
 
-  test("a failed call whose error repeats the question logs only fixed fields", async () => {
-    const quoting: ModelClient = { messages: { create: async () => { throw new Error(`400 invalid request: ${question}`); } } };
-    const { lines } = await captureConsole(() => composeWithModel(input(), quoting, 2_000));
-    expect(lines).toHaveLength(1);
-    const record = JSON.parse(lines[0]) as Record<string, unknown>;
-    expect(Object.keys(record).sort()).toEqual(["error", "event", "ms"]);
-    expect(record).toMatchObject({ event: "ask_model_error", error: "Error" });
-    expectNoTypedWords(lines, question);
+  test("a failed call whose error repeats the question logs a fixed label and nothing from the error", async () => {
+    const throwing = (e: unknown): ModelClient => ({ messages: { create: async () => { throw e; } } });
+    const never: ModelClient = { messages: { create: () => new Promise<never>(() => {}) } };
+    const quoted = `400 invalid request: ${question}`;
+    const cases: Array<{ client: ModelClient; timeoutMs: number; error: string; status?: number }> = [
+      { client: throwing(new Error(quoted)), timeoutMs: 2_000, error: "other" },
+      { client: throwing(Anthropic.APIError.generate(400, { type: "error", error: { type: "invalid_request_error", message: quoted } }, quoted, new Headers())), timeoutMs: 2_000, error: "api", status: 400 },
+      { client: throwing(new Anthropic.APIConnectionError({ message: quoted })), timeoutMs: 2_000, error: "connection" },
+      { client: throwing(new Anthropic.APIConnectionTimeoutError({ message: quoted })), timeoutMs: 2_000, error: "timeout" },
+      { client: never, timeoutMs: 30, error: "timeout" },
+    ];
+    for (const c of cases) {
+      const { lines } = await captureConsole(() => composeWithModel(input(), c.client, c.timeoutMs));
+      expect(lines).toHaveLength(1);
+      const record = JSON.parse(lines[0]) as Record<string, unknown>;
+      expect(Object.keys(record).sort()).toEqual(c.status ? ["error", "event", "ms", "status"] : ["error", "event", "ms"]);
+      expect(record).toMatchObject({ event: "ask_model_error", error: c.error, ...(c.status ? { status: c.status } : {}) });
+      expectNoTypedWords(lines, question);
+    }
   });
 });
 
 test.describe("the error lines and the AI library cannot copy a question into a log", () => {
-  test("both error lines log a class name, never an error's text", () => {
+  test("neither error line logs an error's text", () => {
     const route = read("app/api/ask/route.ts");
     const llm = read("lib/ask/llm.ts");
     expect(route).toContain('console.error(JSON.stringify({ event: "ask_failed", error: e instanceof Error ? e.name : typeof e }));');
-    expect(llm).toContain('status, error: e instanceof Error ? e.name : typeof e }));');
+    expect(llm).toContain("status, error: failureKind(e) }));");
     for (const src of [route, llm]) expect(src).not.toMatch(/console\.\w+\([^;]*\.message/);
   });
 

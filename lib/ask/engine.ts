@@ -424,15 +424,3 @@ export function splitQuestions(raw: string): string[] {
     .filter((p) => p.length >= 8 && !/^(also|and)$/i.test(p));
   return parts.slice(0, 3);
 }
-
-// Gap telemetry summary: topic only, never a transcript. Emails then digits are stripped
-// before anything is logged, so no contact info can leak into server logs.
-export function summarizeGap(question: string): string {
-  return String(question || "")
-    .replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g, "")
-    .replace(/\d+/g, "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .trim()
-    .slice(0, 120);
-}
