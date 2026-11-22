@@ -230,3 +230,20 @@ the model layer with made-up personal details, including model replies and error
 the question and a failure inside the route, checks that no log line carries them, and checks
 both error lines and the pinned log level in the source. Conversations are held only in the
 visitor's browser tab (`sessionStorage`) and are never stored server side.
+
+Reading a model failure line: `status` 401 means the provider did not accept the key, for
+example because it expired, was disabled or deleted, or the account it belongs to was removed
+from this business's organization at the provider. Answers then come from approved text alone,
+with no error shown; each call still carries the question to the provider, which refuses it.
+Start on the provider's API keys page and read the old key's row (its name or creation date
+identifies it). Switch a disabled key back on only when it is known who disabled it and why,
+and the reason was not exposure; that needs no new key and no new build. In every other case
+create a new key, delete the old one if it is still listed, save the new key in
+`ANTHROPIC_API_KEY` and make a new build; a saved value reaches only builds made after it.
+Three choices are fixed when the key is created. Scope it to one workspace: the site sends no
+workspace header, and the provider answers a key without a workspace with 400. Choose its
+expiration on purpose: it cannot be changed afterwards, and once it passes, calls fail with 401
+again and visitors see no error. Link it to an account that stays in the organization
+([provider's authentication guide](https://platform.claude.com/docs/en/manage-claude/authentication)).
+An `ask_model` line shows that the provider accepted the key and replied; `via` on the `ask`
+line shows whether the reply was used.

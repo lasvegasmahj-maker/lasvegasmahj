@@ -18,8 +18,11 @@ analytics setup of 2026-11-18 (section below) is MERGED, LIVE and TECHNICALLY VE
 owner approved the finished release on 2026-11-20, pull request #132 was squash-merged into `main`
 that day, she promoted it to `www` at 21:05 PST, and the checks on the live site found no
 failures. The test events have not yet been confirmed inside GA4 itself. **The Ask log privacy
-update (next section)** has the owner's approval of its pull request (2026-11-21), and visitors
-see it only after her Promote. Sentences
+update of 2026-11-20 (next section) is MERGED, LIVE and VERIFIED:** pull request #133 was
+squash-merged into `main` as `1ba1dfa` on 2026-11-21, the owner promoted it to `www` at 18:27 PST
+that evening, and the checks on the live site found no failures in the update itself. They
+also showed that the provider rejects the key Ask a Rule's AI helper uses, which this update
+does not fix (same section). Sentences
 in those sections that say the branch or pull request #130 is
 "local", "uncommitted", "not pushed", "not merged", "not live" or a draft, that PR #129 is not
 merged, or that sitemap dates were not changed describe the day each section was written.
@@ -32,12 +35,14 @@ share-image fixes, and its link proposals stay with the owner.
 
 ---
 
-# ASK LOG PRIVACY 2026-11-20: no question text in the server log; privacy and Ask page wording (owner approved 2026-11-21; live after her Promote)
+# ASK LOG PRIVACY 2026-11-20: no question text in the server log; privacy and Ask page wording (MERGED, LIVE AND VERIFIED 2026-11-21)
 
 **Owner's approval (2026-11-20):** "Approve L-W1, L-W2 and L-W5, with no L-W3." She also
 replaced the end of Ask a Rule's reply for a rule it cannot verify. On 2026-11-21 she approved
 the finished pull request, which lists every visible change as current and proposed text, and
-chose the one-sentence close for that reply. Visitors see the update only after her Promote.
+chose the one-sentence close for that reply. Pull request #133 was squash-merged as `1ba1dfa` at
+18:09 PST that day. The build waited as Staged (`dpl_7rPhxnBaHmGjNxr73WQDEM6X36XC`) until she
+pressed Promote, and `www` has served it since 18:27 PST.
 
 **What changes:**
 
@@ -60,13 +65,51 @@ chose the one-sentence close for that reply. Visitors see the update only after 
   owner wrote the closing sentence, and `tests/ask-engine.logic.spec.ts` pins the whole reply.
 - Not added (L-W3, the owner's choice): a sentence on how long Anthropic keeps what it receives.
 - Dates: `/privacy` reads "Last updated November 21, 2026", and the sitemap gives `/privacy` and
-  `/ask` 2026-11-21, the planned release day. If the release goes live on a later day, all of
-  them move to that day first: `LAST_UPDATED` in `app/privacy/page.tsx`, the `/privacy` and
-  `/ask` dates in `app/sitemap.ts`, the pins in `tests/privacy-page.logic.spec.ts` and
-  `tests/seo-round12-owner-decisions.spec.ts`, and every line in this handoff, the owner guide and
-  the measurement plan that gives November 21, 2026 as the date.
+  `/ask` 2026-11-21, the day the owner promoted this update. A later release that changes either
+  page's text moves that page's dates to its own go-live day: `LAST_UPDATED` in
+  `app/privacy/page.tsx`, the `/privacy` and `/ask` dates in `app/sitemap.ts`, and the pins in
+  `tests/privacy-page.logic.spec.ts` and `tests/seo-round12-owner-decisions.spec.ts`.
 - Ask answers themselves do not change: the deterministic engine and the model layer return the
   same answers, and only the reply text above is new.
+
+**Live checks (2026-11-21, after the Promote):**
+
+- `/`, `/privacy` and `/ask` on `www` served the promoted build.
+- `/privacy` showed the L-W1 sentence and "Last updated November 21, 2026". The sentence about the
+  first 120 characters, the earlier date and the L-W3 sentence were absent, and the Analytics
+  section was unchanged.
+- `/ask` showed the L-W2 and L-W5 sentences, without the earlier "topic summary" and "to phrase
+  the answer" wording.
+- The sitemap gave `/privacy` and `/ask` 2026-11-21, and each page still carried the Google tag
+  once.
+- One rules question built around invented words went to the live Ask a Rule; it kept rules
+  words, so the AI helper was consulted. The reply was the approved reply for a rule it cannot
+  verify, word for word. In the host log that request left two lines,
+  `ask_model_error` (a status code and the label `api`) and `ask`. Both held fixed codes and
+  numbers only, and none of the typed words appeared anywhere in the request's record.
+- The host log reaches back 30 days. In the 29 days before the check no answer line carried a
+  question excerpt, and the three earlier model-failure lines held only the provider's own error
+  text.
+
+**Found by the live checks: the provider rejects the AI helper's key (not fixed by this
+update).** Every model call in the host log, four from 2026-11-06 to 2026-11-21, ended with HTTP
+401, and none succeeded. The three lines written before this update also hold the provider's
+error text (`authentication_error`, "invalid x-api-key"). The route falls back by design, so
+each answer went out from the written rules (`via: rules`) and nothing looked broken to a
+visitor; each call still carried the question to the provider, which refused it. The
+`ANTHROPIC_API_KEY` variable on `lasvegasmahj-h1iz`, the project that serves `www` (Production
+only), was last saved on 2026-08-30. The helper answered through the model on `www` on
+2026-09-06 (Round 2, "Production verification"), after that value was saved, so the key stopped
+being valid at the provider later. The fix needs the owner and starts on the provider's API keys
+page. A disabled key is switched back on only when it is known who disabled it and why, and the
+reason was not exposure. In every other case it takes a new key saved in that variable, then a
+new build (a saved value reaches only builds made after it) and her Promote. The key belongs
+only in that variable. The model stays `claude-haiku-4-5` and no code changes.
+`docs/ask-rules-knowledge.md`, "What is logged", gives the choices to make when the key is
+created and how to check afterwards: send one plain rules question that the helper is consulted
+on and read that request's own log lines. An `ask_model` line with no `ask_model_error` line
+shows that the provider accepted the key and replied, and `via` on the `ask` line shows whether
+the reply was used.
 
 ---
 
@@ -211,8 +254,8 @@ Google also created three key events of its own (`purchase`, `qualify_lead`,
 
 The privacy page's date is the day its visible text last changed, which is the day the owner
 presses Promote, Las Vegas time. This release set it to "November 20, 2026". The Ask log privacy
-update (section above) changes the text of `/privacy` and `/ask` again and moves both dates to
-its own release day. The dates live in `app/privacy/page.tsx` (`LAST_UPDATED`),
+update (section above) changed the text of `/privacy` and `/ask` again and moved both dates to
+November 21, 2026, the day it went live. The dates live in `app/privacy/page.tsx` (`LAST_UPDATED`),
 `tests/seo-round12-owner-decisions.spec.ts`, `app/sitemap.ts` (`/privacy` and `/ask`) and
 `tests/privacy-page.logic.spec.ts`. A release that changes a page's text on a later day moves
 that page's dates to that day, reruns the checks, and promotes that build: for `/privacy`,
