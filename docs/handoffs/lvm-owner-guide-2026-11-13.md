@@ -9,7 +9,7 @@ found no failures (handoff, "RELEASE 2026-11-16" and "PHOTO UPDATE 2026-11-17").
 release followed on 2026-11-20 as pull request #132: merged at 8:34 pm and live since you pressed
 Promote at 9:05 pm. Its live checks passed (handoff, "ANALYTICS SETUP 2026-11-18"); the test
 events have not yet been confirmed inside GA4 itself. The Ask log privacy update (handoff, "ASK
-LOG PRIVACY 2026-11-20") merges only with your approval and shows only after your Promote: Ask a
+LOG PRIVACY 2026-11-20") has your approval of 2026-11-21 and shows only after your Promote: Ask a
 Rule stops keeping any words of a question in the server log, and the privacy page and the Ask
 page say so. Until then the live privacy page reads "Last updated November 20, 2026". The
 working copy is `~/Projects/lvm-seo-invisible`. Full record: `docs/handoffs/lvm-seo-current.md`. Sprint files:

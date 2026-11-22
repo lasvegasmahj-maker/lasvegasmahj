@@ -18,7 +18,7 @@ analytics setup of 2026-11-18 (section below) is MERGED, LIVE and TECHNICALLY VE
 owner approved the finished release on 2026-11-20, pull request #132 was squash-merged into `main`
 that day, she promoted it to `www` at 21:05 PST, and the checks on the live site found no
 failures. The test events have not yet been confirmed inside GA4 itself. **The Ask log privacy
-update (next section)** merges only with the owner's approval of its pull request, and visitors
+update (next section)** has the owner's approval of its pull request (2026-11-21), and visitors
 see it only after her Promote. Sentences
 in those sections that say the branch or pull request #130 is
 "local", "uncommitted", "not pushed", "not merged", "not live" or a draft, that PR #129 is not
@@ -32,12 +32,12 @@ share-image fixes, and its link proposals stay with the owner.
 
 ---
 
-# ASK LOG PRIVACY 2026-11-20: no question text in the server log; privacy and Ask page wording (merges only with the owner's approval; live after her Promote)
+# ASK LOG PRIVACY 2026-11-20: no question text in the server log; privacy and Ask page wording (owner approved 2026-11-21; live after her Promote)
 
 **Owner's approval (2026-11-20):** "Approve L-W1, L-W2 and L-W5, with no L-W3." She also
-replaced the end of Ask a Rule's reply for a rule it cannot verify. Nothing merges or goes live
-before she approves the finished pull request, which lists every visible change as current and
-proposed text.
+replaced the end of Ask a Rule's reply for a rule it cannot verify. On 2026-11-21 she approved
+the finished pull request, which lists every visible change as current and proposed text, and
+chose the one-sentence close for that reply. Visitors see the update only after her Promote.
 
 **What changes:**
 
@@ -55,8 +55,9 @@ proposed text.
   questions and the last few turns of this conversation go to our AI provider to help pick the
   right written answer."
 - Ask a Rule's reply for a rule it cannot verify (`CANNOT_VERIFY` in `lib/ask/engine.ts`) now
-  ends "Please check with your instructor or consult the official NMJL rules." The owner wrote
-  that sentence.
+  reads "I cannot verify that rule from the approved American Mahjong rules I work from, so I
+  will not guess. Please check with your instructor or consult the official NMJL rules." The
+  owner wrote the closing sentence, and `tests/ask-engine.logic.spec.ts` pins the whole reply.
 - Not added (L-W3, the owner's choice): a sentence on how long Anthropic keeps what it receives.
 - Dates: `/privacy` reads "Last updated November 21, 2026", and the sitemap gives `/privacy` and
   `/ask` 2026-11-21, the planned release day. If the release goes live on a later day, all of
