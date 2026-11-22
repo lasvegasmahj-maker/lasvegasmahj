@@ -214,8 +214,19 @@ calls, latency and token counts for the cost estimate.
 
 ## What is logged
 
-One JSON line per question in Vercel function logs: kind, entry id, category, label,
-via (rules or model), turn number, latency. The question text is never logged, except a
-scrubbed topic summary (emails and digits removed, 120 characters) when no entry matched,
-so gaps in the knowledge base can be found. Conversations are held only in the visitor's
-browser tab (`sessionStorage`) and are never stored server side.
+Ask writes these JSON lines to the Vercel function logs, and nothing else:
+
+- one line per question: kind, entry id, category, label, via (rules or model), turn number,
+  latency;
+- one line per model call: latency, stop reason and token counts;
+- for a model reply the site cannot read: a reason, the stop reason and a character count;
+- for a model failure: latency, a status code and a fixed label (`timeout`, `connection`, `api`
+  or `other`);
+- for a route failure: the error's name, such as `TypeError`.
+
+The AI library's own logging is pinned at warnings. The question text
+and the conversation are never logged. `tests/ask-log-privacy.logic.spec.ts` runs the route and
+the model layer with made-up personal details, including model replies and errors that repeat
+the question and a failure inside the route, checks that no log line carries them, and checks
+both error lines and the pinned log level in the source. Conversations are held only in the
+visitor's browser tab (`sessionStorage`) and are never stored server side.

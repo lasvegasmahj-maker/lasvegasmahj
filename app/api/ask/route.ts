@@ -6,7 +6,6 @@ import {
   askedEntryIds,
   readMoreUrl,
   splitQuestions,
-  summarizeGap,
   MAX_QUESTION_CHARS,
   type Turn,
 } from "@/lib/ask/engine";
@@ -142,6 +141,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Fixed codes, ids and numbers only: the question and the conversation never go to the log.
     console.info(
       JSON.stringify({
         event: "ask",
@@ -152,13 +152,13 @@ export async function POST(req: NextRequest) {
         via: response.via,
         turn: Math.floor(history.length / 2) + 1,
         ms: Date.now() - started,
-        gap: response.kind === "unverified" ? summarizeGap(question) : undefined,
       })
     );
 
     return json(response);
   } catch (e) {
-    console.error("ask failed:", e instanceof Error ? e.message : e);
+    // An error's own text can repeat the question, so only its name, such as TypeError, is logged.
+    console.error(JSON.stringify({ event: "ask_failed", error: e instanceof Error ? e.name : typeof e }));
     return json({ ok: false, error: "The rules helper is having trouble right now. The rules guide still works.", fallback: "/rules" }, 500);
   }
 }

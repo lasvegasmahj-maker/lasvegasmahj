@@ -46,19 +46,22 @@ test("the page is titled Privacy and is canonical at /privacy", () => {
 
   const h1 = PAGE.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "";
   expect(h1.replace(/<[^>]+>/g, "").trim()).toBe("Privacy");
-  // The date moves when the build that sets the GA4 ID changes what the page says.
-  expect(PAGE).toContain('const LAST_UPDATED = ANALYTICS_ON ? "November 20, 2026" : "November 13, 2026";');
+  expect(PAGE).toContain('const LAST_UPDATED = "November 21, 2026";');
   expect(PAGE).toContain("Last updated {LAST_UPDATED}</p>");
   expect(PAGE.match(/Last updated/g)).toHaveLength(1);
-  // The sitemap's date for the page moves in the same build, and the two pairs of dates must
-  // stay equal when the go-live day changes.
-  expect(read("app/sitemap.ts")).toContain('lastModified: new Date(process.env.NEXT_PUBLIC_GA4_ID ? "2026-11-20" : "2026-11-13"),');
-  const pageDates = PAGE.match(/const LAST_UPDATED = ANALYTICS_ON \? "([^"]+)" : "([^"]+)";/);
-  const mapDates = read("app/sitemap.ts").match(/NEXT_PUBLIC_GA4_ID \? "(\d{4}-\d{2}-\d{2})" : "(\d{4}-\d{2}-\d{2})"/);
-  const iso = (d: string) => new Date(`${d} UTC`).toISOString().slice(0, 10);
-  expect(pageDates).not.toBeNull();
-  expect(mapDates).not.toBeNull();
-  expect([iso(pageDates![1]), iso(pageDates![2])]).toEqual([mapDates![1], mapDates![2]]);
+
+  // The sitemap date for /privacy is the page's "Last updated" date.
+  const sitemap = read("app/sitemap.ts");
+  const at = sitemap.indexOf('url: "https://www.lasvegasmahj.com/privacy"');
+  expect(at).toBeGreaterThan(-1);
+  const entry = sitemap.slice(at, sitemap.indexOf("}", at));
+  expect(entry).toContain('lastModified: new Date("2026-11-21")');
+  // /ask's disclaimer changed in the same release, so its sitemap date moves with this one.
+  const askAt = sitemap.indexOf('url: "https://www.lasvegasmahj.com/ask"');
+  expect(askAt).toBeGreaterThan(-1);
+  expect(sitemap.slice(askAt, sitemap.indexOf("}", askAt))).toContain('lastModified: new Date("2026-11-21")');
+  const pageDate = PAGE.match(/const LAST_UPDATED = "([^"]+)";/)?.[1] ?? "";
+  expect(new Date(`${pageDate} UTC`).toISOString().slice(0, 10)).toBe("2026-11-21");
 });
 
 test("it describes Google Analytics only in a build that loads it, and links Google's opt-out add-on", () => {
@@ -102,12 +105,13 @@ test("every link stays on this site, uses the public email, or is a verified htt
 });
 
 test("what the page says about logs and storage still matches the code", () => {
-  const engine = read("lib/ask/engine.ts");
-  const gap = engine.slice(engine.indexOf("export function summarizeGap"));
-  expect(gap).toContain(".slice(0, 120)");
-  expect(gap).toContain('.replace(/\\d+/g, "")');
-  expect(read("app/api/ask/route.ts")).toContain('gap: response.kind === "unverified" ? summarizeGap(question) : undefined');
-  expect(PAGE).toContain("the first 120 characters of your question, with any email addresses and numbers removed");
+  // tests/ask-log-privacy.logic.spec.ts runs the route and checks every log call it makes.
+  expect(read("app/api/ask/route.ts")).not.toMatch(/summarizeGap|\bgap:/);
+  expect(PAGE).toContain("The record never includes the words of your question or of the conversation.");
+  expect(PAGE).not.toMatch(/120 characters/);
+  expect(read("app/ask/page.tsx")).toContain("Your conversation lives only in this browser tab. It is never saved to an account or written to our logs. If our AI helper is switched on, some questions and the last few turns of this conversation go to our AI provider to help pick the right written answer.");
+  expect(read("app/ask/page.tsx")).not.toMatch(/to phrase the answer/);
+  expect(read("app/ask/page.tsx")).not.toMatch(/topic summary/);
 
   const files = ["app", "components", "lib"].flatMap(sourceFiles);
   expect(files.length).toBeGreaterThan(50);

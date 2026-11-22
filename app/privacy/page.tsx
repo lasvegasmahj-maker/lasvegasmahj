@@ -25,9 +25,8 @@ const breadcrumbSchema = buildBreadcrumbSchema([{ name: "Privacy", url: "https:/
 // components/analytics.tsx loads the GA4 tag only when this variable is set at build time, so
 // the page describes Google Analytics in exactly the builds that load it and never before.
 const ANALYTICS_ON = Boolean(process.env.NEXT_PUBLIC_GA4_ID);
-// Setting the ID changes what this page says, and the page promises to move its date when that
-// happens. The first date is the day the build carrying the ID goes live.
-const LAST_UPDATED = ANALYTICS_ON ? "November 20, 2026" : "November 13, 2026";
+// app/sitemap.ts carries the same date for /privacy.
+const LAST_UPDATED = "November 21, 2026";
 
 const card = { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 14, padding: "1.6rem 1.8rem 0.8rem" } as const;
 const heading = { fontFamily: "var(--font-nav)", fontWeight: 700, fontSize: "1.05rem", color: "white", marginBottom: "0.7rem", lineHeight: 1.4 } as const;
@@ -108,8 +107,7 @@ export default function Privacy() {
                 {/* "Switched on" is isModelEnabled in lib/ask/llm.ts: an ANTHROPIC_API_KEY is set and ASK_MODEL_DISABLED is not 1. */}
                 <li>Our server looks for the answer among the rules answers we have written. When our AI helper is switched on, some questions also go to Anthropic, the company that makes the Claude AI model, to help pick the right written answer. Anthropic receives the words of your question and the last few turns of the conversation, and nothing else about you.</li>
                 <li>Our server uses your IP address to limit how many questions anyone can ask in a minute and in a day, and keeps that count in its memory.</li>
-                {/* 120 is the cut in summarizeGap (lib/ask/engine.ts), which app/api/ask/route.ts logs. */}
-                <li>Our server writes a short record of each answer to our hosting logs: what kind of answer it was, which rule it matched, whether the AI helper took part, which question in the conversation it was and how long it took. The record leaves out your question, except when we cannot verify an answer. Then the record includes the first 120 characters of your question, with any email addresses and numbers removed, so we can see which rules to add.</li>
+                <li>Our server writes a short record of each answer to our hosting logs: what kind of answer it was, which rule it matched, whether the AI helper took part, which question in the conversation it was and how long it took. The record never includes the words of your question or of the conversation.</li>
                 <li>Your browser keeps the conversation in the tab where you asked, so it survives a page refresh. Closing the tab clears it, and so does Start a new question.</li>
               </ul>
               <p style={text}>Please leave personal details, such as names or contact information, out of your questions.</p>

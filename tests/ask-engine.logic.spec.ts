@@ -10,7 +10,6 @@ import {
   canonicalEntryFor,
   normalizeQuestion,
   retrieve,
-  summarizeGap,
   CANNOT_VERIFY,
   CARD_REFUSAL,
   OFF_TOPIC,
@@ -290,6 +289,12 @@ test.describe("guards", () => {
     expect(poem.answer).not.toMatch(/pirate/i);
   });
 
+  test("the cannot-verify reply is the wording the owner approved", () => {
+    expect(CANNOT_VERIFY).toBe(
+      "I cannot verify that rule from the approved American Mahjong rules I work from, so I will not guess. Please check with your instructor or consult the official NMJL rules."
+    );
+  });
+
   test("one common word never earns a confident rule", () => {
     expect(answerDeterministic("Do I need to call ahead for open play?").kind).not.toBe("answer");
     expect(answerDeterministic("Is there a wall between the two rooms at the venue?").kind).not.toBe("answer");
@@ -340,14 +345,6 @@ test.describe("guards", () => {
     expect(answerDeterministic("What is a wall game?").label).toBe("house");
     expect(answerDeterministic("Who pays on a self drawn win?").entry?.id).toBe("self-drawn-win");
     expect(answerDeterministic("Who pays on a self drawn win?").label).toBe("pending");
-  });
-});
-
-test.describe("gap summary", () => {
-  test("gap summary strips emails and digits and caps length", () => {
-    const s = summarizeGap("Email JANE.DOE@example.com about the 2026 card rules " + "x".repeat(200));
-    expect(s).not.toMatch(/@|\d/);
-    expect(s.length).toBeLessThanOrEqual(120);
   });
 });
 

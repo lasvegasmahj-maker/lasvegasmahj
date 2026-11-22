@@ -55,7 +55,8 @@ export type ModelClient = {
 
 let cachedClient: Anthropic | null = null;
 function defaultClient(): ModelClient {
-  cachedClient ??= new Anthropic({ timeout: MODEL_TIMEOUT_MS, maxRetries: 0 });
+  // Pinned so an ANTHROPIC_LOG setting cannot make the SDK log request details, which hold the question.
+  cachedClient ??= new Anthropic({ timeout: MODEL_TIMEOUT_MS, maxRetries: 0, logLevel: "warn" });
   return cachedClient;
 }
 
@@ -325,9 +326,20 @@ export function validateModelOutput(raw: Record<string, unknown>, input: ModelIn
   return { kind: "answer", entry: primary, answer: served.join(" "), label: labelFor(primary), followups, verbatim: false };
 }
 
+class LocalTimeout extends Error {}
+
+// The log gets one of these fixed words and never an error's own name or text: the text can
+// repeat what was sent, and the SDK gives every failure the same name.
+function failureKind(e: unknown): "timeout" | "connection" | "api" | "other" {
+  if (e instanceof LocalTimeout || e instanceof Anthropic.APIConnectionTimeoutError) return "timeout";
+  if (e instanceof Anthropic.APIConnectionError) return "connection";
+  if (e instanceof Anthropic.APIError) return "api";
+  return "other";
+}
+
 function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
   return new Promise((resolve, reject) => {
-    const t = setTimeout(() => reject(new Error(`model timeout after ${ms}ms`)), ms);
+    const t = setTimeout(() => reject(new LocalTimeout(`model timeout after ${ms}ms`)), ms);
     p.then((v) => { clearTimeout(t); resolve(v); }, (e) => { clearTimeout(t); reject(e); });
   });
 }
@@ -355,7 +367,7 @@ export async function composeWithModel(input: ModelInput, client: ModelClient = 
     return validateModelOutput(parsed, input);
   } catch (e) {
     const status = e instanceof Anthropic.APIError ? e.status : undefined;
-    console.error(JSON.stringify({ event: "ask_model_error", ms: Date.now() - started, status, message: e instanceof Error ? e.message.slice(0, 200) : String(e) }));
+    console.error(JSON.stringify({ event: "ask_model_error", ms: Date.now() - started, status, error: failureKind(e) }));
     return null;
   }
 }

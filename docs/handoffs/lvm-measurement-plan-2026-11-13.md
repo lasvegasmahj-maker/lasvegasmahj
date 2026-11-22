@@ -41,12 +41,17 @@ the finished release, privacy wording included, and asked for the actual release
 privacy page. The date moved to November 20, 2026, and the release merged that day as pull request
 #132. Tracking counts as live only after her Promote and the live checks in section 2.D.
 
+**Later on 2026-11-20.** The owner promoted the release, and `www` has served it since 21:05 PST.
+The live checks in section 2.D passed, so tracking is live and technically verified (SEO handoff,
+"ANALYTICS SETUP 2026-11-18", live checks). Not yet confirmed: the test events inside GA4 itself
+(section 2.F, first item), because the checks ran without access to the GA4 property.
+
 **Status:** draft for the owner's review, updated 2026-11-18 with the owner's GA4 decisions and
 on 2026-11-20 for the release. An earlier version reached `main` with pull request #130, which went
 live on 2026-11-16. This update and the code change it describes reached `main` in pull request
-#132, the release that switches analytics on (section 2.C). Until the owner promotes that release,
-the live site loads no analytics tag (checked on 2026-11-20); the event code ships dormant in any
-build without an ID. The E1 and E2 sections and the `lessons` source tag went live with the 2026-11-16
+#132, the release that switches analytics on (section 2.C). The live site has loaded the GA4 tag
+since the owner promoted that release at 21:05 PST on 2026-11-20; the event code stays dormant in
+any build without an ID, such as previews and CI. The E1 and E2 sections and the `lessons` source tag went live with the 2026-11-16
 release.
 
 **Today (2026-11-18):** the live site loads no analytics. On 2026-11-13 we found no GA4
@@ -60,9 +65,9 @@ claim that tracking is live until it is verified.
 since 2026-11-16) as read on 2026-11-13 (files in section 6), with section 1.1 re-checked on
 2026-11-18 against branch `analytics/ga4-setup`. If those files change before
 launch, re-check section 1. The owner guide
-(`docs/handoffs/lvm-owner-guide-2026-11-13.md`, section 4) lists switching analytics on among the
-things waiting for you after go-live (you approved analytics on 2026-11-13, Round 12); this plan
-holds the detail.
+(`docs/handoffs/lvm-owner-guide-2026-11-13.md`, section 4) lists the remaining analytics steps
+(section 2.F) among the things waiting for you (you approved analytics on 2026-11-13, Round 12);
+this plan holds the detail.
 
 ## In short
 
@@ -75,7 +80,8 @@ holds the detail.
    (section 2.E): set the Measurement ID in Vercel, merge, then Promote (section 2.C), and call
    tracking live only after the live checks in section 2.D. The 2026-11-16 release put live the
    privacy page and the fix that stops each event being sent two ways, which would have let GA4
-   count it twice. The page's "Last updated" date changes in the same build as its Analytics text.
+   count it twice. The page's "Last updated" date is the day its visible text last changed; a
+   release that changes that text moves the date to its go-live day (section 5, item 1).
 4. Collect 4 full weeks of clean data before changing any measured page. Then change one page at
    a time.
 5. Every benefit named in section 4 is a hypothesis until the numbers show it.
@@ -212,13 +218,13 @@ developer.
   discloses Analytics (`/privacy`, Round 11); and six of the events arrived with that release.
   All three are live now.
 - [x] The privacy page items this checklist named from Round 12 ("For the owner before it ships")
-  are settled. You confirmed "We do not sell it" on 2026-11-15. The "Last updated" date follows
-  the ID: `LAST_UPDATED` in `app/privacy/page.tsx` shows November 13, 2026 in a build without the
-  ID and November 20, 2026, the release day, in the build that carries it (section 5, item 1; part
-  C checks the go-live day).
-- [ ] On `/privacy`, the Analytics section reads "This website does not use an analytics service
-  right now." and the page reads "Last updated November 13, 2026". Both are correct until the ID
-  is set.
+  are settled. You confirmed "We do not sell it" on 2026-11-15. The "Last updated" date is the
+  day the page's visible text last changed: `LAST_UPDATED` in `app/privacy/page.tsx` shows that
+  day in every build, November 20, 2026 when analytics went live and November 21, 2026 with the
+  Ask log privacy update (section 5, item 1; part C checks the go-live day).
+- [x] Until the release, the live `/privacy` said "This website does not use an analytics service
+  right now." That sentence now shows only in builds without the ID, such as previews and CI; the
+  live page names Google Analytics 4 (part D).
 
 ### B. Create GA4 and set it up before the ID goes live
 
@@ -298,15 +304,16 @@ activation.
     does not serve the domain.
   - Never type the ID into the code. A test checks only the three analytics files for a typed ID.
 - [x] The privacy page date matches the go-live day, the day you press Promote (Las Vegas time).
-  `LAST_UPDATED` in `app/privacy/page.tsx` shows November 20, 2026 in a build with the ID, the
-  release day. If Promote slips past that day, your developer changes that date in that file,
-  `tests/privacy-page.logic.spec.ts`, `tests/seo-round12-owner-decisions.spec.ts` and the page's
-  sitemap date in `app/sitemap.ts`, reruns the checks, and a new build with the new date replaces
-  the staged one.
+  The analytics release set `LAST_UPDATED` in `app/privacy/page.tsx` to November 20, 2026, its
+  release day, and the live page showed it after the Promote (part D). A later release that
+  changes the page's text moves that date in that file, its pins in
+  `tests/privacy-page.logic.spec.ts` and `tests/seo-round12-owner-decisions.spec.ts`, and the
+  page's sitemap date in `app/sitemap.ts` to its own go-live day, and reruns the checks. The
+  `/ask` sitemap date moves the same way only when the text of `/ask` changes.
 - [x] Done 2026-11-20. With your release approval, your developer merges the pull request for
   branch `analytics/ga4-setup` (pull request #132). Automatic domain assignment is off, so Vercel
   builds a production deployment and holds it as Staged: the live site does not change yet.
-- [ ] You press **Promote** on that deployment in Vercel, signed in as the team owner. There is no
+- [x] Done 2026-11-20; `www` has served it since 21:05 PST. You press **Promote** on that deployment in Vercel, signed in as the team owner. There is no
   separate Redeploy step: the build from the merge already carries the ID. Do not use the Vercel
   command-line tool.
 
@@ -316,15 +323,17 @@ These checks use only page views and link clicks, and every test event carries a
 send an inquiry, sign up for the newsletter or book anything to test them; part E covered those
 events with a labelled test.
 
-- [ ] Your developer confirms that the live pages load the Google tag once, with your `G-` ID.
-- [ ] <https://www.lasvegasmahj.com/privacy>: the Analytics section now names Google Analytics 4 and
+- [x] Done 2026-11-20. Your developer confirms that the live pages load the Google tag once, with your `G-` ID.
+- [x] Done 2026-11-20. <https://www.lasvegasmahj.com/privacy>: the Analytics section now names Google Analytics 4 and
   lists, in plain words, schedule links, contact links, clicks to the booking pages on Bookwhen
   ("This counts the click, not a booking"), the contact form, the newsletter and Ask a Rule. The
   page reads "Last updated November 20, 2026" (the go-live day set in part C), and the cookies
   section reads "This website does not set any cookies of its own. Google Analytics sets the
-  cookies described above." If the page still says "does not use an analytics service" or shows
-  November 13, 2026, the build did not pick up the ID: stop.
-- [ ] Your developer runs the short labelled live check: the same browser script as part E, against
+  cookies described above." If the page still says "does not use an analytics service", the
+  build did not pick up the ID: stop.
+- [x] Done 2026-11-20, with a booking-link click added: Google accepted the labelled page views and
+  that click (handoff, live checks); nobody has yet watched them arrive in GA4.
+  Your developer runs the short labelled live check: the same browser script as part E, against
   `https://www.lasvegasmahj.com`, with page views and link clicks only (the homepage, "Book Now"
   in the lessons box, a "Request a Quote" button), debug mode on and a `test_run` label on every
   request. Google must accept the requests, and each action must send its event once. If you
@@ -383,13 +392,14 @@ In the table, "the event's page" is the page address GA4 records with the event 
 ### F. Finish
 
 - [ ] After 24-48 hours, Reports > Engagement > Events lists the events. Standard reports lag;
-  Realtime and DebugView do not.
+  Realtime and DebugView do not. Not yet confirmed as of 2026-11-20.
 - [ ] Stop counting your own visits, once the checks above are done: install Google's opt-out
   add-on (linked from `/privacy`) in the browsers you use for the site, or define internal traffic
   by IP address in the data stream's tag settings and switch on that filter. The labelled test
   events from parts D and E carry `test_run` (part E's also a local host name); note them in the
   first week's numbers.
-- [ ] Send your developer the date, which production deployment you promoted (the current
+- [x] Done 2026-11-20: the date, the promoted deployment and the passed checks are in the SEO
+  handoff, read from Vercel and the live site. Send your developer the date, which production deployment you promoted (the current
   Production deployment on Vercel's Deployments page) and the list of checks that passed. Your
   developer records them in the SEO handoff (`docs/handoffs/lvm-seo-current.md`). Until that
   record exists, nobody calls tracking live.
@@ -655,11 +665,10 @@ each, and effort. Every benefit below is a hypothesis.
 ## 5. Open items, and what this plan could not source
 
 1. **The "Last updated" date on `/privacy`: settled in the code.** `LAST_UPDATED` in
-   `app/privacy/page.tsx` shows November 13, 2026 in a build without the ID and November 20, 2026,
-   the release day, in the build that carries it, so the date moves in the same build as the
-   Analytics text. If Promote slips past that day, your developer changes that date, the page's
-   sitemap date and the two tests that pin them, and a new build replaces the staged one (section
-   2.C).
+   `app/privacy/page.tsx` is the day the page's visible text last changed, in every build:
+   November 20, 2026 when the Analytics text went live, and November 21, 2026 with the Ask log
+   privacy update. A release that changes the page's text moves that date, the page's sitemap
+   date and the two tests that pin them to its go-live day (section 2.C).
 2. Whether Bookwhen can send completed bookings to GA4: not verified (Round 11).
 3. What Bookwhen's own reports show (bookings by the date they were made, seats per booking): not
    checked. Adapt section 3.4 to what Bookwhen shows.
